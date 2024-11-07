@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     locale: "ko",
     contentHeight: "auto",
     aspectRatio: 1,
-    initialView: "dayGrid", // 기본 그리드 뷰 사용
+    initialView: "dayGrid",
     dayHeaders: true,
     dayMaxEventRows: 7,
     headerToolbar: {
@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     visibleRange: function () {
       let start = new Date();
-      start.setDate(start.getDate() - start.getDay()); // 오늘이 속한 주의 일요일로 설정
+      start.setDate(start.getDate() - start.getDay());
       let end = new Date(start);
-      end.setDate(start.getDate() + 27); // 28일 후 (4주 후)까지 설정
+      end.setDate(start.getDate() + 27);
       return { start: start, end: end };
     },
     dayCellContent: function (info) {
