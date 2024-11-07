@@ -1,15 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
   var calendarEl = document.getElementById("calendar");
   var tooltipEl = document.getElementById("tooltip");
-  calendarEl.style.width = "55%";
+  calendarEl.style.width = "65%";
   calendarEl.style.margin = "0 auto";
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     locale: "ko",
     contentHeight: "auto",
     aspectRatio: 1,
-    initialView: "dayGridMonth",
-    dayMaxEventRows: 5,
+    initialView: "dayGrid", // 기본 그리드 뷰 사용
+    dayHeaders: true,
+    dayMaxEventRows: 7,
     headerToolbar: {
       left: "currentMonth",
       center: "customText",
@@ -24,6 +25,13 @@ document.addEventListener("DOMContentLoaded", function () {
         text: "디지몬 슈퍼럼블 일정",
         click: function () {},
       },
+    },
+    visibleRange: function () {
+      let start = new Date();
+      start.setDate(start.getDate() - start.getDay()); // 오늘이 속한 주의 일요일로 설정
+      let end = new Date(start);
+      end.setDate(start.getDate() + 27); // 28일 후 (4주 후)까지 설정
+      return { start: start, end: end };
     },
     dayCellContent: function (info) {
       return { html: `<span>${info.date.getDate()}</span>` };
@@ -48,16 +56,31 @@ document.addEventListener("DOMContentLoaded", function () {
         end: "2024-11-21",
       },
       {
-        title: "2.51 업데이트",
-        start: "2024-11-07",
-        backgroundColor: "green",
-        textColor: "white",
-      },
-      {
         title: "2.52 업데이트",
         start: "2024-11-21",
         backgroundColor: "green",
         textColor: "white",
+      },
+      {
+        title: "빼빼로 재료 구하기 이벤트",
+        start: "2024-11-07",
+        end: "2024-11-21",
+        backgroundColor: "green",
+        textColor: "white",
+      },
+      {
+        title: "파피몬의 수능 응원 이벤트",
+        start: "2024-11-07",
+        end: "2024-11-21",
+        backgroundColor: "purple",
+        textColor: "white",
+      },
+      {
+        title: "구독형 크라운 이벤트",
+        start: "2024-11-07",
+        end: "2024-12-05",
+        backgroundColor: "gold",
+        textColor: "black",
       },
     ],
     datesSet: function (info) {
