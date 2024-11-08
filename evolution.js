@@ -483,13 +483,18 @@ function showJogressTooltip(jogressImage, jogressDataEntry) {
     });
 
     if (jogressDataEntry.ingredient1 || jogressDataEntry.ingredient2) {
+      const ingredients = jogressDataEntry.ingredient1
+        ? jogressDataEntry.ingredient1 +
+          (jogressDataEntry.ingredient2
+            ? `, ${jogressDataEntry.ingredient2}`
+            : "")
+        : jogressDataEntry.ingredient2 || "";
+
       tableHtml += `
-                <tr>
-                    <th>진화 재료</th>
-                    <td colspan="2">${jogressDataEntry.ingredient1 || ""}, ${
-        jogressDataEntry.ingredient2 || ""
-      }</td>
-                </tr>`;
+                    <tr>
+                        <th>진화 재료</th>
+                        <td colspan="2">${ingredients}</td>
+                    </tr>`;
     }
 
     tableHtml += `</table>`;
