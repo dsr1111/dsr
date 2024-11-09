@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     headerToolbar: {
       left: "currentMonth",
       center: "customText",
-      right: "prev,next",
+      right: "",
     },
     customButtons: {
       currentMonth: {
