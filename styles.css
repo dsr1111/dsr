@@ -972,3 +972,42 @@ tbody {
 .locations-today {
   margin-top: 10px;
 }
+
+.floating-chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-kakao {
+  visibility: hidden;
+  width: 150px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 50px;
+  right: -75px;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+.floating-chat-icon:hover .tooltip-kakao {
+  visibility: visible;
+  opacity: 1;
+}
