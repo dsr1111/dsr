@@ -279,3 +279,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelector(".overflow").appendChild(locationDiv);
 });
+
+document
+  .getElementById("currency-input")
+  .addEventListener("input", updateConversion);
+document
+  .getElementById("currency-type")
+  .addEventListener("change", updateConversion);
+document
+  .getElementById("exchange-rate")
+  .addEventListener("input", updateConversion);
+
+function updateConversion() {
+  const rateInput = parseFloat(document.getElementById("exchange-rate").value);
+  const inputValue = parseFloat(
+    document.getElementById("currency-input").value
+  );
+  const conversionType = document.getElementById("currency-type").value;
+  const resultElement = document.getElementById("conversion-result");
+
+  // Ensure valid rate and input values
+  if (isNaN(rateInput) || isNaN(inputValue)) {
+    resultElement.textContent = "0";
+    return;
+  }
+
+  let result;
+
+  if (conversionType === "crown-to-bit") {
+    result = inputValue * (rateInput / 100) * 10000; // Convert 크라운 to 비트
+    unit = " 비트";
+  } else {
+    result = inputValue / ((rateInput * 10000) / 100);
+    unit = " 크라운";
+  }
+
+  resultElement.textContent = Math.round(result).toLocaleString() + unit;
+}

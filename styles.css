@@ -840,7 +840,7 @@ tbody {
   gap: 20px;
 }
 
-.coupon-kakaopay-container {
+.left-container {
   display: flex;
   flex-direction: column;
 }
@@ -853,25 +853,6 @@ tbody {
   padding: 10px;
   border-radius: 5px;
   border: #c0c0c0 1px solid;
-}
-
-.kakaopay {
-  background-color: #f0f0f0;
-  width: 200px;
-  text-align: center;
-  padding: 10px;
-  border-radius: 5px;
-  border: #c0c0c0 1px solid;
-}
-
-.kakaopay img {
-  width: 140px;
-  height: auto;
-  margin: 10px 0 0 0;
-}
-
-.kptext {
-  font-size: 11px;
 }
 
 .overflow {
@@ -890,6 +871,66 @@ tbody {
 
 .overflow a:visited {
   color: black;
+}
+
+.crown {
+  background-color: #f0f0f0;
+  width: 200px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  border: #c0c0c0 1px solid;
+  margin-top: 50px;
+}
+
+.index-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.exchange-rate,
+.result-display {
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+label {
+  display: block;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+select,
+input[type="number"] {
+  width: 75%;
+  padding: 5px;
+  margin-top: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.result-display p {
+  font-weight: bold;
+  color: #333;
+  font-size: 15px;
+}
+
+#exchange-rate {
+  width: 50px;
+  padding: 5px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+#exchange-rate::-webkit-outer-spin-button,
+#exchange-rate::-webkit-inner-spin-button,
+#currency-input::-webkit-outer-spin-button,
+#currency-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .index-title {

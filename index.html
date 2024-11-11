@@ -104,8 +104,38 @@
     <script src="assets/js/main.js"></script>
 
     <div class="calendar-container">
-      <div class="overflow">
-        <p class="index-title">오버플로우</p>
+      <div class="left-container">
+        <div class="overflow">
+          <p class="index-title">오버플로우</p>
+        </div>
+
+        <div class="crown">
+          <p class="index-title">크라운-비트 환산</p>
+
+          <div class="exchange-rate">
+            <label for="exchange-rate"
+              >100 크라운 :
+              <input type="number" id="exchange-rate" value="60" />
+              <span>만 비트</span></label
+            >
+          </div>
+
+          <div class="conversion-input">
+            <select id="currency-type">
+              <option value="crown-to-bit">크라운 ➔ 비트</option>
+              <option value="bit-to-crown">비트 ➔ 크라운</option>
+            </select>
+
+            <label for="currency-input"
+              >금액 :
+              <input type="number" id="currency-input" />
+            </label>
+          </div>
+
+          <div class="result-display">
+            <p>계산 값 : <span id="conversion-result">0</span></p>
+          </div>
+        </div>
       </div>
       <div id="calendar"></div>
       <div id="tooltip" class="custom-tooltip"></div>
