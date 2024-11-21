@@ -949,6 +949,10 @@ input[type="number"] {
   position: relative;
   padding-bottom: 15px;
 }
+.coupon-list:last-child {
+  margin-bottom: 0;
+  padding-bottom: 5px;
+}
 .coupon-list::after {
   content: "";
   position: absolute;
