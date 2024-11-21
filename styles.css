@@ -945,13 +945,17 @@ input[type="number"] {
   box-sizing: border-box;
 }
 
+.coupon-list {
+  position: relative;
+  padding-bottom: 15px;
+}
 .coupon-list::after {
   content: "";
   position: absolute;
-  left: 0px;
-  right: 0px;
+  left: -10px;
+  right: -10px;
   height: 1px;
-  margin-top: 5px;
+  margin-top: 10px;
   background-color: #c0c0c0;
 }
 .coupon-list:last-child::after {
