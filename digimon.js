@@ -473,11 +473,14 @@ function filterTable() {
     const typeMatches =
       filters.type.length === 0 || filters.type.includes(row.dataset.type);
     const fieldData = row.dataset.fields
-      ? row.dataset.fields.split(";").filter(Boolean)
+      ? row.dataset.fields
+          .split(";")
+          .map((field) => field.trim())
+          .filter(Boolean)
       : [];
     const fieldMatches =
       filters.field.length === 0 ||
-      filters.field.some((filterField) => fieldData.includes(filterField));
+      fieldData.some((field) => filters.field.includes(field));
     const strength = row.dataset.강점
       ? row.dataset.강점.trim().toLowerCase()
       : "";
