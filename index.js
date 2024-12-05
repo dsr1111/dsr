@@ -51,9 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
         textColor: "#990000",
       },
       {
-        title: "잃어버린 기억 이벤트",
-        start: "2024-11-21",
-        end: "2024-12-05",
+        title: "프리지몬의 최강 테이머 선발전 이벤트",
+        start: "2024-12-05",
+        end: "2025-01-02",
       },
       {
         title: "돌아온 디지타마 부화 이벤트",
@@ -63,9 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
         textColor: "white",
       },
       {
-        title: "구독형 크라운 이벤트",
-        start: "2024-11-07",
-        end: "2024-12-05",
+        title: "사라진 유년기 디지몬들 이벤트",
+        start: "2024-12-05",
+        end: "2024-12-19",
         backgroundColor: "gold",
         textColor: "black",
       },
