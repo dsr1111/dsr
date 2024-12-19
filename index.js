@@ -38,15 +38,15 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     events: [
       {
-        title: "디지패스 2024 시즌12",
-        start: "2024-11-21",
-        end: "2024-12-19",
+        title: "디지패스 2024 시즌13",
+        start: "2024-12-19",
+        end: "2025-01-16",
         backgroundColor: "gray",
       },
       {
-        title: "아랫마을 축제 이벤트",
-        start: "2024-11-21",
-        end: "2024-12-19",
+        title: "행복한 설원의 마을 이벤트",
+        start: "2024-12-19",
+        end: "2025-01-16",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
       },
@@ -54,20 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "프리지몬의 최강 테이머 선발전 이벤트",
         start: "2024-12-05",
         end: "2025-01-02",
-      },
-      {
-        title: "돌아온 디지타마 부화 이벤트",
-        start: "2024-11-21",
-        end: "2024-12-19",
-        backgroundColor: "green",
-        textColor: "white",
-      },
-      {
-        title: "사라진 유년기 디지몬들 이벤트",
-        start: "2024-12-05",
-        end: "2024-12-19",
-        backgroundColor: "gold",
-        textColor: "black",
       },
     ],
     datesSet: function (info) {
