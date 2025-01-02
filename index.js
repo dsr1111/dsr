@@ -51,9 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
         textColor: "#990000",
       },
       {
-        title: "프리지몬의 최강 테이머 선발전 이벤트",
-        start: "2024-12-05",
-        end: "2025-01-02",
+        title: "오늘의 신년 운세 이벤트",
+        start: "2025-01-02",
+        end: "2025-01-27",
       },
     ],
     datesSet: function (info) {
