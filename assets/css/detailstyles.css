@@ -1,0 +1,201 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Pretendard-Regular", sans-serif;
+  font-weight: normal;
+  background-color: #f4f4f9;
+}
+
+.container1 {
+  width: 100%;
+  max-width: 1100px;
+  margin: 20px auto;
+  margin-top: 130px;
+}
+
+.filters {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+#character-img {
+  position: relative;
+  top: 20px;
+  left: 50px;
+  width: 140px;
+  height: 140px;
+  background-color: black;
+  display: inline-block;
+}
+
+.skill-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+h1 {
+  position: relative;
+  top: 20px;
+  left: 50px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-top: 20px;
+  position: relative;
+  top: -30px;
+  left: 50px;
+  font-size: 18px;
+}
+
+h3 {
+  margin-top: 40px;
+  position: relative;
+  top: -30px;
+  left: 50px;
+  font-size: 18px;
+}
+
+.stat-table {
+  position: relative;
+  top: -40px;
+  left: 190px;
+  border-collapse: collapse;
+  margin-left: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  width: auto;
+  border-radius: 5px;
+}
+
+.stat-table th,
+.stat-table td {
+  padding: 5px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.stat-table thead th {
+  color: rgb(0, 0, 0);
+  background-color: rgb(229, 229, 229);
+}
+
+#evoution-name {
+  position: relative;
+  top: -100px;
+  left: 65px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#evolution-img {
+  position: relative;
+  top: -40px;
+  left: 8px;
+}
+
+#type-name {
+  position: relative;
+  top: -100px;
+  left: 54px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#type-img {
+  position: relative;
+  top: -48px;
+  left: 20px;
+}
+
+#field-name {
+  position: relative;
+  top: -100px;
+  left: 73px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#field-img1,
+#field-img2,
+#field-img3 {
+  position: relative;
+  top: -48px;
+  left: 40px;
+}
+
+#tree {
+  position: relative;
+  top: 30px;
+  left: 50px;
+  margin-bottom: 100px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.sw {
+  font-family: "Pretendard-Regular", sans-serif;
+}
+
+.floating-chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-kakao {
+  visibility: hidden;
+  width: 150px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 50px;
+  right: -75px;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+.floating-chat-icon:hover .tooltip-kakao {
+  visibility: visible;
+  opacity: 1;
+}
+
+.highlight {
+  color: rgb(0, 150, 0);
+}
