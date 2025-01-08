@@ -78,6 +78,7 @@ body::before {
 .caption {
     margin-top: 20px;
     text-align: center;
+    cursor: pointer;
 }
 .caption a {
     font-size: 15px; color: white;
