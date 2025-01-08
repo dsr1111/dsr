@@ -238,7 +238,7 @@ table.mydigimon td {
 }
 
 th {
-  background-color: #1D232F;
+  background-color: hsl(220, 24%, 18%);
   color: #ffffff;
   font-size: 20px;
 }
