@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/login.css">
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="icon" href="image/icon.png" type="image/x-icon" />
     <title>DSR WIKI</title>
     <script src="
@@ -150,6 +150,7 @@
 
         document.getElementById('signup-link').addEventListener('click', function (event) {
             event.preventDefault();
+            console.log("회원가입 버튼 클릭됨");
             document.getElementById('signup-modal').style.display = 'flex';
         });
 
