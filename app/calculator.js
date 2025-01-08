@@ -112,9 +112,19 @@ async function displaySkillImage(characterName) {
   if (skillRow) {
     const skillImageName = skillRow[15];
     const skillImagePath = `../image/${skillImageName}.webp`;
+    const skillText = skillRow[17]; // skillRow[17]의 값을 가져옵니다.
     const skillImageCell = document.getElementById("skill-cell");
-    skillImageCell.innerHTML = `<img src="${skillImagePath}" loading="lazy" alt="${skillImageName}" style="width: 25px; height: 25px; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;">`;
+
+    skillImageCell.innerHTML = `
+      <img 
+        src="${skillImagePath}" 
+        loading="lazy" 
+        alt="${skillImageName}" 
+        style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;">
+      <div style="display: inline-block; margin-left: 5px; vertical-align: middle;">/ ${skillText}</div>
+    `;
   }
+  
 }
 
 document
