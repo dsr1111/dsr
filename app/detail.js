@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (str, index) => `
       <td style="width: 60px; padding: 5px; text-align: center; position: relative; left: 50px; top: -20px;">
         <div style="background-image: url('../image/strongbackground.webp'); background-size: cover; background-position: center; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
-          <img src="../image/${str}.webp" alt="${str} 이미지" title="${str}" style="width: 80%; height: 80%; object-fit: contain;">
+          <img src="../image/${str}.webp" loading="lazy" alt="${str} 이미지" title="${str}" style="width: 80%; height: 80%; object-fit: contain;">
         </div>
       </td>
       <td style="padding: 5px; text-align: left; position: relative; left: 50px; top: -20px;">
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (weak, index) => `
       <td style="width: 60px; padding: 5px; text-align: center; position: relative; left: 50px; top: -20px;">
         <div style="background-image: url('../image/weakbackground.webp'); background-size: cover; background-position: center; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
-          <img src="../image/${weak}.webp" alt="${weak} 이미지" title="${weak}" style="width: 80%; height: 80%; object-fit: contain;">
+          <img src="../image/${weak}.webp" loading="lazy" alt="${weak} 이미지" title="${weak}" style="width: 80%; height: 80%; object-fit: contain;">
         </div>
       </td>
       <td style="padding: 5px; text-align: left; position: relative; left: 50px; top: -20px;">
@@ -177,14 +177,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <tr>
                   <!-- 스킬 아이콘과 텍스트를 2줄로 배치 -->
                   <td rowspan="2" style="width: 50px;">
-                    <img src="${skillImgPath}" alt="스킬 아이콘" style="width: 50px; border-radius: 50%; margin-top: 20px; margin-right: -25px; border: 0.1px solid grey; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); position: relative;
+                    <img src="${skillImgPath}" loading="lazy" alt="스킬 아이콘" style="width: 50px; border-radius: 50%; margin-top: 20px; margin-right: -25px; border: 0.1px solid grey; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); position: relative;
                     left: 50px; top: -30px;">
                   </td>
                   <!-- 스킬 이름, 속성 부분 한 줄 -->
                   <td colspan="3" style="vertical-align: middle; position: relative; left: 50px; top: -30px;">
                     <div style="font-size: 16px; font-weight: bold; display: flex; align-items: center; margin-top: 12px; margin-left: 8px;">
                       <span>${skillColumns[12]}</span> <!-- 스킬 이름 -->
-                      <img src="${skill1ImgPath}" alt="속성" style="width: 22px; margin-left: 5px; background-image: url('../image/background.webp'); background-size: 120%; background-position: center; "> <!-- 속성 이미지 -->
+                      <img src="${skill1ImgPath}" loading="lazy" alt="속성" style="width: 22px; margin-left: 5px; background-image: url('../image/background.webp'); background-size: 120%; background-position: center; "> <!-- 속성 이미지 -->
                     </div>
                   </td>
                 </tr>

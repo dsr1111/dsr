@@ -130,6 +130,7 @@ function updateMobImages(map, stage) {
           const img = document.createElement("img");
           img.src = `../image/digimon/${sanitizedFileName}/${sanitizedFileName}.webp`;
           img.alt = mob.name;
+          img.loading = "lazy";
 
           const transformedAttribute =
             attributeMapping[mob.attribute] || mob.attribute;
@@ -185,6 +186,7 @@ function updateRepeatRewards(matchingRow) {
       img.src = `../image/item/${fileName}.png`;
       img.alt = reward.name;
       img.classList.add("item-image");
+      img.loading = "lazy";
 
       const tooltip = document.createElement("div");
       tooltip.classList.add("custom-tooltip");
@@ -230,6 +232,7 @@ function updateFirstClearRewards(matchingRow) {
       img.src = `../image/item/${fileName}.png`;
       img.alt = reward.name;
       img.classList.add("item-image");
+      img.loading = "lazy";
 
       const tooltip = document.createElement("div");
       tooltip.classList.add("custom-tooltip");
