@@ -191,12 +191,12 @@
       const auth = getAuth();
 
       // 인증 상태 확인
-      document.body.style.display = "none"; // 페이지 숨김
+      document.body.style.display = "hidden"; // 페이지 숨김
       onAuthStateChanged(auth, (user) => {
           if (!user) {
               window.location.href = 'index.html';
           } else {
-              document.body.style.display = "block"; // 인증된 사용자만 페이지 표시
+              document.body.style.display = "visible"; // 인증된 사용자만 페이지 표시
           }
       });
   </script>
