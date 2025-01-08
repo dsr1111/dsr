@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/login.css">
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="app/login.js" defer></script>
     <link rel="icon" href="image/icon.png" type="image/x-icon" />
     <title>DSR WIKI</title>
     <script src="
@@ -22,11 +21,11 @@
         <form action="">
             <div class="int-area">
                 <input type="text" name="id" id="id" autocomplete="off" required>
-                <label for="id">ID</label>
+                <label for="id">닉네임</label>
             </div>
             <div class="int-area">
                 <input type="password" name="pw" id="pw" autocomplete="off" required>
-                <label for="pw">PASSWORD</label>
+                <label for="pw">비밀번호</label>
             </div>
             <div class="btn-area">
                 <button id="btn" type="submit">LOGIN</button>
@@ -44,11 +43,11 @@
             <h2>회원가입</h2>
             <div class="int-area">
                 <input type="text" name="email" id="signup-email" autocomplete="off" required>
-                <label for="signup-email">ID</label>
+                <label for="signup-email">닉네임</label>
             </div>
             <div class="int-area">
                 <input type="password" name="password" id="signup-password" autocomplete="off" required>
-                <label for="signup-password">PASSWORD</label>
+                <label for="signup-password">비밀번호</label>
             </div>
             <button type="button" id="signup-submit">회원가입</button>
         </div>
@@ -129,6 +128,34 @@
                 });
         })
 
+
+        let id = $('#id');
+        let pw = $('#pw');
+        let btn = $('#btn');
+
+        $(btn).on('click', function() {
+            if($(id).val() == "") {
+                $(id).next('label').addClass('warning');
+                setTimeout(function() {
+                    $('label').removeClass('warning');
+                },1500);
+            }
+            else if($(pw).val() == "") {
+                $(pw).next('label').addClass('warning');
+                setTimeout(function() {
+                    $('label').removeClass('warning');
+                },1500);
+            }
+        });
+
+        document.getElementById('signup-link').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('signup-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-btn').addEventListener('click', function () {
+            document.getElementById('signup-modal').style.display = 'none';
+        });
       </script>
 
 </body>
