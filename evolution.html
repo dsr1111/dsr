@@ -15,7 +15,7 @@
       <header class="header">
         <nav class="nav container">
            <div class="nav__data">
-              <a href="index.html">
+              <a href="main.html">
                 <img src="image/logo.png" class="nav__logo">
               </a>
               
@@ -129,5 +129,19 @@
          <img src="image\kakao.svg" alt="실시간 상담 아이콘" style="width: 40px; height: 40px;">
          <span class="tooltip-kakao">오류 제보 및 건의사항</span>
        </a>
+
+       <script>
+         import { getAuth, onAuthStateChanged } from "firebase/auth";
+       
+         const auth = getAuth();
+       
+         // 인증 상태 확인
+         onAuthStateChanged(auth, (user) => {
+             if (!user) {
+                 // 사용자가 인증되지 않았으면 로그인 페이지로 리다이렉트
+                 window.location.href = '/index.html';
+             }
+         });
+       </script>
   </body>
   </html>

@@ -1,175 +1,127 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="image/icon.png" type="image/x-icon" />
-    <title>DSR WIKI</title>
-    <script src="
-    https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js
-    "></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-    <link rel="stylesheet" href="assets/css/styles1.css" />
-    <script src="app/index.js" defer></script>
-  </head>
-  <body>
-    <!--=============== HEADER ===============-->
-    <header class="header">
-      <nav class="nav container">
-        <div class="nav__data">
-          <a href="index.html">
-            <img src="image/logo.png" class="nav__logo" />
-          </a>
-
-          <div class="nav__toggle" id="nav-toggle">
-            <i class="ri-menu-line nav__burger"></i>
-            <i class="ri-close-line nav__close"></i>
-          </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="app/login.js" defer></script>
+    <title>Document</title>
+</head>
+<body>
+    <section class="login-form">
+        <h1>DSR WIKI</h1>
+        <form action="">
+            <div class="int-area">
+                <input type="text" name="id" id="id" autocomplete="off" required>
+                <label for="id">ID</label>
+            </div>
+            <div class="int-area">
+                <input type="password" name="pw" id="pw" autocomplete="off" required>
+                <label for="pw">PASSWORD</label>
+            </div>
+            <div class="btn-area">
+                <button id="btn" type="submit">LOGIN</button>
+            </div>
+        </form>
+        <div class="caption">
+            <a id="signup-link">회원가입</a>
         </div>
+    </section>
 
-        <!--=============== NAV MENU ===============-->
-        <div class="nav__menu" id="nav-menu">
-          <ul class="nav__list">
-            <!--=============== DROPDOWN 1 ===============-->
-            <li class="dropdown__item">
-              <div class="nav__link">
-                디지몬 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
-              </div>
-
-              <ul class="dropdown__menu">
-                <li>
-                  <a href="digimon.html" class="dropdown__link">도감</a>
-                </li>
-
-                <li>
-                  <a href="evolution.html" class="dropdown__link">진화트리</a>
-                </li>
-              </ul>
-            </li>
-
-            <li><a href="map.html" class="nav__link">맵</a></li>
-
-            <!--=============== DROPDOWN 2 ===============-->
-            <li class="dropdown__item">
-              <div class="nav__link">
-                던전 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
-              </div>
-
-              <ul class="dropdown__menu">
-                <li>
-                  <a href="detector.html" class="dropdown__link">탐지기</a>
-                </li>
-
-                <li>
-                  <a href="overflow.html" class="dropdown__link">오버플로우</a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="dropdown__item">
-              <div class="nav__link">
-                도구 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
-              </div>
-
-              <ul class="dropdown__menu">
-                <li>
-                  <a href="calculator.html" class="dropdown__link">데미지 계산기</a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="dropdown__item">
-              <div class="nav__link">
-                사이트 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
-              </div>
-
-              <ul class="dropdown__menu">
-                <li>
-                  <a
-                    href="https://www.digimonsuperrumble.com/"
-                    class="dropdown__link"
-                    target="_blank"
-                    >공식 홈페이지</a
-                  >
-                </li>
-
-                <li>
-                  <a
-                    href="https://cafe.naver.com/movedsr"
-                    class="dropdown__link"
-                    target="_blank"
-                    >공식 카페</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul>
+    <!-- Popup Modal -->
+    <div class="overlay" id="signup-modal">
+        <div class="modal">
+            <button class="close-btn" id="close-btn">&times;</button>
+            <h2>회원가입</h2>
+            <div class="int-area">
+                <input type="text" name="email" id="signup-email" autocomplete="off" required>
+                <label for="signup-email">ID</label>
+            </div>
+            <div class="int-area">
+                <input type="password" name="password" id="signup-password" autocomplete="off" required>
+                <label for="signup-password">PASSWORD</label>
+            </div>
+            <button type="button" id="signup-submit">회원가입</button>
         </div>
-      </nav>
-    </header>
-
-    <!--=============== MAIN JS ===============-->
-    <script src="assets/js/main.js"></script>
-
-    <div class="calendar-container">
-      <div class="left-container">
-        <div class="overflow">
-          <p class="index-title">오버플로우</p>
-        </div>
-
-        <div class="crown">
-          <p class="index-title">크라운-비트 환산</p>
-
-          <div class="exchange-rate">
-            <label for="exchange-rate"
-              >100 크라운 :
-              <input type="number" id="exchange-rate" value="60" />
-              <span>만 비트</span></label
-            >
-          </div>
-
-          <div class="conversion-input">
-            <select id="currency-type">
-              <option value="crown-to-bit">크라운 ➔ 비트</option>
-              <option value="bit-to-crown">비트 ➔ 크라운</option>
-            </select>
-
-            <label for="currency-input"
-              >금액 :
-              <input type="number" id="currency-input" />
-            </label>
-          </div>
-
-          <div class="result-display">
-            <p>계산 값 : <span id="conversion-result">0</span></p>
-          </div>
-        </div>
-      </div>
-      <div id="calendar"></div>
-      <div id="tooltip" class="custom-tooltip"></div>
-
-      <div class="coupon-kakaopay-container">
-        <div class="coupon">
-          <p class="index-title">쿠폰</p>
-          <div class="coupon-container"></div>
-        </div>
-      </div>
     </div>
-    <a
-      href="https://open.kakao.com/o/siUct6Yg"
-      target="_blank"
-      class="floating-chat-icon"
-    >
-      <img
-        src="image\kakao.svg"
-        alt="실시간 상담 아이콘"
-        style="width: 40px; height: 40px"
-      />
-      <span class="tooltip-kakao">오류 제보 및 건의사항</span>
-    </a>
-  </body>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyB687ow_NvAJxJdLaSfke6hOalFujAeJ50",
+          authDomain: "dsr1-59d0e.firebaseapp.com",
+          projectId: "dsr1-59d0e",
+          storageBucket: "dsr1-59d0e.firebasestorage.app",
+          messagingSenderId: "393673268086",
+          appId: "1:393673268086:web:42409e7320c0ad4d99f857",
+          measurementId: "G-V5VLCXSKM7"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+        const auth = getAuth();
+
+        document.getElementById('signup-submit').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const emailDomain = "@123.123";
+            const signupemail = document.getElementById('signup-email').value.trim();
+            const signuppassword = document.getElementById('signup-password').value;
+
+            // 이메일 도메인 중복 확인 및 추가
+            const fullEmail = signupemail.includes('@') ? signupemail : signupemail + emailDomain;
+
+            // Firebase 회원가입
+            createUserWithEmailAndPassword(auth, fullEmail, signuppassword)
+                .then((userCredential) => {
+                    // 회원가입 성공
+                    const user = userCredential.user;
+                    alert("회원가입이 완료되었습니다.");
+                    document.getElementById('signup-modal').style.display = 'none';
+                })
+                .catch((error) => {
+                    // 회원가입 실패 처리
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert(`회원가입 실패: ${errorMessage}`);
+                });
+        });
+
+
+        document.getElementById('btn').addEventListener('click', (event) => {
+            event.preventDefault()
+            const emailDomain = "@123.123";
+            const email = document.getElementById('id').value.trim();
+            const password = document.getElementById('pw').value
+
+            const fullEmail = email.includes('@') ? email : email + emailDomain;
+
+            signInWithEmailAndPassword(auth, fullEmail, password)
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    window.location.href = 'main.html';
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert(`아이디, 비밀번호를 다시 확인해 주세요.`);
+                });
+        })
+
+      </script>
+
+</body>
 </html>
