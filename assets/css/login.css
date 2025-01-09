@@ -144,3 +144,9 @@ body::before {
     height: 24px;
     cursor: pointer;
 }
+
+.signup-msg {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+}
