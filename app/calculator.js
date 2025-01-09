@@ -373,6 +373,10 @@ async function calculateNeedStr() {
     mobHP = mobHP / 2;
   } else if (skillCount === "3킬") {
     mobHP = mobHP / 3;
+  } else if (skillCount === "4킬") {
+    mobHP = mobHP / 4;
+  } else if (skillCount === "5킬") {
+    mobHP = mobHP / 5;
   }
 
   let compatibility = 1.0;
