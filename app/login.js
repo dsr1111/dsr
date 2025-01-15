@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,8 +39,7 @@ document.getElementById('signup-submit').addEventListener('click', async (event)
     // Firestore에 사용자 정보 추가
     await setDoc(doc(db, "users", user.uid), {
       email: fullEmail,
-      isApproved: false, // 기본적으로 승인 대기 상태
-      loginLogs: [] // 로그인 기록 초기화
+      isApproved: false // 기본적으로 승인 대기 상태
     });
 
     alert("회원가입이 완료되었습니다. 관리자의 승인을 기다리세요.");
@@ -52,42 +51,39 @@ document.getElementById('signup-submit').addEventListener('click', async (event)
 
 // 로그인 로직
 document.getElementById('btn').addEventListener('click', async (event) => {
-  event.preventDefault();
-
-  const emailDomain = "@123.123";
-  const email = document.getElementById('id').value.trim();
-  const password = document.getElementById('pw').value;
-
-  const fullEmail = email.includes('@') ? email : email + emailDomain;
-
-  try {
-    // Firebase Authentication으로 로그인
-    const userCredential = await signInWithEmailAndPassword(auth, fullEmail, password);
-    const user = userCredential.user;
-
-    // Firestore에서 승인 상태 및 활성 세션 확인
-    const userDocRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists() && userDoc.data().isApproved) {
-      // Firestore에 새로운 세션 저장
-      await updateDoc(userDocRef, {
-        loginLogs: arrayUnion({
-          timestamp: serverTimestamp(),
-          device: navigator.userAgent
-        })
-      });
-
-      window.location.href = 'main.html';
-    } else {
-      alert("관리자의 승인을 기다려야 로그인할 수 있습니다.");
-      await signOut(auth); // 로그아웃 처리
+    event.preventDefault();
+  
+    const emailDomain = "@123.123";
+    const email = document.getElementById('id').value.trim();
+    const password = document.getElementById('pw').value;
+  
+    const fullEmail = email.includes('@') ? email : email + emailDomain;
+  
+    try {
+      // Firebase Authentication으로 로그인
+      const userCredential = await signInWithEmailAndPassword(auth, fullEmail, password);
+      const user = userCredential.user;
+  
+      // Firestore에서 승인 상태 확인
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists() && userDoc.data().isApproved) {
+        // Firestore에 로그인 시간 기록
+        const loginTime = new Date().toISOString(); // 현재 시간
+        await setDoc(userDocRef, { lastLogin: loginTime }, { merge: true });
+  
+        // 메인 페이지로 이동
+        window.location.href = 'main.html';
+      } else {
+        alert("관리자의 승인을 기다려야 로그인할 수 있습니다.");
+        auth.signOut(); // 로그아웃 처리
+      }
+    } catch (error) {
+      alert("아이디 또는 비밀번호를 다시 확인해 주세요.");
     }
-  } catch (error) {
-    alert("아이디 또는 비밀번호를 다시 확인해 주세요.");
-  }
-});
-
+  });
+  
 
 // 경고 표시 (빈 필드 확인)
 let id = $('#id');
