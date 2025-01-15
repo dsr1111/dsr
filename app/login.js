@@ -51,41 +51,57 @@ document.getElementById('signup-submit').addEventListener('click', async (event)
 
 // 로그인 로직
 document.getElementById('btn').addEventListener('click', async (event) => {
-    event.preventDefault();
-  
-    const emailDomain = "@123.123";
-    const email = document.getElementById('id').value.trim();
-    const password = document.getElementById('pw').value;
-  
-    const fullEmail = email.includes('@') ? email : email + emailDomain;
-  
-    try {
-      // Firebase Authentication으로 로그인
-      const userCredential = await signInWithEmailAndPassword(auth, fullEmail, password);
-      const user = userCredential.user;
-  
-      // Firestore에서 승인 상태 확인
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
-  
-      if (userDoc.exists() && userDoc.data().isApproved) {
-        // Firestore에 로그인 시간 기록
-        const now = new Date();
-        const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); 
-        const loginTime = koreaTime.toISOString().replace('T', ' ').split('.')[0]; 
-  
-        await setDoc(userDocRef, { lastLogin: loginTime }, { merge: true });
-  
-        // 메인 페이지로 이동
-        window.location.href = 'main.html';
-      } else {
-        alert("관리자의 승인을 기다려야 로그인할 수 있습니다.");
-        auth.signOut(); // 로그아웃 처리
-      }
-    } catch (error) {
-      alert("아이디 또는 비밀번호를 다시 확인해 주세요.");
+  event.preventDefault();
+
+  const emailDomain = "@123.123";
+  const email = document.getElementById('id').value.trim();
+  const password = document.getElementById('pw').value;
+
+  const fullEmail = email.includes('@') ? email : email + emailDomain;
+
+  // 장치 식별자를 생성합니다.
+  const deviceId = navigator.userAgent + Math.random().toString(36).substr(2, 9);
+
+  try {
+    // Firebase Authentication으로 로그인 처리
+    const userCredential = await signInWithEmailAndPassword(auth, fullEmail, password);
+    const user = userCredential.user;
+
+    // Firestore에서 승인 상태 확인
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists() && userDoc.data().isApproved) {
+      const now = new Date();
+      const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // 한국 시간 변환
+      const loginTime = koreaTime.toISOString().replace('T', ' ').split('.')[0]; 
+
+      // Firestore에 로그인 시간 및 장치 식별자 저장
+      await setDoc(userDocRef, { 
+        lastLogin: loginTime, 
+        deviceId: deviceId 
+      }, { merge: true });
+
+      // Firestore에서 실시간으로 로그아웃 감지
+      onSnapshot(userDocRef, (docSnapshot) => {
+        if (docSnapshot.exists() && docSnapshot.data().deviceId !== deviceId) {
+          alert("다른 장치에서 로그인되었습니다. 현재 장치가 로그아웃됩니다.");
+          auth.signOut();
+          window.location.href = 'login.html'; // 로그인 페이지로 이동
+        }
+      });
+
+      // 메인 페이지로 이동
+      window.location.href = 'main.html';
+    } else {
+      alert("관리자의 승인을 기다려야 로그인할 수 있습니다.");
+      auth.signOut(); // 로그아웃 처리
     }
-  });
+  } catch (error) {
+    alert("아이디 또는 비밀번호를 다시 확인해 주세요.");
+  }
+});
+
   
 
 // 경고 표시 (빈 필드 확인)
