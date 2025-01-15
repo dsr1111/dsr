@@ -40,7 +40,6 @@ document.getElementById('signup-submit').addEventListener('click', async (event)
     await setDoc(doc(db, "users", user.uid), {
       email: fullEmail,
       isApproved: false, // 기본적으로 승인 대기 상태
-      activeSession: null, // 활성 세션 초기화
       loginLogs: [] // 로그인 기록 초기화
     });
 
@@ -73,7 +72,6 @@ document.getElementById('btn').addEventListener('click', async (event) => {
     if (userDoc.exists() && userDoc.data().isApproved) {
       // Firestore에 새로운 세션 저장
       await updateDoc(userDocRef, {
-        activeSession: user.stsTokenManager.refreshToken,
         loginLogs: arrayUnion({
           timestamp: serverTimestamp(),
           device: navigator.userAgent
