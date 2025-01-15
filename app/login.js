@@ -70,7 +70,10 @@ document.getElementById('btn').addEventListener('click', async (event) => {
   
       if (userDoc.exists() && userDoc.data().isApproved) {
         // Firestore에 로그인 시간 기록
-        const loginTime = new Date().toISOString(); // 현재 시간
+        const now = new Date();
+        const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); 
+        const loginTime = koreaTime.toISOString().replace('T', ' ').split('.')[0]; 
+  
         await setDoc(userDocRef, { lastLogin: loginTime }, { merge: true });
   
         // 메인 페이지로 이동
