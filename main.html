@@ -172,9 +172,8 @@
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-      import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-    
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
       const firebaseConfig = {
         apiKey: "AIzaSyB687ow_NvAJxJdLaSfke6hOalFujAeJ50",
         authDomain: "dsr1-59d0e.firebaseapp.com",
@@ -184,43 +183,20 @@
         appId: "1:393673268086:web:42409e7320c0ad4d99f857",
         measurementId: "G-V5VLCXSKM7"
       };
-    
+
       // Firebase 초기화
       const app = initializeApp(firebaseConfig);
       const auth = getAuth();
-      const db = getFirestore(app);
-    
-      // 현재 장치 식별자 생성
-      const deviceId = navigator.userAgent + Math.random().toString(36).substr(2, 9);
-    
+
       // 인증 상태 확인
-      document.body.style.display = "none"; // 페이지 숨김
+      document.body.style.display = "hidden"; // 페이지 숨김
       onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          // 인증되지 않은 경우 로그인 페이지로 리다이렉트
-          window.location.href = 'index.html';
-        } else {
-          const userDocRef = doc(db, "users", user.uid);
-    
-          // Firestore의 deviceId 변경 감지
-          onSnapshot(userDocRef, (docSnapshot) => {
-            if (docSnapshot.exists()) {
-              const userData = docSnapshot.data();
-              if (userData.deviceId !== deviceId) {
-                // 다른 장치에서 로그인되었으므로 로그아웃 처리
-                alert("다른 장치에서 로그인되었습니다. 로그아웃됩니다.");
-                signOut(auth).then(() => {
-                  window.location.href = 'index.html'; // 로그인 페이지로 리다이렉트
-                });
-              } else {
-                // 현재 장치가 유효하면 페이지 표시
-                document.body.style.display = "block";
-              }
-            }
-          });
-        }
+          if (!user) {
+              window.location.href = 'index.html';
+          } else {
+              document.body.style.display = "visible"; // 인증된 사용자만 페이지 표시
+          }
       });
-    </script>
-    
+  </script>
   </body>
 </html>
