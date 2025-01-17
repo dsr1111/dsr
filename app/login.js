@@ -42,7 +42,7 @@ document.getElementById('signup-submit').addEventListener('click', async (event)
       isApproved: false // 기본적으로 승인 대기 상태
     });
 
-    alert("회원가입이 완료되었습니다. 관리자의 승인을 기다리세요.");
+    alert("회원가입이 완료되었습니다.\n길드톡방에서 승인 요청 부탁드립니다.");
     document.getElementById('signup-modal').style.display = 'none';
   } catch (error) {
     alert(`회원가입 실패: ${error.message}`);
