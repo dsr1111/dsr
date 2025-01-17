@@ -38,22 +38,22 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     events: [
       {
-        title: "디지패스 2024 시즌13",
-        start: "2024-12-19",
-        end: "2025-01-16",
+        title: "디지패스 2025 시즌1",
+        start: "2025-01-16",
+        end: "2025-02-13",
         backgroundColor: "gray",
       },
       {
-        title: "행복한 설원의 마을 이벤트",
-        start: "2024-12-19",
-        end: "2025-01-16",
+        title: "마르스몬의 신년 운동 이벤트",
+        start: "2025-01-16",
+        end: "2025-02-13",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
       },
       {
-        title: "오늘의 신년 운세 이벤트",
-        start: "2025-01-02",
-        end: "2025-01-27",
+        title: "신년 다짐 이벤트",
+        start: "2025-01-16",
+        end: "2025-01-24",
       },
     ],
     datesSet: function (info) {
