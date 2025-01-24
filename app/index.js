@@ -51,9 +51,15 @@ document.addEventListener("DOMContentLoaded", function () {
         textColor: "#990000",
       },
       {
-        title: "신년 다짐 이벤트",
-        start: "2025-01-16",
-        end: "2025-01-24",
+        title: "설날맞이 복주머니 이벤트",
+        start: "2025-01-24",
+        end: "2025-02-13",
+      },
+      {
+        title: "한복을 만들자 이벤트",
+        start: "2025-01-24",
+        end: "2025-02-13",
+        backgroundColor: "green",
       },
     ],
     datesSet: function (info) {
