@@ -65,7 +65,7 @@ function updateImage(selectedMap) {
   }
 
   // 이미지 요소를 700x700 크기로 업데이트
-  imageContainer.innerHTML = `<img src="${imagePath}" loading="lazy" alt="${selectedMap}" width="700" height="700">`;
+  imageContainer.innerHTML = `<img src="${imagePath}" loading="eager" alt="${selectedMap}" width="700" height="700">`;
 }
 
 // 지역 선택 시 map-dropdown 옵션 업데이트 및 첫 번째 값으로 이미지 설정
@@ -320,7 +320,7 @@ function createCheckbox(
       evolIcon.style.height = "20px";
       evolIcon.style.zIndex = "1001";
       evolIcon.style.display = input.checked ? "block" : "none";
-      evolIcon.loading = "lazy";
+      evolIcon.loading = "eager";
       imageContainer.appendChild(evolIcon);
     }
 
@@ -347,7 +347,7 @@ function createCheckbox(
       typeElement.style.width = `18px`;
       typeElement.style.height = `19px`;
       typeElement.style.zIndex = `1000`;
-      typeElement.loading = "lazy";
+      typeElement.loading = "eager";
       typeElement.style.display = input.checked ? "block" : "none";
 
       addSpecialTooltipToMobs(
@@ -469,7 +469,7 @@ function showSpecialTooltipAtImage(
                       : `../image/item/${item.trim()}.png`;
                     return `
                         <li style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;">
-                            <img src="${itemImageSrc}" loading="lazy" alt="${item.trim()}" style="width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;">
+                            <img src="${itemImageSrc}" loading="eager" alt="${item.trim()}" style="width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;">
                             ${item.trim()}
                         </li>`;
                   })
@@ -481,7 +481,7 @@ function showSpecialTooltipAtImage(
             ? `
         <div style="text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);"><strong>조건 진화</strong></div>
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-        <img src="../image/digimon/${evol}/${evol}.webp" loading="lazy" alt="${evol}" style="width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;">
+        <img src="../image/digimon/${evol}/${evol}.webp" loading="eager" alt="${evol}" style="width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;">
          </div>
         `
             : ""
