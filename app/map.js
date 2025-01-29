@@ -59,9 +59,9 @@ const mapOptions = {
 function updateImage(selectedMap) {
   let imagePath;
   if (selectedMap === "???") {
-    imagePath = "../image/map/ApocalymonArea.png";
+    imagePath = "https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/ApocalymonArea.png";
   } else {
-    imagePath = `../image/map/${selectedMap.replace(/\s+/g, "")}.webp`;
+    imagePath = `https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/${selectedMap.replace(/\s+/g, "")}.webp`;
   }
 
   // 이미지 요소를 700x700 크기로 업데이트
