@@ -18,6 +18,11 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
+  for = "/image/**/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"    
+
+[[headers]]
   for = "/image/map/*.webp"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
