@@ -59,7 +59,7 @@ const mapOptions = {
 function updateImage(selectedMap) {
   let imagePath;
   if (selectedMap === "???") {
-    imagePath = "https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/ApocalymonArea.png";
+    imagePath = "https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/ApocalymonArea.webp";
   } else {
     imagePath = "https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/${selectedMap.replace(/\s+/g,)}.webp";
   }
