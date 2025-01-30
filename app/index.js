@@ -135,8 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
           couponData.items.forEach((item) => {
             const [itemName, itemQty, itemGrade] = item.split("x");
             const sanitizedName = itemName.trim().replace(/%/g, "^");
-            const imgPath = `../image/item/${sanitizedName}.png`;
-            const backgroundPath = `../image/item/item${itemGrade.trim()}.png`;
+            const imgPath = `../image/item/${sanitizedName}.webp`;
+            const backgroundPath = `../image/item/item${itemGrade.trim()}.webp`;
 
             const itemElement = document.createElement("div");
             itemElement.classList.add("tooltip-item");

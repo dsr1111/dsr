@@ -13,9 +13,9 @@ const selectPage = document.querySelector(".select-page");
 mapDropdown.addEventListener("change", function () {
   const selectedMap = mapDropdown.value;
   if (selectedMap !== "default") {
-    selectPage.style.backgroundImage = `url('../image/overflow/${selectedMap}.png')`;
+    selectPage.style.backgroundImage = `url('../image/overflow/${selectedMap}.webp')`;
   } else {
-    selectPage.style.backgroundImage = `url('../image/overflow/기어 사바나.png')`;
+    selectPage.style.backgroundImage = `url('../image/overflow/기어 사바나.webp')`;
   }
 });
 
@@ -183,7 +183,7 @@ function updateRepeatRewards(matchingRow) {
       itemContainer.classList.add("item-container");
 
       const img = document.createElement("img");
-      img.src = `../image/item/${fileName}.png`;
+      img.src = `../image/item/${fileName}.webp`;
       img.alt = reward.name;
       img.classList.add("item-image");
       img.loading = "lazy";

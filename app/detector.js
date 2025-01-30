@@ -164,7 +164,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
             imageName = name.trim();
           }
 
-          const imagePath = `../image/item/${imageName}.png`;
+          const imagePath = `../image/item/${imageName}.webp`;
           const tradeStatusColor =
             tradeStatus.trim() === "거래가능" ? "green" : "#D32F2F";
           const dropTypeColor =
@@ -174,7 +174,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
           const tooltipContent = itemsList
             .map((item) => {
               const [imageName] = item.split("x");
-              const imagePath = `../image/item/${imageName.trim()}.png`;
+              const imagePath = `../image/item/${imageName.trim()}.webp`;
 
               return `
               <div style="display: flex; align-items: center;">
@@ -295,7 +295,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
          onerror="this.src='../image/default-type.webp';">
     <p class="font-applied2" style="text-align: center; margin: 0; line-height: 20px;">${digimonName}</p>
     <div style="position: relative; width: 100%; margin-top: 10px;">
-      <img src="../image/map/hp.png" loading="lazy" alt="HP Bar" style="width: 100%; height: 20px; display: block;">
+      <img src="../image/map/hp.webp" loading="lazy" alt="HP Bar" style="width: 100%; height: 20px; display: block;">
       <p class="font-applied2" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); color: white;">
         ${digimon.HP}
       </p>
@@ -375,7 +375,7 @@ function displayMapImage(mapName, digimonName, coordinates) {
 
   let imageName =
     mapName === "???"
-      ? "ApocalymonArea.png"
+      ? "ApocalymonArea.webp"
       : `${mapName.replace(/\s/g, "")}.webp`;
 
   const img = document.createElement("img");

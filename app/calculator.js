@@ -381,22 +381,34 @@ async function calculateNeedStr() {
 
   let compatibility = 1.0;
 
+  // 기존 강점 조건
   if (myType === "백신" && mobType === "바이러스") compatibility = 1.25;
   else if (myType === "바이러스" && mobType === "데이터") compatibility = 1.25;
   else if (myType === "데이터" && mobType === "백신") compatibility = 1.25;
+  
+  // 추가된 약점 조건 (반대 상황일 때)
+  else if (myType === "바이러스" && mobType === "백신") compatibility = 0.75;
+  else if (myType === "데이터" && mobType === "바이러스") compatibility = 0.75;
+  else if (myType === "백신" && mobType === "데이터") compatibility = 0.75;
+  
+  // 프리 타입 조건
   else if (
     myType === "프리" &&
     ["백신", "데이터", "바이러스"].includes(mobType)
   )
     compatibility = 1.0;
   else if (myType === "프리" && mobType === "언노운") compatibility = 1.25;
+  
+  // 언노운 타입 조건
   else if (
     myType === "언노운" &&
     ["백신", "데이터", "바이러스"].includes(mobType)
   )
     compatibility = 1.125;
   else if (myType === "언노운" && mobType === "프리") compatibility = 0.75;
-  else if (myType === mobType) compatibility = 1.0;
+  
+  // 동일 타입 조건
+  else if (myType === mobType) compatibility = 1.0;  
 
   let elementalFactor = 1.0;
 
