@@ -229,7 +229,7 @@ function updateFirstClearRewards(matchingRow) {
       itemContainer.classList.add("item-container");
 
       const img = document.createElement("img");
-      img.src = `../image/item/${fileName}.png`;
+      img.src = `../image/item/${fileName}.webp`;
       img.alt = reward.name;
       img.classList.add("item-image");
       img.loading = "lazy";
@@ -291,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
   mapDropdown.value = selectedMap;
 
   const selectPage = document.querySelector(".select-page");
-  selectPage.style.backgroundImage = `url('../image/overflow/${selectedMap}.png')`;
+  selectPage.style.backgroundImage = `url('../image/overflow/${selectedMap}.webp')`;
 
   setActiveDays(selectedMap);
 
