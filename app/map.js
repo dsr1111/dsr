@@ -55,17 +55,27 @@ const mapOptions = {
   ],
 };
 
-// 이미지 업데이트 함수
 function updateImage(selectedMap) {
   let imagePath;
   if (selectedMap === "???") {
-    imagePath = "https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/ApocalymonArea.png";
+    imagePath = "../image/map/ApocalymonArea.png";
   } else {
-    imagePath = `https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/${selectedMap.replace(/\s+/g, "")}.webp`;
+    imagePath = `../image/map/${selectedMap.replace(/\s+/g, "")}.webp`;
   }
 
-  // 이미지 요소를 700x700 크기로 업데이트
-  imageContainer.innerHTML = `<img src="${imagePath}" loading="eager" alt="${selectedMap}" width="700" height="700">`;
+  // 이미지 사전 로드
+  const img = new Image();
+  img.src = imagePath;
+  img.width = 700;
+  img.height = 700;
+  img.loading = "lazy";
+  img.alt = selectedMap;
+
+  img.onload = function () {
+    // 이미지 로드가 완료된 후 적용
+    imageContainer.innerHTML = "";
+    imageContainer.appendChild(img);
+  };
 }
 
 // 지역 선택 시 map-dropdown 옵션 업데이트 및 첫 번째 값으로 이미지 설정
