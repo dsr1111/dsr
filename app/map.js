@@ -65,7 +65,7 @@ function updateImage(selectedMap) {
   }
 
   // 이미지 요소를 700x700 크기로 업데이트
-  imageContainer.innerHTML = `<img src="${imagePath}" loading="lazy" alt="${selectedMap}" width="700" height="700">`;
+  imageContainer.innerHTML = `<img src="${imagePath}"  alt="${selectedMap}" width="700" height="700">`;
 }
 
 // 지역 선택 시 map-dropdown 옵션 업데이트 및 첫 번째 값으로 이미지 설정
@@ -468,7 +468,7 @@ function showSpecialTooltipAtImage(
                       : `../image/item/${item.trim()}.webp`;
                     return `
                         <li style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;">
-                            <img src="${itemImageSrc}" loading="lazy" alt="${item.trim()}" style="width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;">
+                            <img src="${itemImageSrc}"  alt="${item.trim()}" style="width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;">
                             ${item.trim()}
                         </li>`;
                   })
@@ -480,7 +480,7 @@ function showSpecialTooltipAtImage(
             ? `
         <div style="text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);"><strong>조건 진화</strong></div>
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-        <img src="../image/digimon/${evol}/${evol}.webp" loading="lazy" alt="${evol}" style="width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;">
+        <img src="../image/digimon/${evol}/${evol}.webp"  alt="${evol}" style="width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;">
          </div>
         `
             : ""

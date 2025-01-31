@@ -61,12 +61,12 @@ async function fetchCSV() {
 
     const typeImagePath = `../image/${type}.webp`;
     const strongHtml = 강점
-      ? `<img src="../image/${강점}.webp" loading="lazy" alt="${강점}" title="${강점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;"> <span>${
+      ? `<img src="../image/${강점}.webp"  alt="${강점}" title="${강점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;"> <span>${
           강점효과 ? 강점효과 : ""
         }</span>`
       : "";
     const weakHtml = 약점
-      ? `<img src="../image/${약점}.webp" loading="lazy" alt="${약점}" title="${약점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;"> <span>${
+      ? `<img src="../image/${약점}.webp"  alt="${약점}" title="${약점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;"> <span>${
           약점효과 ? 약점효과 : ""
         }</span>`
       : "";
@@ -76,7 +76,7 @@ async function fetchCSV() {
           .split(";")
           .map(
             (field) =>
-              `<img src="../image/field/${field}.webp" loading="lazy" alt="${field}" title="${field}" style="width: 25px; height: 25px;">`
+              `<img src="../image/field/${field}.webp"  alt="${field}" title="${field}" style="width: 25px; height: 25px;">`
           )
           .join("")
       : "";
@@ -152,10 +152,10 @@ async function fetchCSV() {
       const effectTooltipHtml =
         skill.effect && effectDescription
           ? `<div class="tooltip" style="display: inline-block; vertical-align: middle;">
-                       <img src="${effectImagePath}" loading="lazy" alt="${skill.effect}" style="width: 23px; height: 23px; vertical-align: middle; border-radius: 50%;">
+                       <img src="${effectImagePath}"  alt="${skill.effect}" style="width: 23px; height: 23px; vertical-align: middle; border-radius: 50%;">
                        <div class="tooltiptext">
                            <div class="tooltip-content">
-                               <img src="${effectImagePath}" loading="lazy" alt="${skill.effect} 이미지" style="width: 30px; height: 30px; border-radius: 50%;">
+                               <img src="${effectImagePath}"  alt="${skill.effect} 이미지" style="width: 30px; height: 30px; border-radius: 50%;">
                                <div class="tooltip-description">
                                    ${effectDescription}
                                </div>
@@ -166,7 +166,7 @@ async function fetchCSV() {
 
       return `
                 <td style="${backgroundColor}">
-                    <img src="../image/${skill.속성}.webp" loading="lazy" alt="${
+                    <img src="../image/${skill.속성}.webp"  alt="${
         skill.속성
       }" title="${skill.속성}" 
                         style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/background.webp'); 
@@ -200,7 +200,7 @@ async function fetchCSV() {
     newRow.innerHTML = `
             <td>
                 <div style="width: 25px; height: 25px; background-color: black; display: inline-block; vertical-align: middle;">
-                    <img src="${characterImagePath}" loading="lazy" alt="${name}" title="${name}" style="width: 100%; height: 100%;" onerror="this.src='../image/digimon/default.webp';">
+                    <img src="${characterImagePath}"  alt="${name}" title="${name}" style="width: 100%; height: 100%;" onerror="this.src='../image/digimon/default.webp';">
                 </div> 
                 <a href="detail.html?name=${encodeURIComponent(
                   name
@@ -209,7 +209,7 @@ async function fetchCSV() {
             <td style="text-align: center; vertical-align: middle;">${level}</td>
             <td style="text-align: center; vertical-align: middle;">${evolution}</td>
             <td style="text-align: center; vertical-align: middle;">
-                <img src="${typeImagePath}" loading="lazy" alt="${type}" title="${type}" style="width: 23px; height: 23px; display: block; margin: 0 auto;">
+                <img src="${typeImagePath}"  alt="${type}" title="${type}" style="width: 23px; height: 23px; display: block; margin: 0 auto;">
             </td>
             <td style="text-align: center; vertical-align: middle; border-left: 2px solid darkgrey;">${HP}</td>
             <td style="text-align: center; vertical-align: middle;">${SP}</td>

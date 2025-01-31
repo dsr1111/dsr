@@ -70,14 +70,14 @@ function displayCharacterType(characters, characterName) {
   const type = character[2];
   const imagePath = `../image/${type}.webp`;
   const typeImageCell = document.getElementById("type-image-cell");
-  typeImageCell.innerHTML = `<img src="${imagePath}" loading="lazy" alt="${type}" style="width: 25px; height: 25px;">`;
+  typeImageCell.innerHTML = `<img src="${imagePath}" alt="${type}" style="width: 25px; height: 25px;">`;
 }
 
 function displayCharacterImage(characterName) {
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
   const characterImagePath = `../image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
   const characterImageCell = document.getElementById("character-image-cell");
-  characterImageCell.innerHTML = `<img src="${characterImagePath}" loading="lazy" alt="${sanitizedCharacterName}" class="character-image">`;
+  characterImageCell.innerHTML = `<img src="${characterImagePath}" alt="${sanitizedCharacterName}" class="character-image">`;
 }
 
 function displayCharacterLevelAndPower(characters, characterName) {
@@ -118,7 +118,7 @@ async function displaySkillImage(characterName) {
     skillImageCell.innerHTML = `
       <img 
         src="${skillImagePath}" 
-        loading="lazy" 
+         
         alt="${skillImageName}" 
         style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;">
       <div style="display: inline-block; margin-left: 5px; vertical-align: middle;">/ ${skillText}</div>
@@ -204,7 +204,7 @@ function updateMobDetails(mobData, selectedMob) {
     document.getElementById("mob-level").textContent = mobRow[3];
     const mobTypeImage = mobRow[4] ? `../image/${mobRow[4]}.webp` : "-";
     document.getElementById("mob-type").innerHTML = mobRow[4]
-      ? `<img src="${mobTypeImage}" loading="lazy" alt="${mobRow[4]}" style="width: 25px; height: 25px;">`
+      ? `<img src="${mobTypeImage}"  alt="${mobRow[4]}" style="width: 25px; height: 25px;">`
       : "-";
     document.getElementById("mob-hp").textContent = mobRow[5];
     document.getElementById("mob-def").textContent = parseFloat(
@@ -212,15 +212,15 @@ function updateMobDetails(mobData, selectedMob) {
     ).toFixed(2);
     const mobWeaknessImage = mobRow[7] ? `../image/${mobRow[7]}.webp` : "-";
     document.getElementById("mob-weak").innerHTML = mobRow[7]
-      ? `<img src="${mobWeaknessImage}" loading="lazy" alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
     const mobStrengthImage = mobRow[8] ? `../image/${mobRow[8]}.webp` : "-";
     document.getElementById("mob-strong").innerHTML = mobRow[8]
-      ? `<img src="${mobStrengthImage}" loading="lazy" alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
     const mobImagePath = `../image/digimon/${selectedMob}/${selectedMob}.webp`;
     const mobImageCell = document.getElementById("mob-image-cell");
-    mobImageCell.innerHTML = `<img src="${mobImagePath}" loading="lazy" alt="${selectedMob}" class="mob-image">`;
+    mobImageCell.innerHTML = `<img src="${mobImagePath}"  alt="${selectedMob}" class="mob-image">`;
   }
 }
 

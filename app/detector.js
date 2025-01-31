@@ -149,7 +149,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
     <img src="../image/digimon/${formattedDigimonName}/${formattedDigimonName}.webp" 
          alt="${digimonName}" 
          style="width: 60%; border-radius: 10px; margin-bottom: 10px; background-color: #343434;"
-         onerror="this.src='../image/digimon/default.webp';" loading="lazy">
+         onerror="this.src='../image/digimon/default.webp';" >
   `;
 
   const itemRewards = digimon.item
@@ -178,7 +178,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
 
               return `
               <div style="display: flex; align-items: center;">
-                <img src="${imagePath}" loading="lazy" style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
+                <img src="${imagePath}"  style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
                 <span style="color: red;">(거래불가)</span>
                 <span>${item}</span>
               </div>`;
@@ -196,7 +196,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
 
           return `
         <div style="color: black; font-size: 14px; display: flex; align-items: center;">
-          <img src="${imagePath}" loading="lazy" alt="${name.trim()}" style="width: 30px; height: 30px; margin-right: 5px; margin-top: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
+          <img src="${imagePath}"  alt="${name.trim()}" style="width: 30px; height: 30px; margin-right: 5px; margin-top: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
           <span style="font-weight: bold;">${name.trim()}</span>
           <span style="background-color: ${tradeStatusColor}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; font-weight:display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px;">${tradeStatus.trim()}</span>
           <span style="background-color: ${dropTypeColor}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px;">${dropType.trim()}</span>
@@ -246,12 +246,12 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
         <td rowspan="2" style="width: 40px;">
           <img src="${
             skill.image
-          }" loading="lazy" alt="스킬 아이콘" style="width: 40px; border-radius: 50%; margin-top: 7px; margin-right: -25px; border: 0.1px solid grey; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);">
+          }"  alt="스킬 아이콘" style="width: 40px; border-radius: 50%; margin-top: 7px; margin-right: -25px; border: 0.1px solid grey; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);">
         </td>
         <td colspan="3" style="vertical-align: middle;">
           <div style="font-size: 14px; color: black; display: flex; align-items: center; margin-top: 0px; margin-left: 5px; font-weight: bold;">
             <span>${skill.skillName || "정보 없음"}</span> <!-- 스킬 이름 -->
-            <img src="${attributeImagePath}" loading="lazy" alt="속성" style="width: 20px; margin-left: 5px; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;"> <!-- 속성 이미지 -->
+            <img src="${attributeImagePath}"  alt="속성" style="width: 20px; margin-left: 5px; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;"> <!-- 속성 이미지 -->
           </div>
         </td>
       </tr>
@@ -290,12 +290,12 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
 
   const digimonInfo = `
   <div style="width: 60%; height: 65px; background: rgba(0, 0, 0, 0.5); border-radius: 10px; color: white; padding: 10px; position: relative; margin-bottom: 15px;">
-    <img src="${typeImagePath}" loading="lazy" alt="${digimon.type}" 
+    <img src="${typeImagePath}"  alt="${digimon.type}" 
          style="width: 25px; height: 25px; position: absolute; left: 15px; top: 30%; transform: translateY(-50%);"
          onerror="this.src='../image/default-type.webp';">
     <p class="font-applied2" style="text-align: center; margin: 0; line-height: 20px;">${digimonName}</p>
     <div style="position: relative; width: 100%; margin-top: 10px;">
-      <img src="../image/map/hp.webp" loading="lazy" alt="HP Bar" style="width: 100%; height: 20px; display: block;">
+      <img src="../image/map/hp.webp"  alt="HP Bar" style="width: 100%; height: 20px; display: block;">
       <p class="font-applied2" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); color: white;">
         ${digimon.HP}
       </p>
@@ -310,7 +310,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
           <p class="font-applied" style="color: black; font-weight: bold;">* 강점 :</p>
           ${
             strongImage
-              ? `<img src="${strongImage}" loading="lazy" alt="강점" style="width: 20px; margin: 0 5px; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;">`
+              ? `<img src="${strongImage}"  alt="강점" style="width: 20px; margin: 0 5px; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;">`
               : ""
           }
           <p class="font-applied" style="color: black; font-weight: bold;">${strongText}</p>
@@ -319,7 +319,7 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
           <p class="font-applied" style="color: black; font-weight: bold;">* 약점 :</p>
           ${
             weakImage
-              ? `<img src="${weakImage}" loading="lazy" alt="약점" style="width: 20px; margin: 0 5px; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;">`
+              ? `<img src="${weakImage}"  alt="약점" style="width: 20px; margin: 0 5px; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;">`
               : ""
           }
           <p class="font-applied" style="color: black; font-weight: bold;">${weakText}</p>
@@ -336,12 +336,12 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
   ${digimonInfo}
   ${digimonImage}
   <div style="display: flex; align-items: center; gap: 5px;">
-    <img src="../image/info.svg" loading="lazy" alt="Info Icon" style="width: 20px; height: 20px;">
+    <img src="../image/info.svg"  alt="Info Icon" style="width: 20px; height: 20px;">
     <p class="font-applied" style="color: black; font-weight: bold; font-size: 16px;">패턴</p>
   </div>
     ${gimmickText}
   <div style="display: flex; align-items: center; gap: 5px; padding: 5px 0 0 0;">
-    <img src="../image/info.svg" loading="lazy" alt="Info Icon" style="width: 20px; height: 20px;" loading="lazy">
+    <img src="../image/info.svg"  alt="Info Icon" style="width: 20px; height: 20px;" >
     <p class="font-applied" style="color: black; font-weight: bold; font-size: 16px;">보상</p>
   </div>
   <div style="width: 150%; margin-left: 25px;">
