@@ -38,29 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     events: [
       {
-        title: "디지패스 2025 시즌1",
-        start: "2025-01-16",
-        end: "2025-02-13",
+        title: "디지패스 2025 시즌2",
+        start: "2025-02-13",
+        end: "2025-03-13",
         backgroundColor: "gray",
       },
       {
-        title: "마르스몬의 신년 운동 이벤트",
-        start: "2025-01-16",
-        end: "2025-02-13",
+        title: "브이몬 발렌타인데이 이벤트",
+        start: "2025-02-13",
+        end: "2025-02-27",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
-      },
-      {
-        title: "설날맞이 복주머니 이벤트",
-        start: "2025-01-24",
-        end: "2025-02-13",
-      },
-      {
-        title: "한복을 만들자 이벤트",
-        start: "2025-01-24",
-        end: "2025-02-13",
-        backgroundColor: "green",
-      },
+      }
     ],
     datesSet: function (info) {
       const currentMonthText = info.view.currentStart.toLocaleString("ko", {
