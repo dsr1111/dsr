@@ -128,7 +128,7 @@ function initializeDropdownOptions() {
     });
 
     // 첫 번째 옵션 선택 후 initMap 호출
-    mapDropdown.value = options[2];
+    mapDropdown.value = options[0];
     initMap(); // 첫 번째 값에 대해 아이콘 표시
   });
 
