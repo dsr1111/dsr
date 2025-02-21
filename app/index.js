@@ -238,21 +238,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const todayDay = days[today.getDay()];
 
   const schedule = {
-    "기어 사바나": ["화요일", "목요일", "토요일"],
     "무한 산": ["수요일", "금요일", "일요일"],
     "사막 지대": ["화요일", "목요일", "토요일"],
     "어둠성 계곡": ["월요일", "금요일", "일요일"],
     "현실 세계": ["월요일", "수요일", "토요일"],
     "스파이럴 마운틴": ["월요일", "목요일", "일요일"],
+    "데이터 세계": ["화요일", "목요일", "토요일"]
   };
 
   const locationLinks = {
-    "기어 사바나": "overflow.html?map=기어 사바나",
     "무한 산": "overflow.html?map=무한 산",
     "사막 지대": "overflow.html?map=사막 지대",
     "어둠성 계곡": "overflow.html?map=어둠성 계곡",
     "현실 세계": "overflow.html?map=현실 세계",
     "스파이럴 마운틴": "overflow.html?map=스파이럴 마운틴",
+    "데이터 세계": "overflow.html?map=데이터 세계"
   };
 
   const locationsToday = [];

@@ -15,18 +15,18 @@ mapDropdown.addEventListener("change", function () {
   if (selectedMap !== "default") {
     selectPage.style.backgroundImage = `url('../image/overflow/${selectedMap}.webp')`;
   } else {
-    selectPage.style.backgroundImage = `url('../image/overflow/기어 사바나.webp')`;
+    selectPage.style.backgroundImage = `url('../image/overflow/무한 산.webp')`;
   }
 });
 
 const dayElements = document.querySelectorAll(".day p");
 const mapDays = {
-  "기어 사바나": ["화요일", "목요일", "토요일"],
   "무한 산": ["수요일", "금요일", "일요일"],
   "사막 지대": ["화요일", "목요일", "토요일"],
   "어둠성 계곡": ["월요일", "금요일", "일요일"],
   "현실 세계": ["월요일", "수요일", "토요일"],
   "스파이럴 마운틴": ["월요일", "목요일", "일요일"],
+  "데이터 세계": ["화요일", "목요일", "토요일"],
 };
 
 function setActiveDays(mapName) {
@@ -43,7 +43,7 @@ function setActiveDays(mapName) {
   }
 }
 
-setActiveDays("기어 사바나");
+setActiveDays("무한 산");
 
 mapDropdown.addEventListener("change", function () {
   const selectedMap = mapDropdown.value;
@@ -75,7 +75,7 @@ function parseCSV(data) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const defaultMap = "기어 사바나";
+  const defaultMap = "무한 산";
   const defaultStage = "1 Stage";
 
   updateMobImages(defaultMap, defaultStage);
@@ -285,7 +285,7 @@ selectElement.addEventListener("blur", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const selectedMap = urlParams.get("map") || "기어 사바나";
+  const selectedMap = urlParams.get("map") || "무한 산";
 
   const mapDropdown = document.getElementById("map-dropdown");
   mapDropdown.value = selectedMap;
