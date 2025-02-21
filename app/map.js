@@ -53,6 +53,11 @@ const mapOptions = {
     "스파이럴 마운틴 정상",
     "???",
   ],
+  "데이터 세계": [
+    "테이머의 집",
+    "빛의 언덕 과거(밤)",
+    "네트워크"
+  ],
 };
 
 // 이미지 업데이트 함수
@@ -123,7 +128,7 @@ function initializeDropdownOptions() {
     });
 
     // 첫 번째 옵션 선택 후 initMap 호출
-    mapDropdown.value = options[0];
+    mapDropdown.value = options[2];
     initMap(); // 첫 번째 값에 대해 아이콘 표시
   });
 
@@ -268,7 +273,7 @@ function createCheckbox(
   input.id = checkboxId;
 
   // 기본 체크 상태 설정
-  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId  === "toggle-overflows" || checkboxId  === "toggle-mob") {
+  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId  === "toggle-overflows" || checkboxId  === "toggle-mob" || checkboxId  === "toggle-datacube") {
     input.checked = true; // 워프포인트는 체크된 상태로 로드
   } else {
     input.checked = false; // 나머지는 체크 해제된 상태로 로드
