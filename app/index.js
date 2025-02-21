@@ -144,7 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
           couponData.items.forEach((item) => {
             const [itemName, itemQty, itemGrade] = item.split("x");
-            const sanitizedName = itemName.trim().replace(/%/g, "^");
+            let cleanItemName = itemName.trim().replace(/\s*\(\d+일\)$/, "");
+            const sanitizedName = cleanItemName.replace(/%/g, "^");
             const imgPath = `../image/item/${sanitizedName}.webp`;
             const backgroundPath = `../image/item/item${itemGrade.trim()}.webp`;
 
