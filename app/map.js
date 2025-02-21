@@ -273,7 +273,7 @@ function createCheckbox(
   input.id = checkboxId;
 
   // 기본 체크 상태 설정
-  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId  === "toggle-overflows" || checkboxId  === "toggle-mob" || checkboxId  === "toggle-datacube") {
+  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId  === "toggle-overflows" || checkboxId  === "toggle-mob") {
     input.checked = true; // 워프포인트는 체크된 상태로 로드
   } else {
     input.checked = false; // 나머지는 체크 해제된 상태로 로드
