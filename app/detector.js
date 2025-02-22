@@ -152,6 +152,14 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
          onerror="this.src='../image/digimon/default.webp';" >
   `;
 
+  function cleanFileName(itemName) {
+    return itemName
+      .replace(/\s*x\s*\d+$/, "")  // 문자열 끝에 있는 "x 숫자" 제거
+      .replace(/\s*x\s*\d+/g, "")  // 중간에 있는 "x 숫자" 제거
+      .trim();
+  }
+  
+  
   const itemRewards = digimon.item
     ? digimon.item
         .map((item) => {
@@ -164,24 +172,34 @@ function showDigimonDetails(digimonName, digimon, detectorData, csvData) {
             imageName = name.trim();
           }
 
-          const imagePath = `../image/item/${imageName}.webp`;
+          const finalImageName = imageName.includes("균열 데이터 상자") ? "균열 데이터 상자" : imageName;
+          const imagePath = `../image/item/${finalImageName}.webp`;
           const tradeStatusColor =
             tradeStatus.trim() === "거래가능" ? "green" : "#D32F2F";
           const dropTypeColor =
             dropType.trim() === "확률" ? "green" : "#D32F2F";
 
-          const itemsList = detectorData[name]?.items || [];
-          const tooltipContent = itemsList
-            .map((item) => {
-              const [imageName] = item.split("x");
-              const imagePath = `../image/item/${imageName.trim()}.webp`;
+          const itemsList = detectorData[name]?.items || {};
+
+          const tooltipContent = Object.entries(itemsList)
+            .map(([itemName, itemData]) => {
+              const cleanName = cleanFileName(itemName); // 공백 및 괄호 유지하면서 변환
+              const imagePath = `../image/item/${cleanName}.webp`;
+
+              console.log(`${imageName}`);
+
+              // 거래 상태 설정
+              const tradeStatusText = itemData.tradeStatus === "거래가능" ? "(거래가능)" : "(거래불가)";
+              const tradeStatusColor = itemData.tradeStatus === "거래가능" ? "green" : "red";
 
               return `
-              <div style="display: flex; align-items: center;">
-                <img src="${imagePath}"  style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
-                <span style="color: red;">(거래불가)</span>
-                <span>${item}</span>
-              </div>`;
+                <div style="display: flex; align-items: center;">
+                  <img src="${imagePath}" 
+                      style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;"
+                      onerror="this.onerror=null; this.src='../image/item/default.webp';">
+                  <span style="color: ${tradeStatusColor};">${tradeStatusText}</span>
+                  <span>${itemName}</span>
+                </div>`;
             })
             .join("");
 
