@@ -187,13 +187,26 @@ document.addEventListener("DOMContentLoaded", function () {
           });
 
           showItemsText.addEventListener("mousemove", function (event) {
-            tooltip.style.left = `${event.pageX + 10}px`;
-            tooltip.style.top = `${event.pageY + 10}px`;
+            positionTooltip(event);
           });
-
+          
           showItemsText.addEventListener("mouseout", function () {
             tooltip.style.display = "none";
           });
+          
+          function positionTooltip(event) {
+            const tooltipHeight = tooltip.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const cursorY = event.clientY;
+            
+            if (cursorY > viewportHeight / 2) {
+              tooltip.style.top = `${event.pageY - tooltipHeight - 10}px`;
+            } else {
+              tooltip.style.top = `${event.pageY + 10}px`;
+            }
+          
+            tooltip.style.left = `${event.pageX + 10}px`;
+          }
 
           const numberEl = document.createElement("div");
           numberEl.classList.add("coupon-number");
