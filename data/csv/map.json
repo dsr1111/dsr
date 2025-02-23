@@ -8878,7 +8878,7 @@
       },
       {
         "id": "mob1",
-        "top": 25,
+        "top": 510,
         "left": 310,
         "src": "../image/digimon/인펠몬/인펠몬.webp",
         "name": "인펠몬",
@@ -8901,7 +8901,7 @@
       },
       {
         "id": "mob1",
-        "top": 25,
+        "top": 510,
         "left": 345,
         "src": "../image/digimon/퍼펫몬/퍼펫몬.webp",
         "name": "인펠몬의 오염된 데이터",
@@ -8924,7 +8924,7 @@
       },
       {
         "id": "mob1",
-        "top": 60,
+        "top": 545,
         "left": 345,
         "src": "../image/digimon/디지타몬/디지타몬.webp",
         "name": "인펠몬의 오염된 데이터",
@@ -8947,8 +8947,8 @@
       },
       {
         "id": "mob1",
-        "top": 60,
-        "left": 380,
+        "top": 580,
+        "left": 345,
         "src": "../image/digimon/스컬그레이몬/스컬그레이몬.webp",
         "name": "인펠몬의 오염된 데이터",
         "level": 100,
@@ -8993,7 +8993,7 @@
       },
       {
         "id": "mob1",
-        "top": 520,
+        "top": 25,
         "left": 310,
         "src": "../image/digimon/디아블로몬/디아블로몬.webp",
         "name": "디아블로몬",
@@ -9016,7 +9016,7 @@
       },
       {
         "id": "mob1",
-        "top": 520,
+        "top": 25,
         "left": 345,
         "src": "../image/digimon/미이라몬/미이라몬.webp",
         "name": "디아블로몬의 더미 데이터",
@@ -9039,7 +9039,7 @@
       },
       {
         "id": "mob1",
-        "top": 555,
+        "top": 60,
         "left": 345,
         "src": "../image/digimon/스컬사탄몬/스컬사탄몬.webp",
         "name": "디아블로몬의 더미 데이터",
