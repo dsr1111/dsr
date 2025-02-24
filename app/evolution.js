@@ -77,7 +77,6 @@ function createDigimonImageList(data) {
     img.alt = digimon.name;
     img.width = 100;
     img.height = 100;
-    img.loading = "lazy";
 
     img.addEventListener("mouseover", (event) => {
       showNameTooltip(event, digimon.name);
@@ -266,7 +265,6 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
   const img = document.createElement("img");
   img.src = `../image/digimon/${digimonName}/${digimonName}.webp`;
   img.alt = digimon.name;
-  img.loading = "lazy";
 
   const characterInfo = charactersData.find(
     (character) => character.name === digimon.name
@@ -276,7 +274,6 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
     typeImg.src = `../image/${characterInfo.type}.webp`;
     typeImg.alt = characterInfo.type;
     typeImg.classList.add("type-image");
-    typeImg.loading = "lazy";
     digimonDiv.appendChild(typeImg);
   }
 
@@ -358,7 +355,6 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
               const jogressImage = document.createElement("img");
               jogressImage.src = jogressImagePath;
               jogressImage.classList.add("jogress-image");
-              jogressImage.loading = "lazy";
               horizontalConnector.appendChild(jogressImage);
             }
 

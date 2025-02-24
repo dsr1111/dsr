@@ -324,7 +324,6 @@ function createCheckbox(
       evolIcon.style.height = "20px";
       evolIcon.style.zIndex = "1001";
       evolIcon.style.display = input.checked ? "block" : "none";
-      evolIcon.loading = "lazy";
       imageContainer.appendChild(evolIcon);
     }
 
@@ -351,7 +350,6 @@ function createCheckbox(
       typeElement.style.width = `18px`;
       typeElement.style.height = `19px`;
       typeElement.style.zIndex = `1000`;
-      typeElement.loading = "lazy";
       typeElement.style.display = input.checked ? "block" : "none";
 
       addSpecialTooltipToMobs(
