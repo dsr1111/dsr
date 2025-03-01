@@ -269,34 +269,49 @@
         <td id="min-damage"></td>
       </tr>
     </table>
-    <table class="custom">
-        <tr>
-          <th colspan="2">추가 수치</th>
-        </tr>
-        <tr >
-          <td>포텐셜(+%)</td>
-          <td><input id="potential"></td>
-        </tr>
-        <tr class="custom-head">
-          <td>유년기 교정(+%)</td>
-          <td><input id="correction"></td>
-        </tr>
-        <tr class="custom-head">
-          <td>시너지(+%)</td>
-          <td><input id="synergy"></td>
-        </tr>
-        <tr class="custom-head">
-          <td>버프</td>
-          <td><input id="buff"></td>
-        </tr>
-        <tr class="custom-head">
-          <td>특화</td>
-          <td><input id="specialization"></td>
-        </tr>
-        <tr class="custom-head">
-          <td>장비</td>
-          <td><input id="equipment"></td>
-        </tr>
+    <table class="custom" style="width: 100%; table-layout: fixed;">
+      <tr>
+        <th colspan="3">추가 수치</th>
+      </tr>
+      <tr>
+        <td style="width: 35%;">포텐셜(+%)</td>
+        <td colspan="2">
+          <input type="text" id="potential" autocomplete="off">
+        </td>
+      </tr>
+      <tr class="custom-head">
+        <td style="width: 35%;">유년기 교정(+%)</td>
+        <td colspan="2">
+          <input type="text" id="correction" autocomplete="off">
+        </td>
+      </tr>
+      <tr class="custom-head">
+        <td style="width: 35%;">시너지(+%)</td>
+        <td colspan="2">
+          <input type="text" id="synergy" autocomplete="off">
+        </td>
+      </tr>
+      <tr class="custom-head">
+        <td style="width: 35%;">버프</td>
+        <td colspan="2">
+          <input type="text" id="buff" autocomplete="off">
+        </td>
+      </tr>
+      <tr class="custom-head">
+        <td style="width: 35%;">특화</td>
+        <td colspan="2">
+          <input type="text" id="specialization" autocomplete="off">
+        </td>
+      </tr>
+      <tr class="custom-head">
+        <td style="width: 35%;">장비</td>
+        <td>
+          <input type="text" id="equipment1" placeholder="스탯(STR)" autocomplete="off">
+        </td>
+        <td>
+          <input type="text" id="equipment2" placeholder="스킬 추뎀" autocomplete="off">
+        </td>
+      </tr>
     </table>
   </div>
 

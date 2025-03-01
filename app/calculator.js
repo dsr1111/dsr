@@ -112,7 +112,7 @@ async function displaySkillImage(characterName) {
   if (skillRow) {
     const skillImageName = skillRow[15];
     const skillImagePath = `../image/${skillImageName}.webp`;
-    const skillText = skillRow[17]; // skillRow[17]의 값을 가져옵니다.
+    const skillText = skillRow[17];
     const skillImageCell = document.getElementById("skill-cell");
 
     skillImageCell.innerHTML = `
@@ -287,7 +287,7 @@ async function calculateStrengthResult() {
   const synergy = getInputValue("synergy") / 100;
   const buff = getInputValue("buff");
   const specialization = getInputValue("specialization");
-  const equipment = getInputValue("equipment");
+  const equipment = getInputValue("equipment1");
 
   const totalStrength =
     basePower +
@@ -418,6 +418,11 @@ async function calculateNeedStr() {
   const minDamageRatio = 0.95;
   const constant = myLevel * 12 + 24;
 
+  let equipment2Value = parseFloat(document.getElementById("equipment2").value);
+  if (!isNaN(equipment2Value)) {
+    skillCoefficient += equipment2Value / 100;
+  }
+
   const totalStrength = await calculateStrengthResult();
   const needStr = Math.ceil(
     mobHP /
@@ -449,7 +454,7 @@ async function calculateNeedStr() {
 
 document
   .querySelectorAll(
-    "#potential, #correction, #synergy, #buff, #specialization, #equipment"
+    "#potential, #correction, #synergy, #buff, #specialization, #equipment1, #equipment2"
   )
   .forEach((input) =>
     input.addEventListener("input", async () => {

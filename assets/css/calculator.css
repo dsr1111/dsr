@@ -424,3 +424,12 @@ input:focus {
 #character-image-cell , #mob-image-cell{
   background-color: black;
 }
+
+.custom {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.custom td {
+  text-align: left;
+}
