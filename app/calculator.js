@@ -420,8 +420,12 @@ async function calculateNeedStr() {
 
   let equipment2Value = parseFloat(document.getElementById("equipment2").value);
   if (!isNaN(equipment2Value)) {
-    skillCoefficient += equipment2Value / 100;
+      let adjustedEquipment2Value = Math.ceil((equipment2Value / 100) * 10000) / 10000;
+      let increaseValue = skillCoefficient * adjustedEquipment2Value;
+      increaseValue = Math.ceil(increaseValue * 10000) / 10000;
+      skillCoefficient += increaseValue;
   }
+  
 
   const totalStrength = await calculateStrengthResult();
   const needStr = Math.ceil(
@@ -434,7 +438,7 @@ async function calculateNeedStr() {
         minDamageRatio) /
         mobDef)
   );
-
+  console.log(skillCoefficient);
   const strResult =
     parseFloat(document.getElementById("str-result").textContent) || 0;
   const minDamage = Math.ceil(
