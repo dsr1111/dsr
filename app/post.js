@@ -8,6 +8,7 @@ async function fetchConfig() {
         console.log("✅ API_URL 설정 완료:", API_URL);
 
         fetchPosts();
+        fetchComments();
     } catch (error) {
         console.error("❌ API_URL 가져오기 실패:", error);
     }
