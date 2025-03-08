@@ -1,0 +1,82 @@
+@font-face {
+    font-family: "Pretendard-Regular";
+    src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+      format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: "Pretendard-Regular", sans-serif;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 130px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    max-width: 200px;
+    padding: 12px;
+    background-color: #232A39;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    color: orange;
+}
+
+#editor {
+    height: 400px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* 버튼 사이 간격 */
+    width: 100%;
+}
+
+#submit-btn, .back-btn {
+    width: 80px;
+    padding: 8px 12px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+.back-btn {
+    background-color: #ff4d4d;
+    color: white;
+}
+.back-btn:hover {
+    color: black;
+}

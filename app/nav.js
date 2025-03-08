@@ -11,7 +11,7 @@ class CustomNav extends HTMLElement {
             <header class="header">
               <nav class="nav container">
                 <div class="nav__data">
-                  <a href="main.html">
+                  <a href="index.html">
                     <img src="image/logo2.webp" class="nav__logo" />
                   </a>
 
@@ -42,6 +42,7 @@ class CustomNav extends HTMLElement {
                         <li><a href="overflow.html" class="dropdown__link">오버플로우</a></li>
                       </ul>
                     </li>
+                    <li><a href="tip.html" class="nav__link">공략&TIP</a></li>
                     <li class="dropdown__item">
                       <div class="nav__link">
                         도구 <i class="ri-arrow-down-s-line dropdown__arrow"></i>

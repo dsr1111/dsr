@@ -1,64 +1,67 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/login.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="image/icon.webp" type="image/x-icon" />
     <title>DSR WIKI</title>
-    <script src="
-    https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js
-    "></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <script type="module" src="app/login.js"></script>
-</head>
-<body>
-    <section class="login-form">
-        <h1>DSR WIKI</h1>
-        <form action="">
-            <div class="int-area">
-                <input type="text" name="id" id="id" autocomplete="off" required>
-                <label for="id">닉네임</label>
-            </div>
-            <div class="int-area">
-                <input type="password" name="pw" id="pw" autocomplete="off" required>
-                <label for="pw">비밀번호</label>
-            </div>
-            <div class="btn-area">
-                <button id="btn" type="submit">LOGIN</button>
-            </div>
-        </form>
-        <div class="caption">
-            <a id="signup-link">회원가입</a>
-        </div>
-    </section>
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/styles1.css" />
+    <script src="app/index.js" defer></script>
+    <script src="app/nav.js" defer></script>
+  </head>
+  <body>
+    <custom-nav></custom-nav>
+    <script src="assets/js/main.js"></script>
 
-    <!-- Popup Modal -->
-    <div class="overlay" id="signup-modal">
-        <div class="modal">
-            <button class="close-btn" id="close-btn">&times;</button>
-            <h2>회원가입</h2>
-            <div class="int-area">
-                <input type="text" name="email" id="signup-email" autocomplete="off" required>
-                <label for="signup-email">닉네임</label>
-            </div>
-            <div class="int-area">
-                <input type="password" name="password" id="signup-password" autocomplete="off" required>
-                <label for="signup-password">비밀번호</label>
-            </div>
-            <button type="button" id="signup-submit">회원가입</button>
-            <div class="signup-msg">
-                <p>길드에 가입된 캐릭터의 닉네임으로 가입해 주세요.</p>
-                <p>길드에 가입되지 않은 닉네임은 탈퇴 처리됩니다.</p>
-            </div>
+    <div class="calendar-container">
+      <div class="left-container">
+        <div class="overflow">
+          <p class="index-title">오버플로우</p>
         </div>
+
+        <div class="crown">
+          <p class="index-title">크라운-비트 환산</p>
+
+          <div class="exchange-rate">
+            <label for="exchange-rate"
+              >100 크라운 :
+              <input type="number" id="exchange-rate" value="60" />
+              <span>만 비트</span></label
+            >
+          </div>
+
+          <div class="conversion-input">
+            <select id="currency-type">
+              <option value="crown-to-bit">크라운 ➔ 비트</option>
+              <option value="bit-to-crown">비트 ➔ 크라운</option>
+            </select>
+
+            <label for="currency-input"
+              >금액 :
+              <input type="number" id="currency-input" />
+            </label>
+          </div>
+
+          <div class="result-display">
+            <p>계산 값 : <span id="conversion-result">0</span></p>
+          </div>
+        </div>
+      </div>
+      <div id="calendar"></div>
+      <div id="tooltip" class="custom-tooltip"></div>
+
+      <div class="coupon-kakaopay-container">
+        <div class="coupon">
+          <p class="index-title">쿠폰</p>
+          <div class="coupon-container"></div>
+        </div>
+      </div>
     </div>
-
-
-
-</body>
+  </body>
 </html>

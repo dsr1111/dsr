@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="image/icon.webp" type="image/x-icon">
+  <title>DSR WIKI</title>
+  <link
+  href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
+  rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/tip.css">
+  <link rel="stylesheet" href="assets/css/styles1.css" />
+  <script src="app/nav.js" defer></script>
+</head>
+
+<body>
+    <custom-nav></custom-nav>
+    <!--=============== MAIN JS ===============-->
+    <script src="assets/js/main.js"></script>
+    <div id="post-container">
+        <h2 id="post-title"></h2>
+        <div id="post-meta">
+            <span id="post-author"></span>|<span id="post-date"></span>
+        </div>
+        <div id="post-content"></div>
+    </div>
+    
+    <div class="comment-header">
+      💬 댓글 <span id="comment-count">0개</span>
+    </div>
+    <div id="comments-container"></div>
+
+    <div class="form-container comment-form">
+      <!-- 왼쪽: 닉네임 & 비밀번호 -->
+      <div class="comment-info">
+          <input type="text" id="comment-author" placeholder="닉네임">
+          <input type="password" id="comment-password" placeholder="비밀번호">
+      </div>
+  
+      <!-- 오른쪽: 댓글 입력창 -->
+      <div class="comment-input">
+          <textarea id="comment-content" placeholder="댓글을 입력하세요"></textarea>
+          <div class="comment-buttons">
+              <button id="submit-comment">등록</button>
+          </div>
+      </div>
+  </div>
+
+  <button onclick="location.href='tip.html'" class="back-btn">목록</button>
+
+  <script src="app/post.js" defer></script>
+  </div>
+</body>
+</html>

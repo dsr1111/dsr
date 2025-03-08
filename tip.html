@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="image/icon.webp" type="image/x-icon">
+  <title>DSR WIKI</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/tip.css">
+  <link rel="stylesheet" href="assets/css/styles1.css">   
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="app/script.js" defer></script>
+  <script src="app/nav.js" defer></script>
+</head>
+
+<body>
+    <custom-nav></custom-nav>
+    <script src="assets/js/main.js"></script>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                </tr>
+            </thead>
+            <tbody id="posts-list"></tbody>
+        </table>
+        <div class="table-header">
+            <button onclick="location.href='write.html'" class="write-btn">글쓰기</button>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <button id="prevPage" class="page-btn">〈 이전</button>
+        <div id="pageNumbers"></div>
+        <button id="nextPage" class="page-btn">다음 〉</button>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+</body>
+</html>
