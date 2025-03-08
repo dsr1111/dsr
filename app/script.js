@@ -49,15 +49,22 @@ if (editorElement) {
     });
 }
 
-// 📌 글 목록 가져오기 (GET 요청)
 async function fetchPosts(page = 1) {
     try {
-        console.log("📌 게시글 목록을 불러옵니다...");
+        console.log("📌 게시글 목록을 불러옵니다... API_URL:", API_URL);
 
-        const response = await fetch(`${API_URL}`);
-        if (!response.ok) throw new Error("게시글 목록 불러오기 실패");
+        const response = await fetch(API_URL);
 
-        const posts = await response.json();
+        // 🔹 응답을 먼저 text()로 변환하여 HTML인지 확인
+        const textResponse = await response.text();
+
+        // 🔹 JSON인지 확인 후 파싱
+        if (textResponse.startsWith("<!DOCTYPE html>")) {
+            throw new Error("❌ API 응답이 HTML입니다. API_URL 확인 필요.");
+        }
+
+        // 🔹 JSON 파싱
+        const posts = JSON.parse(textResponse);
         console.log("📌 불러온 게시글:", posts);
 
         posts.reverse();
@@ -103,12 +110,12 @@ async function fetchPosts(page = 1) {
                 : "";
 
             const truncatedTitle = post.title.length > 20 
-            ? post.title.substring(0, 20) + "..."
-            : post.title;
+                ? post.title.substring(0, 20) + "..."
+                : post.title;
             
             const truncatedAuthor = post.author.length > 8
-            ? post.author.substring(0,8) + "..."
-            : post.author;
+                ? post.author.substring(0,8) + "..."
+                : post.author;
 
             const row = document.createElement("tr");
             row.innerHTML = `
@@ -124,6 +131,7 @@ async function fetchPosts(page = 1) {
         console.error("❌ 게시글 목록 불러오기 실패:", error);
     }
 }
+
 
 
 // 📌 페이지네이션 업데이트
