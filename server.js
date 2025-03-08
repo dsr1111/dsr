@@ -9,6 +9,8 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use("/image", express.static(path.join(__dirname, "image")));
+
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
