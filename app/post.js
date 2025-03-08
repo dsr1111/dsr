@@ -43,6 +43,90 @@ async function fetchPost() {
     }
 }
 
+// 📌 게시글 삭제하기
+async function deletePost() {
+    const password = document.getElementById("post-password").value.trim();
+    if (!password) {
+        alert("비밀번호를 입력하세요!");
+        return;
+    }
+
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+        const response = await fetch(`${API_URL}/${postId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password }),
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message);
+
+        alert(result.message);
+        window.location.href = "tip.html"; // 삭제 후 목록으로 이동
+
+    } catch (error) {
+        console.error("❌ 게시글 삭제 오류:", error);
+        alert(error.message || "게시글 삭제 중 오류가 발생했습니다.");
+    }
+}
+
+// 📌 게시글 수정 기능 (수정 모드 활성화)
+function enableEditMode() {
+    const postTitle = document.getElementById("post-title");
+    const postContent = document.getElementById("post-content");
+    const editButton = document.getElementById("edit-post");
+
+    // 🔹 제목과 내용을 수정할 수 있도록 변경
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.id = "edit-title";
+    titleInput.value = postTitle.innerText;
+
+    const contentTextarea = document.createElement("textarea");
+    contentTextarea.id = "edit-content";
+    contentTextarea.value = postContent.innerHTML;
+
+    // 🔹 기존 요소 대체
+    postTitle.replaceWith(titleInput);
+    postContent.replaceWith(contentTextarea);
+
+    // 🔹 버튼 텍스트 변경
+    editButton.innerText = "저장";
+    editButton.onclick = updatePost;
+}
+
+// 📌 게시글 수정 요청 (서버 업데이트)
+async function updatePost() {
+    const title = document.getElementById("edit-title").value.trim();
+    const content = document.getElementById("edit-content").value.trim();
+    const password = document.getElementById("post-password").value.trim();
+
+    if (!title || !content || !password) {
+        alert("제목, 내용, 비밀번호를 입력하세요!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/${postId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, content, password }),
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message);
+
+        alert("게시글이 수정되었습니다!");
+        window.location.reload(); // 새로고침하여 수정된 내용 반영
+
+    } catch (error) {
+        console.error("❌ 게시글 수정 오류:", error);
+        alert(error.message || "게시글 수정 중 오류가 발생했습니다.");
+    }
+}
+
 
 function updateCommentCount(count) {
     const commentCountElement = document.getElementById("comment-count");
@@ -170,6 +254,9 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("잘못된 접근입니다.");
         window.location.href = "tip.html";
     }
+
+    document.getElementById("delete-post").addEventListener("click", deletePost);
+    document.getElementById("edit-post").addEventListener("click", enableEditMode);
 
     const submitCommentBtn = document.getElementById("submit-comment");
     if (submitCommentBtn) {
