@@ -44,14 +44,12 @@ async function fetchPost() {
 }
 
 // 📌 게시글 삭제하기
-async function deletePost() {
-    const password = document.getElementById("post-password").value.trim();
+async function confirmDeletePost() {
+    const password = prompt("게시글을 삭제하려면 비밀번호를 입력하세요:");
     if (!password) {
-        alert("비밀번호를 입력하세요!");
+        alert("비밀번호를 입력해야 삭제할 수 있습니다.");
         return;
     }
-
-    if (!confirm("정말 삭제하시겠습니까?")) return;
 
     try {
         const response = await fetch(`${API_URL}/${postId}`, {
@@ -63,9 +61,8 @@ async function deletePost() {
         const result = await response.json();
         if (!response.ok) throw new Error(result.message);
 
-        alert(result.message);
-        window.location.href = "tip.html"; // 삭제 후 목록으로 이동
-
+        alert("게시글이 삭제되었습니다.");
+        window.location.href = "tip.html";
     } catch (error) {
         console.error("❌ 게시글 삭제 오류:", error);
         alert(error.message || "게시글 삭제 중 오류가 발생했습니다.");
@@ -97,36 +94,27 @@ function enableEditMode() {
     editButton.onclick = updatePost;
 }
 
-// 📌 게시글 수정 요청 (서버 업데이트)
-async function updatePost() {
-    const title = document.getElementById("edit-title").value.trim();
-    const content = document.getElementById("edit-content").value.trim();
-    const password = document.getElementById("post-password").value.trim();
+function redirectToEditPage() {
+    const postId = urlParams.get("id"); // 게시글 ID 가져오기
+    const postTitle = document.getElementById("post-title").innerText || "";
+    const postAuthor = document.getElementById("post-author").innerText || "";
+    const postContent = document.getElementById("post-content").innerHTML || "";
 
-    if (!title || !content || !password) {
-        alert("제목, 내용, 비밀번호를 입력하세요!");
+    const password = prompt("게시글을 수정하려면 비밀번호를 입력하세요:");
+    if (!password) {
+        alert("비밀번호를 입력해야 수정할 수 있습니다.");
         return;
     }
 
-    try {
-        const response = await fetch(`${API_URL}/${postId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title, content, password }),
-        });
+    // ✅ localStorage를 활용하여 내용 저장 (이미지 포함)
+    localStorage.setItem("editPostContent", postContent);
 
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.message);
-
-        alert("게시글이 수정되었습니다!");
-        window.location.reload(); // 새로고침하여 수정된 내용 반영
-
-    } catch (error) {
-        console.error("❌ 게시글 수정 오류:", error);
-        alert(error.message || "게시글 수정 중 오류가 발생했습니다.");
-    }
+    // ✅ URL을 짧게 유지 (내용은 localStorage에 저장)
+    const editUrl = `write.html?mode=edit&id=${postId}&title=${encodeURIComponent(postTitle)}&author=${encodeURIComponent(postAuthor)}&password=${encodeURIComponent(password)}`;
+    
+    console.log("🔍 이동할 URL:", editUrl); // 디버깅 로그
+    window.location.href = editUrl;
 }
-
 
 function updateCommentCount(count) {
     const commentCountElement = document.getElementById("comment-count");
@@ -212,8 +200,6 @@ async function submitComment() {
     }
 }
 
-// 📌 댓글 삭제하기 (비밀번호 체크 포함)
-// 📌 댓글 삭제하기 (DELETE 요청)
 async function deleteComment(postId, commentId) {
     if (!commentId) {
         console.error("❌ 오류: 댓글 ID가 없습니다.");
@@ -255,8 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "tip.html";
     }
 
-    document.getElementById("delete-post").addEventListener("click", deletePost);
-    document.getElementById("edit-post").addEventListener("click", enableEditMode);
+    document.getElementById("delete-post").addEventListener("click", confirmDeletePost);
+    document.getElementById("edit-post").addEventListener("click", redirectToEditPage);
 
     const submitCommentBtn = document.getElementById("submit-comment");
     if (submitCommentBtn) {

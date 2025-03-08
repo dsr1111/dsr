@@ -24,12 +24,6 @@
             <span id="post-author"></span>|<span id="post-date"></span>
         </div>
         <div id="post-content"></div>
-
-        <div id="post-actions">
-          <input type="password" id="post-password" placeholder="비밀번호 입력" />
-          <button id="edit-post">수정</button>
-          <button id="delete-post">삭제</button>
-        </div>
     </div>
     
     <div class="comment-header">
@@ -38,13 +32,11 @@
     <div id="comments-container"></div>
 
     <div class="form-container comment-form">
-      <!-- 왼쪽: 닉네임 & 비밀번호 -->
       <div class="comment-info">
           <input type="text" id="comment-author" placeholder="닉네임">
           <input type="password" id="comment-password" placeholder="비밀번호">
       </div>
   
-      <!-- 오른쪽: 댓글 입력창 -->
       <div class="comment-input">
           <textarea id="comment-content" placeholder="댓글을 입력하세요"></textarea>
           <div class="comment-buttons">
@@ -53,7 +45,12 @@
       </div>
   </div>
 
+<div class="post-buttons">
   <button onclick="location.href='tip.html'" class="back-btn">목록</button>
+  <button id="edit-post" class="edit-btn">수정</button>
+  <button id="delete-post" class="delete-btn">삭제</button>
+</div>
+
 
   <script src="app/post.js" defer></script>
   </div>

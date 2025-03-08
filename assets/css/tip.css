@@ -355,3 +355,35 @@ td a span {
     color: orange;
 }
 
+/* 게시글 버튼 정렬 */
+.post-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* 버튼 기본 스타일 */
+.post-buttons button {
+    display: inline-block;
+    padding: 10px 15px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-align: center;
+    width: 80px;
+    margin-top: 10px;
+}
+
+/* 버튼 색상 스타일 */
+.edit-btn { background-color: #4CAF50; color: white; }
+.delete-btn { background-color: #f44336; color: white; }
+
+/* 버튼 호버 효과 */
+.post-buttons button:hover {
+    opacity: 0.8;
+}
