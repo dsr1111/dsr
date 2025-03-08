@@ -1,4 +1,20 @@
-const API_URL = "https://port-0-dsrwiki-m80cp0gz93b75d52.sel4.cloudtype.app/posts";
+let API_URL = "";
+
+async function fetchConfig() {
+    try {
+        const response = await fetch("/config");
+        const config = await response.json();
+        API_URL = config.apiUrl;
+        console.log("✅ API_URL 설정 완료:", API_URL);
+
+        fetchPosts();
+    } catch (error) {
+        console.error("❌ API_URL 가져오기 실패:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", fetchConfig);
+
 const postsPerPage = 15;
 let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.getItem("currentPage")) : 1;
 
@@ -38,7 +54,7 @@ async function fetchPosts(page = 1) {
     try {
         console.log("📌 게시글 목록을 불러옵니다...");
 
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}`);
         if (!response.ok) throw new Error("게시글 목록 불러오기 실패");
 
         const posts = await response.json();

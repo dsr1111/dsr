@@ -9,11 +9,14 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// 📌 CORS 설정 추가 (가장 먼저 설정해야 함)
 app.use(cors({
-    origin: "https://port-0-dsrwiki-m80cp0gz93b75d52.sel4.cloudtype.app",
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
+
+app.get("/config", (req, res) => {
+    res.json({ apiUrl: process.env.API_URL });
+});
 
 // 📌 JSON 데이터를 요청에서 사용할 수 있도록 설정
 app.use(express.json());
