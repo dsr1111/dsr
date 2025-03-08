@@ -55,16 +55,13 @@ async function fetchPosts(page = 1) {
 
         const response = await fetch(API_URL);
 
-        // 🔹 응답을 먼저 text()로 변환하여 HTML인지 확인
-        const textResponse = await response.text();
-
-        // 🔹 JSON인지 확인 후 파싱
-        if (textResponse.startsWith("<!DOCTYPE html>")) {
-            throw new Error("❌ API 응답이 HTML입니다. API_URL 확인 필요.");
+        // 🔹 HTTP 상태 코드 체크
+        if (!response.ok) {
+            throw new Error(`❌ 게시글 목록 불러오기 실패: ${response.status} ${response.statusText}`);
         }
 
-        // 🔹 JSON 파싱
-        const posts = JSON.parse(textResponse);
+        // 🔹 JSON 변환
+        const posts = await response.json();
         console.log("📌 불러온 게시글:", posts);
 
         posts.reverse();
@@ -131,8 +128,6 @@ async function fetchPosts(page = 1) {
         console.error("❌ 게시글 목록 불러오기 실패:", error);
     }
 }
-
-
 
 // 📌 페이지네이션 업데이트
 function updatePagination(totalPages) {
