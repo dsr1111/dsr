@@ -14,10 +14,6 @@ app.use(cors({
     credentials: true
 }));
 
-app.get("/config", (req, res) => {
-    res.json({ apiUrl: process.env.API_URL });
-});
-
 // 📌 JSON 데이터를 요청에서 사용할 수 있도록 설정
 app.use(express.json());
 

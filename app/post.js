@@ -1,21 +1,4 @@
-let API_URL = "";
-
-async function fetchConfig() {
-    try {
-        const response = await fetch("/config");
-        const config = await response.json();
-        API_URL = config.apiUrl;
-        console.log("✅ API_URL 설정 완료:", API_URL);
-
-        fetchPosts();
-        fetchComments();
-    } catch (error) {
-        console.error("❌ API_URL 가져오기 실패:", error);
-    }
-}
-
-document.addEventListener("DOMContentLoaded", fetchConfig);
-
+const API_URL = "https://port-0-dsrwiki-m80cp0gz93b75d52.sel4.cloudtype.app/posts";
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get("id");
 
