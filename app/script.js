@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/posts";
+const API_URL = "https://port-0-dsrwiki-m80cp0gz93b75d52.sel4.cloudtype.app/posts";
 const postsPerPage = 15;
 let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.getItem("currentPage")) : 1;
 
