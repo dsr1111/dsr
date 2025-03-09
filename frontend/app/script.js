@@ -1,4 +1,4 @@
-const API_URL = "https://dsr-production.up.railway.app/posts";
+const API_URL = "https://dsr-xo3w.onrender.com/posts";
 const postsPerPage = 15;
 let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.getItem("currentPage")) : 1;
 
