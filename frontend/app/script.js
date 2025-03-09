@@ -21,7 +21,8 @@ if (editorElement) {
                 ['blockquote', 'code-block'],
                 ['image', 'link'],
                 ['clean']
-            ]
+            ],
+            imageResize: {}
         }
     });
     quill.on('text-change', function() {
@@ -32,6 +33,19 @@ if (editorElement) {
         });
     });
 }
+
+const script = document.createElement("script");
+script.src = "https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js";
+script.onload = () => {
+    console.log("✅ Quill Image Resize Module Loaded");
+
+    Quill.register("modules/imageResize", window.ImageResize);
+
+    if (quill) {
+        quill.getModule("imageResize");
+    }
+};
+document.body.appendChild(script);
 
 async function fetchPosts(page = 1) {
     try {
