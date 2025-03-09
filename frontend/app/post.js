@@ -1,4 +1,4 @@
-const API_URL = "https://port-0-dsrwiki-m80cp0gz93b75d52.sel4.cloudtype.app/posts";
+const API_URL = "https://dsr-xo3w.onrender.com/posts";
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get("id");
 
