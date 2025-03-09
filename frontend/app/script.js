@@ -82,7 +82,7 @@ async function fetchPosts(page = 1) {
                 year: "2-digit",
                 month: "2-digit",
                 day: "2-digit"
-            }).replace(/\./g, "-").replace(/\s/g, "");
+            }).replace(/\s/g, "");
 
             // 📌 댓글 개수 표시
             const commentsCount = post.comments ? post.comments.length : 0;
