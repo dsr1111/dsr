@@ -228,30 +228,25 @@ a {
   background-color: var(--black-color);
 }
 
-.dropdown__menu {
-  display: none;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.show-dropdown {
-  display: block;
-}
-
-.rotate-arrow {
-  transform: rotate(180deg);
-  transition: transform 0.3s ease;
-}
-
 .dropdown__menu,
 .dropdown__submenu {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.4s ease-out;
+}
+
+/* PC 환경에서는 hover 시 보이기 */
+@media (min-width: 769px) {
+  .dropdown__item:hover .dropdown__menu {
+    display: block;
+  }
+}
+
+/* 모바일에서는 클릭 시 보이기 */
+@media (max-width: 768px) {
+  .show-dropdown {
+    display: block;
+  }
 }
 
 /* Show dropdown menu & submenu */

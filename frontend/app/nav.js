@@ -82,19 +82,22 @@ class CustomNav extends HTMLElement {
           });
       }
 
-      // 드롭다운 메뉴 열기/닫기
-      dropdownItems.forEach(item => {
-          const toggle = item.querySelector(".dropdown__toggle");
-          const menu = item.querySelector(".dropdown__menu");
-          const arrow = item.querySelector(".dropdown__arrow");
+      // 모바일 환경에서만 클릭으로 드롭다운 메뉴 열기
+      if (window.innerWidth <= 768) {
+          dropdownItems.forEach(item => {
+              const toggle = item.querySelector(".dropdown__toggle");
+              const menu = item.querySelector(".dropdown__menu");
+              const arrow = item.querySelector(".dropdown__arrow");
 
-          if (toggle && menu) {
-              toggle.addEventListener("click", () => {
-                  menu.classList.toggle("show-dropdown");
-                  arrow.classList.toggle("rotate-arrow");
-              });
-          }
-      });
+              if (toggle && menu) {
+                  toggle.addEventListener("click", (event) => {
+                      event.preventDefault(); // 기본 동작 방지
+                      menu.classList.toggle("show-dropdown");
+                      arrow.classList.toggle("rotate-arrow");
+                  });
+              }
+          });
+      }
   }
 }
 
