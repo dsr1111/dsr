@@ -143,7 +143,7 @@ async function fetchCSV() {
           : "효과 설명을 찾을 수 없습니다.";
 
       let effectImagePath = skill.effect
-        ? `https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/debuff/${encodeURIComponent(skill.effect)}.webp`
+        ? `https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/debuff/${skill.effect}.webp`
         : "";
         
       if (normalizedEffect === "회복") {
