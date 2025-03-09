@@ -228,6 +228,25 @@ a {
   background-color: var(--black-color);
 }
 
+.dropdown__menu {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.show-dropdown {
+  display: block;
+}
+
+.rotate-arrow {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
 .dropdown__menu,
 .dropdown__submenu {
   max-height: 0;

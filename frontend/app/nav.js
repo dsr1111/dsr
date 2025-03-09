@@ -24,7 +24,7 @@ class CustomNav extends HTMLElement {
               <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
                   <li class="dropdown__item">
-                    <div class="nav__link">
+                    <div class="nav__link dropdown__toggle">
                       디지몬 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                     </div>
                     <ul class="dropdown__menu">
@@ -34,7 +34,7 @@ class CustomNav extends HTMLElement {
                   </li>
                   <li><a href="map.html" class="nav__link">맵</a></li>
                   <li class="dropdown__item">
-                    <div class="nav__link">
+                    <div class="nav__link dropdown__toggle">
                       던전 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                     </div>
                     <ul class="dropdown__menu">
@@ -44,7 +44,7 @@ class CustomNav extends HTMLElement {
                   </li>
                   <li><a href="tip.html" class="nav__link">공략&TIP</a></li>
                   <li class="dropdown__item">
-                    <div class="nav__link">
+                    <div class="nav__link dropdown__toggle">
                       도구 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                     </div>
                     <ul class="dropdown__menu">
@@ -52,7 +52,7 @@ class CustomNav extends HTMLElement {
                     </ul>
                   </li>
                   <li class="dropdown__item">
-                    <div class="nav__link">
+                    <div class="nav__link dropdown__toggle">
                       사이트 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                     </div>
                     <ul class="dropdown__menu">
@@ -65,20 +65,36 @@ class CustomNav extends HTMLElement {
             </nav>
           </header>
       `;
-      
+
       this.addEventListeners();
   }
 
   addEventListeners() {
       const navToggle = this.shadowRoot.getElementById("nav-toggle");
       const navMenu = this.shadowRoot.getElementById("nav-menu");
+      const dropdownItems = this.shadowRoot.querySelectorAll(".dropdown__item");
 
+      // 햄버거 메뉴 열기/닫기
       if (navToggle && navMenu) {
           navToggle.addEventListener("click", () => {
               navMenu.classList.toggle("show-menu");
               navToggle.classList.toggle("show-icon");
           });
       }
+
+      // 드롭다운 메뉴 열기/닫기
+      dropdownItems.forEach(item => {
+          const toggle = item.querySelector(".dropdown__toggle");
+          const menu = item.querySelector(".dropdown__menu");
+          const arrow = item.querySelector(".dropdown__arrow");
+
+          if (toggle && menu) {
+              toggle.addEventListener("click", () => {
+                  menu.classList.toggle("show-dropdown");
+                  arrow.classList.toggle("rotate-arrow");
+              });
+          }
+      });
   }
 }
 
