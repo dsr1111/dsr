@@ -73,16 +73,16 @@ async function fetchPosts(page = 1) {
 
             // 📌 날짜 포맷 변경 (오늘이면 "HH:mm", 아니면 "YYYY.MM.DD")
             const formattedDate = isToday
-                ? postDate.toLocaleTimeString("ko-KR", { 
-                    hour: "2-digit", 
-                    minute: "2-digit", 
-                    hour12: false 
-                })
-                : postDate.toLocaleDateString("ko-KR", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit"
-                });
+            ? postDate.toLocaleTimeString("ko-KR", { 
+                hour: "2-digit", 
+                minute: "2-digit", 
+                hour12: false 
+            })
+            : postDate.toLocaleDateString("ko-KR", {
+                year: "2-digit",
+                month: "2-digit",
+                day: "2-digit"
+            }).replace(/\./g, "-").replace(/\s/g, "");
 
             // 📌 댓글 개수 표시
             const commentsCount = post.comments ? post.comments.length : 0;
