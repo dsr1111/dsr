@@ -1,0 +1,239 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "paybooc-Bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/paybooc-Bold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Pretendard-Regular", sans-serif;
+  font-weight: normal;
+  background-color: #f4f4f9;
+}
+
+.font-applied {
+  font-family: "Pretendard-Regular", sans-serif;
+}
+
+.font-applied2 {
+  font-family: "paybooc-Bold", sans-serif;
+}
+
+.container1 {
+  display: table;
+  max-width: 100%;
+  margin: 20px auto;
+  margin-top: 120px;
+}
+
+.filters {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+#nav3 * {
+  padding: 0;
+  margin: 0;
+}
+
+#nav3 ul,
+#nav3 ol {
+  list-style: none;
+}
+
+#nav3 {
+  width: 80%;
+  overflow: hidden;
+  height: 80px;
+  background-color: #202020;
+  width: 100%;
+  position: relative;
+  text-align: center;
+}
+
+#nav3 a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
+}
+
+#nav3 > a {
+  line-height: 80px;
+  display: block;
+  font-weight: 900;
+  position: absolute;
+  left: 30px;
+}
+
+#nav3 > ul {
+  display: inline-block;
+}
+
+#nav3 > ul li {
+  float: left;
+  line-height: 80px;
+  padding: 0 60px;
+}
+
+@keyframes blink-shadow {
+  0% {
+    box-shadow: 0 0 2px 2px red;
+  }
+  50% {
+    box-shadow: 0 0 2px 2px transparent;
+  }
+  100% {
+    box-shadow: 0 0 2px 2px red;
+  }
+}
+
+.blinking {
+  border-radius: 50%;
+  animation: blink-shadow 1s infinite;
+}
+
+.filter-label {
+  font-weight: bold;
+}
+
+.mob-buttons,
+.detector-buttons {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.mob-buttons,
+.detector-buttons {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.mob-button,
+.detector-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  font-weight: 800;
+}
+
+.mob-button:hover,
+.detector-button:hover {
+  background-color: #d6d6d6;
+}
+
+.mob-button.active,
+.detector-button.active {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  border-radius: 5px;
+  background-color: #6c757d;
+  color: white;
+  border: 1px solid #5a6268;
+}
+
+.map-and-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.detail {
+  width: 300px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.detail h2 {
+  margin-bottom: 10px;
+  font-size: 17px;
+  color: #333;
+}
+
+.detail p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #e9e9e9;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  max-width: 200px;
+  word-wrap: break-word;
+  z-index: 1000;
+  pointer-events: none;
+  white-space: pre-line;
+}
+
+.floating-chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-kakao {
+  visibility: hidden;
+  width: 150px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 50px;
+  right: -75px;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+.floating-chat-icon:hover .tooltip-kakao {
+  visibility: visible;
+  opacity: 1;
+}

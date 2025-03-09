@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="image/icon.webp" type="image/x-icon" />
+    <title>DSR WIKI</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/mapstyles.css" />
+    <link rel="stylesheet" href="assets/css/styles1.css" />
+    <script src="app/map.js" defer></script>
+    <script src="app/nav.js" defer></script>
+  </head>
+  <body>
+    <custom-nav></custom-nav>
+    <script src="assets/js/main.js"></script>
+
+    <div class="container1" style="position: relative" ;>
+      <div class="main">
+        <p>지도</p>
+        <div class="dropdown">
+          <div class="dropdown-con">
+            <select id="con-dropdown">
+              <option value="파일섬" selected>파일섬</option>
+              <option value="서버대륙">서버대륙</option>
+              <option value="현실 세계">현실 세계</option>
+              <option value="스파이럴 마운틴">스파이럴 마운틴</option>
+              <option value="데이터 세계">데이터 세계</option>
+            </select>
+          </div>
+          <div class="dropdown-map">
+            <select id="map-dropdown">
+              
+            </select>
+          </div>
+          <button class="dropdown-icon">
+            아이콘 필터 <span class="arrow">▼</span>
+          </button>
+          <div class="dropdown-content" id="dropdown-content"></div>
+        </div>
+      </div>
+
+      <div id="image-container">    
+      </div>
+    </div>
+    </div>
+  </body>
+</html>
