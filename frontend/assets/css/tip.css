@@ -245,8 +245,8 @@ td a:hover {
 }
 
 th:nth-child(1), td:nth-child(1) { width: 10%;} /* 번호 */
-th:nth-child(2), td:nth-child(2) { width: 50%;}  /* 제목 */
-th:nth-child(3), td:nth-child(3) { width: 20%;}  /* 작성자 */
+th:nth-child(2), td:nth-child(2) { width: 55%;}  /* 제목 */
+th:nth-child(3), td:nth-child(3) { width: 15%;}  /* 작성자 */
 th:nth-child(4), td:nth-child(4) { width: 20%;} /* 작성일 */
 
 .table-container td:nth-child(1),
