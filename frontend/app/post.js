@@ -1,4 +1,4 @@
-const API_URL = "https://dsr-xo3w.onrender.com/posts";
+const API_URL = "https://dsr-production.up.railway.app/posts";
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get("id");
 
