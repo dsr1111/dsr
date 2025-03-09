@@ -250,12 +250,12 @@ th:nth-child(3), td:nth-child(3) { width: 18%;}  /* 작성자 */
 th:nth-child(4), td:nth-child(4) { width: 20%;} /* 작성일 */
 
 .table-container td:nth-child(1),
+.table-container td:nth-child(3),
 .table-container td:nth-child(4) { 
     text-align: center;
 }
 
-.table-container td:nth-child(2),
-.table-container td:nth-child(3) { 
+.table-container td:nth-child(2) { 
     text-align: left;
 }
 
