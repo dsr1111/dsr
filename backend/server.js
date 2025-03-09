@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 app.use("/image", express.static(path.join(__dirname, "image")));
 
 app.use(cors({
-    origin: "https://dsrtest.netlify.app",
+    origin: "https://dsrwiki.com",
     methods: "GET,POST,PUT,DELETE",
     credentials: true
 }));
