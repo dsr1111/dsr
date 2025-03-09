@@ -2,6 +2,8 @@ const API_URL = "https://dsr-xo3w.onrender.com/posts";
 const postsPerPage = 15;
 let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.getItem("currentPage")) : 1;
 
+Quill.register("modules/imageResize", window.ImageResize);
+
 // 📌 Quill 에디터 색상 문제 해결
 Quill.register('formats/color', Quill.import('attributors/style/color'), true);
 Quill.register('formats/background', Quill.import('attributors/style/background'), true);
