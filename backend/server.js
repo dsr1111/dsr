@@ -84,10 +84,10 @@ app.get("/posts/:id", async (req, res) => {
 // 📌 4️⃣ 글 수정 (Update)
 app.put("/posts/:id", async (req, res) => {
     try {
-        const { title, content } = req.body;
+        const { title, content, author } = req.body;
         const updatedPost = await Post.findByIdAndUpdate(
             req.params.id,
-            { title, content },
+            { title, content, author },
             { new: true }
         );
         if (!updatedPost) {
