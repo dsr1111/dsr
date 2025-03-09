@@ -2,8 +2,6 @@ const API_URL = "https://dsr-xo3w.onrender.com/posts";
 const postsPerPage = 15;
 let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.getItem("currentPage")) : 1;
 
-Quill.register("modules/imageResize", window.ImageResize);
-
 // 📌 Quill 에디터 색상 문제 해결
 Quill.register('formats/color', Quill.import('attributors/style/color'), true);
 Quill.register('formats/background', Quill.import('attributors/style/background'), true);
@@ -23,8 +21,7 @@ if (editorElement) {
                 ['blockquote', 'code-block'],
                 ['image', 'link'],
                 ['clean']
-            ],
-            imageResize: {}
+            ]
         }
     });
     quill.on('text-change', function() {
@@ -35,19 +32,6 @@ if (editorElement) {
         });
     });
 }
-
-const script = document.createElement("script");
-script.src = "https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js";
-script.onload = () => {
-    console.log("✅ Quill Image Resize Module Loaded");
-
-    Quill.register("modules/imageResize", window.ImageResize);
-
-    if (quill) {
-        quill.getModule("imageResize");
-    }
-};
-document.body.appendChild(script);
 
 async function fetchPosts(page = 1) {
     try {
