@@ -77,7 +77,7 @@ async function fetchCSV() {
           .split(";")
           .map(
             (field) =>
-              `<img src="https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/field/${encodeURIComponent(field)}.webp"  alt="${field}" title="${field}" style="width: 25px; height: 25px;">`
+              `<img src="https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/field/${field}.webp"  alt="${field}" title="${field}" style="width: 25px; height: 25px;">`
           )
           .join("")
       : "";
