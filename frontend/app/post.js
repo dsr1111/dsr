@@ -94,8 +94,8 @@ function enableEditMode() {
     editButton.onclick = updatePost;
 }
 
-function redirectToEditPage() {
-    const postId = urlParams.get("id"); // 게시글 ID 가져오기
+async function redirectToEditPage() {
+    const postId = urlParams.get("id");
     const postTitle = document.getElementById("post-title").innerText || "";
     const postAuthor = document.getElementById("post-author").innerText || "";
     const postContent = document.getElementById("post-content").innerHTML || "";
@@ -106,15 +106,30 @@ function redirectToEditPage() {
         return;
     }
 
-    // ✅ localStorage를 활용하여 내용 저장 (이미지 포함)
-    localStorage.setItem("editPostContent", postContent);
+    try {
+        // 🔹 서버에 비밀번호 검증 요청
+        const response = await fetch(`https://dsr-xo3w.onrender.com/posts/${postId}/verify-password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password }),
+        });
 
-    // ✅ URL을 짧게 유지 (내용은 localStorage에 저장)
-    const editUrl = `write.html?mode=edit&id=${postId}&title=${encodeURIComponent(postTitle)}&author=${encodeURIComponent(postAuthor)}&password=${encodeURIComponent(password)}`;
-    
-    console.log("🔍 이동할 URL:", editUrl); // 디버깅 로그
-    window.location.href = editUrl;
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "비밀번호 확인 중 오류 발생");
+        }
+
+        // ✅ 비밀번호가 맞으면 수정 페이지로 이동
+        localStorage.setItem("editPostContent", postContent);
+        const editUrl = `write.html?mode=edit&id=${postId}&title=${encodeURIComponent(postTitle)}&author=${encodeURIComponent(postAuthor)}&password=${encodeURIComponent(password)}`;
+        window.location.href = editUrl;
+
+    } catch (error) {
+        alert(`❌ ${error.message}`);
+    }
 }
+
 
 function updateCommentCount(count) {
     const commentCountElement = document.getElementById("comment-count");

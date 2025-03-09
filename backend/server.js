@@ -100,6 +100,30 @@ app.put("/posts/:id", async (req, res) => {
     }
 });
 
+app.post("/posts/:id/verify-password", async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    try {
+        const post = await Post.findById(id);
+        if (!post) {
+            return res.status(404).json({ message: "게시글을 찾을 수 없습니다." });
+        }
+
+        // 🔹 비밀번호 검증
+        if (post.password !== password) {
+            return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
+        }
+
+        res.json({ message: "비밀번호가 확인되었습니다." });
+
+    } catch (error) {
+        console.error("❌ 비밀번호 검증 오류:", error);
+        res.status(500).json({ message: "서버 오류가 발생했습니다." });
+    }
+});
+
+
 // 📌 5️⃣ 글 삭제 (Delete)
 app.delete("/posts/:id", async (req, res) => {
     try {
