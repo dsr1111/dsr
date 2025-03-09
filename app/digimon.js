@@ -59,14 +59,15 @@ async function fetchCSV() {
     const 약점효과 = columns[14];
     const 필드 = columns[15];
 
-    const typeImagePath = `../image/${type}.webp`;
+    const typeImagePath = `https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/${encodeURIComponent(type)}.webp`;
+    
     const strongHtml = 강점
-      ? `<img src="../image/${강점}.webp"  alt="${강점}" title="${강점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;"> <span>${
+      ? `<img src="https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/${encodeURIComponent(강점)}.webp"  alt="${강점}" title="${강점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/strongbackground.webp'); background-size: 120%; background-position: center;"> <span>${
           강점효과 ? 강점효과 : ""
         }</span>`
       : "";
     const weakHtml = 약점
-      ? `<img src="../image/${약점}.webp"  alt="${약점}" title="${약점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;"> <span>${
+      ? `<img src="https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/${encodeURIComponent(약점)}.webp"  alt="${약점}" title="${약점}" style="width: 25px; height: 25px; vertical-align: middle; background-image: url('https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/weakbackground.webp'); background-size: 120%; background-position: center;"> <span>${
           약점효과 ? 약점효과 : ""
         }</span>`
       : "";
@@ -76,7 +77,7 @@ async function fetchCSV() {
           .split(";")
           .map(
             (field) =>
-              `<img src="../image/field/${field}.webp"  alt="${field}" title="${field}" style="width: 25px; height: 25px;">`
+              `<img src="https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/field/${encodeURIComponent(field)}.webp"  alt="${field}" title="${field}" style="width: 25px; height: 25px;">`
           )
           .join("")
       : "";
@@ -142,13 +143,13 @@ async function fetchCSV() {
           : "효과 설명을 찾을 수 없습니다.";
 
       let effectImagePath = skill.effect
-        ? `../image/debuff/${skill.effect}.webp`
+        ? `https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/debuff/${encodeURIComponent(skill.effect)}.webp`
         : "";
-
+        
       if (normalizedEffect === "회복") {
-        effectImagePath = `../image/digimon/${digimonName}/skill${skillNumber}.webp`;
+        effectImagePath = `https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/digimon/${encodeURIComponent(digimonName)}/skill${skillNumber}.webp`;
       }
-
+      
       const effectTooltipHtml =
         skill.effect && effectDescription
           ? `<div class="tooltip" style="display: inline-block; vertical-align: middle;">
@@ -166,20 +167,20 @@ async function fetchCSV() {
 
       return `
                 <td style="${backgroundColor}">
-                    <img src="../image/${skill.속성}.webp"  alt="${
+                    <img src="https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/${encodeURIComponent(skill.속성)}.webp"  alt="${
         skill.속성
       }" title="${skill.속성}" 
-                        style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/background.webp'); 
+                        style="width: 25px; height: 25px; vertical-align: middle; background-image: url('https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/background.webp'); 
                         background-size: 120%; background-position: center;">
                     ${effectTooltipHtml}
                     <span>${format타수(skill.타수)} / ${skill.범위}</span>
                 </td>
             `;
     };
-
+    
     const sanitizedName = name.replace(/[:]/g, "_");
-    const characterImagePath = `../image/digimon/${sanitizedName}/${sanitizedName}.webp`;
-
+    const characterImagePath = `https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/digimon/${encodeURIComponent(sanitizedName)}/${encodeURIComponent(sanitizedName)}.webp`;
+    
     const newRow = document.createElement("tr");
     newRow.dataset.name = name;
     newRow.dataset.evolution = evolution;
@@ -200,7 +201,7 @@ async function fetchCSV() {
     newRow.innerHTML = `
             <td>
                 <div style="width: 25px; height: 25px; background-color: black; display: inline-block; vertical-align: middle;">
-                    <img src="${characterImagePath}"  alt="${name}" title="${name}" style="width: 100%; height: 100%;" onerror="this.src='../image/digimon/default.webp';">
+                    <img src="${characterImagePath}"  alt="${name}" title="${name}" style="width: 100%; height: 100%;" onerror="this.src='https://cdn.jsdelivr.net/gh/dsr1111/dsr/image/digimon/default.webp';">
                 </div> 
                 <a href="detail.html?name=${encodeURIComponent(
                   name
