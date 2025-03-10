@@ -90,8 +90,8 @@ async function fetchPosts(page = 1) {
                 ? `<span class="comment-count">[${commentsCount}]</span>` 
                 : "";
 
-            const truncatedTitle = post.title.length > 25 
-                ? post.title.substring(0, 25) + "..."
+            const truncatedTitle = post.title.length > 30 
+                ? post.title.substring(0, 30) + "..."
                 : post.title;
             
             const truncatedAuthor = post.author.length > 8
