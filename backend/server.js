@@ -84,21 +84,34 @@ app.get("/posts/:id", async (req, res) => {
 // 📌 4️⃣ 글 수정 (Update)
 app.put("/posts/:id", async (req, res) => {
     try {
-        const { title, content, author } = req.body;
-        const updatedPost = await Post.findByIdAndUpdate(
-            req.params.id,
-            { title, content, author },
-            { new: true }
-        );
-        if (!updatedPost) {
+        const { title, content, author, password } = req.body; // ✅ 새로운 비밀번호를 받음
+        const post = await Post.findById(req.params.id);
+
+        if (!post) {
             return res.status(404).json({ message: "게시글을 찾을 수 없습니다." });
         }
-        res.json(updatedPost);
+
+        // 🚨 비밀번호가 비어 있으면 수정 거부
+        if (!password || password.trim() === "") {
+            return res.status(400).json({ message: "비밀번호를 입력해야 수정할 수 있습니다." });
+        }
+
+        // ✅ 게시글 데이터 업데이트
+        post.title = title;
+        post.content = content;
+        post.author = author;
+        post.password = password; // 🔹 기존 비밀번호를 새 비밀번호로 덮어쓰기
+
+        await post.save(); // 🔹 변경사항 저장
+
+        res.json({ message: "게시글이 수정되었습니다. (새 비밀번호로 변경됨)" });
+
     } catch (error) {
         console.error("❌ 글 수정 오류:", error);
         res.status(500).json({ message: "서버 오류 발생", error });
     }
 });
+
 
 app.post("/posts/:id/verify-password", async (req, res) => {
     const { id } = req.params;

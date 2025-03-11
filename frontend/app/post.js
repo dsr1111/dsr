@@ -262,3 +262,15 @@ document.addEventListener("DOMContentLoaded", () => {
         submitCommentBtn.addEventListener("click", submitComment);
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const postContent = document.getElementById("post-content");
+
+    // 🔹 이미지 크기 제한 적용
+    postContent.querySelectorAll("img").forEach(img => {
+        img.style.maxWidth = "1100px";  // 가로 최대 1100px
+        img.style.height = "auto";      // 세로 비율 유지
+        img.style.display = "block";    // 블록 요소로 설정
+        img.style.margin = "0 auto";    // 중앙 정렬
+    });
+});

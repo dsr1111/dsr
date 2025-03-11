@@ -46,11 +46,13 @@ async function updatePost() {
     const postId = localStorage.getItem("editPostId");
     const title = document.getElementById("title").value.trim();
     const author = document.getElementById("author").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const newPassword = document.getElementById("password").value.trim(); // ✅ 새 비밀번호 (필수)
+
     const content = quill.root.innerHTML; // ✅ Quill 에디터에서 데이터 가져오기
 
-    if (!title || !content || !password) {
-        alert("제목, 내용, 비밀번호를 입력해주세요.");
+    // 🚨 비밀번호 입력하지 않으면 수정 불가능
+    if (!title || !content || !newPassword) {
+        alert("제목, 내용, 새로운 비밀번호를 입력해주세요.");
         return;
     }
 
@@ -58,13 +60,13 @@ async function updatePost() {
         const response = await fetch(`https://dsr-xo3w.onrender.com/posts/${postId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title, content, author, password }),
+            body: JSON.stringify({ title, content, author, password: newPassword }), // 🔹 새로운 비밀번호 전송
         });
 
         const result = await response.json();
         if (!response.ok) throw new Error(result.message);
 
-        alert("게시글이 수정되었습니다.");
+        alert("게시글이 수정되었습니다. (새 비밀번호로 변경됨)");
 
         // ✅ localStorage에서 postId 삭제
         localStorage.removeItem("editPostId");
@@ -75,4 +77,5 @@ async function updatePost() {
         alert(error.message || "게시글 수정 중 오류가 발생했습니다.");
     }
 }
+
 
