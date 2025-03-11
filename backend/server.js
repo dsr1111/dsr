@@ -104,7 +104,7 @@ app.put("/posts/:id", async (req, res) => {
 
         await post.save(); // 🔹 변경사항 저장
 
-        res.json({ message: "게시글이 수정되었습니다. (새 비밀번호로 변경됨)" });
+        res.json({ message: "게시글이 수정되었습니다." });
 
     } catch (error) {
         console.error("❌ 글 수정 오류:", error);
