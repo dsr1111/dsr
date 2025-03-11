@@ -386,3 +386,10 @@ td a span {
 .post-buttons button:hover {
     opacity: 0.8;
 }
+
+#post-content img {
+    max-width: 1100px;  /* 가로 최대 1100px */
+    height: auto;       /* 세로 비율 유지 */
+    display: block;     /* 블록 요소 */
+    margin: 0 auto;     /* 중앙 정렬 */
+}
