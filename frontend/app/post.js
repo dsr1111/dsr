@@ -96,9 +96,6 @@ function enableEditMode() {
 
 async function redirectToEditPage() {
     const postId = urlParams.get("id");
-    const postTitle = document.getElementById("post-title").innerText || "";
-    const postAuthor = document.getElementById("post-author").innerText || "";
-    const postContent = document.getElementById("post-content").innerHTML || "";
 
     const password = prompt("게시글을 수정하려면 비밀번호를 입력하세요:");
     if (!password) {
@@ -120,15 +117,16 @@ async function redirectToEditPage() {
             throw new Error(result.message || "비밀번호 확인 중 오류 발생");
         }
 
-        // ✅ 비밀번호가 맞으면 수정 페이지로 이동
-        localStorage.setItem("editPostContent", postContent);
-        const editUrl = `write.html?mode=edit&id=${postId}&title=${encodeURIComponent(postTitle)}&author=${encodeURIComponent(postAuthor)}&password=${encodeURIComponent(password)}`;
-        window.location.href = editUrl;
-
+        // ✅ postId만 localStorage에 저장
+        localStorage.setItem("editPostId", postId);
+        
+        // ✅ 수정 페이지로 이동
+        window.location.href = `write.html?mode=edit`;
     } catch (error) {
         alert(`❌ ${error.message}`);
     }
 }
+
 
 
 function updateCommentCount(count) {
