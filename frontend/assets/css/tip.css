@@ -8,7 +8,7 @@
 
 body {
     font-family: "Pretendard-Regular", sans-serif;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: auto;
     margin-top: 130px;
     margin-bottom: 70px;
@@ -129,7 +129,6 @@ h1 {
     justify-content: space-between !important;
     gap: 15px !important;
     width: 100% !important;
-    max-width: 800px !important;
     background: #f9f9f9 !important;
     padding: 15px !important;
     border: 1px solid #ccc !important;
