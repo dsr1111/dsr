@@ -264,13 +264,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const postContent = document.getElementById("post-content");
+    setTimeout(() => {
+        document.querySelectorAll("img").forEach(img => {
+            img.style.maxWidth = "1100px";
+            img.style.height = "auto";
+            img.style.display = "block";
+            img.style.margin = "0 auto";
+        });
 
-    // 🔹 이미지 크기 제한 적용
-    postContent.querySelectorAll("img").forEach(img => {
-        img.style.maxWidth = "1100px";  // 가로 최대 1100px
-        img.style.height = "auto";      // 세로 비율 유지
-        img.style.display = "block";    // 블록 요소로 설정
-        img.style.margin = "0 auto";    // 중앙 정렬
-    });
+        console.log("✅ 이미지 크기 제한 적용 완료 (Base64 포함)");
+    }, 500);
 });
+
