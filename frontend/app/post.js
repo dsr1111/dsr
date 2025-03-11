@@ -263,16 +263,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        document.querySelectorAll("img").forEach(img => {
-            img.style.maxWidth = "1100px";
-            img.style.height = "auto";
-            img.style.display = "block";
-            img.style.margin = "0 auto";
-        });
-
-        console.log("✅ 이미지 크기 제한 적용 완료 (Base64 포함)");
-    }, 500);
-});
-
