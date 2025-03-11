@@ -80,10 +80,3 @@ button:hover {
 .back-btn:hover {
     color: black;
 }
-
-.ql-editor img {
-    max-width: 100%;  /* 컨테이너 너비를 넘지 않도록 조정 */
-    height: auto;     /* 원본 비율 유지 */
-    display: block;   /* 블록 요소로 변환 */
-    margin: 10px auto; /* 가운데 정렬 */
-}
