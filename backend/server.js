@@ -20,8 +20,8 @@ app.use(cors({
 }));
 
 // 📌 JSON 데이터를 요청에서 사용할 수 있도록 설정
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // 📌 정적 파일 제공 (프론트엔드)
 app.use(express.static(path.join(__dirname)));
