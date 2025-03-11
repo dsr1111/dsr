@@ -52,7 +52,7 @@ async function updatePost() {
 
     // 🚨 비밀번호 입력하지 않으면 수정 불가능
     if (!title || !content || !newPassword) {
-        alert("제목, 내용, 새로운 비밀번호를 입력해주세요.");
+        alert("제목, 내용, 비밀번호를 모두 입력해주세요.");
         return;
     }
 
@@ -66,7 +66,7 @@ async function updatePost() {
         const result = await response.json();
         if (!response.ok) throw new Error(result.message);
 
-        alert("게시글이 수정되었습니다. (새 비밀번호로 변경됨)");
+        alert("게시글이 수정되었습니다.");
 
         // ✅ localStorage에서 postId 삭제
         localStorage.removeItem("editPostId");
