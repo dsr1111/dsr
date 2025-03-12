@@ -12,6 +12,16 @@ const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(cors({
+    origin: "*",  // ⚠️ 모든 도메인 허용 (배포 환경에서는 특정 도메인만 허용해야 함)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+}));
+
+// ✅ OPTIONS 요청을 허용하는 미들웨어 추가 (Preflight 요청 해결)
+app.options("*", cors());
+
 // 📌 업로드 폴더 확인 및 생성
 const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
@@ -53,16 +63,6 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 app.use("/uploads", express.static(uploadDir));
 
 app.use("/image", express.static(path.join(__dirname, "image")));
-
-app.use(cors({
-    origin: "*", // ⚠️ 임시로 모든 도메인 허용 (보안상 필요하면 특정 도메인만 허용)
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type",
-    credentials: true
-}));
-
-// ✅ OPTIONS 요청을 허용하는 미들웨어 추가 (CORS 문제 해결)
-app.options("*", cors());
 
 // 📌 JSON 데이터를 요청에서 사용할 수 있도록 설정
 app.use(express.json({ limit: '50mb' }));

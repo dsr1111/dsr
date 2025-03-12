@@ -47,6 +47,11 @@ if (editorElement) {
                     const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload", {
                         method: "POST",
                         body: formData,
+                        headers: {
+                            "Accept": "application/json"
+                        },
+                        mode: "cors",  // ✅ CORS 모드 추가
+                        credentials: "include"  // ✅ 쿠키/인증 정보 포함 (필요시)
                     });
 
                     const result = await response.json();
