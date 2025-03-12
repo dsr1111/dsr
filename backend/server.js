@@ -235,3 +235,10 @@ app.delete("/posts/:postId/comments/:commentId", async (req, res) => {
 app.listen(PORT, () => {
     console.log(`✅ 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
 });
+
+app.get("/posts", async (req, res) => {
+    console.time("fetchPosts");
+    const posts = await Post.find(); // 데이터 조회
+    console.timeEnd("fetchPosts");
+    res.json(posts);
+});
