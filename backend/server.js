@@ -59,13 +59,26 @@ app.post("/posts", async (req, res) => {
 // 📌 2️⃣ 글 목록 조회 (Read)
 app.get("/posts", async (req, res) => {
     try {
-        const posts = await Post.find();
-        res.json(posts);
+        const posts = await Post.find()
+            .sort({ createdAt: -1 }) // 최신순 정렬
+            .select("title author createdAt comments"); // 내용(content) 제외
+
+        // 🔹 댓글 개수 추가
+        const formattedPosts = posts.map(post => ({
+            _id: post._id,
+            title: post.title,
+            author: post.author,
+            createdAt: post.createdAt,
+            commentCount: post.comments.length, // 댓글 개수만 보냄
+        }));
+
+        res.json(formattedPosts);
     } catch (error) {
-        console.error("❌ 글 목록 조회 오류:", error);
-        res.status(500).json({ message: "서버 오류 발생", error });
+        console.error("❌ 게시글 목록 불러오기 오류:", error);
+        res.status(500).json({ message: "서버 오류 발생" });
     }
 });
+
 
 // 📌 3️⃣ 특정 글 조회 (Read)
 app.get("/posts/:id", async (req, res) => {
