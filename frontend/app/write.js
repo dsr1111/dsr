@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (mode === "edit" && postId) {
         try {
             // 🔹 서버에서 기존 게시글 데이터 불러오기
-            const response = await fetch(`https://dsr-xo3w.onrender.com/posts/${postId}`);
+            const response = await fetch(`https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/posts/${postId}`);
             if (!response.ok) throw new Error("게시글을 불러올 수 없습니다.");
             
             const post = await response.json();
@@ -57,7 +57,7 @@ async function updatePost() {
     }
 
     try {
-        const response = await fetch(`https://dsr-xo3w.onrender.com/posts/${postId}`, {
+        const response = await fetch(`https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/posts/${postId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, content, author, password: newPassword }), // 🔹 새로운 비밀번호 전송
