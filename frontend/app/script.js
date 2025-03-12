@@ -44,7 +44,7 @@ if (editorElement) {
 
                 try {
                     // 📌 서버에 이미지 업로드
-                    const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/uploads", {
+                    const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload", {
                         method: "POST",
                         body: formData,
                         headers: {

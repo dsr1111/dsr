@@ -23,7 +23,7 @@ app.use(cors({
 app.options("*", cors());
 
 // 📌 업로드 폴더 확인 및 생성
-const uploadDir = path.join(__dirname, "uploads");
+const uploadDir = path.join(__dirname, "upload");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
@@ -49,7 +49,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
             .toFile(filePath);
 
         // 📌 업로드된 이미지의 URL 반환
-        const imageUrl = `https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/uploads/${fileName}`;
+        const imageUrl = `https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload/${fileName}`;
         res.json({ success: true, imageUrl });
 
     } catch (error) {
@@ -59,7 +59,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 });
 
 // 📌 정적 파일 제공 (업로드된 이미지 접근 가능)
-app.use("/uploads", express.static(uploadDir));
+app.use("/upload", express.static(uploadDir));
 
 app.use("/image", express.static(path.join(__dirname, "image")));
 
@@ -108,7 +108,7 @@ app.post("/posts", async (req, res) => {
                     .toFile(filePath);
 
                 // 📌 변환된 이미지 URL
-                const imageUrl = `https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/uploads/${fileName}`;
+                const imageUrl = `https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload/${fileName}`;
 
                 // 📌 HTML에서 Base64 → URL로 변경
                 content = content.replace(base64Data, imageUrl);
