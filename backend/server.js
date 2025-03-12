@@ -109,7 +109,7 @@ app.post("/posts", async (req, res) => {
 
                 await sharp(buffer)
                     .resize({ width: 1100 })
-                    .webp({ quality: 75 })
+                    .webp({ quality: 100 })
                     .toFile(filePath);
 
                 // 📌 변환된 이미지 URL
