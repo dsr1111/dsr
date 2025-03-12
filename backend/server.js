@@ -13,14 +13,19 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-    origin: "*",  // ⚠️ 모든 도메인 허용 (배포 환경에서는 특정 도메인만 허용해야 함)
+    origin: "*",  // 모든 도메인 허용 (보안상 필요시 특정 도메인만 허용)
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
+    credentials: false // Cloudtype에서 CORS 문제 발생 가능성이 있으므로 false 설정
 }));
 
-// ✅ OPTIONS 요청을 허용하는 미들웨어 추가 (Preflight 요청 해결)
-app.options("*", cors());
+// ✅ OPTIONS 요청을 허용하는 미들웨어 추가
+app.options("*", (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.sendStatus(200);
+});
 
 // 📌 업로드 폴더 확인 및 생성
 const uploadDir = path.join(__dirname, "upload");
