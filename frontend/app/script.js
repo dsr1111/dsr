@@ -5,8 +5,8 @@ let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.ge
 // 📌 Quill 에디터 색상 문제 해결
 Quill.register('formats/color', Quill.import('attributors/style/color'), true);
 Quill.register('formats/background', Quill.import('attributors/style/background'), true);
+Quill.register("modules/imageResize", window.ImageResize);
 
-// 📌 Quill 에디터 초기화 (글 작성 페이지에서만 실행)
 // 📌 Quill 에디터 초기화 (글 작성 페이지에서만 실행)
 const editorElement = document.getElementById("editor");
 let quill;
@@ -22,7 +22,8 @@ if (editorElement) {
                 ['blockquote', 'code-block'],
                 ['image', 'link'],
                 ['clean']
-            ]
+            ],
+            imageResize: {}
         }
     });
 
