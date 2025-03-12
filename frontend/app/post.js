@@ -266,22 +266,11 @@ async function fetchPost() {
         document.getElementById("post-author").innerText = post.author || "익명";
         document.getElementById("post-date").innerText = new Date(post.createdAt).toLocaleString("ko-KR");
 
-        // 🔹 1️⃣ 텍스트 먼저 삽입 (이미지 태그 제외)
-        let textOnlyContent = post.content.replace(/<img[^>]*>/g, ""); // 이미지 태그 제거
-        document.getElementById("post-content").innerHTML = textOnlyContent;
+        // 🔹 게시글 내용 (이미지 lazy loading 적용)
+        let contentWithLazyImages = post.content.replace(/<img /g, '<img loading="lazy" ');
+        document.getElementById("post-content").innerHTML = contentWithLazyImages;
 
-        // 🔹 2️⃣ 0.3초 후 이미지 비동기 추가 (기존 HTML 유지)
-        setTimeout(() => {
-            let images = post.content.match(/<img[^>]*>/g); // 모든 이미지 태그 찾기
-            if (images) {
-                images.forEach(imgTag => {
-                    let lazyImgTag = imgTag.replace("<img ", '<img loading="lazy" ');
-                    document.getElementById("post-content").insertAdjacentHTML("beforeend", lazyImgTag);
-                });
-            }
-        }, 300); // 0.3초 후 이미지 추가
-
-        // 🔹 3️⃣ 댓글 불러오기
+        // 🔹 댓글 불러오기
         fetchComments();
     } catch (error) {
         console.error("❌ 게시글 불러오기 오류:", error);
@@ -306,7 +295,5 @@ document.addEventListener("DOMContentLoaded", () => {
         submitCommentBtn.addEventListener("click", submitComment);
     }
 });
-
-
 
 
