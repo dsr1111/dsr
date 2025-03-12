@@ -6,75 +6,79 @@ let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.ge
 Quill.register('formats/color', Quill.import('attributors/style/color'), true);
 Quill.register('formats/background', Quill.import('attributors/style/background'), true);
 
-// ✅ Quill Image Resize 모듈이 존재할 때만 등록
-if (window.ImageResize) {
-    Quill.register("modules/imageResize", window.ImageResize);
-} else {
-    console.warn("⚠️ Quill Image Resize 모듈이 로드되지 않았습니다.");
-}
-
-// 📌 Quill 에디터 초기화 (글 작성 페이지에서만 실행)
-const editorElement = document.getElementById("editor");
-if (editorElement) {
-    window.quill = new Quill("#editor", {
-        theme: "snow",
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'align': [] }],
-                ['blockquote', 'code-block'],
-                ['image', 'link'],
-                ['clean']
-            ],
-            imageResize: true // ✅ 이미지 크기 조절 기능 활성화
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof Quill !== "undefined") {
+        if (typeof Quill.import !== "undefined") {
+            const ImageResize = Quill.import("modules/imageResize");
+            Quill.register("modules/imageResize", ImageResize);
+        } else {
+            console.warn("⚠️ Quill import를 사용할 수 없습니다. quill-image-resize-module이 정상적으로 로드되지 않았을 수 있습니다.");
         }
-    });
+    } else {
+        console.error("❌ Quill이 로드되지 않았습니다.");
+    }
 
-    // 📌 Quill 에디터 내 이미지 업로드 기능 추가
-    window.quill.getModule("toolbar").addHandler("image", () => {
-        const input = document.createElement("input");
-        input.setAttribute("type", "file");
-        input.setAttribute("accept", "image/*");
-        input.click();
-
-        input.addEventListener("change", async () => {
-            const file = input.files[0];
-
-            if (file) {
-                console.log("📌 선택된 파일:", file); // ✅ 업로드할 파일 정보 확인
-
-                const formData = new FormData();
-                formData.append("image", file);
-
-                try {
-                    // 📌 서버에 이미지 업로드
-                    const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload", {
-                        method: "POST",
-                        body: formData,
-                        headers: { "Accept": "application/json" },
-                        mode: "cors",  // ✅ CORS 모드 추가
-                    });
-
-                    const result = await response.json();
-                    console.log("📌 서버 응답:", result); // ✅ 서버 응답 확인
-
-                    if (result.success) {
-                        // ✅ Quill 에디터에 이미지 URL 삽입
-                        const range = window.quill.getSelection();
-                        window.quill.insertEmbed(range.index, "image", result.imageUrl);
-                    } else {
-                        alert("이미지 업로드 실패: " + result.message);
-                    }
-                } catch (error) {
-                    console.error("❌ 이미지 업로드 중 오류 발생:", error);
-                    alert("이미지 업로드 중 문제가 발생했습니다.");
-                }
+    // ✅ Quill 에디터 초기화
+    const editorElement = document.getElementById("editor");
+    if (editorElement) {
+        window.quill = new Quill("#editor", {
+            theme: "snow",
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['blockquote', 'code-block'],
+                    ['image', 'link'],
+                    ['clean']
+                ],
+                imageResize: {} // ✅ 이미지 크기 조절 기능 활성화
             }
         });
-    });
-}
+
+        // 📌 Quill 에디터 내 이미지 업로드 기능 추가
+        window.quill.getModule("toolbar").addHandler("image", () => {
+            const input = document.createElement("input");
+            input.setAttribute("type", "file");
+            input.setAttribute("accept", "image/*");
+            input.click();
+
+            input.addEventListener("change", async () => {
+                const file = input.files[0];
+
+                if (file) {
+                    console.log("📌 선택된 파일:", file);
+
+                    const formData = new FormData();
+                    formData.append("image", file);
+
+                    try {
+                        const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload", {
+                            method: "POST",
+                            body: formData,
+                            headers: { "Accept": "application/json" },
+                            mode: "cors",
+                        });
+
+                        const result = await response.json();
+                        console.log("📌 서버 응답:", result);
+
+                        if (result.success) {
+                            const range = window.quill.getSelection();
+                            window.quill.insertEmbed(range.index, "image", result.imageUrl);
+                        } else {
+                            alert("이미지 업로드 실패: " + result.message);
+                        }
+                    } catch (error) {
+                        console.error("❌ 이미지 업로드 중 오류 발생:", error);
+                        alert("이미지 업로드 중 문제가 발생했습니다.");
+                    }
+                }
+            });
+        });
+    }
+});
 
 async function fetchPosts(page = 1) {
     try {
