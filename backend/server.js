@@ -55,10 +55,14 @@ app.use("/uploads", express.static(uploadDir));
 app.use("/image", express.static(path.join(__dirname, "image")));
 
 app.use(cors({
-    origin: "https://dsrwiki.com",
-    methods: "GET,POST,PUT,DELETE",
+    origin: "*",
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type, Authorization",
     credentials: true
 }));
+
+// ✅ OPTIONS 요청을 처리하는 미들웨어 추가
+app.options("*", cors());
 
 // 📌 JSON 데이터를 요청에서 사용할 수 있도록 설정
 app.use(express.json({ limit: '50mb' }));
