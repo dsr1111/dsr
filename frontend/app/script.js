@@ -6,11 +6,17 @@ let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.ge
 Quill.register('formats/color', Quill.import('attributors/style/color'), true);
 Quill.register('formats/background', Quill.import('attributors/style/background'), true);
 
+// ✅ Quill Image Resize 모듈이 존재할 때만 등록
+if (window.ImageResize) {
+    Quill.register("modules/imageResize", window.ImageResize);
+} else {
+    console.warn("⚠️ Quill Image Resize 모듈이 로드되지 않았습니다.");
+}
+
 // 📌 Quill 에디터 초기화 (글 작성 페이지에서만 실행)
 const editorElement = document.getElementById("editor");
-let quill;
 if (editorElement) {
-    quill = new Quill("#editor", {
+    window.quill = new Quill("#editor", {
         theme: "snow",
         modules: {
             toolbar: [
@@ -21,12 +27,13 @@ if (editorElement) {
                 ['blockquote', 'code-block'],
                 ['image', 'link'],
                 ['clean']
-            ]
+            ],
+            imageResize: {} // ✅ 이미지 크기 조절 기능 활성화
         }
     });
 
     // 📌 Quill 에디터 내 이미지 업로드 기능 추가
-    quill.getModule("toolbar").addHandler("image", () => {
+    window.quill.getModule("toolbar").addHandler("image", () => {
         const input = document.createElement("input");
         input.setAttribute("type", "file");
         input.setAttribute("accept", "image/*");
@@ -46,9 +53,7 @@ if (editorElement) {
                     const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload", {
                         method: "POST",
                         body: formData,
-                        headers: {
-                            "Accept": "application/json"
-                        },
+                        headers: { "Accept": "application/json" },
                         mode: "cors",  // ✅ CORS 모드 추가
                     });
 
@@ -57,8 +62,8 @@ if (editorElement) {
 
                     if (result.success) {
                         // ✅ Quill 에디터에 이미지 URL 삽입
-                        const range = quill.getSelection();
-                        quill.insertEmbed(range.index, "image", result.imageUrl);
+                        const range = window.quill.getSelection();
+                        window.quill.insertEmbed(range.index, "image", result.imageUrl);
                     } else {
                         alert("이미지 업로드 실패: " + result.message);
                     }
@@ -190,7 +195,7 @@ document.getElementById("nextPage").addEventListener("click", () => {
 async function createPost() {
     const title = document.getElementById("title").value.trim();
     const author = document.getElementById("author").value.trim() || "익명";
-    const content = quill.root.innerHTML;
+    const content = window.quill ? window.quill.root.innerHTML : "";
     const password = document.getElementById("password").value.trim();
 
     if (!title || !content || !password) {
