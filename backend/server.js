@@ -1,56 +1,13 @@
 require("dotenv").config();
 
 const express = require("express");
-const multer = require("multer");
-const sharp = require("sharp");
 const mongoose = require("mongoose");
 const Post = require("./models/Post");
 const path = require("path");
-const fs = require("fs");
 const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-// 📌 업로드 폴더 확인 및 생성
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-// 📌 Multer 설정 (파일 업로드)
-const storage = multer.memoryStorage(); // 메모리에 저장 후 Sharp로 압축
-const upload = multer({ storage });
-
-// 📌 이미지 업로드 API
-app.post("/upload", upload.single("image"), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ success: false, message: "이미지가 필요합니다." });
-        }
-
-        // 📌 파일명 생성
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`;
-        const filePath = path.join(uploadDir, fileName);
-
-        // 📌 Sharp로 이미지 압축 후 저장
-        await sharp(req.file.buffer)
-            .resize({ width: 1100 }) // ✅ 이미지 크기 제한
-            .webp({ quality: 75 }) // ✅ WebP 포맷으로 압축
-            .toFile(filePath);
-
-        // 📌 업로드된 이미지의 URL 반환
-        const imageUrl = `https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/uploads/${fileName}`;
-        res.json({ success: true, imageUrl });
-
-    } catch (error) {
-        console.error("이미지 업로드 실패:", error);
-        res.status(500).json({ success: false, message: "이미지 업로드 실패" });
-    }
-});
-
-// 📌 정적 파일 제공 (업로드된 이미지 접근 가능)
-app.use("/uploads", express.static(uploadDir));
 
 
 

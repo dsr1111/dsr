@@ -31,43 +31,6 @@ if (editorElement) {
             }
         });
     });
-
-    quill.getModule("toolbar").addHandler("image", () => {
-        const input = document.createElement("input");
-        input.setAttribute("type", "file");
-        input.setAttribute("accept", "image/*");
-        input.click();
-
-        input.addEventListener("change", async () => {
-            const file = input.files[0];
-
-            if (file) {
-                const formData = new FormData();
-                formData.append("image", file);
-
-                try {
-                    // 📌 서버에 이미지 업로드
-                    const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload", {
-                        method: "POST",
-                        body: formData,
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        // ✅ Quill 에디터에 이미지 URL 삽입
-                        const range = quill.getSelection();
-                        quill.insertEmbed(range.index, "image", result.imageUrl);
-                    } else {
-                        alert("이미지 업로드 실패");
-                    }
-                } catch (error) {
-                    console.error("이미지 업로드 중 오류 발생:", error);
-                    alert("이미지 업로드 중 문제가 발생했습니다.");
-                }
-            }
-        });
-    });
 }
 
 async function fetchPosts(page = 1) {
