@@ -28,7 +28,7 @@ if (editorElement) {
                 ['image', 'link'],
                 ['clean']
             ],
-            imageResize: {} // ✅ 이미지 크기 조절 기능 활성화
+            imageResize: true // ✅ 이미지 크기 조절 기능 활성화
         }
     });
 
