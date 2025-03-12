@@ -6,9 +6,9 @@ let currentPage = localStorage.getItem("currentPage") ? parseInt(localStorage.ge
 Quill.register('formats/color', Quill.import('attributors/style/color'), true);
 Quill.register('formats/background', Quill.import('attributors/style/background'), true);
 
+// 📌 Quill 에디터 초기화 (글 작성 페이지에서만 실행)
 const editorElement = document.getElementById("editor");
 let quill;
-
 if (editorElement) {
     quill = new Quill("#editor", {
         theme: "snow",
@@ -24,7 +24,6 @@ if (editorElement) {
             ]
         }
     });
-
     quill.on('text-change', function() {
         document.querySelectorAll('.ql-editor p').forEach(el => {
             if (!el.style.textAlign) {
@@ -32,41 +31,7 @@ if (editorElement) {
             }
         });
     });
-
-    // 📌 Quill에서 이미지 업로드 감지
-    quill.getModule("toolbar").addHandler("image", () => {
-        const input = document.createElement("input");
-        input.setAttribute("type", "file");
-        input.setAttribute("accept", "image/*");
-        input.click();
-
-        input.onchange = async () => {
-            const file = input.files[0];
-            if (!file) return;
-
-            const formData = new FormData();
-            formData.append("image", file);
-
-            try {
-                const response = await fetch("https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/upload", { // 📌 서버 업로드 URL
-                    method: "POST",
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (result.imageUrl) {
-                    // 📌 Quill 에디터에 이미지 삽입 (서버에서 반환된 URL 사용)
-                    const range = quill.getSelection();
-                    quill.insertEmbed(range.index, "image", result.imageUrl);
-                }
-            } catch (error) {
-                console.error("❌ 이미지 업로드 실패:", error);
-            }
-        };
-    });
 }
-
 
 async function fetchPosts(page = 1) {
     try {

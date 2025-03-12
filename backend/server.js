@@ -1,12 +1,9 @@
 require("dotenv").config();
 
 const express = require("express");
-const multer = require("multer");
-const sharp = require("sharp");
 const mongoose = require("mongoose");
 const Post = require("./models/Post");
 const path = require("path");
-const fs = require("fs");
 const cors = require("cors");
 
 const app = express();
@@ -81,7 +78,6 @@ app.get("/posts", async (req, res) => {
         res.status(500).json({ message: "서버 오류 발생" });
     }
 });
-
 
 // 📌 3️⃣ 특정 글 조회 (Read)
 app.get("/posts/:id", async (req, res) => {
@@ -246,52 +242,6 @@ app.delete("/posts/:postId/comments/:commentId", async (req, res) => {
     }
 });
 
-// 📌 업로드 폴더 생성 (없으면 자동 생성)
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-// 📌 multer 설정 (파일 이름 및 저장 경로)
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-    },
-});
-
-const upload = multer({ storage });
-
-// 📌 이미지 업로드 및 압축 API
-app.post("/upload", upload.single("image"), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ message: "파일이 없습니다." });
-        }
-
-        const filePath = path.join(uploadDir, req.file.filename);
-        const compressedFilePath = path.join(uploadDir, "compressed-" + req.file.filename);
-
-        // 📌 이미지 압축 (JPEG 형식, 품질 70%)
-        await sharp(filePath)
-            .webp({ quality: 70 })
-            .toFile(compressedFilePath);
-
-        // 📌 원본 삭제 (압축본만 유지)
-        fs.unlinkSync(filePath);
-
-        // 클라이언트에게 이미지 URL 반환
-        res.json({ imageUrl: `/uploads/compressed-${req.file.filename}` });
-    } catch (error) {
-        console.error("❌ 이미지 업로드 오류:", error);
-        res.status(500).json({ message: "이미지 업로드 실패" });
-    }
-});
-
-// 📌 정적 파일 제공 (업로드된 이미지 접근 가능하도록 설정)
-app.use("/uploads", express.static(uploadDir));
 
 // 📌 🚀 서버 실행
 app.listen(PORT, () => {
