@@ -105,7 +105,7 @@ async function redirectToEditPage() {
 
     try {
         // 🔹 서버에 비밀번호 검증 요청
-        const response = await fetch(`https://dsr-xo3w.onrender.com/posts/${postId}/verify-password`, {
+        const response = await fetch(`https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/posts/${postId}/verify-password`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password }),
@@ -245,43 +245,10 @@ async function deleteComment(postId, commentId) {
     }
 }
 
-async function fetchPost() {
-    if (!postId) {
-        alert("잘못된 접근입니다.");
-        window.location.href = "tip.html";
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_URL}/${postId}`);
-
-        if (!response.ok) {
-            throw new Error("게시글을 찾을 수 없습니다.");
-        }
-
-        const post = await response.json();
-
-        // 🔹 제목, 작성자, 작성일 먼저 표시
-        document.getElementById("post-title").innerText = post.title;
-        document.getElementById("post-author").innerText = post.author || "익명";
-        document.getElementById("post-date").innerText = new Date(post.createdAt).toLocaleString("ko-KR");
-
-        // 🔹 게시글 내용 (이미지 lazy loading 적용)
-        let contentWithLazyImages = post.content.replace(/<img /g, '<img loading="lazy" ');
-        document.getElementById("post-content").innerHTML = contentWithLazyImages;
-
-        // 🔹 댓글 불러오기
-        fetchComments();
-    } catch (error) {
-        console.error("❌ 게시글 불러오기 오류:", error);
-        alert("게시글을 불러오는 중 오류가 발생했습니다.");
-        window.location.href = "tip.html";
-    }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     if (postId) {
-        fetchPost(); // ✅ 한 번만 실행하도록 변경
+        fetchPost(); // 🔹 게시글 데이터 불러오기
+        fetchComments(); // 🔹 댓글 데이터 불러오기
     } else {
         alert("잘못된 접근입니다.");
         window.location.href = "tip.html";
@@ -295,5 +262,4 @@ document.addEventListener("DOMContentLoaded", () => {
         submitCommentBtn.addEventListener("click", submitComment);
     }
 });
-
 
