@@ -5,11 +5,52 @@ const mongoose = require("mongoose");
 const Post = require("./models/Post");
 const path = require("path");
 const cors = require("cors");
+const multer = require("multer");
+const sharp = require("sharp");
+const fs = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// 📌 업로드 폴더 확인 및 생성
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
 
+// 📌 Multer 설정 (메모리에 저장 후 Sharp로 변환)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// 📌 이미지 업로드 API (Base64 → URL로 변환)
+app.post("/upload", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "이미지가 필요합니다." });
+        }
+
+        // 📌 파일명 생성
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`;
+        const filePath = path.join(uploadDir, fileName);
+
+        // 📌 Sharp로 이미지 압축 후 저장
+        await sharp(req.file.buffer)
+            .resize({ width: 1100 }) // ✅ 이미지 크기 제한
+            .webp({ quality: 75 }) // ✅ WebP 포맷으로 압축
+            .toFile(filePath);
+
+        // 📌 업로드된 이미지의 URL 반환
+        const imageUrl = `https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/uploads/${fileName}`;
+        res.json({ success: true, imageUrl });
+
+    } catch (error) {
+        console.error("❌ 이미지 업로드 실패:", error);
+        res.status(500).json({ success: false, message: "이미지 업로드 실패" });
+    }
+});
+
+// 📌 정적 파일 제공 (업로드된 이미지 접근 가능)
+app.use("/uploads", express.static(uploadDir));
 
 app.use("/image", express.static(path.join(__dirname, "image")));
 
@@ -41,9 +82,34 @@ mongoose.connect(mongoURI)
 // 📌 1️⃣ 글 작성 (Create)
 app.post("/posts", async (req, res) => {
     try {
-        const { title, content, author, password } = req.body;
+        let { title, content, author, password } = req.body;
         if (!title || !content || !password) {
             return res.status(400).json({ message: "제목, 내용, 비밀번호를 입력해주세요." });
+        }
+
+        // 📌 Base64 이미지 찾기
+        const base64Images = content.match(/<img.*?src=["'](data:image\/.*?;base64,.*?)["']/g);
+
+        if (base64Images) {
+            for (let base64Image of base64Images) {
+                let base64Data = base64Image.match(/src=["'](data:image\/.*?;base64,.*?)["']/)[1];
+
+                // 📌 Base64 데이터를 이미지 파일로 변환 후 업로드
+                const buffer = Buffer.from(base64Data.split(",")[1], "base64");
+                const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`;
+                const filePath = path.join(uploadDir, fileName);
+
+                await sharp(buffer)
+                    .resize({ width: 1100 })
+                    .webp({ quality: 75 })
+                    .toFile(filePath);
+
+                // 📌 변환된 이미지 URL
+                const imageUrl = `https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/uploads/${fileName}`;
+
+                // 📌 HTML에서 Base64 → URL로 변경
+                content = content.replace(base64Data, imageUrl);
+            }
         }
 
         const newPost = new Post({ title, content, author, password });
@@ -55,6 +121,7 @@ app.post("/posts", async (req, res) => {
         res.status(500).json({ message: "서버 오류 발생", error });
     }
 });
+
 
 // 📌 2️⃣ 글 목록 조회 (Read)
 app.get("/posts", async (req, res) => {
