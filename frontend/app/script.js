@@ -48,8 +48,6 @@ async function fetchPosts(page = 1) {
         const posts = await response.json();
         console.log("📌 불러온 게시글:", posts);
 
-        posts.reverse();
-
         // 🔹 페이지네이션 적용
         const totalPages = Math.ceil(posts.length / postsPerPage);
         updatePagination(totalPages);
