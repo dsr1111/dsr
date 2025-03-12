@@ -45,7 +45,6 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 
         // 📌 Sharp로 이미지 압축 후 저장
         await sharp(req.file.buffer)
-            .resize({ width: 1100 }) // ✅ 이미지 크기 제한
             .webp({ quality: 75 }) // ✅ WebP 포맷으로 압축
             .toFile(filePath);
 
