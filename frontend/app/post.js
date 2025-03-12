@@ -263,3 +263,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", async () => {
+    const postContent = document.getElementById("post-content");
+
+    try {
+        // 1️⃣ 텍스트 데이터 먼저 가져오기
+        const response = await fetch(`https://your-server.com/posts/${postId}`);
+        if (!response.ok) throw new Error("게시글을 불러올 수 없습니다.");
+        const post = await response.json();
+
+        // 2️⃣ 제목, 작성자, 작성일 먼저 표시
+        document.getElementById("post-title").innerText = post.title;
+        document.getElementById("post-author").innerText = post.author;
+        document.getElementById("post-date").innerText = new Date(post.createdAt).toLocaleString("ko-KR");
+
+        // 3️⃣ 이미지에 `loading="lazy"` 적용하여 천천히 로드
+        let contentWithLazyImages = post.content.replace(/<img /g, '<img loading="lazy" ');
+
+        // 4️⃣ 텍스트 먼저 렌더링
+        postContent.innerHTML = contentWithLazyImages;
+
+    } catch (error) {
+        console.error("❌ 게시글 불러오기 오류:", error);
+        alert("게시글을 불러오는 중 오류가 발생했습니다.");
+    }
+});
+
+
