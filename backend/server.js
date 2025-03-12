@@ -108,7 +108,6 @@ app.post("/posts", async (req, res) => {
                 const filePath = path.join(uploadDir, fileName);
 
                 await sharp(buffer)
-                    .resize({ width: 1100 })
                     .webp({ quality: 100 })
                     .toFile(filePath);
 
