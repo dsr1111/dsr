@@ -38,39 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     events: [
       {
-        title: "디지패스 2025 시즌2",
-        start: "2025-02-13",
-        end: "2025-03-13",
+        title: "디지패스 2025 시즌3",
+        start: "2025-03-13",
+        end: "2025-04-10",
         backgroundColor: "gray",
       },
       {
-        title: "브이몬 발렌타인데이 이벤트",
-        start: "2025-02-13",
-        end: "2025-02-27",
+        title: "사탕을 구해줘 이벤트",
+        start: "2025-03-13",
+        end: "2025-03-27",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
-      },
-      {
-        title: "텐타몬의 디지코드 수집 이벤트",
-        start: "2025-02-20",
-        end: "2025-03-13",
-        backgroundColor: "green",
-        textColor: "white",
-      },
-      {
-        title: "파닥몬의 오메가몬을 응원하자!  이벤트",
-        start: "2025-02-20",
-        end: "2025-03-13",
-        backgroundColor: "gold",
-        textColor: "#990000",
-      },
-      {
-        title: "현실세계의 이변 이벤트",
-        start: "2025-02-20",
-        end: "2025-03-13",
-        backgroundColor: "skyblue",
-        textColor: "black",
-      },
+      }
     ],
     datesSet: function (info) {
       const currentMonthText = info.view.currentStart.toLocaleString("ko", {
