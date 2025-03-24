@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById("character-name").textContent = characterName;
+  document.title = `${characterName} | DSRWIKI`;
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
 
   fetch("../data/csv/characters.csv")
