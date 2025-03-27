@@ -230,6 +230,10 @@ async function fetchCSV() {
   });
 }
 
+console.log("sanitizedName:", sanitizedName);
+console.log("imagePath:", characterImagePath);
+
+
 function toggleAllEvolution() {
   const evolutions = ["성장기", "성숙기", "완전체", "궁극체"];
   const checkBox = document.getElementById("select-all-evolution");
