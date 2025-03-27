@@ -44,11 +44,18 @@ document.addEventListener("DOMContentLoaded", function () {
         backgroundColor: "gray",
       },
       {
-        title: "사탕을 구해줘 이벤트",
-        start: "2025-03-13",
-        end: "2025-03-27",
+        title: "코로몬 풍년 이벤트",
+        start: "2025-03-27",
+        end: "2025-04-10",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
+      },
+      {
+        title: "피노키몬을 말려줘 이벤트",
+        start: "2025-03-27",
+        end: "2025-04-10",
+        backgroundColor: "skyblue",
+        textColor: "black",
       }
     ],
     datesSet: function (info) {
