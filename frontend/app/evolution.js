@@ -75,11 +75,12 @@ function createDigimonImageList(data) {
     const img = document.createElement("img");
     img.src = `../image/digimon/${digimonName}/${digimonName}.webp`;
     img.alt = digimon.name;
+    img.dataset.evoType = 'normal';
     img.width = 100;
     img.height = 100;
 
     img.addEventListener("mouseover", (event) => {
-      showNameTooltip(event, digimon.name);
+      showNameTooltip(event, digimon.name, img.dataset.evoType);
     });
 
     img.addEventListener("mouseout", hideNameTooltip);
@@ -164,6 +165,8 @@ function findAllLowerEvolutions(digimonName) {
       digimon.evol10,
       digimon.evol11,
       digimon.조그레스,
+      digimon.암흑진화,
+      digimon.특수진화,
     ].includes(digimonName);
   });
 
@@ -222,6 +225,8 @@ function isDigimonInTree(digimon, searchName) {
     digimon.evol10,
     digimon.evol11,
     digimon.조그레스,
+    digimon.암흑진화,
+    digimon.특수진화,
   ].filter((e) => e);
   for (const evolution of evolutions) {
     const nextDigimon = allData.find((d) => d.name === evolution);
@@ -253,7 +258,7 @@ function activateHighlightedChildPlusButtons(parentNode) {
   });
 }
 
-function createDigimonNode(digimon, data, lowerEvolutions) {
+function createDigimonNode(digimon, data, lowerEvolutions, evoType = 'normal') {
   const container = document.createElement("div");
   container.classList.add("digimon-container");
 
@@ -265,6 +270,7 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
   const img = document.createElement("img");
   img.src = `../image/digimon/${digimonName}/${digimonName}.webp`;
   img.alt = digimon.name;
+  img.dataset.evoType = evoType;
 
   const characterInfo = charactersData.find(
     (character) => character.name === digimon.name
@@ -282,7 +288,7 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
   );
   img.addEventListener("mouseout", hideEvolutionTooltip);
   img.addEventListener("mouseover", (event) =>
-    showTooltip(event, digimon.name)
+    showTooltip(event, digimon.name, img.dataset.evoType)
   );
   img.addEventListener("mouseout", hideTooltip);
 
@@ -328,7 +334,7 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
         evolutions.forEach((evolution) => {
           const nextDigimon = data.find((d) => d.name === evolution.name);
           if (nextDigimon) {
-            const nextNode = createDigimonNode(nextDigimon, data, lowerEvolutions);
+            const nextNode = createDigimonNode(nextDigimon, data, lowerEvolutions, evolution.evoType);
         
             // 진화 퍼센트를 표시하기 위한 텍스트 생성
             const percentageText = document.createElement("span");
@@ -518,37 +524,33 @@ function hideJogressTooltip() {
   tooltip.classList.remove("visible-tooltip");
 }
 
-function showTooltip(event, digimonName) {
+function showTooltip(event, digimonName, evoType = 'normal') {
   const tooltip = document.getElementById("tooltip");
   const currentDigimon = allData.find((d) => d.name === digimonName);
-
   if (!currentDigimon) {
     return;
   }
-
+  
   const parentNode = event.target
     .closest(".digimon-container")
     .parentElement.closest(".digimon-container");
-
   let parentDigimonName = null;
-
   if (parentNode) {
     const parentImg = parentNode.querySelector(".digimon img:not(.type-image)");
     if (parentImg) {
       parentDigimonName = parentImg.alt;
     }
   }
-
+  
   const parentDigimon = allData.find((d) => d.name === parentDigimonName);
-
   if (!parentDigimon) {
     return;
   }
-
+  
+  // 만약 암흑진화나 특수진화일 경우엔 조그레스 처리 등의 로직 유지
   const jogressTarget = allData.some(
     (digimon) => digimon.조그레스 === digimonName
   );
-
   if (jogressTarget) {
     const jogressDataEntry = jogressData.find(
       (jogress) => jogress.name === digimonName
@@ -558,83 +560,127 @@ function showTooltip(event, digimonName) {
     }
     return;
   }
-
+  
   const digimonInfo = conditionData.find((d) => d.name === parentDigimon.name);
-  if (digimonInfo) {
-    const thirdColumnValue = digimonInfo[Object.keys(digimonInfo)[2]];
-    if (!thirdColumnValue) {
-      return;
-    }
-
-    let tableHtml = `
-        <table class="tooltip-table">
-            <tr>
-                <th colspan="2">진화 조건</th>
-            </tr>`;
-
-    if (digimonInfo["name"]) {
-      tableHtml += `
-            <tr>
-                <th>디지몬</th>
-                <td>${digimonInfo["name"]}</td>
-            </tr>`;
-    }
-
-    if (digimonInfo["레벨"]) {
-      tableHtml += `
-            <tr>
-                <th>레벨</th>
-                <td>${digimonInfo["레벨"]}</td>
-            </tr>`;
-    }
-
-    if (digimonInfo["유대감"]) {
-      tableHtml += `
-            <tr>
-                <th>유대감</th>
-                <td>${digimonInfo["유대감"]}%</td>
-            </tr>`;
-    }
-
-    const statPairs = [
-      { stat: "힘", percent: "힘%" },
-      { stat: "지능", percent: "지능%" },
-      { stat: "수비", percent: "수비%" },
-      { stat: "저항", percent: "저항%" },
-      { stat: "속도", percent: "속도%" },
-    ];
-
-    statPairs.forEach((pair) => {
-      const statValue = digimonInfo[pair.stat];
-      const percentValue = digimonInfo[pair.percent];
-      if (statValue) {
-        tableHtml += `
-                <tr>
-                    <th>${pair.stat}</th>
-                    <td>${statValue}${
-          percentValue ? ` (${digimonInfo[pair.percent]}%)` : ""
-        }</td>
-                </tr>`;
-      }
-    });
-
-    if (digimonInfo["진화재료"]) {
-      tableHtml += `
-            <tr>
-                <th>진화 재료</th>
-                <td colspan="2">${digimonInfo["진화재료"]}</td>
-            </tr>`;
-    }
-
-    tableHtml += `</table>`;
-
-    tooltip.innerHTML = tableHtml;
-    tooltip.classList.add("visible-tooltip");
-
-    updateTooltipPosition(event.target, tooltip);
-    observeNodeChanges(event.target, tooltip);
+  if (!digimonInfo) return;
+  
+  // evoType에 따라 체크할 필드 목록 정의 (레벨은 별도이므로, 그 외 필드가 채워졌는지 확인)
+  let fieldsToCheck = ["힘", "지능", "수비", "저항", "속도", "유대감"];
+  if (evoType === 'normal') {
+    fieldsToCheck.push("진화재료");
+  } else if (evoType === 'dark') {
+    fieldsToCheck.push("암흑진화재료");
+  } else if (evoType === 'special') {
+    fieldsToCheck.push("특수진화재료");
   }
+  
+  // additionalInfoExists가 false라면 오직 레벨만 있다고 판단하여 툴팁 표시하지 않음.
+  let additionalInfoExists = false;
+  for (const field of fieldsToCheck) {
+    if (digimonInfo[field] && digimonInfo[field].trim() !== "") {
+      additionalInfoExists = true;
+      break;
+    }
+  }
+  
+  if (!additionalInfoExists) {
+    return;
+  }
+  
+  // 만약 추가 정보가 있다면 툴팁 테이블 구성
+  let tableHtml = `
+      <table class="tooltip-table">
+          <tr>
+              <th colspan="2">진화 조건</th>
+          </tr>
+  `;
+  
+  // 기본 정보: 디지몬, 레벨, 유대감 등은 표시할 수 있음
+  if (digimonInfo["name"]) {
+    tableHtml += `
+          <tr>
+              <th>디지몬</th>
+              <td>${digimonInfo["name"]}</td>
+          </tr>
+    `;
+  }
+  
+  if (digimonInfo["레벨"]) {
+    tableHtml += `
+          <tr>
+              <th>레벨</th>
+              <td>${digimonInfo["레벨"]}</td>
+          </tr>
+    `;
+  }
+  
+  if (digimonInfo["유대감"]) {
+    tableHtml += `
+          <tr>
+              <th>유대감</th>
+              <td>${digimonInfo["유대감"]}%</td>
+          </tr>
+    `;
+  }
+  
+  const statPairs = [
+    { stat: "힘", percent: "힘%" },
+    { stat: "지능", percent: "지능%" },
+    { stat: "수비", percent: "수비%" },
+    { stat: "저항", percent: "저항%" },
+    { stat: "속도", percent: "속도%" },
+  ];
+  
+  statPairs.forEach((pair) => {
+    const statValue = digimonInfo[pair.stat];
+    const percentValue = digimonInfo[pair.percent];
+    if (statValue) {
+      tableHtml += `
+              <tr>
+                  <th>${pair.stat}</th>
+                  <td>${statValue}${percentValue ? ` (${percentValue}%)` : ""}</td>
+              </tr>
+      `;
+    }
+  });
+  
+  if (evoType === 'normal') {
+    if (digimonInfo["진화재료"] && digimonInfo["진화재료"].trim() !== "") {
+      tableHtml += `
+        <tr>
+          <th>진화 재료</th>
+          <td>${digimonInfo["진화재료"]}</td>
+        </tr>
+      `;
+    }
+  } else if (evoType === 'dark') {
+    if (digimonInfo["암흑진화재료"] && digimonInfo["암흑진화재료"].trim() !== "") {
+      tableHtml += `
+        <tr>
+          <th>진화 재료</th>
+          <td>${digimonInfo["암흑진화재료"]}</td>
+        </tr>
+      `;
+    }
+  } else if (evoType === 'special') {
+    if (digimonInfo["특수진화재료"] && digimonInfo["특수진화재료"].trim() !== "") {
+      tableHtml += `
+        <tr>
+          <th>진화 재료</th>
+          <td>${digimonInfo["특수진화재료"]}</td>
+        </tr>
+      `;
+    }
+  }
+  
+  tableHtml += `</table>`;
+  tooltip.innerHTML = tableHtml;
+  tooltip.classList.add("visible-tooltip");
+  
+  updateTooltipPosition(event.target, tooltip);
+  observeNodeChanges(event.target, tooltip);
 }
+
 
 function updateTooltipPosition(targetElement, tooltipElement) {
   const rect = targetElement.getBoundingClientRect();
