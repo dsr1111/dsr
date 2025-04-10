@@ -1,4 +1,4 @@
-name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4,evol5,percent5,evol6,percent6,evol7,percent7,evol8,percent8,evol9,percent9,evol10,percent10,evol11,percent11,조그레스,percent,조그레스재료
+name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4,evol5,percent5,evol6,percent6,evol7,percent7,evol8,percent8,evol9,percent9,evol10,percent10,evol11,percent11,조그레스,percent12,조그레스재료,암흑진화,percent13,암흑진화재료,특수진화,percent14,특수진화재료
 깜몬,1,와냐몬,20,코로몬,20,퍼그몬,20,토코몬,20,피나몬,20
 도도몬,1,도리몬,100
 레레몬,1,포코몬,100
@@ -212,7 +212,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 마스터티라노몬,5
 맘몬,5,스컬맘몬,95
 메가드라몬,5
-메가로그라우몬,5,듀크몬,85,메기드라몬,10
+메가로그라우몬,5,듀크몬,95,,,,,,,,,,,,,,,,,,,,,,,,메기드라몬,95
 메가시드라몬,5,메탈시드라몬,95
 메탈그레이몬,5,워그레이몬,95
 메탈그레이몬(바이러스),5,블랙워그레이몬,95

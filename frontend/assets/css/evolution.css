@@ -351,41 +351,12 @@ body {
   z-index: 10;
 }
 
-.floating-chat-icon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* 암흑진화 연결선: 보라색 */
+.horizontal-connector.dark-evo {
+  border-top: 2px solid purple; /* 선의 두께와 스타일은 필요에 따라 조정 */
 }
 
-.tooltip-kakao {
-  visibility: hidden;
-  width: 150px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 8px;
-  border-radius: 5px;
-  position: absolute;
-  bottom: 50px;
-  right: -75px;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 12px;
-  white-space: nowrap;
-  z-index: 1000;
-}
-
-.floating-chat-icon:hover .tooltip-kakao {
-  visibility: visible;
-  opacity: 1;
+/* 특수진화 연결선: 노란색 */
+.horizontal-connector.special-evo {
+  border-top: 2px solid yellow;
 }

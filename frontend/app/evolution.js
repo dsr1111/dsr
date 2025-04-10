@@ -312,7 +312,9 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
     { name: digimon.evol10, percent: digimon.percent10 },
     { name: digimon.evol11, percent: digimon.percent11 },
     { name: digimon.조그레스, percent: digimon.percent },
-  ].filter((e) => e.name);
+    { name: digimon.암흑진화, percent: digimon.percent13, evoType: 'dark' },
+    { name: digimon.특수진화, percent: digimon.percent14, evoType: 'special' }
+  ].filter(e => e.name);
 
   const hasEvolution = evolutions.length > 0;
 
@@ -326,38 +328,42 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
         evolutions.forEach((evolution) => {
           const nextDigimon = data.find((d) => d.name === evolution.name);
           if (nextDigimon) {
-            const nextNode = createDigimonNode(
-              nextDigimon,
-              data,
-              lowerEvolutions
-            );
-
+            const nextNode = createDigimonNode(nextDigimon, data, lowerEvolutions);
+        
+            // 진화 퍼센트를 표시하기 위한 텍스트 생성
             const percentageText = document.createElement("span");
             percentageText.classList.add("percentage-text");
             percentageText.textContent = `${evolution.percent}%`;
-
-            let horizontalConnector = nextNode.querySelector(
-              ".horizontal-connector"
-            );
+        
+            // 수평 연결선을 생성하거나 기존의 것을 선택
+            let horizontalConnector = nextNode.querySelector(".horizontal-connector");
             if (!horizontalConnector) {
               horizontalConnector = document.createElement("div");
               horizontalConnector.classList.add("horizontal-connector");
               nextNode.appendChild(horizontalConnector);
             }
+        
             horizontalConnector.style.display = "block";
             horizontalConnector.appendChild(percentageText);
-
+        
+            // 기존의 조그레스 처리 로직이 있다면 그대로 사용
             if (evolution.name === digimon.조그레스) {
               const jogressImageName = digimon[Object.keys(digimon)[26]];
-
               const jogressImagePath = `../image/digimon/${jogressImageName}/${jogressImageName}.webp`;
-
+        
               const jogressImage = document.createElement("img");
               jogressImage.src = jogressImagePath;
               jogressImage.classList.add("jogress-image");
               horizontalConnector.appendChild(jogressImage);
             }
-
+        
+            // 암흑진화나 특수진화인 경우 CSS 클래스를 추가하여 스타일링 적용
+            if (evolution.evoType === 'dark') {
+              horizontalConnector.classList.add("dark-evo");
+            } else if (evolution.evoType === 'special') {
+              horizontalConnector.classList.add("special-evo");
+            }
+        
             childrenContainer.appendChild(nextNode);
           }
         });
