@@ -328,65 +328,81 @@ function createDigimonNode(digimon, data, lowerEvolutions) {
         evolutions.forEach((evolution) => {
           const nextDigimon = data.find((d) => d.name === evolution.name);
           if (nextDigimon) {
+            // 기존에 자식 노드 생성
             const nextNode = createDigimonNode(nextDigimon, data, lowerEvolutions);
-        
-            // 진화 퍼센트를 표시하기 위한 텍스트 생성
+    
+            // 수평 연결선(horizontal connector)은 그대로 생성
             const percentageText = document.createElement("span");
             percentageText.classList.add("percentage-text");
             percentageText.textContent = `${evolution.percent}%`;
-        
-            // 수평 연결선을 생성하거나 기존의 것을 선택
+    
             let horizontalConnector = nextNode.querySelector(".horizontal-connector");
             if (!horizontalConnector) {
               horizontalConnector = document.createElement("div");
               horizontalConnector.classList.add("horizontal-connector");
               nextNode.appendChild(horizontalConnector);
             }
-        
             horizontalConnector.style.display = "block";
             horizontalConnector.appendChild(percentageText);
-        
-            // 기존의 조그레스 처리 로직이 있다면 그대로 사용
+    
+            // 기존 조그레스 처리 (필요시)
             if (evolution.name === digimon.조그레스) {
               const jogressImageName = digimon[Object.keys(digimon)[26]];
               const jogressImagePath = `../image/digimon/${jogressImageName}/${jogressImageName}.webp`;
-        
+    
               const jogressImage = document.createElement("img");
               jogressImage.src = jogressImagePath;
               jogressImage.classList.add("jogress-image");
               horizontalConnector.appendChild(jogressImage);
             }
-        
-            // 암흑진화나 특수진화인 경우 CSS 클래스를 추가하여 스타일링 적용
+    
+            // 진화 타입에 따라 horizontal connector에 클래스 부여 (기존 방식)
             if (evolution.evoType === 'dark') {
               horizontalConnector.classList.add("dark-evo");
             } else if (evolution.evoType === 'special') {
               horizontalConnector.classList.add("special-evo");
             }
-        
-            childrenContainer.appendChild(nextNode);
+    
+            // ★ 여기서 자식 노드별 vertical connector를 생성합니다.
+            const verticalConnector = document.createElement("div");
+            verticalConnector.classList.add("vertical-connector");
+            // 진화 타입에 따라 vertical connector도 색상 지정
+            if (evolution.evoType === 'dark') {
+              verticalConnector.classList.add("dark-evo");
+            } else if (evolution.evoType === 'special') {
+              verticalConnector.classList.add("special-evo");
+            }
+    
+            // 자식 노드를 감싸는 래퍼(wrapper)를 생성하고,
+            // vertical connector와 자식 노드를 함께 포함시킵니다.
+            const childWrapper = document.createElement("div");
+            childWrapper.classList.add("child-wrapper");
+            // vertical connector는 자식 노드 위쪽, 혹은 부모와 자식을 잇는 부분에 위치하도록 배치합니다.
+            childWrapper.appendChild(verticalConnector);
+            childWrapper.appendChild(nextNode);
+    
+            // 래퍼를 자식 컨테이너에 추가
+            childrenContainer.appendChild(childWrapper);
           }
         });
       }
-
+    
       childrenContainer.classList.toggle("visible");
-
-      updateAllVerticalLinesAndHorizontalConnectors();
-
+    
+      // updateAllVerticalLinesAndHorizontalConnectors();  
+      // (기존 공통 vertical-line 관련 업데이트 함수는 필요 없으므로 제거하거나 수정)
+      
       if (childrenContainer.classList.contains("visible")) {
         plusBtn.textContent = "−";
         horizontalLine.style.display = "block";
-        verticalLine.style.display = "block";
-
-        activateHighlightedChildPlusButtons(container);
+        // 기존 verticalLine은 사용하지 않으므로 숨기거나 삭제
+        verticalLine.style.display = "none";
       } else {
         plusBtn.textContent = "+";
         horizontalLine.style.display = "none";
-        verticalLine.style.display = "none";
-        verticalLine.style.height = "0";
-        verticalLine.style.top = "0";
       }
     });
+    
 
     digimonDiv.appendChild(plusBtn);
   }
