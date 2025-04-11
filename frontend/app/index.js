@@ -38,22 +38,22 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     events: [
       {
-        title: "디지패스 2025 시즌3",
-        start: "2025-03-13",
-        end: "2025-04-10",
+        title: "디지패스 2025 시즌4",
+        start: "2025-04-10",
+        end: "2025-05-08",
         backgroundColor: "gray",
       },
       {
-        title: "코로몬 풍년 이벤트",
-        start: "2025-03-27",
-        end: "2025-04-10",
+        title: "봄이 좋냐? 이벤트",
+        start: "2025-04-10",
+        end: "2025-04-24",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
       },
       {
-        title: "피노키몬을 말려줘 이벤트",
-        start: "2025-03-27",
-        end: "2025-04-10",
+        title: "플로라몬의 화원 이벤트",
+        start: "2025-04-10",
+        end: "2025-04-24",
         backgroundColor: "skyblue",
         textColor: "black",
       }

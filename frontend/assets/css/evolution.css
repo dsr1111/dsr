@@ -350,14 +350,3 @@ body {
   height: 30px;
   z-index: 10;
 }
-
-/* 암흑진화 연결선: 보라색 */
-.horizontal-connector.dark-evo {
-  border-top: 2px solid purple; /* 선의 두께와 스타일은 필요에 따라 조정 */
-}
-
-/* 특수진화 연결선: 노란색 */
-.horizontal-connector.special-evo {
-  border-top: 2px solid yellow;
-}
-
