@@ -356,3 +356,15 @@ body {
   height: 30px;
   z-index: 10;
 }
+
+.horizontal-connector.dark-evo .evo-label {
+  color: #793fb2; /* 원하는 보라색 계열 */
+  font-size: 14px;
+  text-align: center;
+}
+
+.horizontal-connector.special-evo .evo-label {
+  color: #e3d400; /* 원하는 노란색 계열 */
+  font-size: 14px;
+  text-align: center;
+}
