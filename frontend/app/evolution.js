@@ -467,8 +467,16 @@
                 }
                 if (evo.evoType === "dark") {
                   horizontalConnector.classList.add("dark-evo");
+                  const evoLabel = document.createElement("span");
+                  evoLabel.classList.add("evo-label");
+                  evoLabel.textContent = "암흑진화";
+                  horizontalConnector.appendChild(evoLabel);
                 } else if (evo.evoType === "special") {
                   horizontalConnector.classList.add("special-evo");
+                  const evoLabel = document.createElement("span");
+                  evoLabel.classList.add("evo-label");
+                  evoLabel.textContent = "특수진화";
+                  horizontalConnector.appendChild(evoLabel);
                 }
                 childrenContainer.appendChild(nextNode);
               }
@@ -486,7 +494,6 @@
                 const intersection = this.getIntersectionPercentage(verticalLine, horizontalLine);
                 verticalLine.style.setProperty("--intersection-percent", intersection + "%");
                 verticalLine.classList.add(evoType === "dark" ? "dark-evo" : "special-evo");
-                console.log("Intersection percent for", evoType, ":", intersection + "%");
               }
             }, 200);
           } else {
@@ -507,7 +514,6 @@
       if (evoType === "dark" || evoType === "special") {
         setTimeout(() => {
           const intersection = this.getIntersectionPercentage(verticalLine, horizontalLine);
-          console.log("Intersection percent for", evoType, ":", intersection + "%");
           verticalLine.style.setProperty("--intersection-percent", intersection + "%");
           verticalLine.classList.add(evoType === "dark" ? "dark-evo" : "special-evo");
         }, 300);
@@ -517,7 +523,6 @@
     getIntersectionPercentage(verticalLine, horizontalLine) {
       const vRect = verticalLine.getBoundingClientRect();
       if (!vRect.height) {
-        console.warn("verticalLine의 높이가 0입니다. 교차 지점을 계산할 수 없습니다.");
         return 0;
       }
       const hRect = horizontalLine.getBoundingClientRect();
