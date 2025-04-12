@@ -297,7 +297,7 @@
     updateTooltipPosition(target, tooltip) {
       const rect = target.getBoundingClientRect();
       tooltip.style.left = `${rect.left + window.scrollX - 2}px`;
-      tooltip.style.top = `${rect.top + window.scrollY - 80}px`;
+      tooltip.style.top = `${rect.top + window.scrollY - 95}px`;
     },
     observeNodeChanges(target, tooltip) {
       const container = target.closest(".digimon-container");
