@@ -44,18 +44,32 @@ document.addEventListener("DOMContentLoaded", function () {
         backgroundColor: "gray",
       },
       {
-        title: "봄이 좋냐? 이벤트",
-        start: "2025-04-10",
-        end: "2025-04-24",
+        title: "5월 연휴 월드 버프",
+        start: "2025-05-01",
+        end: "2025-05-06",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
       },
       {
-        title: "플로라몬의 화원 이벤트",
-        start: "2025-04-10",
-        end: "2025-04-24",
+        title: "나도 진화할래 이벤트",
+        start: "2025-04-24",
+        end: "2025-05-08",
         backgroundColor: "skyblue",
         textColor: "black",
+      },
+      {
+        title: "잃어버린 동심 이벤트",
+        start: "2025-04-24",
+        end: "2025-05-08",
+        backgroundColor: "green",
+        textColor: "black",
+      },
+      {
+        title: "보코몬의 서신 이벤트",
+        start: "2025-04-24",
+        end: "2025-05-31",
+        backgroundColor: "purple",
+        textColor: "white",
       }
     ],
     datesSet: function (info) {
