@@ -904,3 +904,14 @@ input[type="number"] {
   visibility: visible;
   opacity: 1;
 }
+
+.result-display .kakao-link img {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  /* hover 시 살짝 투명하게 */
+  transition: opacity 0.2s;
+}
+.result-display .kakao-link img:hover {
+  opacity: 0.8;
+}
