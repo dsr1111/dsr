@@ -48,7 +48,7 @@
       }
 
     // 덱 카드 생성 함수
-    function createDeckCard(deckName, deckInfo, highlightDigimon = '', highlightEffect = '') {
+    function createDeckCard(deckName, deckInfo, highlightTerm = '') {
       const deckCard = document.createElement('div');
       deckCard.className = 'deck-card';
 
@@ -95,10 +95,6 @@
         avatar.addEventListener('mouseout', () => {
           document.querySelectorAll('.digimon-tooltip').forEach(t=>t.remove());
         });
-
-        if (highlightDigimon && d.name.toLowerCase().includes(highlightDigimon.toLowerCase())) {
-          avatar.style.boxShadow = '0 0 10px var(--highlight-color)';
-        }
         digimonImages.appendChild(avatar);
       });
       deckCard.appendChild(digimonImages);
