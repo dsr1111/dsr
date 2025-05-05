@@ -59,12 +59,7 @@
       // 제목
       const title = document.createElement('h2');
       title.className = 'deck-title';
-      if (highlightTerms) {
-        const re = new RegExp(`(${highlightTerms})`, 'gi');
-        title.innerHTML = deckName.replace(re, '<span class="highlight">$1</span>');
-      } else {
-        title.textContent = deckName;
-      }
+      title.textContent = deckName;
       deckCard.appendChild(title);
 
       // 디지몬 이미지
