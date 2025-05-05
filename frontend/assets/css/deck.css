@@ -291,4 +291,8 @@ input[type="text"]::placeholder {
     body {
         padding: 10px;
     }
+
+    .container {
+        margin-top: 50px;
+    }
 }
