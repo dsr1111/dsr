@@ -117,31 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
       let availableCoupons = 0;
 
       for (let couponName in data) {
-        const { period } = data[couponName];
-        // 1) "~" 앞뒤를 분리
-        //    period 예시: "~2025.02.21 23:59"
-        const raw = period.split("~")[1].trim();           
-        //    raw === "2025.02.21 23:59"
-      
-        // 2) 날짜 구분자 "." → "-" 로 통일
-        const unified = raw.replace(/\./g, "-");           
-        //    unified === "2025-02-21 23:59"
-      
-        // 3) 날짜와 시간 분리
-        const [datePart, timePart] = unified.split(" ");
-        //    datePart === "2025-02-21"
-        //    timePart === "23:59"
-      
-        // 4) 연·월·일, 시·분을 숫자로 파싱
-        const [y, m, d]       = datePart.split("-").map(Number);
-        const [hours, mins]   = timePart.split(":").map(Number);
-      
-        // 5) Date 생성 (월은 0베이스!)
-        const endDate = new Date(y, m - 1, d, hours, mins);
-      
-        // (디버깅용)
-        console.log(couponName, "→", endDate.toString());
-      
+        const couponData = data[couponName];
+
+        const endDateStr = couponData.period.split("~")[1].trim();
+        const endDate    = new Date(endDateStr);
 
         if (today <= endDate) {
           availableCoupons++;
