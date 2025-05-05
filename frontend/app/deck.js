@@ -47,6 +47,10 @@
         }
       }
 
+    function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
     // 덱 카드 생성 함수
     function createDeckCard(deckName, deckInfo, highlightTerm = '') {
       const deckCard = document.createElement('div');
@@ -71,12 +75,10 @@
       deckInfo.digimon.forEach(d => {
         const avatar = document.createElement('div');
         avatar.className = 'digimon-avatar';
-        avatar.style.marginRight = '10px';
-
-        if (highlightTerm && d.name.toLowerCase().includes(highlightTerm.toLowerCase())) {
+        if (highlightTerms.some(term => d.name.toLowerCase().includes(term))) {
             avatar.style.boxShadow = '0 0 8px var(--highlight-color)';
           }
-
+        avatar.style.marginRight = '10px';
         const img = document.createElement('img');
         img.src = `image/digimon/${d.name}/${d.name}.webp`;
         img.alt = d.name;
@@ -107,28 +109,25 @@
       // 설명
       const desc = document.createElement('div');
       desc.className = 'deck-description';
-      if (highlightTerm) {
-        const re = new RegExp(`(${highlightTerm})`, 'gi');
-        desc.innerHTML = deckInfo.description.replace(re, '<span class="highlight">$1</span>');
-      } else {
-        desc.textContent = deckInfo.description;
-      }
+      let descHTML = deckInfo.description;
+      highlightTerms.forEach(term => {
+        const re = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+        descHTML = descHTML.replace(re, '<span class="highlight">$1</span>');
+      });
+      desc.innerHTML = descHTML;
       deckCard.appendChild(desc);
 
       const effectsContainer = document.createElement('div');
       effectsContainer.className = 'effects-container';
       effectsContainer.innerHTML = deckInfo.effects
         .map(e => {
-          // (a) 숫자 부분 강조
-          let html = e.replace(
-            /(\+\s*[\d\.]+%?)/g,
-            '<span class="effect-value">$1</span>'
-          );
-          // (b) 검색어 하이라이트
-          if (highlightTerm) {
-            const re = new RegExp(`(${highlightTerm})`, 'gi');
+          // 숫자 강조
+          let html = e.replace(/(\+\s*[\d\.]+%?)/g, '<span class="effect-value">$1</span>');
+          // 다중 키워드 하이라이트
+          highlightTerms.forEach(term => {
+            const re = new RegExp(`(${escapeRegExp(term)})`, 'gi');
             html = html.replace(re, '<span class="highlight">$1</span>');
-          }
+          });
           return html;
         })
         .join(' / ');
@@ -142,13 +141,16 @@
         const effectSearch  = document.getElementById('effect-search');
     
         digimonSearch.addEventListener('input', () => {
-          const term = digimonSearch.value.trim().toLowerCase();
-          if (!term) return renderAllDecks();
+            const terms = parseTerms(digimonSearch.value);
+            if (terms.length === 0) return renderAllDecks();
     
           // 디지몬 이름 필터
           const results = {};
           Object.entries(deckData).forEach(([name, info]) => {
-            if (info.digimon.some(d => d.name.toLowerCase().includes(term))) {
+            // 디지몬 목록 중 하나라도 키워드를 포함하면 매칭
+            if (info.digimon.some(d =>
+                  terms.some(term => d.name.toLowerCase().includes(term))
+                )) {
               results[name] = info;
             }
           });
@@ -157,23 +159,33 @@
         });
     
         effectSearch.addEventListener('input', () => {
-          const term = effectSearch.value.trim().toLowerCase();
-          if (!term) return renderAllDecks();
-    
-          // 효과 텍스트 필터
-          const results = {};
-          Object.entries(deckData).forEach(([name, info]) => {
-            if (info.effects.some(e => e.toLowerCase().includes(term))) {
-              results[name] = info;
-            }
+            const terms = parseTerms(effectSearch.value);
+            if (terms.length === 0) return renderAllDecks();
+        
+            const results = {};
+            Object.entries(deckData).forEach(([name, info]) => {
+              // 효과 목록 중 하나라도 키워드를 포함하면 매칭
+              if (info.effects.some(e =>
+                    terms.some(term => e.toLowerCase().includes(term))
+                  )) {
+                results[name] = info;
+              }
+            });
+        
+            digimonSearch.value = '';
+            renderFilteredDecks(results, terms);
           });
-          digimonSearch.value = '';
-          renderFilteredDecks(results, term);
-        });
-      }
+        }
 
     function showAllDecks() {
       document.getElementById('search-results').style.display = 'none';
       document.getElementById('deck-container').style.display = 'flex';
       renderAllDecks();
     }
+
+    function parseTerms(input) {
+        return input
+          .split(',')
+          .map(t => t.trim().toLowerCase())
+          .filter(Boolean);
+      }
