@@ -915,3 +915,84 @@ input[type="number"] {
 .result-display .kakao-link img:hover {
   opacity: 0.8;
 }
+
+/* ─── 모바일 전용 (max-width:768px) ─── */
+@media only screen and (max-width: 768px) {
+  /* 1) 전체 레이아웃을 세로(column)로, 수평 중앙 정렬 */
+  .calendar-container {
+    flex-direction: column;    /* 세로 정렬 */
+    align-items: center;       /* 수평 중앙으로 */
+    padding: 10px;             /* 좌우 여백 */
+    gap: 20px;                 /* 섹션 간격 */
+  }
+
+  /* 2) 풀캘린더와 툴팁 감추기 */
+  #calendar,
+  #tooltip {
+    display: none !important;
+  }
+
+  /* 3) 쿠폰을 맨 위로 (order:1) */
+  .calendar-container > .coupon-kakaopay-container {
+    order: 1;
+    width: 100%;               /* 필요시 full-width, 아니면 제거해도 됨 */
+    display: flex;
+    justify-content: center;   /* 쿠폰 박스 수평 중앙 */
+  }
+
+  /* 4) 오버플로우·크라운-비트·쫄작문의 컨테이너는 그 다음 (order:2) */
+  .calendar-container > .left-container {
+    order: 2;
+    /* 기존 flex-column 유지되므로 자식은 순서대로 쌓임 */
+    align-items: center;       /* 자식 박스들을 수평 중앙 정렬 */
+    gap: 15px;                 /* 자식 요소 간격 */
+  }
+
+  /* 5) 각 섹션 제목을 중앙 정렬 */
+  .left-container .index-title,
+  .coupon-kakaopay-container .index-title {
+    text-align: center;
+  }
+}
+
+/* 모바일 드롭다운 기본 숨김 */
+.mobile-filter-dropdown { display: none; }
+
+/* 모바일 전용: ≤768px */
+@media only screen and (max-width: 768px) {
+  .container1 {
+    margin-top: 80px;
+  }
+
+  .filters { display: none !important; }
+  .mobile-filter-dropdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-bottom: 15px;
+    justify-content: center;
+  }
+  .mobile-filter-dropdown label {
+    flex: 1 1 100%;
+    font-size: 14px;
+    text-align: center;
+  }
+  .mobile-filter-dropdown select {
+    flex: 1 1 45%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  /* 테이블: 5번째 열(HP)부터 숨김 */
+  .result-table th:nth-child(n+5),
+  .result-table td:nth-child(n+5) {
+    display: none !important;
+  }
+  .results { overflow-x: auto; }
+  .result-table { margin: 0 auto; width: auto; }
+
+  .text2 {
+    display: none !important;
+  }
+}
