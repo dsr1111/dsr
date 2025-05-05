@@ -90,9 +90,7 @@ input[type="text"]::placeholder {
 
 .search-results {
     background-color: transparent;
-    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
     display: none;
     flex: 1;
@@ -113,9 +111,9 @@ input[type="text"]::placeholder {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    flex: 1;
     overflow-y: auto;
     padding-right: 10px;
+    height: 620px;
 }
 
 .deck-card {
