@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="image/icon.webp" type="image/x-icon" />
+    <title>데미지 계산기 | DSR WIKI</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/css/deck.css" />
+    <link rel="stylesheet" href="assets/css/styles1.css" />
+    <script src="app/deck.js" defer></script>
+    <script src="app/nav.js" defer></script>
+  </head>
+  <body>
+    <custom-nav></custom-nav>
+    <!--=============== MAIN JS ===============-->
+    <script src="assets/js/main.js"></script>
+
+<div class="container">
+<h1>디지몬 덱 뷰어</h1>
+
+<div class="search-container">
+    <div class="search-row">
+        <div class="search-group">
+            <label for="digimon-search">디지몬 검색:</label>
+            <input type="text" id="digimon-search" placeholder="디지몬 이름 입력...">
+        </div>
+        
+        <div class="search-group">
+            <label for="effect-search">효과 검색:</label>
+            <input type="text" id="effect-search" placeholder="효과 키워드 입력...">
+        </div>
+    </div>
+</div>
+
+<div id="search-results" class="search-results">
+    <div id="results-container"></div>
+</div>
+
+<div id="deck-container" class="deck-container">
+    <!-- 덱 카드들이 여기에 동적으로 추가됩니다 -->
+</div>
+</div>
+</body>
+</html>

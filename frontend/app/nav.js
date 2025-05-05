@@ -29,6 +29,7 @@ class CustomNav extends HTMLElement {
                     </div>
                     <ul class="dropdown__menu">
                       <li><a href="/digimon" class="dropdown__link">도감</a></li>
+                      <li><a href="/deck" class="dropdown__link">덱</a></li>
                       <li><a href="/evolution" class="dropdown__link">진화트리</a></li>
                     </ul>
                   </li>
