@@ -234,7 +234,11 @@ document.addEventListener("DOMContentLoaded", function () {
         couponContainer.appendChild(noCouponsEl);
       }
     })
-    .catch((error) => console.error("Error loading coupon data:", error));
+    .catch(err => {
+      // 아이폰에서 이렇게 alert으로 확인
+      alert(`쿠폰 데이터 로드 실패: ${err.message}`);
+      console.error(err);
+    });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
