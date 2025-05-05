@@ -72,6 +72,11 @@
         const avatar = document.createElement('div');
         avatar.className = 'digimon-avatar';
         avatar.style.marginRight = '10px';
+
+        if (highlightTerm && d.name.toLowerCase().includes(highlightTerm.toLowerCase())) {
+            avatar.style.boxShadow = '0 0 8px var(--highlight-color)';
+          }
+
         const img = document.createElement('img');
         img.src = `image/digimon/${d.name}/${d.name}.webp`;
         img.alt = d.name;
