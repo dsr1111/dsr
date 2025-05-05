@@ -118,10 +118,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
       for (let couponName in data) {
         const couponData = data[couponName];
-
-        const endDateStr = couponData.period.split("~")[1].trim();
-        const [y, m, d] = endDateStr.split("-").map(Number);
+        const endDateRaw  = couponData.period.split("~")[1].trim();
+        const endDateClean= endDateRaw.replace(/\([^)]*\)/g, "").trim();
+        
+        // 포맷 검사
+        const match = endDateClean.match(/\d{4}-\d{2}-\d{2}/);
+        if (!match) {
+          console.warn("잘못된 기간 포맷:", couponData.period);
+          continue;
+        }
+        
+        const [y, m, d] = match[0].split("-").map(Number);
         const endDate = new Date(y, m - 1, d);
+        console.log("쿠폰:", couponName, "→", endDate);
 
         if (today <= endDate) {
           availableCoupons++;
