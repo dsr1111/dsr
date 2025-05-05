@@ -119,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
       for (let couponName in data) {
         const couponData = data[couponName];
 
-        const endDateStr = couponData.period.split("~")[1].trim();
-        const endDate = new Date(endDateStr);
+        const [y, m, d] = endDateStr.split("-").map(Number);
+        const endDate   = new Date(y, m - 1, d);
 
         if (today <= endDate) {
           availableCoupons++;
