@@ -30,20 +30,22 @@
     }
 
     // 필터링된 덱만 deck-container에 렌더링
-    function renderFilteredDecks(filtered) {
+    function renderFilteredDecks(filtered, highlightTerm = '') {
         const container = document.getElementById('deck-container');
         container.innerHTML = '';
+      
         if (Object.keys(filtered).length === 0) {
-        const no = document.createElement('div');
-        no.className = 'no-results';
-        no.textContent = '검색 결과가 없습니다.';
-        container.appendChild(no);
+          const no = document.createElement('div');
+          no.className = 'no-results';
+          no.textContent = '검색 결과가 없습니다.';
+          container.appendChild(no);
         } else {
-        Object.entries(filtered).forEach(([name, info]) => {
-            container.appendChild(createDeckCard(name, info));
-        });
+          Object.entries(filtered).forEach(([name, info]) => {
+            // highlightTerm 를 그대로 넘겨줍니다
+            container.appendChild(createDeckCard(name, info, highlightTerm));
+          });
         }
-    }
+      }
 
     // 덱 카드 생성 함수
     function createDeckCard(deckName, deckInfo, highlightDigimon = '', highlightEffect = '') {
@@ -53,7 +55,12 @@
       // 제목
       const title = document.createElement('h2');
       title.className = 'deck-title';
-      title.textContent = deckName;
+      if (highlightTerm) {
+        const re = new RegExp(`(${highlightTerm})`, 'gi');
+        title.innerHTML = deckName.replace(re, '<span class="highlight">$1</span>');
+      } else {
+        title.textContent = deckName;
+      }
       deckCard.appendChild(title);
 
       // 디지몬 이미지
@@ -99,19 +106,33 @@
       // 설명
       const desc = document.createElement('div');
       desc.className = 'deck-description';
-      desc.textContent = deckInfo.description;
+      if (highlightTerm) {
+        const re = new RegExp(`(${highlightTerm})`, 'gi');
+        desc.innerHTML = deckInfo.description.replace(re, '<span class="highlight">$1</span>');
+      } else {
+        desc.textContent = deckInfo.description;
+      }
       deckCard.appendChild(desc);
 
-      // 효과 한 줄로 / 구분
       const effectsContainer = document.createElement('div');
       effectsContainer.className = 'effects-container';
       effectsContainer.innerHTML = deckInfo.effects
-        .map(e =>
-          e.replace(/(\+\s*[\d\.]+%?)/g, '<span class="effect-value">$1</span>')
-        )
+        .map(e => {
+          // (a) 숫자 부분 강조
+          let html = e.replace(
+            /(\+\s*[\d\.]+%?)/g,
+            '<span class="effect-value">$1</span>'
+          );
+          // (b) 검색어 하이라이트
+          if (highlightTerm) {
+            const re = new RegExp(`(${highlightTerm})`, 'gi');
+            html = html.replace(re, '<span class="highlight">$1</span>');
+          }
+          return html;
+        })
         .join(' / ');
       deckCard.appendChild(effectsContainer);
-
+    
       return deckCard;
     }
 
@@ -131,7 +152,7 @@
             }
           });
           effectSearch.value = '';
-          renderFilteredDecks(results);
+          renderFilteredDecks(results, term);
         });
     
         effectSearch.addEventListener('input', () => {
@@ -146,7 +167,7 @@
             }
           });
           digimonSearch.value = '';
-          renderFilteredDecks(results);
+          renderFilteredDecks(results, term);
         });
       }
 
