@@ -120,7 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const couponData = data[couponName];
 
         const endDateStr = couponData.period.split("~")[1].trim();
-        const endDate    = new Date(endDateStr);
+        const [y, m, d] = endDateStr.split("-").map(Number);
+        const endDate = new Date(y, m - 1, d);
 
         if (today <= endDate) {
           availableCoupons++;
@@ -234,11 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
         couponContainer.appendChild(noCouponsEl);
       }
     })
-    .catch(err => {
-      // 아이폰에서 이렇게 alert으로 확인
-      alert(`쿠폰 데이터 로드 실패: ${err.message}`);
-      console.error(err);
-    });
+    .catch((error) => console.error("Error loading coupon data:", error));
 });
 
 document.addEventListener("DOMContentLoaded", function () {
