@@ -56,7 +56,7 @@
         avatar.appendChild(img);
 
         // 툴팁
-        const tip = `${d.name} (Lv. ${d.level})`;
+        const tip = `Lv.${d.level} ${d.name} `;
         avatar.addEventListener('mouseover', () => {
           document.querySelectorAll('.digimon-tooltip').forEach(t=>t.remove());
           const tt = document.createElement('div');
