@@ -29,6 +29,22 @@
       });
     }
 
+    // 필터링된 덱만 deck-container에 렌더링
+    function renderFilteredDecks(filtered) {
+        const container = document.getElementById('deck-container');
+        container.innerHTML = '';
+        if (Object.keys(filtered).length === 0) {
+        const no = document.createElement('div');
+        no.className = 'no-results';
+        no.textContent = '검색 결과가 없습니다.';
+        container.appendChild(no);
+        } else {
+        Object.entries(filtered).forEach(([name, info]) => {
+            container.appendChild(createDeckCard(name, info));
+        });
+        }
+    }
+
     // 덱 카드 생성 함수
     function createDeckCard(deckName, deckInfo, highlightDigimon = '', highlightEffect = '') {
       const deckCard = document.createElement('div');
@@ -99,68 +115,40 @@
       return deckCard;
     }
 
-    // 검색 이벤트 설정
     function setupEventListeners() {
-      const digimonSearch = document.getElementById('digimon-search');
-      const effectSearch  = document.getElementById('effect-search');
-
-      digimonSearch.addEventListener('input', () => {
-        const term = digimonSearch.value.trim();
-        if (term) {
-          searchDigimon(term);
+        const digimonSearch = document.getElementById('digimon-search');
+        const effectSearch  = document.getElementById('effect-search');
+    
+        digimonSearch.addEventListener('input', () => {
+          const term = digimonSearch.value.trim().toLowerCase();
+          if (!term) return renderAllDecks();
+    
+          // 디지몬 이름 필터
+          const results = {};
+          Object.entries(deckData).forEach(([name, info]) => {
+            if (info.digimon.some(d => d.name.toLowerCase().includes(term))) {
+              results[name] = info;
+            }
+          });
           effectSearch.value = '';
-        } else showAllDecks();
-      });
-
-      effectSearch.addEventListener('input', () => {
-        const term = effectSearch.value.trim();
-        if (term) {
-          searchEffect(term);
-          digimonSearch.value = '';
-        } else showAllDecks();
-      });
-    }
-
-    // 검색·결과 렌더링 함수들 (이전과 동일)
-    function searchDigimon(searchTerm) {
-      const results = {};
-      Object.entries(deckData).forEach(([name, info]) => {
-        if (info.digimon.some(d=>d.name.toLowerCase().includes(searchTerm.toLowerCase()))) {
-          results[name] = info;
-        }
-      });
-      displaySearchResults(results, '디지몬 검색 결과', searchTerm, '');
-    }
-
-    function searchEffect(searchTerm) {
-      const results = {};
-      Object.entries(deckData).forEach(([name, info]) => {
-        if (info.effects.some(e=>e.toLowerCase().includes(searchTerm.toLowerCase()))) {
-          results[name] = info;
-        }
-      });
-      displaySearchResults(results, '효과 검색 결과', '', searchTerm);
-    }
-
-    function displaySearchResults(results, title, hlDigimon, hlEffect) {
-      const rc = document.getElementById('results-container');
-      rc.innerHTML = '';
-      if (!Object.keys(results).length) {
-        const no = document.createElement('div');
-        no.className = 'no-results';
-        no.textContent = '검색 결과가 없습니다.';
-        rc.appendChild(no);
-      } else {
-        const grid = document.createElement('div');
-        grid.className = 'deck-container';
-        Object.entries(results).forEach(([n,i]) => {
-          grid.appendChild(createDeckCard(n, i, hlDigimon, hlEffect));
+          renderFilteredDecks(results);
         });
-        rc.appendChild(grid);
+    
+        effectSearch.addEventListener('input', () => {
+          const term = effectSearch.value.trim().toLowerCase();
+          if (!term) return renderAllDecks();
+    
+          // 효과 텍스트 필터
+          const results = {};
+          Object.entries(deckData).forEach(([name, info]) => {
+            if (info.effects.some(e => e.toLowerCase().includes(term))) {
+              results[name] = info;
+            }
+          });
+          digimonSearch.value = '';
+          renderFilteredDecks(results);
+        });
       }
-      document.getElementById('search-results').style.display = 'flex';
-      document.getElementById('deck-container').style.display = 'none';
-    }
 
     function showAllDecks() {
       document.getElementById('search-results').style.display = 'none';
