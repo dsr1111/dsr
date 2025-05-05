@@ -30,7 +30,7 @@
     }
 
     // 필터링된 덱만 deck-container에 렌더링
-    function renderFilteredDecks(filtered, highlightTerm = '') {
+    function renderFilteredDecks(filtered, highlightTerms = []) {
         const container = document.getElementById('deck-container');
         container.innerHTML = '';
       
@@ -42,7 +42,7 @@
         } else {
           Object.entries(filtered).forEach(([name, info]) => {
             // highlightTerm 를 그대로 넘겨줍니다
-            container.appendChild(createDeckCard(name, info, highlightTerm));
+            container.appendChild(createDeckCard(name, info, highlightTerms));
           });
         }
       }
@@ -52,15 +52,15 @@
     }
 
     // 덱 카드 생성 함수
-    function createDeckCard(deckName, deckInfo, highlightTerm = '') {
+    function createDeckCard(deckName, deckInfo, highlightTerms = []) {
       const deckCard = document.createElement('div');
       deckCard.className = 'deck-card';
 
       // 제목
       const title = document.createElement('h2');
       title.className = 'deck-title';
-      if (highlightTerm) {
-        const re = new RegExp(`(${highlightTerm})`, 'gi');
+      if (highlightTerms) {
+        const re = new RegExp(`(${highlightTerms})`, 'gi');
         title.innerHTML = deckName.replace(re, '<span class="highlight">$1</span>');
       } else {
         title.textContent = deckName;
@@ -155,7 +155,7 @@
             }
           });
           effectSearch.value = '';
-          renderFilteredDecks(results, term);
+          renderFilteredDecks(results, terms);
         });
     
         effectSearch.addEventListener('input', () => {
