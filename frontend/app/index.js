@@ -39,35 +39,35 @@ document.addEventListener("DOMContentLoaded", function () {
     events: [
       {
         title: "디지패스 2025 시즌4",
-        start: "2025-04-10",
-        end: "2025-05-08",
+        start: "2025-04-10T00:00:00",
+        end: "2025-05-08T23:59:59", // 시간을 포함한 종료일 (5월 8일 23시 59분 59초)
         backgroundColor: "gray",
       },
       {
         title: "5월 연휴 월드 버프",
-        start: "2025-05-01",
-        end: "2025-05-06",
+        start: "2025-05-01T00:00:00",
+        end: "2025-05-06T23:59:59", // 시간을 포함한 종료일 (5월 6일 23시 59분 59초)
         backgroundColor: "#ffcccc",
         textColor: "#990000",
       },
       {
         title: "나도 진화할래 이벤트",
-        start: "2025-04-24",
-        end: "2025-05-08",
+        start: "2025-04-24T00:00:00",
+        end: "2025-05-08T23:59:59", // 시간을 포함한 종료일
         backgroundColor: "skyblue",
         textColor: "black",
       },
       {
         title: "잃어버린 동심 이벤트",
-        start: "2025-04-24",
-        end: "2025-05-08",
+        start: "2025-04-24T00:00:00",
+        end: "2025-05-08T23:59:59", // 시간을 포함한 종료일
         backgroundColor: "green",
         textColor: "black",
       },
       {
         title: "보코몬의 서신 이벤트",
-        start: "2025-04-24",
-        end: "2025-05-31",
+        start: "2025-04-24T00:00:00",
+        end: "2025-05-31T23:59:59", // 시간을 포함한 종료일
         backgroundColor: "purple",
         textColor: "white",
       }
@@ -82,10 +82,11 @@ document.addEventListener("DOMContentLoaded", function () {
     },
 
     eventDidMount: function (info) {
+      // 시작일과 종료일 포맷팅 (시간 제외)
       const startDate = info.event.start.toLocaleDateString();
-      const endDate = info.event.end
-        ? info.event.end.toLocaleDateString()
-        : startDate;
+      const endDate = info.event.end ? info.event.end.toLocaleDateString() : startDate;
+      
+      // 툴팁 텍스트
       const tooltipText = `${info.event.title}<br>${startDate} ~ ${endDate}`;
 
       info.el.addEventListener("mouseover", function () {
