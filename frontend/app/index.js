@@ -141,9 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // 오늘 날짜의 시간 부분을 제거하고 비교
         const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  
-        // 디버깅용 로그 추가 (실제 배포 전 제거)
-        console.log(`쿠폰: ${couponName}, 종료일: ${endDateWithTime}, 파싱된 날짜: ${endDate}, 오늘: ${today}`);
 
         if (today <= endDate) {
           availableCoupons++;
