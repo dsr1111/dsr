@@ -26,6 +26,17 @@ document.addEventListener("DOMContentLoaded", function () {
         click: function () {},
       },
     },
+    // 이벤트 시간 표시 형식을 비워서 시간 표시 제거
+    eventTimeFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      meridiem: false,
+      hour12: false,
+      omitZeroMinute: true,
+      displayEventTime: false // 이벤트 시간 표시 안함
+    },
+    // 이벤트 시간 표시 안함
+    displayEventTime: false,
     visibleRange: function () {
       let start = new Date();
       start.setDate(start.getDate() - start.getDay());
@@ -40,34 +51,34 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         title: "디지패스 2025 시즌4",
         start: "2025-04-10T00:00:00",
-        end: "2025-05-08T23:59:59", // 시간을 포함한 종료일 (5월 8일 23시 59분 59초)
+        end: "2025-05-08T10:00:00",
         backgroundColor: "gray",
       },
       {
         title: "5월 연휴 월드 버프",
         start: "2025-05-01T00:00:00",
-        end: "2025-05-06T23:59:59", // 시간을 포함한 종료일 (5월 6일 23시 59분 59초)
+        end: "2025-05-06T23:59:59",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
       },
       {
         title: "나도 진화할래 이벤트",
         start: "2025-04-24T00:00:00",
-        end: "2025-05-08T23:59:59", // 시간을 포함한 종료일
+        end: "2025-05-08T10:00:00",
         backgroundColor: "skyblue",
         textColor: "black",
       },
       {
         title: "잃어버린 동심 이벤트",
         start: "2025-04-24T00:00:00",
-        end: "2025-05-08T23:59:59", // 시간을 포함한 종료일
+        end: "2025-05-08T10:00:00",
         backgroundColor: "green",
         textColor: "black",
       },
       {
         title: "보코몬의 서신 이벤트",
         start: "2025-04-24T00:00:00",
-        end: "2025-05-31T23:59:59", // 시간을 포함한 종료일
+        end: "2025-05-31T10:00:00",
         backgroundColor: "purple",
         textColor: "white",
       }
