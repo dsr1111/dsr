@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         title: "카네이션을 만들자",
         start: "2025-05-08T00:00:00",
-        end: "2025-05-022T23:59:59",
+        end: "2025-05-22T23:59:59",
         backgroundColor: "#ffcccc",
         textColor: "#990000",
       },
