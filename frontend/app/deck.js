@@ -75,7 +75,8 @@
           }
         avatar.style.marginRight = '10px';
         const img = document.createElement('img');
-        img.src = `image/digimon/${d.name}/${d.name}.webp`;
+        const safeName = d.name.replace(/:/g, '_');
+        img.src = `image/digimon/${safeName}/${safeName}.webp`;
         img.alt = d.name;
         img.onerror = () => { avatar.textContent = d.name.charAt(0); };
         avatar.appendChild(img);
