@@ -330,7 +330,7 @@
       this.filterTable();
     },
     toggleAllType() {
-      const types = ["백신", "데이터", "바이러스", "프리", "언노운"];
+      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
       const checkBox = document.getElementById("select-all-type");
       if (checkBox.checked) {
         types.forEach((type) => {
@@ -559,7 +559,7 @@
   function sortTable(column) {
     const table = document.getElementById("characterTable");
     const rows = Array.from(table.rows);
-    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운"];
+    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
     rows.sort((a, b) => {
       let cellA = a.cells[column].innerText.trim();
       let cellB = b.cells[column].innerText.trim();
