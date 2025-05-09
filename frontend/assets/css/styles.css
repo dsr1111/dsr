@@ -984,13 +984,14 @@ input[type="number"] {
     border-radius: 4px;
   }
 
-  /* 테이블: 5번째 열(HP)부터 숨김 */
-  .result-table th:nth-child(n+5),
-  .result-table td:nth-child(n+5) {
-    display: none !important;
+  .results { 
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .results { overflow-x: auto; }
-  .result-table { margin: 0 auto; width: auto; }
+  .result-table { 
+    margin: 0 auto;
+    min-width: 100%;
+  }
 
   .text2 {
     display: none !important;
