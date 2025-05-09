@@ -782,7 +782,7 @@ input[type="number"] {
   padding: 10px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  width: calc(100% + 20px);
+  width: calc(100% + 20.5px);
   display: block;
   margin: -10px 0 10px -10px;
   box-sizing: border-box;
