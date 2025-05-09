@@ -12,6 +12,40 @@
   };
   let isAscending = true;
 
+  // 커스텀 툴팁 표시 함수
+  function showCustomTooltip(e, text) {
+    const tooltip = document.getElementById('custom-tooltip');
+    const tooltipSpan = tooltip.querySelector('span');
+    tooltipSpan.textContent = text;
+    tooltip.style.display = 'block';
+    
+    // 이미지의 위치 정보 가져오기
+    const rect = e.target.getBoundingClientRect();
+    
+    // 툴팁의 크기 정보 가져오기
+    const tooltipRect = tooltip.getBoundingClientRect();
+    
+    // 툴팁을 이미지 중앙에 맞추기
+    const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${rect.bottom + 5}px`;
+    
+    // 툴팁이 화면 오른쪽 끝을 벗어나는 경우
+    if (left + tooltipRect.width > window.innerWidth) {
+      tooltip.style.left = `${window.innerWidth - tooltipRect.width - 10}px`;
+    }
+    
+    // 툴팁이 화면 왼쪽 끝을 벗어나는 경우
+    if (left < 0) {
+      tooltip.style.left = '10px';
+    }
+  }
+
+  function hideCustomTooltip() {
+    const tooltip = document.getElementById('custom-tooltip');
+    tooltip.style.display = 'none';
+  }
+
   // ====================================================
   // 2. CSV Loader Module (CSV 파일 로드 및 파싱)
   // ====================================================
@@ -75,18 +109,44 @@
         const 필드 = columns[15];
 
         const typeImagePath = `../image/${type}.webp`;
+        const typeImgHtml = `<img src="${typeImagePath}" alt="${type}" 
+          style="width:23px;height:23px;display:block;margin:0 auto;cursor:pointer;"
+          onmouseenter="showCustomTooltip(event, '${type}')"
+          onmousemove="showCustomTooltip(event, '${type}')"
+          onmouseleave="hideCustomTooltip()"
+        >`;
+
         const strongHtml = 강점
-          ? `<img src="../image/${강점}.webp" alt="${강점}" title="${강점}" style="width:25px;height:25px;vertical-align:middle;background-image:url('../image/strongbackground.webp');background-size:120%;background-position:center;"> <span>${강점효과 ? 강점효과 : ""}</span>`
+          ? `<img src="../image/${강점}.webp" alt="${강점}" 
+              style="width:25px;height:25px;vertical-align:middle;background-image:url('../image/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+              onmouseenter="showCustomTooltip(event, '${강점}')"
+              onmousemove="showCustomTooltip(event, '${강점}')"
+              onmouseleave="hideCustomTooltip()"
+            > <span>${강점효과 ? 강점효과 : ""}</span>`
           : "";
+
         const weakHtml = 약점
-          ? `<img src="../image/${약점}.webp" alt="${약점}" title="${약점}" style="width:25px;height:25px;vertical-align:middle;background-image:url('../image/weakbackground.webp');background-size:120%;background-position:center;"> <span>${약점효과 ? 약점효과 : ""}</span>`
+          ? `<img src="../image/${약점}.webp" alt="${약점}" 
+              style="width:25px;height:25px;vertical-align:middle;background-image:url('../image/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+              onmouseenter="showCustomTooltip(event, '${약점}')"
+              onmousemove="showCustomTooltip(event, '${약점}')"
+              onmouseleave="hideCustomTooltip()"
+            > <span>${약점효과 ? 약점효과 : ""}</span>`
           : "";
+
         const fieldsHtml = 필드
           ? 필드
               .split(";")
+              .map(field => field.trim()) // 공백 제거
+              .filter(field => field !== "") // 빈 문자열 제거
               .map(
                 (field) =>
-                  `<img src="../image/field/${field}.webp" alt="${field}" title="${field}" style="width:25px;height:25px;">`
+                  `<img src="../image/field/${field}.webp" alt="${field}" 
+                    style="width:25px;height:25px;cursor:pointer;"
+                    onmouseenter="showCustomTooltip(event, '${field}')"
+                    onmousemove="showCustomTooltip(event, '${field}')"
+                    onmouseleave="hideCustomTooltip()"
+                  >`
               )
               .join("")
           : "";
@@ -156,7 +216,7 @@
           }
           const effectTooltipHtml =
             skill.effect && effectDescription
-              ? `<div class="tooltip" style="display:inline-block;vertical-align:middle;">
+              ? `<div class="tooltip">
                    <img src="${effectImagePath}" alt="${skill.effect}" style="width:23px;height:23px;vertical-align:middle;border-radius:50%;">
                    <div class="tooltiptext">
                      <div class="tooltip-content">
@@ -168,7 +228,12 @@
               : "";
           return `
             <td style="${backgroundColor}">
-              <img src="../image/${skill.속성}.webp" alt="${skill.속성}" title="${skill.속성}" style="width:25px;height:25px;vertical-align:middle;background-image:url('../image/background.webp');background-size:120%;background-position:center;">
+              <img src="../image/${skill.속성}.webp" alt="${skill.속성}" 
+                style="width:25px;height:25px;vertical-align:middle;background-image:url('../image/background.webp');background-size:120%;background-position:center;cursor:pointer;"
+                onmouseenter="showCustomTooltip(event, '${skill.속성}')"
+                onmousemove="showCustomTooltip(event, '${skill.속성}')"
+                onmouseleave="hideCustomTooltip()"
+              >
               ${effectTooltipHtml}
               <span>${format타수(skill.타수)} / ${skill.범위}</span>
             </td>
@@ -201,14 +266,14 @@
         newRow.innerHTML = `
           <td>
             <div style="width:25px;height:25px;background-color:black;display:inline-block;vertical-align:middle;">
-              <img src="${characterImagePath}" alt="${name}" title="${name}" style="width:100%;height:100%;" onerror="this.src='../image/digimon/default.webp';">
+              <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='../image/digimon/default.webp';">
             </div>
             <a href="detail.html?name=${encodeURIComponent(name)}" style="text-decoration:none;color:black;">${name}</a>
           </td>
           <td style="text-align:center;vertical-align:middle;">${level}</td>
           <td style="text-align:center;vertical-align:middle;">${evolution}</td>
           <td style="text-align:center;vertical-align:middle;">
-            <img src="${typeImagePath}" alt="${type}" title="${type}" style="width:23px;height:23px;display:block;margin:0 auto;">
+            ${typeImgHtml}
           </td>
           <td style="text-align:center;vertical-align:middle;border-left:2px solid darkgrey;">${HP}</td>
           <td style="text-align:center;vertical-align:middle;">${SP}</td>
@@ -618,6 +683,8 @@
   window.sortTable = sortTable;
   window.showTooltip = showTooltip;
   window.hideTooltip = hideTooltip;
+  window.showCustomTooltip = showCustomTooltip;
+  window.hideCustomTooltip = hideCustomTooltip;
 })();
 
 

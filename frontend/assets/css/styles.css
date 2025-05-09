@@ -39,6 +39,8 @@ body {
   border-radius: 10px;
   margin-bottom: 20px;
   position: relative;
+  height: fit-content;
+  min-height: auto;
 }
 
 .filter-row {
@@ -302,49 +304,54 @@ tbody {
 }
 
 .tooltip {
-  position: relative;
   display: inline-block;
-  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
 }
 
 .tooltiptext {
   visibility: hidden;
-  background-color: rgba(0, 0, 0, 0.85);
+  position: absolute;
+  z-index: 9999;
+  background: rgba(40,40,40,0.95);
   color: #fff;
-  text-align: left;
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  margin-top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: max-content;
+}
+
+.tooltiptext::before {
+  content: '';
   position: absolute;
-  z-index: 1;
-  position: absolute;
-  top: 100%;
-  transform: translateX(0%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  white-space: normal;
-  display: inline-block;
-  min-width: 270px;
-  max-width: 300px;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid rgba(40,40,40,0.95);
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
 .tooltip-content {
   display: flex;
   align-items: center;
-}
-
-.tooltip-content img {
-  margin-right: 10px;
+  gap: 8px;
 }
 
 .tooltip-description {
-  display: inline-block;
-  vertical-align: middle;
-  max-width: 220px;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+  white-space: pre-line;
 }
 
 .filter-label {
@@ -649,15 +656,30 @@ tbody {
 }
 
 .custom-tooltip {
-  position: absolute;
-  background-color: #333;
-  color: #fff;
-  padding: 5px;
-  border-radius: 4px;
-  font-size: 12px;
   display: none;
-  z-index: 1000;
+  position: fixed;
+  z-index: 9999;
+  padding: 6px 12px;
+  background: rgba(40,40,40,0.95);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: normal;
   pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  margin-top: 8px;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid rgba(40,40,40,0.95);
 }
 
 .fc-currentMonth-button,
@@ -782,7 +804,7 @@ input[type="number"] {
   padding: 10px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  width: calc(100% + 20.5px);
+  width: calc(100% + 20px);
   display: block;
   margin: -10px 0 10px -10px;
   box-sizing: border-box;
@@ -925,7 +947,7 @@ input[type="number"] {
     gap: 20px;                 /* 섹션 간격 */
   }
 
-  /* 2) 풀캘린더와 툴팁 감추기 */
+  /* 2) 풀캘린더와 툴크 감추기 */
   #calendar,
   #tooltip {
     display: none !important;
