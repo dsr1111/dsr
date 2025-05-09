@@ -1,4 +1,5 @@
 (() => {
+  let jogressResultImgTarget = null;
   // ===============================
   // DataModule: CSV 데이터 로드 및 저장
   // ===============================
@@ -53,14 +54,27 @@
     init() {
       console.log("UIManager init 호출됨");
 
-      // 검색 이벤트 등록 (인라인 이벤트 대신 혹은 병행 사용)
+      // 메뉴 버튼 이벤트 등록
+      const menuItems = document.querySelectorAll('.menu-item');
+      menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // 모든 버튼에서 active 클래스 제거
+          menuItems.forEach(btn => btn.classList.remove('active'));
+          // 클릭된 버튼에 active 클래스 추가
+          item.classList.add('active');
+          // 해당 단계의 디지몬 필터링
+          const stage = item.dataset.stage;
+          this.filterDigimonByStage(stage);
+        });
+      });
+
+      // 검색 이벤트 등록
       const searchInput = document.getElementById("search-input");
       if (searchInput) {
         searchInput.addEventListener("input", () => {
           this.searchDigimonByName();
         });
       }
-      // (메뉴 버튼은 인라인 onclick 이벤트로 처리하므로 별도 이벤트 등록은 하지 않습니다.)
     },
 
     createDigimonImageList(data) {
@@ -82,7 +96,12 @@
         img.addEventListener("mouseover", (event) => {
           TooltipManager.showNameTooltip(event, digimon.name);
         });
-        img.addEventListener("mouseout", TooltipManager.hideNameTooltip);
+        img.addEventListener("mousemove", (event) => {
+          TooltipManager.showNameTooltip(event, digimon.name);
+        });
+        img.addEventListener("mouseout", (event) => {
+          TooltipManager.hideNameTooltip();
+        });
 
         // 클릭 시 진화 트리 표시
         img.addEventListener("click", () => {
@@ -93,6 +112,22 @@
           this.selectedDigimon = imgContainer;
           EvolutionTreeManager.showEvolutionTreeForDigimon(digimon.name);
         });
+
+        // 조그레스 결과물(조그레스로 등장하는 디지몬)일 때만 툴팁 이벤트 등록
+        if (digimon.조그레스) {
+          const jogressEntry = DataModule.jogressData.find(j => j.name === digimon.name);
+          if (jogressEntry) {
+            img.addEventListener("mouseenter", (event) => {
+              TooltipManager.showJogressTooltip(event, jogressEntry);
+            });
+            img.addEventListener("mousemove", (event) => {
+              TooltipManager.showJogressTooltip(event, jogressEntry);
+            });
+            img.addEventListener("mouseleave", () => {
+              TooltipManager.hideJogressTooltip();
+            });
+          }
+        }
 
         imgContainer.appendChild(img);
         container.appendChild(imgContainer);
@@ -105,7 +140,15 @@
       const filtered = stage === "all"
         ? DataModule.allData
         : DataModule.allData.filter(d => d.evolution_stage == stage);
+      
+      // 필터링된 데이터로 이미지 리스트 업데이트
       this.createDigimonImageList(filtered);
+      
+      // 선택된 디지몬이 있다면 해당 디지몬의 진화 트리도 업데이트
+      if (this.selectedDigimon) {
+        const digimonName = this.selectedDigimon.querySelector('img').alt;
+        EvolutionTreeManager.showEvolutionTreeForDigimon(digimonName);
+      }
     },
 
     searchDigimonByName() {
@@ -173,27 +216,59 @@
   // TooltipManager: 툴팁 처리
   // ===============================
   const TooltipManager = {
-    showNameTooltip(event, digimonName) {
-      const tooltip = document.getElementById("name-tooltip");
-      tooltip.textContent = digimonName;
-      const rect = event.target.getBoundingClientRect();
-      tooltip.style.left = `${rect.left}px`;
-      tooltip.style.top = `${rect.bottom + window.scrollY - 195}px`;
-      tooltip.classList.add("visible-tooltip");
+    showNameTooltip(event, name) {
+      let tooltip = document.querySelector('.name-tooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'name-tooltip';
+        document.body.appendChild(tooltip);
+      }
+      tooltip.textContent = name;
+      tooltip.classList.add('visible-tooltip');
+      if (window.innerWidth > 1024) {
+        tooltip.style.left = `${event.clientX + 12}px`;
+        tooltip.style.top = `${event.clientY - 20}px`;
+        tooltip.style.bottom = '';
+        tooltip.style.transform = '';
+      } else {
+        tooltip.style.left = '50%';
+        tooltip.style.top = '20px';
+        tooltip.style.bottom = 'auto';
+        tooltip.style.transform = 'translateX(-50%)';
+      }
     },
     hideNameTooltip() {
-      document.getElementById("name-tooltip").classList.remove("visible-tooltip");
+      const tooltip = document.querySelector('.name-tooltip');
+      if (tooltip) {
+        tooltip.classList.remove('visible-tooltip');
+      }
     },
     showEvolutionTooltip(event, digimonName) {
-      const tooltip = document.getElementById("evolution-tooltip");
+      let tooltip = document.querySelector('.tooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        document.body.appendChild(tooltip);
+      }
       tooltip.textContent = digimonName;
-      const rect = event.target.getBoundingClientRect();
-      tooltip.style.left = `${rect.left + window.scrollX - 2}px`;
-      tooltip.style.top = `${rect.bottom + window.scrollY - 190}px`;
-      tooltip.classList.add("visible-tooltip");
+      tooltip.classList.add('visible-tooltip');
+      if (window.innerWidth > 1024) {
+        tooltip.style.left = `${event.clientX + 12}px`;
+        tooltip.style.top = `${event.clientY - 20}px`;
+        tooltip.style.bottom = '';
+        tooltip.style.transform = '';
+      } else {
+        tooltip.style.left = '50%';
+        tooltip.style.top = 'auto';
+        tooltip.style.bottom = '20px';
+        tooltip.style.transform = 'translateX(-50%)';
+      }
     },
     hideEvolutionTooltip() {
-      document.getElementById("evolution-tooltip").classList.remove("visible-tooltip");
+      const tooltip = document.querySelector('.tooltip');
+      if (tooltip) {
+        tooltip.classList.remove('visible-tooltip');
+      }
     },
     showDigimonTooltip(event, digimonName, evoType = "normal") {
       const currentDigimon = DataModule.allData.find(d => d.name === digimonName);
@@ -206,7 +281,7 @@
       if (DataModule.allData.some(d => d.조그레스 === digimonName)) {
         const jogressEntry = DataModule.jogressData.find(j => j.name === digimonName);
         if (jogressEntry) {
-          this.showJogressTooltip(event.target, jogressEntry);
+          this.showJogressTooltip(event, jogressEntry);
         }
         return;
       }
@@ -243,13 +318,28 @@
         tableHtml += `<tr><th>진화 재료</th><td>${digimonInfo["특수진화재료"]}</td></tr>`;
       }
       tableHtml += `</table>`;
-      const tooltip = document.getElementById("tooltip");
+      let tooltip = document.querySelector('.tooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        document.body.appendChild(tooltip);
+      }
       tooltip.innerHTML = tableHtml;
-      tooltip.classList.add("visible-tooltip");
-      this.updateTooltipPosition(event.target, tooltip);
+      tooltip.classList.add('visible-tooltip');
+      if (window.innerWidth > 1024) {
+        tooltip.style.left = `${event.clientX + 12}px`;
+        tooltip.style.top = `${event.clientY - 20}px`;
+        tooltip.style.bottom = '';
+        tooltip.style.transform = '';
+      } else {
+        tooltip.style.left = '50%';
+        tooltip.style.top = 'auto';
+        tooltip.style.bottom = '20px';
+        tooltip.style.transform = 'translateX(-50%)';
+      }
       this.observeNodeChanges(event.target, tooltip);
     },
-    showJogressTooltip(target, jogressEntry) {
+    showJogressTooltip(event, jogressEntry) {
       const tooltip = document.getElementById("tooltip");
       let tableHtml = `<table class="jogress-tooltip-table">
                          <tr><th colspan="3">조그레스 진화 조건</th></tr>`;
@@ -289,10 +379,27 @@
       }
       tableHtml += `</table>`;
       tooltip.innerHTML = tableHtml;
-      const rect = target.getBoundingClientRect();
-      tooltip.style.left = `${rect.left + window.scrollX}px`;
-      tooltip.style.top = `${rect.bottom + window.scrollY - 130}px`;
+      if (window.innerWidth > 1024) {
+        tooltip.style.left = `${event.clientX + 12}px`;
+        tooltip.style.top = `${event.clientY - 20}px`;
+        tooltip.style.bottom = '';
+        tooltip.style.transform = '';
+      } else {
+        tooltip.style.left = '50%';
+        tooltip.style.top = 'auto';
+        tooltip.style.bottom = '20px';
+        tooltip.style.transform = 'translateX(-50%)';
+      }
       tooltip.classList.add("visible-tooltip");
+      tooltip.classList.add("jogress-tooltip");
+    },
+    hideJogressTooltip() {
+      const tooltip = document.querySelector('.jogress-tooltip');
+      if (tooltip) {
+        tooltip.classList.remove('visible-tooltip');
+        tooltip.style.left = '-9999px';
+        tooltip.style.top = '-9999px';
+      }
     },
     updateTooltipPosition(target, tooltip) {
       const rect = target.getBoundingClientRect();
@@ -311,7 +418,7 @@
       }
     },
     hideTooltip() {
-      document.getElementById("tooltip").classList.remove("visible-tooltip");
+      document.querySelector('.tooltip').classList.remove('visible-tooltip');
     }
   };
 
@@ -403,11 +510,15 @@
         digimonDiv.appendChild(typeImg);
       }
       img.addEventListener("mouseover", (event) => {
-        TooltipManager.showEvolutionTooltip(event, digimon.name);
+        TooltipManager.showNameTooltip(event, digimon.name);
+        TooltipManager.showDigimonTooltip(event, digimon.name, evoType);
+      });
+      img.addEventListener("mousemove", (event) => {
+        TooltipManager.showNameTooltip(event, digimon.name);
         TooltipManager.showDigimonTooltip(event, digimon.name, evoType);
       });
       img.addEventListener("mouseout", () => {
-        TooltipManager.hideEvolutionTooltip();
+        TooltipManager.hideNameTooltip();
         TooltipManager.hideTooltip();
       });
       if (lowerEvolutions.includes(digimon.name)) {
@@ -457,6 +568,8 @@
                 }
                 horizontalConnector.style.display = "block";
                 horizontalConnector.appendChild(percentageText);
+
+                // jogress-image(중간 작은 이미지)는 forEach 내부에서만 생성
                 if (evo.name === digimon.조그레스) {
                   const jogressImageName = digimon[Object.keys(digimon)[26]];
                   const jogressImagePath = `../image/digimon/${jogressImageName}/${jogressImageName}.webp`;
@@ -465,19 +578,7 @@
                   jogressImg.classList.add("jogress-image");
                   horizontalConnector.appendChild(jogressImg);
                 }
-                if (evo.evoType === "dark") {
-                  horizontalConnector.classList.add("dark-evo");
-                  const evoLabel = document.createElement("span");
-                  evoLabel.classList.add("evo-label");
-                  evoLabel.textContent = "암흑진화";
-                  horizontalConnector.appendChild(evoLabel);
-                } else if (evo.evoType === "special") {
-                  horizontalConnector.classList.add("special-evo");
-                  const evoLabel = document.createElement("span");
-                  evoLabel.classList.add("evo-label");
-                  evoLabel.textContent = "특수진화";
-                  horizontalConnector.appendChild(evoLabel);
-                }
+
                 childrenContainer.appendChild(nextNode);
               }
             });
@@ -543,4 +644,15 @@
   // 인라인 이벤트(HTML onclick)를 사용할 수 있도록 전역 함수 노출
   window.filterDigimonByStage = UIManager.filterDigimonByStage.bind(UIManager);
   window.searchDigimonByName = UIManager.searchDigimonByName.bind(UIManager);
+
+  // document 레벨에서 마우스가 jogressResultImgTarget 밖으로 나가면 툴팁 숨김
+  document.addEventListener("mousemove", (event) => {
+    if (
+      jogressResultImgTarget &&
+      !jogressResultImgTarget.contains(event.target)
+    ) {
+      TooltipManager.hideJogressTooltip();
+      jogressResultImgTarget = null;
+    }
+  });
 })();

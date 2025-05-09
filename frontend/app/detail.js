@@ -244,4 +244,82 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("데이터를 불러오는 중 오류가 발생했습니다:", error);
       document.getElementById("character-name").textContent = "데이터를 불러오는 중 오류가 발생했습니다.";
     });
+
+  // 덱 정보 가져오기
+  fetch("../data/csv/deck.json")
+    .then(response => response.json())
+    .then(deckData => {
+      const deckContainer = document.getElementById("deck-container");
+      deckContainer.innerHTML = "";
+
+      // 해당 디지몬이 포함된 덱 찾기
+      const matchingDecks = Object.entries(deckData).filter(([_, deck]) => 
+        deck.digimon.some(d => d.name === characterName)
+      );
+
+      if (matchingDecks.length > 0) {
+        matchingDecks.forEach(([deckName, deck]) => {
+          const deckCard = document.createElement("div");
+          deckCard.className = "deck-card";
+          
+          // 덱 카드 HTML 생성
+          deckCard.innerHTML = `
+            <div class="deck-header">
+              <h3 class="deck-title">${deckName}</h3>
+              <p class="deck-description">${deck.description}</p>
+            </div>
+            <div class="deck-content">
+              <div class="digimon-container">
+                ${deck.digimon.map(d => `
+                  <div class="digimon-avatar ${d.name === characterName ? 'highlight' : ''}">
+                    <img src="../image/digimon/${d.name.replace(/:/g, '_')}/${d.name.replace(/:/g, '_')}.webp" 
+                         alt="${d.name}" 
+                         onerror="this.src='../image/digimon/default.webp'">
+                    <div class="digimon-tooltip">Lv.${d.level} ${d.name}</div>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="effects-container">
+                ${deck.effects.map(effect => {
+                  // 숫자 강조
+                  const html = effect.replace(/(\+\s*[\d\.]+%?)/g, '<span class="effect-value">$1</span>');
+                  return html;
+                }).join(' / ')}
+              </div>
+            </div>
+          `;
+          
+          deckContainer.appendChild(deckCard);
+
+          // 툴팁 기능 추가
+          deckCard.querySelectorAll('.digimon-avatar').forEach(avatar => {
+            const tooltip = avatar.querySelector('.digimon-tooltip');
+            
+            avatar.addEventListener('mouseover', () => {
+              document.querySelectorAll('.digimon-tooltip').forEach(t => t.remove());
+              const tt = document.createElement('div');
+              tt.className = 'digimon-tooltip';
+              tt.textContent = tooltip.textContent;
+              document.body.appendChild(tt);
+              const r = avatar.getBoundingClientRect();
+              tt.style.left = r.left + r.width/2 + 'px';
+              tt.style.top = r.bottom + 10 + 'px';
+              tt.style.transform = 'translateX(-50%)';
+              tt.style.opacity = '1';
+            });
+
+            avatar.addEventListener('mouseout', () => {
+              document.querySelectorAll('.digimon-tooltip').forEach(t => t.remove());
+            });
+          });
+        });
+      } else {
+        deckContainer.innerHTML = '<p class="no-deck-message">이 디지몬이 포함된 덱이 없습니다.</p>';
+      }
+    })
+    .catch(error => {
+      console.error("덱 데이터를 불러오는 중 오류가 발생했습니다:", error);
+      document.getElementById("deck-container").innerHTML = 
+        '<p class="error-message">덱 정보를 불러오는 중 오류가 발생했습니다.</p>';
+    });
 });
