@@ -428,9 +428,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow-y: auto;
+  width: 100%;
+  height: fit-content;
+  min-height: auto;
   padding-right: 10px;
-  height: 620px;
 }
 
 .deck-card {
