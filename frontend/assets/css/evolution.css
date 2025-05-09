@@ -133,6 +133,12 @@ body {
   display: none;
   z-index: 1;
 }
+.horizontal-connector.dark-evo {
+  background-color: #793fb2;
+}
+.horizontal-connector.special-evo {
+  background-color: #e3d400;
+}
 .percentage-text {
   position: absolute;
   top: -15px;
@@ -146,6 +152,23 @@ body {
   top: 100%;
   right: 7px;
   font-size: 14px;
+}
+.evo-label[data-evo-type="dark"] {
+  color: #5a2d82;
+  font-weight: 600;
+}
+.evo-label[data-evo-type="special"] {
+  color: #b39b00;
+  font-weight: 600;
+}
+.horizontal-connector.dark-evo .evo-label {
+  color: #5a2d82;
+  text-align: center;
+  font-weight: 600;
+}
+.horizontal-connector.special-evo .evo-label {
+  color: #e3d400;
+  text-align: center;
 }
 .children-container {
   display: none;
@@ -383,16 +406,6 @@ body {
   width: 30px;
   height: 30px;
   z-index: 10;
-}
-
-.horizontal-connector.dark-evo .evo-label {
-  color: #793fb2;
-  text-align: center;
-}
-
-.horizontal-connector.special-evo .evo-label {
-  color: #e3d400;
-  text-align: center;
 }
 
 .evolution-menu {

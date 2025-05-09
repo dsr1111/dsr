@@ -327,8 +327,15 @@
       tooltip.innerHTML = tableHtml;
       tooltip.classList.add('visible-tooltip');
       if (window.innerWidth > 1024) {
-        tooltip.style.left = `${event.clientX + 12}px`;
-        tooltip.style.top = `${event.clientY - 20}px`;
+        const nameTooltip = document.querySelector('.name-tooltip');
+        if (nameTooltip && nameTooltip.classList.contains('visible-tooltip')) {
+          const nameTooltipRect = nameTooltip.getBoundingClientRect();
+          tooltip.style.left = `${event.clientX + 12}px`;
+          tooltip.style.top = `${nameTooltipRect.bottom + 5}px`;
+        } else {
+          tooltip.style.left = `${event.clientX + 12}px`;
+          tooltip.style.top = `${event.clientY - 20}px`;
+        }
         tooltip.style.bottom = '';
         tooltip.style.transform = '';
       } else {
@@ -380,8 +387,15 @@
       tableHtml += `</table>`;
       tooltip.innerHTML = tableHtml;
       if (window.innerWidth > 1024) {
-        tooltip.style.left = `${event.clientX + 12}px`;
-        tooltip.style.top = `${event.clientY - 20}px`;
+        const nameTooltip = document.querySelector('.name-tooltip');
+        if (nameTooltip && nameTooltip.classList.contains('visible-tooltip')) {
+          const nameTooltipRect = nameTooltip.getBoundingClientRect();
+          tooltip.style.left = `${event.clientX + 12}px`;
+          tooltip.style.top = `${nameTooltipRect.bottom + 5}px`;
+        } else {
+          tooltip.style.left = `${event.clientX + 12}px`;
+          tooltip.style.top = `${event.clientY - 20}px`;
+        }
         tooltip.style.bottom = '';
         tooltip.style.transform = '';
       } else {
@@ -569,6 +583,14 @@
                 horizontalConnector.style.display = "block";
                 horizontalConnector.appendChild(percentageText);
 
+                if (evo.evoType === "dark" || evo.evoType === "special") {
+                  const evoLabel = document.createElement("div");
+                  evoLabel.classList.add("evo-label");
+                  evoLabel.setAttribute("data-evo-type", evo.evoType);
+                  evoLabel.textContent = evo.evoType === "dark" ? "암흑진화" : "특수진화";
+                  horizontalConnector.appendChild(evoLabel);
+                }
+
                 // jogress-image(중간 작은 이미지)는 forEach 내부에서만 생성
                 if (evo.name === digimon.조그레스) {
                   const jogressImageName = digimon[Object.keys(digimon)[26]];
@@ -612,13 +634,6 @@
       container.appendChild(horizontalLine);
       container.appendChild(verticalLine);
       container.appendChild(childrenContainer);
-      if (evoType === "dark" || evoType === "special") {
-        setTimeout(() => {
-          const intersection = this.getIntersectionPercentage(verticalLine, horizontalLine);
-          verticalLine.style.setProperty("--intersection-percent", intersection + "%");
-          verticalLine.classList.add(evoType === "dark" ? "dark-evo" : "special-evo");
-        }, 300);
-      }
       return container;
     },
     getIntersectionPercentage(verticalLine, horizontalLine) {
