@@ -1017,4 +1017,8 @@ input[type="number"] {
   .text2 {
     display: none !important;
   }
+
+  .calendar-container {
+  margin: 80px auto 0;
+  }
 }
