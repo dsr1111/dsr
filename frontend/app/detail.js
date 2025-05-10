@@ -31,8 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function showTooltip(element, text) {
     const tooltip = createTooltip(text);
     const rect = element.getBoundingClientRect();
-    tooltip.style.left = rect.left + (rect.width / 2) + 'px';
-    tooltip.style.top = rect.bottom + 5 + 'px';
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    tooltip.style.left = (rect.left + scrollLeft + (rect.width / 2)) + 'px';
+    tooltip.style.top = (rect.bottom + scrollTop + 5) + 'px';
     tooltip.style.transform = 'translateX(-50%)';
     tooltip.style.display = 'block';
     return tooltip;
@@ -348,8 +351,11 @@ document.addEventListener("DOMContentLoaded", () => {
               tt.textContent = tooltip.textContent;
               document.body.appendChild(tt);
               const r = avatar.getBoundingClientRect();
-              tt.style.left = r.left + r.width/2 + 'px';
-              tt.style.top = r.bottom + 10 + 'px';
+              const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+              
+              tt.style.left = (r.left + scrollLeft + r.width/2) + 'px';
+              tt.style.top = (r.bottom + scrollTop + 10) + 'px';
               tt.style.transform = 'translateX(-50%)';
               tt.style.opacity = '1';
             });
