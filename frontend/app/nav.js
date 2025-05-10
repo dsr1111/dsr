@@ -61,10 +61,27 @@ class CustomNav extends HTMLElement {
                       <li><a href="https://cafe.naver.com/movedsr" class="dropdown__link" target="_blank">공식 카페</a></li>
                     </ul>
                   </li>
+                  <li class="feedback-btn-wrapper"><button class="feedback-btn" id="feedbackBtn">피드백</button></li>
                 </ul>
               </div>
             </nav>
           </header>
+
+          <div id="feedbackModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>피드백</h2>
+              <form class="feedback-form" id="feedbackForm" action="https://formspree.io/f/xblokoep" method="POST">
+                <select class="feedback-type" name="type" required>
+                  <option value="" disabled selected hidden>문의 유형 선택</option>
+                  <option value="error">오류 제보</option>
+                  <option value="suggestion">건의사항</option>
+                </select>
+                <textarea class="feedback-content" name="content" placeholder="내용을 입력해주세요" required></textarea>
+                <button type="submit" class="submit-btn">제출하기</button>
+              </form>
+            </div>
+          </div>
       `;
 
       this.addEventListeners();
@@ -74,8 +91,12 @@ class CustomNav extends HTMLElement {
       const navToggle = this.shadowRoot.getElementById("nav-toggle");
       const navMenu = this.shadowRoot.getElementById("nav-menu");
       const dropdownItems = this.shadowRoot.querySelectorAll(".dropdown__item");
+      const feedbackBtn = this.shadowRoot.getElementById("feedbackBtn");
+      const modal = this.shadowRoot.getElementById("feedbackModal");
+      const closeBtn = this.shadowRoot.querySelector(".close");
+      const feedbackForm = this.shadowRoot.getElementById("feedbackForm");
 
-      // 햄버거 메뉴 열기/닫기
+      // 기존 이벤트 리스너
       if (navToggle && navMenu) {
           navToggle.addEventListener("click", () => {
               navMenu.classList.toggle("show-menu");
@@ -83,7 +104,6 @@ class CustomNav extends HTMLElement {
           });
       }
 
-      // 모바일 환경에서만 클릭으로 드롭다운 메뉴 열기
       if (window.innerWidth <= 768) {
           dropdownItems.forEach(item => {
               const toggle = item.querySelector(".dropdown__toggle");
@@ -92,10 +112,55 @@ class CustomNav extends HTMLElement {
 
               if (toggle && menu) {
                   toggle.addEventListener("click", (event) => {
-                      event.preventDefault(); // 기본 동작 방지
+                      event.preventDefault();
                       menu.classList.toggle("show-dropdown");
                       arrow.classList.toggle("rotate-arrow");
                   });
+              }
+          });
+      }
+
+      // 피드백 모달 관련 이벤트 리스너
+      if (feedbackBtn && modal) {
+          feedbackBtn.addEventListener("click", () => {
+              modal.style.display = "block";
+          });
+
+          closeBtn.addEventListener("click", () => {
+              modal.style.display = "none";
+          });
+
+          window.addEventListener("click", (event) => {
+              if (event.target === modal) {
+                  modal.style.display = "none";
+              }
+          });
+
+          // AJAX로 Formspree에 제출
+          feedbackForm.addEventListener("submit", async (event) => {
+              event.preventDefault();
+              const type = feedbackForm.querySelector(".feedback-type").value;
+              const content = feedbackForm.querySelector(".feedback-content").value;
+
+              try {
+                  const response = await fetch("https://formspree.io/f/xblokoep", {
+                      method: "POST",
+                      headers: {
+                          "Accept": "application/json",
+                          "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({ type, content })
+                  });
+
+                  if (response.ok) {
+                      feedbackForm.reset();
+                      modal.style.display = "none";
+                      alert("피드백이 제출되었습니다. 감사합니다!");
+                  } else {
+                      alert("제출에 실패했습니다. 다시 시도해 주세요.");
+                  }
+              } catch (error) {
+                  alert("오류가 발생했습니다. 다시 시도해 주세요.");
               }
           });
       }
