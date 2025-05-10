@@ -349,13 +349,20 @@ document.addEventListener("DOMContentLoaded", () => {
               const tt = document.createElement('div');
               tt.className = 'digimon-tooltip';
               tt.textContent = tooltip.textContent;
+              tt.style.position = 'fixed';
+              tt.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+              tt.style.color = 'white';
+              tt.style.padding = '5px 10px';
+              tt.style.borderRadius = '4px';
+              tt.style.fontSize = '12px';
+              tt.style.zIndex = '1000';
+              tt.style.pointerEvents = 'none';
+              tt.style.whiteSpace = 'nowrap';
+              tt.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
               document.body.appendChild(tt);
               const r = avatar.getBoundingClientRect();
-              const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-              
-              tt.style.left = (r.left + scrollLeft + r.width/2) + 'px';
-              tt.style.top = (r.bottom + scrollTop + 10) + 'px';
+              tt.style.left = r.left + r.width/2 + 'px';
+              tt.style.top = r.bottom + 10 + 'px';
               tt.style.transform = 'translateX(-50%)';
               tt.style.opacity = '1';
             });
