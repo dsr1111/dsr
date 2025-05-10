@@ -10,6 +10,47 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // 툴팁 기능 추가
+  function createTooltip(text) {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'custom-tooltip';
+    tooltip.textContent = text;
+    tooltip.style.position = 'absolute';
+    tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    tooltip.style.color = 'white';
+    tooltip.style.padding = '4px 8px';
+    tooltip.style.borderRadius = '4px';
+    tooltip.style.fontSize = '12px';
+    tooltip.style.zIndex = '9999';
+    tooltip.style.pointerEvents = 'none';
+    tooltip.style.display = 'none';
+    document.body.appendChild(tooltip);
+    return tooltip;
+  }
+
+  function showTooltip(element, text) {
+    const tooltip = createTooltip(text);
+    const rect = element.getBoundingClientRect();
+    tooltip.style.left = rect.left + (rect.width / 2) + 'px';
+    tooltip.style.top = rect.bottom + 5 + 'px';
+    tooltip.style.transform = 'translateX(-50%)';
+    tooltip.style.display = 'block';
+    return tooltip;
+  }
+
+  function addTooltipToElement(element, text) {
+    let tooltip = null;
+    element.addEventListener('mouseenter', () => {
+      tooltip = showTooltip(element, text);
+    });
+    element.addEventListener('mouseleave', () => {
+      if (tooltip) {
+        tooltip.remove();
+        tooltip = null;
+      }
+    });
+  }
+
   document.getElementById("character-name").textContent = characterName;
   document.title = `${characterName} | DSRWIKI`;
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
@@ -35,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (fields[i - 1]) {
             fieldImgElement.src = `../image/field/${fields[i - 1]}.webp`;
             fieldImgElement.alt = `${fields[i - 1]} 이미지`;
-            fieldImgElement.title = `${fields[i - 1]}`;
+            addTooltipToElement(fieldImgElement, fields[i - 1]);
             fieldImgElement.style.display = "inline";
           } else {
             fieldImgElement.style.display = "none";
@@ -43,9 +84,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 기본 정보 설정
-        document.getElementById("character-img").src = characterImgPath;
-        document.getElementById("evolution-img").src = `../image/${evolutionStage}.webp`;
-        document.getElementById("type-img").src = `../image/${type}.webp`;
+        const characterImg = document.getElementById("character-img");
+        characterImg.src = characterImgPath;
+        addTooltipToElement(characterImg, characterName);
+        
+        const evolutionImg = document.getElementById("evolution-img");
+        evolutionImg.src = `../image/${evolutionStage}.webp`;
+        addTooltipToElement(evolutionImg, evolutionStage);
+        
+        const typeImg = document.getElementById("type-img");
+        typeImg.src = `../image/${type}.webp`;
+        addTooltipToElement(typeImg, type);
         
         // 스탯 설정
         document.getElementById("stat-level").textContent = columns[3];
@@ -89,15 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           
           strengthsHTML += `
-            <td class="sw-icon">
-              <div class="sw-icon-container" style="background-image: url('../image/strongbackground.webp');">
-                <img src="../image/${str}.webp" alt="${str} 이미지" title="${str}">
-              </div>
-            </td>
-            <td>
-              <span class="sw-description">${descText}</span>
-              ${additionalText ? `<span class="sw-description-detail" style="display: inline-block;">${additionalText}</span>` : ''}
-            </td>
+            <tr>
+              <td class=\"sw-icon\">
+                <div class=\"sw-icon-container\" style=\"background-image: url('../image/strongbackground.webp');\">
+                  <img src=\"../image/${str}.webp\" alt=\"${str} 이미지\" title=\"${str}\">
+                </div>
+              </td>
+              <td class=\"sw-description\">${descText}</td>
+              <td class=\"sw-description-detail\">${additionalText ? additionalText : ''}</td>
+            </tr>
           `;
         });
         
@@ -116,23 +165,20 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           
           weaknessesHTML += `
-            <td class="sw-icon">
-              <div class="sw-icon-container" style="background-image: url('../image/weakbackground.webp');">
-                <img src="../image/${weak}.webp" alt="${weak} 이미지" title="${weak}">
-              </div>
-            </td>
-            <td>
-              <span class="sw-description">${descText}</span>
-              ${additionalText ? `<span class="sw-description-detail" style="display: inline-block;">${additionalText}</span>` : ''}
-            </td>
+            <tr>
+              <td class=\"sw-icon\">
+                <div class=\"sw-icon-container\" style=\"background-image: url('../image/weakbackground.webp');\">
+                  <img src=\"../image/${weak}.webp\" alt=\"${weak} 이미지\" title=\"${weak}\">
+                </div>
+              </td>
+              <td class=\"sw-description\">${descText}</td>
+              <td class=\"sw-description-detail\">${additionalText ? additionalText : ''}</td>
+            </tr>
           `;
         });
         
         // 테이블에 HTML 추가
-        swTableBody.innerHTML = `
-          <tr>${strengthsHTML}</tr>
-          <tr>${weaknessesHTML}</tr>
-        `;
+        swTableBody.innerHTML = strengthsHTML + weaknessesHTML;
 
         // 스킬 정보 가져오기
         Promise.all([
