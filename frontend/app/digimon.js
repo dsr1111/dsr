@@ -336,7 +336,7 @@
       this.filterTable();
     },
     toggleAllType() {
-      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
+      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
       const checkBox = document.getElementById("select-all-type");
       if (checkBox.checked) {
         types.forEach((type) => {
@@ -565,7 +565,7 @@
   function sortTable(column) {
     const table = document.getElementById("characterTable");
     const rows = Array.from(table.rows);
-    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
+    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
 
     // 같은 열을 클릭한 경우 정렬 상태 변경
     if (currentSortState.column === column) {
