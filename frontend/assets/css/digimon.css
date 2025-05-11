@@ -12,14 +12,6 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: "paybooc-Bold";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/paybooc-Bold.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
   font-family: "Pretendard-Regular", sans-serif;
   font-weight: normal;
@@ -119,31 +111,12 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.evolution-btn {
-  border: 2px solid transparent;
-  background-color: transparent;
-  cursor: pointer;
-  padding: 5px;
-  margin: 0 8px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.evolution-btn.active {
-  border: 2px solid rgb(0, 0, 0);
-}
-
-.evolution-btn img {
-  display: block;
-  width: 33px;
-  height: 33px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin: 0;
-  padding: 0;
-}
-
-.type-btn {
+.evolution-btn,
+.type-btn,
+.skill-btn,
+.skillweak-btn,
+.skillstrong-btn,
+.field-btn {
   border: 2px solid transparent;
   background-color: transparent;
   cursor: pointer;
@@ -153,11 +126,21 @@ body {
   transition: all 0.3s ease;
 }
 
-.type-btn.active {
+.evolution-btn.active,
+.type-btn.active,
+.skill-btn.active,
+.skillweak-btn.active,
+.skillstrong-btn.active,
+.field-btn.active {
   border: 2px solid rgb(0, 0, 0);
 }
 
-.type-btn img {
+.evolution-btn img,
+.type-btn img,
+.skill-btn img,
+.skillweak-btn img,
+.skillstrong-btn img,
+.field-btn img {
   display: block;
   width: 33px;
   height: 33px;
@@ -166,104 +149,25 @@ body {
 }
 
 .skill-btn {
-  border: 2px solid transparent;
-  background-color: transparent;
   background-image: url("../../image/background.webp");
   background-size: cover;
   background-position: center;
-  cursor: pointer;
-  padding: 5px;
-  margin: 0 8.1px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.skill-btn.active {
-  border: 2px solid rgb(0, 0, 0);
-}
-
-.skill-btn img {
-  display: block;
-  width: 33px;
-  height: 33px;
-  margin: 0;
-  padding: 0;
 }
 
 .skillweak-btn {
-  border: 2px solid transparent;
-  background-color: transparent;
   background-image: url("../../image/weakbackground.webp");
   background-size: cover;
   background-position: center;
-  cursor: pointer;
-  padding: 5px;
-  margin: 0 8.1px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.skillweak-btn.active {
-  border: 2px solid rgb(0, 0, 0);
-}
-
-.skillweak-btn img {
-  display: block;
-  width: 33px;
-  height: 33px;
-  margin: 0;
-  padding: 0;
 }
 
 .skillstrong-btn {
-  border: 2px solid transparent;
-  background-color: transparent;
   background-image: url("../../image/strongbackground.webp");
   background-size: cover;
   background-position: center;
-  cursor: pointer;
-  padding: 5px;
-  margin: 0 8.1px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.skillstrong-btn.active {
-  border: 2px solid rgb(0, 0, 0);
-}
-
-.skillstrong-btn img {
-  display: block;
-  width: 33px;
-  height: 33px;
-  margin: 0;
-  padding: 0;
 }
 
 .button-group-field {
   padding-left: 30px;
-}
-
-.field-btn {
-  border: 2px solid transparent;
-  background-color: transparent;
-  cursor: pointer;
-  padding: 5px;
-  margin: 0 6.1px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.field-btn.active {
-  border: 2px solid rgb(0, 0, 0);
-}
-
-.field-btn img {
-  display: block;
-  width: 33px;
-  height: 33px;
-  margin: 0;
-  padding: 0;
 }
 
 th {
@@ -359,13 +263,7 @@ tbody {
   display: inline-block;
 }
 
-.field-qm {
-  width: 13px;
-  height: 13px;
-  position: absolute;
-  top: -3px;
-}
-
+.field-qm,
 .skill-qm {
   width: 13px;
   height: 13px;
@@ -373,33 +271,29 @@ tbody {
   top: -3px;
 }
 
-.tooltip-field {
-  visibility: hidden;
-  opacity: 0;
-  width: 450px;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #fff;
-  border-radius: 8px;
-  position: absolute;
-  z-index: 1;
-  top: 0px;
-  left: 190%;
-  transform: translateX(-53%);
-  transition: opacity 0.3s ease;
-}
+.tooltip-field,
 .tooltip-skill {
   visibility: hidden;
   opacity: 0;
-  width: 480px;
   background-color: rgba(0, 0, 0, 0.9);
   color: #fff;
   border-radius: 8px;
   position: absolute;
   z-index: 1;
   top: 0px;
+  transition: opacity 0.3s ease;
+}
+
+.tooltip-field {
+  width: 450px;
+  left: 190%;
+  transform: translateX(-53%);
+}
+
+.tooltip-skill {
+  width: 480px;
   left: 190%;
   transform: translateX(-43%);
-  transition: opacity 0.3s ease;
   max-height: 300px;
   font-size: 12px;
   font-weight: lighter;
@@ -503,11 +397,7 @@ tbody {
   color: #ccc;
 }
 
-.field-qm:hover + .tooltip-field {
-  visibility: visible;
-  opacity: 1;
-}
-
+.field-qm:hover + .tooltip-field,
 .skill-qm:hover + .tooltip-skill {
   visibility: visible;
   opacity: 1;
@@ -569,14 +459,17 @@ tbody {
   align-items: center;
   position: relative;
 }
+
 .text,
 .text2 {
   flex: 1;
 }
+
 .text {
   font-size: 13px;
   margin-left: 5px;
 }
+
 .text2 {
   position: absolute;
   top: 0;
@@ -587,6 +480,7 @@ tbody {
   gap: 20px;
   align-items: center;
 }
+
 .text2 p {
   margin: 0;
   display: inline-flex;
@@ -602,6 +496,7 @@ tbody {
   margin-right: 5px;
   border: #202020 1px solid;
 }
+
 .casting-text::before {
   content: "";
   display: inline-block;
@@ -630,31 +525,6 @@ tbody {
   background-color: #d32f2f;
 }
 
-.fc-col-header-cell {
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-.fc-daygrid-day {
-  background-color: #fff;
-}
-
-.fc-col-header-cell.fc-day-sun,
-.fc-day-sun {
-  color: red;
-}
-
-.fc-col-header-cell.fc-day-sat,
-.fc-day-sat {
-  color: blue;
-}
-
-.fc-event {
-  border-radius: 5px;
-  margin: 0 5px 5px 5px;
-  border: none;
-}
-
 .custom-tooltip {
   display: none;
   position: fixed;
@@ -680,300 +550,6 @@ tbody {
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 8px solid rgba(40,40,40,0.95);
-}
-
-.fc-currentMonth-button,
-.fc-customText-button {
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: default;
-  pointer-events: none;
-}
-
-.fc-currentMonth-button:hover,
-.fc-customText-button:hover {
-  background: none;
-}
-
-.calendar-container {
-  width: 100%;
-  margin: 130px auto 0;
-  padding: 0 10%;
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.left-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.coupon {
-  margin-bottom: 70px;
-  background-color: #f0f0f0;
-  width: 200px;
-  text-align: center;
-  padding: 10px;
-  border-radius: 5px;
-  border: #c0c0c0 1px solid;
-}
-
-.overflow {
-  background-color: #f0f0f0;
-  width: 200px;
-  text-align: center;
-  padding: 10px;
-  border-radius: 5px;
-  border: #c0c0c0 1px solid;
-}
-
-.overflow a {
-  color: black;
-  text-decoration: none;
-}
-
-.overflow a:visited {
-  color: black;
-}
-
-.crown {
-  background-color: #f0f0f0;
-  width: 200px;
-  text-align: center;
-  padding: 10px;
-  border-radius: 5px;
-  border: #c0c0c0 1px solid;
-  margin-top: 50px;
-}
-
-.index-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.exchange-rate,
-.result-display {
-  margin-top: 15px;
-  font-size: 16px;
-}
-
-label {
-  display: block;
-  margin: 5px 0;
-  font-size: 14px;
-}
-
-select,
-input[type="number"] {
-  width: 75%;
-  padding: 5px;
-  margin-top: 5px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.result-display p {
-  font-weight: bold;
-  color: #333;
-  font-size: 15px;
-}
-
-#exchange-rate {
-  width: 50px;
-  padding: 5px;
-  font-size: 16px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-#exchange-rate::-webkit-outer-spin-button,
-#exchange-rate::-webkit-inner-spin-button,
-#currency-input::-webkit-outer-spin-button,
-#currency-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.index-title {
-  background-color: #2c3e50;
-  color: #fff;
-  padding: 10px;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  width: calc(100% + 20px);
-  display: block;
-  margin: -10px 0 10px -10px;
-  box-sizing: border-box;
-}
-
-.coupon-list {
-  position: relative;
-  padding-bottom: 15px;
-}
-.coupon-list:last-child {
-  margin-bottom: 0;
-  padding-bottom: 5px;
-}
-.coupon-list::after {
-  content: "";
-  position: absolute;
-  left: -10px;
-  right: -10px;
-  height: 1px;
-  margin-top: 10px;
-  background-color: #c0c0c0;
-}
-.coupon-list:last-child::after {
-  content: none;
-}
-
-.coupon-name {
-  margin-top: 10px;
-  font-weight: bold;
-}
-.coupon-period {
-  font-size: 12px;
-  margin-bottom: 10px;
-}
-
-.coupon-number {
-  cursor: pointer;
-}
-
-.today-day {
-  font-size: 13px;
-}
-
-.tooltip-coupon {
-  font-family: "paybooc-Bold";
-  position: absolute;
-  background-color: #1c233a;
-  color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  display: none;
-  z-index: 1000;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
-    1px 1px 0 black;
-}
-
-.show-items {
-  margin-bottom: 10px;
-  display: inline-block;
-  background-color: green;
-  color: white;
-  border-radius: 5px;
-  padding: 2px 4px;
-  font-size: 13px;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-.locations-today a {
-  display: inline-block;
-  margin-bottom: 10px;
-}
-
-.locations-today a:last-child {
-  margin-bottom: 0;
-}
-
-.locations-today {
-  margin-top: 10px;
-}
-
-.floating-chat-icon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.tooltip-kakao {
-  visibility: hidden;
-  width: 150px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 8px;
-  border-radius: 5px;
-  position: absolute;
-  bottom: 50px;
-  right: -75px;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 12px;
-  white-space: nowrap;
-  z-index: 1000;
-}
-
-.floating-chat-icon:hover .tooltip-kakao {
-  visibility: visible;
-  opacity: 1;
-}
-
-.result-display .kakao-link img {
-  cursor: pointer;
-  display: inline-block;
-  vertical-align: middle;
-  /* hover 시 살짝 투명하게 */
-  transition: opacity 0.2s;
-}
-.result-display .kakao-link img:hover {
-  opacity: 0.8;
-}
-
-/* ─── 모바일 전용 (max-width:768px) ─── */
-@media only screen and (max-width: 768px) {
-  /* 1) 전체 레이아웃을 세로(column)로, 수평 중앙 정렬 */
-  .calendar-container {
-    flex-direction: column;    /* 세로 정렬 */
-    align-items: center;       /* 수평 중앙으로 */
-    padding: 10px;             /* 좌우 여백 */
-    gap: 20px;                 /* 섹션 간격 */
-  }
-
-  /* 2) 풀캘린더와 툴크 감추기 */
-  #calendar,
-  #tooltip {
-    display: none !important;
-  }
-
-  /* 3) 쿠폰을 맨 위로 (order:1) */
-  .calendar-container > .coupon-kakaopay-container {
-    order: 1;
-    width: 100%;               /* 필요시 full-width, 아니면 제거해도 됨 */
-    display: flex;
-    justify-content: center;   /* 쿠폰 박스 수평 중앙 */
-  }
-
-  /* 4) 오버플로우·크라운-비트·쫄작문의 컨테이너는 그 다음 (order:2) */
-  .calendar-container > .left-container {
-    order: 2;
-    /* 기존 flex-column 유지되므로 자식은 순서대로 쌓임 */
-    align-items: center;       /* 자식 박스들을 수평 중앙 정렬 */
-    gap: 15px;                 /* 자식 요소 간격 */
-  }
-
-  /* 5) 각 섹션 제목을 중앙 정렬 */
-  .left-container .index-title,
-  .coupon-kakaopay-container .index-title {
-    text-align: center;
-  }
 }
 
 /* 모바일 드롭다운 기본 숨김 */
@@ -1017,8 +593,41 @@ input[type="number"] {
   .text2 {
     display: none !important;
   }
-
-  .calendar-container {
-  margin: 80px auto 0;
-  }
 }
+
+/* 정렬 가능한 컬럼 스타일 */
+.sortable {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sortable:hover {
+  background-color: #f0f0f0;
+}
+
+.sortable span {
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 10px;
+  color: #999;
+  vertical-align: middle;
+}
+
+.sortable span::before {
+  content: '⇅';
+  opacity: 0.5;
+}
+
+.sortable span.ascending::before {
+  content: '↑';
+  opacity: 1;
+  color: #007bff;
+}
+
+.sortable span.descending::before {
+  content: '↓';
+  opacity: 1;
+  color: #007bff;
+} 

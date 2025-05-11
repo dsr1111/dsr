@@ -10,7 +10,11 @@
     weak: [],
     field: [],
   };
-  let isAscending = true;
+  let currentSortState = {
+    column: -1,
+    direction: 'none' // 'none', 'asc', 'desc'
+  };
+  let originalRows = []; // 원래 순서를 저장할 배열
 
   // 커스텀 툴팁 표시 함수
   function showCustomTooltip(e, text) {
@@ -293,6 +297,8 @@
         newRow.style.display = "none";
         tableBody.appendChild(newRow);
       });
+      // 원래 순서 저장
+      originalRows = Array.from(tableBody.rows);
     }
   };
 
@@ -330,7 +336,7 @@
       this.filterTable();
     },
     toggleAllType() {
-      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
+      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
       const checkBox = document.getElementById("select-all-type");
       if (checkBox.checked) {
         types.forEach((type) => {
@@ -559,34 +565,89 @@
   function sortTable(column) {
     const table = document.getElementById("characterTable");
     const rows = Array.from(table.rows);
-    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
-    rows.sort((a, b) => {
-      let cellA = a.cells[column].innerText.trim();
-      let cellB = b.cells[column].innerText.trim();
-      if (column === 3) {
-        cellA = a.cells[column].querySelector("img").alt.trim();
-        cellB = b.cells[column].querySelector("img").alt.trim();
-        const indexA = typeOrder.indexOf(cellA);
-        const indexB = typeOrder.indexOf(cellB);
-        const orderA = indexA === -1 ? typeOrder.length : indexA;
-        const orderB = indexB === -1 ? typeOrder.length : indexB;
-        return isAscending ? orderA - orderB : orderB - orderA;
+    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
+
+    // 같은 열을 클릭한 경우 정렬 상태 변경
+    if (currentSortState.column === column) {
+      if (currentSortState.direction === 'none') {
+        currentSortState.direction = 'asc';
+      } else if (currentSortState.direction === 'asc') {
+        currentSortState.direction = 'desc';
       } else {
-        const aValue = isNaN(cellA) ? cellA : parseFloat(cellA);
-        const bValue = isNaN(cellB) ? 0 : parseFloat(cellB);
-        if (aValue < bValue) return isAscending ? -1 : 1;
-        if (aValue > bValue) return isAscending ? 1 : -1;
-        return 0;
+        currentSortState.direction = 'none';
       }
-    });
-    rows.forEach((row) => table.appendChild(row));
-    isAscending = !isAscending;
+    } else {
+      // 다른 열을 클릭한 경우 오름차순으로 시작
+      currentSortState.column = column;
+      currentSortState.direction = 'asc';
+    }
+
+    // 정렬 방향에 따라 정렬
+    if (currentSortState.direction !== 'none') {
+      rows.sort((a, b) => {
+        let cellA = a.cells[column].innerText.trim();
+        let cellB = b.cells[column].innerText.trim();
+        
+        if (column === 0) { // 이름 열
+          cellA = a.cells[column].querySelector("a")?.innerText.trim() || cellA;
+          cellB = b.cells[column].querySelector("a")?.innerText.trim() || cellB;
+          return currentSortState.direction === 'asc' ? 
+            cellA.localeCompare(cellB) : 
+            cellB.localeCompare(cellA);
+        } else if (column === 3) { // 타입 열
+          cellA = a.cells[column].querySelector("img").alt.trim();
+          cellB = b.cells[column].querySelector("img").alt.trim();
+          const indexA = typeOrder.indexOf(cellA);
+          const indexB = typeOrder.indexOf(cellB);
+          const orderA = indexA === -1 ? typeOrder.length : indexA;
+          const orderB = indexB === -1 ? typeOrder.length : indexB;
+          return currentSortState.direction === 'asc' ? 
+            orderA - orderB : 
+            orderB - orderA;
+        } else {
+          const aValue = isNaN(cellA) ? cellA : parseFloat(cellA);
+          const bValue = isNaN(cellB) ? 0 : parseFloat(cellB);
+          if (aValue < bValue) return currentSortState.direction === 'asc' ? -1 : 1;
+          if (aValue > bValue) return currentSortState.direction === 'asc' ? 1 : -1;
+          return 0;
+        }
+      });
+      rows.forEach((row) => table.appendChild(row));
+    } else {
+      // 기본 정렬로 돌아갈 때는 저장된 원래 순서로 복원
+      table.innerHTML = '';
+      originalRows.forEach(row => table.appendChild(row));
+    }
+
     updateSortIndicator(column);
   }
 
   function updateSortIndicator(column) {
-    // 정렬 시 해당 열에 대한 표시 업데이트 (필요 시 구현)
-    // 예: 각 열의 <span id="sort-xxx">에 화살표 등 표시
+    // 모든 정렬 표시 초기화
+    const sortSpans = document.querySelectorAll('[id^="sort-"]');
+    sortSpans.forEach(span => {
+      span.className = '';
+    });
+
+    // 현재 정렬된 열에 대한 표시 업데이트
+    if (currentSortState.column === column && currentSortState.direction !== 'none') {
+      const sortSpan = document.getElementById(`sort-${getColumnId(column)}`);
+      if (sortSpan) {
+        sortSpan.className = currentSortState.direction === 'asc' ? 'ascending' : 'descending';
+      }
+    }
+  }
+
+  function getColumnId(column) {
+    const columnIds = [
+      'name', 'level', 'evolution', 'type', 'hp', 'sp', 
+      'power', 'intelligence', 'defense', 'resistance', 'speed'
+    ];
+    return columnIds[column] || '';
+  }
+
+  function initSortableColumns() {
+    // 스타일은 digimon.css로 이동됨
   }
 
   // ====================================================

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="icon" href="image/icon.webp" type="image/x-icon">
-  <title>도감 | DSR WIKI</title>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>DSR</title>
   <link rel="stylesheet" href="assets/css/styles1.css">
+  <link rel="stylesheet" href="assets/css/digimon.css">
   <script src="app/digimon.js" defer></script>
   <script src="app/nav.js" defer></script>
 </head>
@@ -62,8 +62,8 @@
             <button id="언노운" class="type-btn" title="언노운" onclick="toggleType('언노운')">
              <img src="image/언노운.webp" alt="언노운">
             </button>
-            <button id="NO DATA" class="type-btn" title="NO DATA" onclick="toggleType('NO DATA')">
-             <img src="image/NO DATA.webp" alt="NO DATA">
+            <button id="노데이터" class="type-btn" title="노데이터" onclick="toggleType('노데이터')">
+             <img src="image/노데이터.webp" alt="노데이터">
             </button>
         </div>
       </div>
@@ -437,8 +437,7 @@
             <!-- 타입 -->
             <label for="mobile-type-select">타입</label>
             <select id="mobile-type-select" class="mobile-select">
-              <option value="" disabled selected hidden>— 선택 —</option>
-              <option value="">전체</option>
+              <option value="">타입</option>
               <option value="백신">백신</option>
               <option value="데이터">데이터</option>
               <option value="바이러스">바이러스</option>
@@ -534,8 +533,8 @@
         <thead>
           <tr style="border: 2px solid darkgrey;">
             <th onclick="sortTable(0)" class="sortable">이름 <span id="sort-name"></span></th>
-            <th onclick="sortTable(1)">레벨</th>
-            <th onclick="sortTable(2)">진화 단계</th>
+            <th>레벨</th>
+            <th>진화 단계</th>
             <th onclick="sortTable(3)" class="sortable">타입 <span id="sort-type"></span></th>
             <th onclick="sortTable(4)" class="sortable" style="border-left: 2px solid darkgrey;">HP <span id="sort-hp"></span></th>
             <th onclick="sortTable(5)" class="sortable">SP <span id="sort-sp"></span></th>
