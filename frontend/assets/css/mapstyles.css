@@ -130,6 +130,12 @@ body {
   z-index: 1;
 }
 
+@media screen and (max-width: 768px) {
+  #image-container {
+    left: 95%;
+  }
+}
+
 .map-image {
   width: 700px;
   height: 700px;
@@ -209,6 +215,14 @@ body {
   overflow: visible;
 }
 
+@media screen and (max-width: 768px) {
+  .tooltip {
+    width: max-content;
+    box-sizing: border-box;
+  }
+}
+
+
 .special-tooltip {
   background-color: rgba(0, 0, 0, 0.9);
   color: rgb(187, 186, 186);
@@ -217,6 +231,13 @@ body {
   font-size: 14px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
+}
+
+@media screen and (max-width: 768px) {
+  .special-tooltip {
+    width: max-content;
+    box-sizing: border-box;
+  }
 }
 
 .dropdown-container {
@@ -427,43 +448,4 @@ body {
 
 .show {
   display: block;
-}
-
-.floating-chat-icon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.tooltip-kakao {
-  visibility: hidden;
-  width: 150px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 8px;
-  border-radius: 5px;
-  position: absolute;
-  bottom: 50px;
-  right: -75px;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 12px;
-  white-space: nowrap;
-  z-index: 1000;
-}
-
-.floating-chat-icon:hover .tooltip-kakao {
-  visibility: visible;
-  opacity: 1;
 }
