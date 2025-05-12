@@ -134,7 +134,7 @@ a {
 /* Navigation for mobile devices */
 @media screen and (max-width: 1118px) {
   .nav__logo {
-    width: 60%;
+    width: 55%;
     max-width: 100%;
     height: auto;
   }
