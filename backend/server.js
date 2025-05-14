@@ -354,16 +354,6 @@ app.post('/api/save-csv/:type', async (req, res) => {
             { headers: githubHeaders }
         );
 
-        // 3. 서버에도 파일 저장 (선택)
-        const fs = require('fs').promises;
-        const path = require('path');
-        const localFilePath = path.join(__dirname, '..', 'frontend', 'data', 'csv', `${type}.csv`);
-        await fs.writeFile(
-            localFilePath,
-            csvContent,
-            'utf8'
-        );
-
         res.json({ success: true, message: 'CSV가 GitHub에 성공적으로 저장되었습니다.' });
     } catch (error) {
         console.error('CSV 저장 실패:', error.response?.data || error.message);
@@ -430,12 +420,6 @@ app.post('/api/save-json/:type', async (req, res) => {
             },
             { headers: githubHeaders }
         );
-
-        // 2. 로컬에도 저장
-        const fs = require('fs').promises;
-        const path = require('path');
-        const localFilePath = path.join(__dirname, '..', 'frontend', 'data', 'csv', `${type}.json`);
-        await fs.writeFile(localFilePath, jsonContent, 'utf8');
 
         res.json({ success: true });
     } catch (error) {
