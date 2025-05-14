@@ -336,7 +336,7 @@
       this.filterTable();
     },
     toggleAllType() {
-      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
+      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
       const checkBox = document.getElementById("select-all-type");
       if (checkBox.checked) {
         types.forEach((type) => {
@@ -565,7 +565,7 @@
   function sortTable(column) {
     const table = document.getElementById("characterTable");
     const rows = Array.from(table.rows);
-    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
+    const typeOrder = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
 
     // 같은 열을 클릭한 경우 정렬 상태 변경
     if (currentSortState.column === column) {
@@ -747,52 +747,3 @@
   window.showCustomTooltip = showCustomTooltip;
   window.hideCustomTooltip = hideCustomTooltip;
 })();
-
-
-// 모바일 드롭다운 변경 시 호출할 함수
-function applyMobileFilters() {
-  // 각 드롭다운의 선택값 읽기
-  const evoFilter    = document.getElementById('mobile-evo-select').value;
-  const typeFilter   = document.getElementById('mobile-type-select').value;
-  const skillFilter  = document.getElementById('mobile-skill-select').value;
-  const strongFilter = document.getElementById('mobile-strong-select').value;
-  const weakFilter   = document.getElementById('mobile-weak-select').value;
-  const fieldFilter  = document.getElementById('mobile-field-select').value;
-
-  // 테이블의 모든 행을 순회하며 필터 적용
-  document.querySelectorAll('#characterTable tr').forEach(row => {
-    // 1) 진화 단계(evolution) 및 타입(type) 매칭
-    const evoMatch  = !evoFilter  || row.dataset.evolution === evoFilter;
-    const typeMatch = !typeFilter || row.dataset.type      === typeFilter;
-
-    // 2) 스킬(skill): 13,14,15번째 셀 <img>의 alt 값을 배열로 가져옴
-    const imgs = [13,14,15].map(i =>
-      (row.cells[i].querySelector('img') || {}).alt || ''
-    );
-    const skillMatch = !skillFilter || imgs.includes(skillFilter);
-
-    // 3) 강점(strong)·약점(weak) 매칭
-    const strongMatch = !strongFilter || row.dataset.강점 === strongFilter;
-    const weakMatch   = !weakFilter   || row.dataset.약점 === weakFilter;
-
-    // 4) 필드(field) 매칭 (dataset.fields는 "DA;UK;..." 형태)
-    const fields = row.dataset.fields ? row.dataset.fields.split(';') : [];
-    const fieldMatch = !fieldFilter || fields.includes(fieldFilter);
-
-    // 5) 모든 조건이 참일 때만 해당 행 표시
-    row.style.display = (evoMatch && typeMatch && skillMatch
-                         && strongMatch && weakMatch && fieldMatch)
-                        ? ''
-                        : 'none';
-  });
-}
-
-// 각 드롭다운에 change 이벤트 리스너 등록
-[
-  'mobile-evo-select','mobile-type-select','mobile-skill-select',
-  'mobile-strong-select','mobile-weak-select','mobile-field-select'
-].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('change', applyMobileFilters);
-});
-window.addEventListener('load', applyMobileFilters);
