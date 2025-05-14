@@ -912,19 +912,5 @@
       "RES + 11",
       "SPD + 11"
     ]
-  },
-  "": {
-    "digimon": [
-      {
-        "name": "메탈가루몬",
-        "level": 90
-      },
-      {
-        "name": "워가루몬",
-        "level": 90
-      }
-    ],
-    "description": "",
-    "effects": []
   }
 }
