@@ -1,17 +1,4 @@
 {
-  "1": {
-    "digimon": [
-      {
-        "name": "메탈가루몬(90)",
-        "level": 0
-      }
-    ],
-    "description": "1",
-    "effects": [
-      "DEF + 15",
-      "빛 데미지 증가 + 2%"
-    ]
-  },
   "고스트 듀오": {
     "digimon": [
       {
@@ -925,5 +912,19 @@
       "RES + 11",
       "SPD + 11"
     ]
+  },
+  "": {
+    "digimon": [
+      {
+        "name": "메탈가루몬(90)",
+        "level": 0
+      },
+      {
+        "name": "워가루몬(90)",
+        "level": 0
+      }
+    ],
+    "description": "",
+    "effects": []
   }
 }
