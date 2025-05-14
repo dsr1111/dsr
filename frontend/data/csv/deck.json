@@ -916,12 +916,8 @@
   "": {
     "digimon": [
       {
-        "name": "메탈가루몬(90)",
-        "level": 0
-      },
-      {
-        "name": "워가루몬(90)",
-        "level": 0
+        "name": "메탈가루몬",
+        "level": 90
       }
     ],
     "description": "",
