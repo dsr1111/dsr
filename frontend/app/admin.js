@@ -27,7 +27,7 @@ class DataManager {
 
     async loadData() {
         try {
-            const response = await fetch(`/api/data/${this.currentType}`, {
+            const response = await fetch(`https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/api/data/${this.currentType}`, {
                 headers: {
                     'Accept': 'application/json'
                 }
