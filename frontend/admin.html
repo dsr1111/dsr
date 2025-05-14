@@ -292,59 +292,5 @@
     </div>
 
     <script src="app/admin.js"></script>
-    <script>
-    // 오버레이와 수정창 동기화
-    const editForm = document.getElementById('editForm');
-    const editOverlay = document.getElementById('editOverlay');
-    function showEditFormWithOverlay() {
-        editForm.style.display = 'block';
-        editOverlay.style.display = 'block';
-    }
-    function hideEditFormWithOverlay() {
-        editForm.style.display = 'none';
-        editOverlay.style.display = 'none';
-        if (window.dataManager) dataManager.hideEditForm();
-    }
-    // editForm 열릴 때 오버레이도 같이 열기
-    const origShowEditForm = dataManager.showEditForm.bind(dataManager);
-    dataManager.showEditForm = function(item) {
-        origShowEditForm(item);
-        showEditFormWithOverlay();
-    };
-    // editForm 닫힐 때 오버레이도 같이 닫기
-    const origHideEditForm = dataManager.hideEditForm.bind(dataManager);
-    dataManager.hideEditForm = function() {
-        origHideEditForm();
-        hideEditFormWithOverlay();
-    };
-    function submitAdminPassword() {
-        const pw = document.getElementById('adminPassword').value;
-        fetch('/api/admin-auth', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: pw })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('fail');
-            return res.json();
-        })
-        .then(data => {
-            if (data.success) {
-                document.getElementById('admin-auth-modal').style.display = 'none';
-                document.getElementById('admin-main').style.display = '';
-            } else {
-                document.getElementById('adminAuthError').innerText = '비밀번호가 틀렸습니다.';
-            }
-        })
-        .catch(() => {
-            document.getElementById('adminAuthError').innerText = '비밀번호가 틀렸습니다.';
-        });
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') submitAdminPassword();
-        });
-    });
-    </script>
 </body>
 </html> 
