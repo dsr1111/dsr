@@ -374,7 +374,7 @@ app.post('/api/save-csv/:type', async (req, res) => {
     }
 });
 
-// CSV 파일 조회 및 GitHub에서 읽어오기
+// 📌 데이터 파일 API 라우트
 app.get('/api/data/:type', async (req, res) => {
     try {
         const { type } = req.params;

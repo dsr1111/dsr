@@ -29,10 +29,15 @@ class DataManager {
         try {
             const response = await fetch(`/api/data/${this.currentType}`);
             const data = await response.json();
-            if (this.isCSV) {
-                this.currentData = this.parseCSV(data.content);
-            } else {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            if (data.isJson) {
+                this.isCSV = false;
                 this.currentData = this.parseJSON(data.content);
+            } else {
+                this.isCSV = true;
+                this.currentData = this.parseCSV(data.content);
             }
             this.renderTable();
         } catch (error) {
