@@ -302,6 +302,47 @@ class DataManager {
             this.currentData.push(newItem);
         }
 
+        // characters.csv 정렬: evolution_stage(성장기,성숙기,완전체,궁극체) → name(가나다순)
+        if (this.currentType === 'characters') {
+            const stageOrder = ["성장기", "성숙기", "완전체", "궁극체"];
+            this.currentData.sort((a, b) => {
+                const stageA = stageOrder.indexOf(a.evolution_stage);
+                const stageB = stageOrder.indexOf(b.evolution_stage);
+                if (stageA !== stageB) return stageA - stageB;
+                return a.name.localeCompare(b.name, 'ko');
+            });
+        }
+        // condition.csv 정렬: evolution_stage(3,4,5,6) → name(가나다순)
+        else if (this.currentType === 'condition') {
+            const stageOrder = ["3", "4", "5", "6"];
+            this.currentData.sort((a, b) => {
+                const stageA = stageOrder.indexOf(a.evolution_stage);
+                const stageB = stageOrder.indexOf(b.evolution_stage);
+                if (stageA !== stageB) return stageA - stageB;
+                return a.name.localeCompare(b.name, 'ko');
+            });
+        }
+        // evolution.csv 정렬: evolution_stage(1~6) → name(가나다순)
+        else if (this.currentType === 'evolution') {
+            const stageOrder = ["1", "2", "3", "4", "5", "6"];
+            this.currentData.sort((a, b) => {
+                const stageA = stageOrder.indexOf(a.evolution_stage);
+                const stageB = stageOrder.indexOf(b.evolution_stage);
+                if (stageA !== stageB) return stageA - stageB;
+                return a.name.localeCompare(b.name, 'ko');
+            });
+        }
+        // skill1, skill2, skill3 정렬: evolution_stage(성장기,성숙기,완전체,궁극체) → name(가나다순)
+        else if (["skill1", "skill2", "skill3"].includes(this.currentType)) {
+            const stageOrder = ["성장기", "성숙기", "완전체", "궁극체"];
+            this.currentData.sort((a, b) => {
+                const stageA = stageOrder.indexOf(a.evolution_stage);
+                const stageB = stageOrder.indexOf(b.evolution_stage);
+                if (stageA !== stageB) return stageA - stageB;
+                return a.name.localeCompare(b.name, 'ko');
+            });
+        }
+
         try {
             const csvContent = this.convertToCSV(this.currentData);
             const response = await fetch(`${API_URL}/api/save-csv/${this.currentType}`, {
