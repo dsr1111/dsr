@@ -336,7 +336,7 @@
       this.filterTable();
     },
     toggleAllType() {
-      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "노데이터"];
+      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
       const checkBox = document.getElementById("select-all-type");
       if (checkBox.checked) {
         types.forEach((type) => {
