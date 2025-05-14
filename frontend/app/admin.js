@@ -27,7 +27,14 @@ class DataManager {
 
     async loadData() {
         try {
-            const response = await fetch(`/api/data/${this.currentType}`);
+            const response = await fetch(`/api/data/${this.currentType}`, {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
             if (data.error) {
                 throw new Error(data.error);
