@@ -214,16 +214,11 @@ document.addEventListener("DOMContentLoaded", () => {
               const skillImgPath = `../image/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
               const skill1ImgPath = `../image/${skillColumns[15]}.webp`;
 
-              const hitCount = isNaN(parseFloat(skillColumns[13]))
-                ? 1
-                : parseFloat(skillColumns[13]);
-
               const levelData = skillColumns.slice(0, 10).map((value) => {
                 let percentage = isNaN(parseFloat(value))
                   ? 0
                   : parseFloat(value) * 100;
-                const totalDamage = percentage * hitCount;
-                return `${parseFloat(totalDamage.toFixed(2))}%`;
+                return `${parseFloat(percentage.toFixed(2))}%`;
               });
 
               // 각 스킬 행 생성
