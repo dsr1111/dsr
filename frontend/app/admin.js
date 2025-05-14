@@ -1,3 +1,5 @@
+const API_URL = 'https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app';
+
 // 데이터 관리 클래스
 class DataManager {
     constructor() {
@@ -27,7 +29,7 @@ class DataManager {
 
     async loadData() {
         try {
-            const response = await fetch(`https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/api/data/${this.currentType}`, {
+            const response = await fetch(`${API_URL}/api/data/${this.currentType}`, {
                 headers: {
                     'Accept': 'application/json'
                 }
@@ -302,7 +304,7 @@ class DataManager {
 
         try {
             const csvContent = this.convertToCSV(this.currentData);
-            const response = await fetch(`/api/save-csv/${this.currentType}`, {
+            const response = await fetch(`${API_URL}/api/save-csv/${this.currentType}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ csv: csvContent })
@@ -339,7 +341,7 @@ class DataManager {
             data[name] = newItem;
             this.currentData = data;
             const jsonContent = JSON.stringify(this.currentData, null, 2);
-            await fetch(`/api/save-json/${this.currentType}`, {
+            await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ json: jsonContent })
@@ -369,7 +371,7 @@ class DataManager {
             data[name] = newItem;
             this.currentData = data;
             const jsonContent = JSON.stringify(this.currentData, null, 2);
-            await fetch(`/api/save-json/${this.currentType}`, {
+            await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ json: jsonContent })
@@ -381,7 +383,7 @@ class DataManager {
         }
         // 기타 JSON(기존 방식)
         const jsonContent = JSON.stringify(this.currentData, null, 2);
-        const response = await fetch(`/api/save-json/${this.currentType}`, {
+        const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ json: jsonContent })
@@ -414,7 +416,7 @@ class DataManager {
             delete this.currentData[key];
             const jsonContent = JSON.stringify(this.currentData, null, 2);
             try {
-                const response = await fetch(`/api/save-json/${this.currentType}`, {
+                const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ json: jsonContent })
@@ -433,7 +435,7 @@ class DataManager {
         this.currentData.splice(index, 1);
         try {
             const csvContent = this.convertToCSV(this.currentData);
-            const response = await fetch('/api/save-csv/characters', {
+            const response = await fetch(`${API_URL}/api/save-csv/characters`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -498,7 +500,7 @@ dataManager.hideEditForm = function() {
 };
 function submitAdminPassword() {
     const pw = document.getElementById('adminPassword').value;
-    fetch('https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app/api/admin-auth', {
+    fetch(`${API_URL}/api/admin-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: pw })
