@@ -296,4 +296,8 @@ input[type="text"]::placeholder {
     .container {
         margin-top: 50px;
     }
+    
+    .deck-card {
+        min-width: 190%;
+    }
 }
