@@ -8,6 +8,7 @@ const cors = require("cors");
 const multer = require("multer");
 const sharp = require("sharp");
 const fs = require("fs");
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -73,7 +74,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // 📌 정적 파일 제공 (프론트엔드)
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 const mongoURI = process.env.MONGO_URI; // 🔹 환경 변수에서 가져오기
 
@@ -316,6 +317,144 @@ app.delete("/posts/:postId/comments/:commentId", async (req, res) => {
     }
 });
 
+// 📌 환경 변수 불러오기
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_OWNER = process.env.GITHUB_OWNER;
+const GITHUB_REPO = process.env.GITHUB_REPO;
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
+
+const githubHeaders = {
+    'Authorization': `token ${GITHUB_TOKEN}`,
+    'Accept': 'application/vnd.github.v3+json'
+};
+
+// CSV 파일 저장 및 GitHub에 업로드
+app.post('/api/save-csv/:type', async (req, res) => {
+    try {
+        const { type } = req.params;
+        const csvContent = req.body.csv; // 프론트에서 { csv: '...' } 형태로 보냄
+
+        const filePath = `frontend/data/csv/${type}.csv`;
+
+        // 1. 기존 파일의 sha 값 조회
+        const getFileResponse = await axios.get(
+            `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`,
+            { headers: githubHeaders }
+        );
+
+        // 2. 파일 업데이트 (커밋)
+        await axios.put(
+            `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`,
+            {
+                message: `Update ${type}.csv`,
+                content: Buffer.from(csvContent).toString('base64'),
+                sha: getFileResponse.data.sha,
+                branch: GITHUB_BRANCH
+            },
+            { headers: githubHeaders }
+        );
+
+        // 3. 서버에도 파일 저장 (선택)
+        const fs = require('fs').promises;
+        const path = require('path');
+        const localFilePath = path.join(__dirname, '..', 'frontend', 'data', 'csv', `${type}.csv`);
+        await fs.writeFile(
+            localFilePath,
+            csvContent,
+            'utf8'
+        );
+
+        res.json({ success: true, message: 'CSV가 GitHub에 성공적으로 저장되었습니다.' });
+    } catch (error) {
+        console.error('CSV 저장 실패:', error.response?.data || error.message);
+        res.status(500).json({
+            error: 'CSV 저장에 실패했습니다.',
+            details: error.response?.data || error.message
+        });
+    }
+});
+
+// CSV 파일 조회 및 GitHub에서 읽어오기
+app.get('/api/data/:type', async (req, res) => {
+    try {
+        const { type } = req.params;
+        const csvPath = `frontend/data/csv/${type}.csv`;
+        const jsonPath = `frontend/data/csv/${type}.json`;
+
+        let filePath, isJson = false;
+        // 1. csv 파일 우선
+        try {
+            await axios.get(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${csvPath}`, { headers: githubHeaders });
+            filePath = csvPath;
+        } catch {
+            // 2. 없으면 json 파일 시도
+            isJson = true;
+            filePath = jsonPath;
+        }
+
+        const getFileResponse = await axios.get(
+            `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`,
+            { headers: githubHeaders }
+        );
+        const content = Buffer.from(getFileResponse.data.content, 'base64').toString('utf8');
+        res.json({ content, isJson });
+    } catch (error) {
+        console.error('데이터 조회 실패:', error.response?.data || error.message);
+        res.status(500).json({
+            error: '데이터 조회에 실패했습니다.',
+            details: error.response?.data || error.message
+        });
+    }
+});
+
+// JSON 파일 저장 API
+app.post('/api/save-json/:type', async (req, res) => {
+    try {
+        const { type } = req.params;
+        const jsonContent = req.body.json;
+        const filePath = `frontend/data/csv/${type}.json`;
+
+        // 1. GitHub에 저장
+        const getFileResponse = await axios.get(
+            `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`,
+            { headers: githubHeaders }
+        );
+        const sha = getFileResponse.data.sha;
+        await axios.put(
+            `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`,
+            {
+                message: `[admin] ${type}.json 업데이트`,
+                content: Buffer.from(jsonContent, 'utf8').toString('base64'),
+                sha,
+                branch: GITHUB_BRANCH
+            },
+            { headers: githubHeaders }
+        );
+
+        // 2. 로컬에도 저장
+        const fs = require('fs').promises;
+        const path = require('path');
+        const localFilePath = path.join(__dirname, '..', 'frontend', 'data', 'csv', `${type}.json`);
+        await fs.writeFile(localFilePath, jsonContent, 'utf8');
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('JSON 저장 실패:', error.response?.data || error.message);
+        res.status(500).json({
+            error: 'JSON 저장에 실패했습니다.',
+            details: error.response?.data || error.message
+        });
+    }
+});
+
+// 관리자 인증 API
+app.post('/api/admin-auth', (req, res) => {
+    const { password } = req.body;
+    if (password === process.env.ADMIN_PASSWORD) {
+        return res.json({ success: true });
+    }
+    res.status(401).json({ success: false, message: '비밀번호가 틀렸습니다.' });
+});
 
 // 📌 🚀 서버 실행
 app.listen(PORT, () => {
