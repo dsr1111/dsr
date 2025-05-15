@@ -1,0 +1,24 @@
+{
+  "events": [
+    {
+      "title": "디지패스 2025 시즌4",
+      "start": "2025-05-08T00:00:00",
+      "end": "2025-06-05T10:00:00",
+      "backgroundColor": "gray"
+    },
+    {
+      "title": "카네이션을 만들자",
+      "start": "2025-05-08T00:00:00",
+      "end": "2025-05-22T23:59:59",
+      "backgroundColor": "#ffcccc",
+      "textColor": "#990000"
+    },
+    {
+      "title": "보코몬의 서신",
+      "start": "2025-04-24T00:00:00",
+      "end": "2025-05-31T10:00:00",
+      "backgroundColor": "purple",
+      "textColor": "white"
+    }
+  ]
+} 
