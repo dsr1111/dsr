@@ -509,7 +509,16 @@ class DataManager {
                 delete data[oldName];
             }
             data[name] = newItem;
-            this.currentData = data;
+            
+            // 덱이름 기준으로 정렬
+            const sortedData = {};
+            Object.keys(data)
+                .sort((a, b) => a.localeCompare(b, 'ko'))
+                .forEach(key => {
+                    sortedData[key] = data[key];
+                });
+            
+            this.currentData = sortedData;
         }
 
         this.renderTable();
