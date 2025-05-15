@@ -470,6 +470,39 @@ class DataManager {
                 this.currentData.push(newItem);
             }
         }
+        else if (this.currentType === 'coupon') {
+            const formData = new FormData(this.dataForm);
+            const name = formData.get('쿠폰명');
+            const period = formData.get('period');
+            const number = formData.get('number');
+            const items = (formData.get('items') || '').split(/\r?\n/).filter(x => x);
+            let data = { ...this.currentData };
+            const newItem = { period, number, items };
+            if (this.currentIndex !== undefined) {
+                const oldName = Object.keys(data)[this.currentIndex];
+                delete data[oldName];
+            }
+            data[name] = newItem;
+            this.currentData = data;
+        }
+        else if (this.currentType === 'deck') {
+            const formData = new FormData(this.dataForm);
+            const name = formData.get('덱이름');
+            const digimon = (formData.get('digimon') || '').split(/\r?\n/).filter(x => x).map(line => {
+                const [n, l] = line.split(',');
+                return { name: n?.trim() || '', level: Number(l) || 0 };
+            });
+            const description = formData.get('description');
+            const effects = (formData.get('effects') || '').split(/\r?\n/).filter(x => x);
+            let data = { ...this.currentData };
+            const newItem = { digimon, description, effects };
+            if (this.currentIndex !== undefined) {
+                const oldName = Object.keys(data)[this.currentIndex];
+                delete data[oldName];
+            }
+            data[name] = newItem;
+            this.currentData = data;
+        }
         // ... 기존 JSON 저장 로직 유지 ...
 
         this.renderTable();
