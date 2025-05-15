@@ -51,13 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dayCellContent: function (info) {
           return { html: `<span>${info.date.getDate()}</span>` };
         },
-        events: Object.entries(data).map(([title, event]) => ({
-          title: title,
-          start: event.start,
-          end: event.end,
-          backgroundColor: event.backgroundColor,
-          textColor: event.textColor
-        })),
+        events: data,
         datesSet: function (info) {
           const currentMonthText = info.view.currentStart.toLocaleString("ko", {
             month: "long",
