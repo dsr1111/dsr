@@ -83,6 +83,27 @@ class DataManager {
         const tableHead = document.querySelector('.data-table thead tr');
         tableBody.innerHTML = '';
         
+        // calendar.json 전용 테이블
+        if (this.currentType === 'calendar') {
+            tableHead.innerHTML = '<th>제목</th><th>시작일</th><th>종료일</th><th>배경색</th><th>글자색</th><th>관리</th>';
+            this.currentData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.title}</td>
+                    <td>${item.start}</td>
+                    <td>${item.end}</td>
+                    <td>${item.backgroundColor}</td>
+                    <td>${item.textColor}</td>
+                    <td>
+                        <button onclick="dataManager.editData(${index})">수정</button>
+                        <button onclick="dataManager.deleteData(${index})">삭제</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            return;
+        }
+
         // coupon.json 전용 테이블
         if (this.currentType === 'coupon') {
             tableHead.innerHTML = '<th>쿠폰명</th><th>기간</th><th>쿠폰번호</th><th>보상</th><th>관리</th>';
@@ -157,7 +178,53 @@ class DataManager {
     showEditForm(item = {}) {
         this.dataForm.innerHTML = '';
 
-        if (this.currentType === 'coupon') {
+        if (this.currentType === 'calendar') {
+            // 제목
+            const titleGroup = document.createElement('div');
+            titleGroup.className = 'form-group';
+            titleGroup.innerHTML = `
+                <label>제목:</label>
+                <input type="text" name="title" value="${item.title || ''}" required>
+            `;
+            this.dataForm.appendChild(titleGroup);
+
+            // 시작일
+            const startGroup = document.createElement('div');
+            startGroup.className = 'form-group';
+            startGroup.innerHTML = `
+                <label>시작일:</label>
+                <input type="datetime-local" name="start" value="${item.start ? item.start.slice(0, 16) : ''}" required>
+            `;
+            this.dataForm.appendChild(startGroup);
+
+            // 종료일
+            const endGroup = document.createElement('div');
+            endGroup.className = 'form-group';
+            endGroup.innerHTML = `
+                <label>종료일:</label>
+                <input type="datetime-local" name="end" value="${item.end ? item.end.slice(0, 16) : ''}" required>
+            `;
+            this.dataForm.appendChild(endGroup);
+
+            // 배경색
+            const bgColorGroup = document.createElement('div');
+            bgColorGroup.className = 'form-group';
+            bgColorGroup.innerHTML = `
+                <label>배경색:</label>
+                <input type="color" name="backgroundColor" value="${item.backgroundColor || '#ffffff'}" required>
+            `;
+            this.dataForm.appendChild(bgColorGroup);
+
+            // 글자색
+            const textColorGroup = document.createElement('div');
+            textColorGroup.className = 'form-group';
+            textColorGroup.innerHTML = `
+                <label>글자색:</label>
+                <input type="color" name="textColor" value="${item.textColor || '#000000'}" required>
+            `;
+            this.dataForm.appendChild(textColorGroup);
+        }
+        else if (this.currentType === 'coupon') {
             // 쿠폰명(키)
             const nameGroup = document.createElement('div');
             nameGroup.className = 'form-group';
@@ -365,6 +432,43 @@ class DataManager {
     }
 
     async saveJSON() {
+        if (this.currentType === 'calendar') {
+            const formData = new FormData(this.dataForm);
+            const newItem = {
+                title: formData.get('title'),
+                start: formData.get('start') + ':00',
+                end: formData.get('end') + ':00',
+                backgroundColor: formData.get('backgroundColor'),
+                textColor: formData.get('textColor')
+            };
+
+            if (this.currentIndex !== undefined) {
+                this.currentData[this.currentIndex] = newItem;
+            } else {
+                this.currentData.push(newItem);
+            }
+
+            const jsonContent = JSON.stringify(this.currentData, null, 2);
+            try {
+                const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ json: jsonContent })
+                });
+
+                if (!response.ok) {
+                    throw new Error('데이터 저장 실패');
+                }
+
+                this.renderTable();
+                this.hideEditForm();
+                alert('데이터가 성공적으로 저장되었습니다.');
+            } catch (error) {
+                console.error('저장 실패:', error);
+                alert('데이터 저장에 실패했습니다.');
+            }
+            return;
+        }
         if (this.currentType === 'coupon') {
             // coupon.json 저장 구조 변환
             const formData = new FormData(this.dataForm);
