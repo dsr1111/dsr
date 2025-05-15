@@ -1,5 +1,3 @@
-const API_URL = 'https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app';
-
 // 데이터 관리 클래스
 class DataManager {
     constructor() {
@@ -22,32 +20,31 @@ class DataManager {
         });
         this.dataTypeSelect.addEventListener('change', (e) => {
             this.currentType = e.target.value;
-            this.isCSV = !['coupon', 'deck'].includes(this.currentType);
+            this.isCSV = !['coupon', 'deck', 'calendar'].includes(this.currentType);
             this.loadData();
         });
     }
 
     async loadData() {
         try {
-            const response = await fetch(`${API_URL}/api/data/${this.currentType}`, {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            const response = await fetch(`/api/data/${this.currentType}`);
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
-            }
-            if (data.isJson) {
-                this.isCSV = false;
-                this.currentData = this.parseJSON(data.content);
-            } else {
-                this.isCSV = true;
+            if (this.isCSV) {
                 this.currentData = this.parseCSV(data.content);
+            } else {
+                // content가 문자열이면 반드시 한 번만 파싱
+                if (typeof data.content === 'string') {
+                    try {
+                        this.currentData = JSON.parse(data.content);
+                    } catch (e) {
+                        alert('JSON 파싱 오류: ' + e.message);
+                        this.currentData = this.currentType === 'calendar' ? [] : {};
+                    }
+                } else {
+                    this.currentData = data.content;
+                }
             }
+            // calendar.json은 이미 배열 형태로 처리
             this.renderTable();
         } catch (error) {
             console.error('데이터 로드 실패:', error);
@@ -73,8 +70,8 @@ class DataManager {
         try {
             return JSON.parse(jsonText);
         } catch (e) {
-            alert('JSON 파싱 오류');
-            return [];
+            console.error('JSON 파싱 오류:', e);
+            return {};
         }
     }
 
@@ -101,6 +98,40 @@ class DataManager {
                 `;
                 tableBody.appendChild(row);
             });
+            return;
+        }
+
+        // calendar.json 전용 테이블 - 배열 형태로 변경
+        if (this.currentType === 'calendar') {
+            tableHead.innerHTML = '<th>이벤트명</th><th>시작일</th><th>종료일</th><th>배경색</th><th>글자색</th><th>관리</th>';
+            console.log('calendar currentData:', this.currentData);
+            if (Array.isArray(this.currentData)) {
+                this.currentData.forEach((event, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${event.title || ''}</td>
+                        <td>${event.start || ''}</td>
+                        <td>${event.end || ''}</td>
+                        <td style="background-color: ${event.backgroundColor || 'transparent'}; text-align: center; padding: 5px;">
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background-color: ${event.backgroundColor || 'transparent'}; margin: 0 auto; border: 1px solid #ccc;"></div>
+                            ${event.backgroundColor || ''}
+                        </td>
+                        <td style="color: ${event.textColor || 'inherit'}; text-align: center; padding: 5px;">
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background-color: ${event.textColor || 'transparent'}; margin: 0 auto; border: 1px solid #ccc;"></div>
+                            ${event.textColor || ''}
+                        </td>
+                        <td>
+                            <button onclick="dataManager.editData(${index})">수정</button>
+                            <button onclick="dataManager.deleteData(${index})">삭제</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="6">calendar.json 데이터 구조가 올바르지 않습니다.</td>';
+                tableBody.appendChild(row);
+            }
             return;
         }
 
@@ -187,6 +218,92 @@ class DataManager {
                 <textarea name="items" rows="8" style="width:100%">${itemsValue}</textarea>
             `;
             this.dataForm.appendChild(itemsGroup);
+        }
+        else if (this.currentType === 'calendar') {
+            // 이벤트명(title)
+            const titleGroup = document.createElement('div');
+            titleGroup.className = 'form-group';
+            titleGroup.innerHTML = `
+                <label>이벤트명:</label>
+                <input type="text" name="title" value="${item.title || ''}" required>
+            `;
+            this.dataForm.appendChild(titleGroup);
+
+            // 시작일
+            const startGroup = document.createElement('div');
+            startGroup.className = 'form-group';
+            startGroup.innerHTML = `
+                <label>시작일 (YYYY-MM-DDTHH:mm:ss):</label>
+                <input type="text" name="start" value="${item.start || ''}" required>
+            `;
+            this.dataForm.appendChild(startGroup);
+
+            // 종료일
+            const endGroup = document.createElement('div');
+            endGroup.className = 'form-group';
+            endGroup.innerHTML = `
+                <label>종료일 (YYYY-MM-DDTHH:mm:ss):</label>
+                <input type="text" name="end" value="${item.end || ''}" required>
+            `;
+            this.dataForm.appendChild(endGroup);
+
+            // 배경색 (색상 선택기 사용)
+            const bgColorGroup = document.createElement('div');
+            bgColorGroup.className = 'form-group';
+            bgColorGroup.innerHTML = `
+                <label>배경색:</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="color" name="backgroundColor" value="${item.backgroundColor || '#3788d8'}" style="width: 50px; height: 30px;">
+                    <input type="text" id="bgColorText" value="${item.backgroundColor || '#3788d8'}" style="flex: 1;" 
+                        onchange="document.querySelector('input[name=backgroundColor]').value = this.value;">
+                </div>
+                <div style="margin-top: 5px; padding: 10px; background-color: ${item.backgroundColor || '#3788d8'}; color: ${item.textColor || '#ffffff'}; border-radius: 4px;">
+                    배경색 미리보기
+                </div>
+            `;
+            this.dataForm.appendChild(bgColorGroup);
+
+            // 글자색 (색상 선택기 사용)
+            const textColorGroup = document.createElement('div');
+            textColorGroup.className = 'form-group';
+            textColorGroup.innerHTML = `
+                <label>글자색:</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="color" name="textColor" value="${item.textColor || '#ffffff'}" style="width: 50px; height: 30px;">
+                    <input type="text" id="textColorText" value="${item.textColor || '#ffffff'}" style="flex: 1;"
+                        onchange="document.querySelector('input[name=textColor]').value = this.value;">
+                </div>
+                <div style="margin-top: 5px; padding: 10px; background-color: ${item.backgroundColor || '#3788d8'}; color: ${item.textColor || '#ffffff'}; border-radius: 4px;">
+                    글자색 미리보기
+                </div>
+            `;
+            this.dataForm.appendChild(textColorGroup);
+            
+            // 색상 선택기와 텍스트 입력 필드 연동
+            setTimeout(() => {
+                const bgColorPicker = document.querySelector('input[name=backgroundColor]');
+                const bgColorText = document.getElementById('bgColorText');
+                const textColorPicker = document.querySelector('input[name=textColor]');
+                const textColorText = document.getElementById('textColorText');
+                
+                bgColorPicker.addEventListener('input', function() {
+                    bgColorText.value = this.value;
+                    updatePreview();
+                });
+                
+                textColorPicker.addEventListener('input', function() {
+                    textColorText.value = this.value;
+                    updatePreview();
+                });
+                
+                function updatePreview() {
+                    const previewDivs = document.querySelectorAll('.form-group div[style*="background-color"]');
+                    previewDivs.forEach(div => {
+                        div.style.backgroundColor = bgColorPicker.value;
+                        div.style.color = textColorPicker.value;
+                    });
+                }
+            }, 100);
         }
         else if (this.currentType === 'deck') {
             // 덱이름(키)
@@ -276,6 +393,15 @@ class DataManager {
             this.showEditForm(item);
             return;
         }
+        
+        // calendar.json 이벤트 편집
+        if (this.currentType === 'calendar') {
+            let item = this.currentData[index];
+            this.currentIndex = index;
+            this.showEditForm(item);
+            return;
+        }
+        
         let item = this.currentData[index];
         this.currentIndex = index;
         this.showEditForm(item);
@@ -285,7 +411,27 @@ class DataManager {
         if (this.isCSV) {
             this.saveCSV();
         } else {
-            this.saveJSON();
+            if (this.currentType === 'calendar') {
+                const formData = new FormData(this.dataForm);
+                const newEvent = {
+                    title: formData.get('title'),
+                    start: formData.get('start'),
+                    end: formData.get('end'),
+                    backgroundColor: formData.get('backgroundColor'),
+                    textColor: formData.get('textColor')
+                };
+
+                if (this.currentIndex !== undefined) {
+                    // 기존 이벤트 수정
+                    this.currentData[this.currentIndex] = newEvent;
+                } else {
+                    // 새 이벤트 추가
+                    this.currentData.push(newEvent);
+                }
+                this.saveJSON();
+            } else {
+                this.saveJSON();
+            }
         }
     }
 
@@ -302,50 +448,9 @@ class DataManager {
             this.currentData.push(newItem);
         }
 
-        // characters.csv 정렬: evolution_stage(성장기,성숙기,완전체,궁극체) → name(가나다순)
-        if (this.currentType === 'characters') {
-            const stageOrder = ["성장기", "성숙기", "완전체", "궁극체"];
-            this.currentData.sort((a, b) => {
-                const stageA = stageOrder.indexOf(a.evolution_stage);
-                const stageB = stageOrder.indexOf(b.evolution_stage);
-                if (stageA !== stageB) return stageA - stageB;
-                return a.name.localeCompare(b.name, 'ko');
-            });
-        }
-        // condition.csv 정렬: evolution_stage(3,4,5,6) → name(가나다순)
-        else if (this.currentType === 'condition') {
-            const stageOrder = ["3", "4", "5", "6"];
-            this.currentData.sort((a, b) => {
-                const stageA = stageOrder.indexOf(a.evolution_stage);
-                const stageB = stageOrder.indexOf(b.evolution_stage);
-                if (stageA !== stageB) return stageA - stageB;
-                return a.name.localeCompare(b.name, 'ko');
-            });
-        }
-        // evolution.csv 정렬: evolution_stage(1~6) → name(가나다순)
-        else if (this.currentType === 'evolution') {
-            const stageOrder = ["1", "2", "3", "4", "5", "6"];
-            this.currentData.sort((a, b) => {
-                const stageA = stageOrder.indexOf(a.evolution_stage);
-                const stageB = stageOrder.indexOf(b.evolution_stage);
-                if (stageA !== stageB) return stageA - stageB;
-                return a.name.localeCompare(b.name, 'ko');
-            });
-        }
-        // skill1, skill2, skill3 정렬: evolution_stage(성장기,성숙기,완전체,궁극체) → name(가나다순)
-        else if (["skill1", "skill2", "skill3"].includes(this.currentType)) {
-            const stageOrder = ["성장기", "성숙기", "완전체", "궁극체"];
-            this.currentData.sort((a, b) => {
-                const stageA = stageOrder.indexOf(a.evolution_stage);
-                const stageB = stageOrder.indexOf(b.evolution_stage);
-                if (stageA !== stageB) return stageA - stageB;
-                return a.name.localeCompare(b.name, 'ko');
-            });
-        }
-
         try {
             const csvContent = this.convertToCSV(this.currentData);
-            const response = await fetch(`${API_URL}/api/save-csv/${this.currentType}`, {
+            const response = await fetch(`/api/save-csv/${this.currentType}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ csv: csvContent })
@@ -382,7 +487,7 @@ class DataManager {
             data[name] = newItem;
             this.currentData = data;
             const jsonContent = JSON.stringify(this.currentData, null, 2);
-            await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
+            await fetch(`/api/save-json/${this.currentType}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ json: jsonContent })
@@ -412,7 +517,7 @@ class DataManager {
             data[name] = newItem;
             this.currentData = data;
             const jsonContent = JSON.stringify(this.currentData, null, 2);
-            await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
+            await fetch(`/api/save-json/${this.currentType}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ json: jsonContent })
@@ -422,17 +527,25 @@ class DataManager {
             alert('데이터가 성공적으로 저장되었습니다.');
             return;
         }
-        // 기타 JSON(기존 방식)
-        const jsonContent = JSON.stringify(this.currentData, null, 2);
-        const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ json: jsonContent })
-        });
-        if (!response.ok) {
-            throw new Error('데이터 저장 실패');
+        
+        // calendar.json 및 기타 JSON 저장
+        try {
+            const jsonContent = JSON.stringify(this.currentData, null, 2);
+            const response = await fetch(`/api/save-json/${this.currentType}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ json: jsonContent })
+            });
+            if (!response.ok) {
+                throw new Error('데이터 저장 실패');
+            }
+            this.renderTable();
+            this.hideEditForm();
+            alert('데이터가 성공적으로 저장되었습니다.');
+        } catch (error) {
+            console.error('저장 실패:', error);
+            alert('데이터 저장에 실패했습니다.');
         }
-        alert('데이터가 성공적으로 저장되었습니다.');
     }
 
     convertToCSV(data) {
@@ -451,13 +564,14 @@ class DataManager {
         if (!confirm('정말로 이 항목을 삭제하시겠습니까?')) {
             return;
         }
+        
         if (this.currentType === 'coupon' || this.currentType === 'deck') {
             const entries = Object.entries(this.currentData);
             const key = entries[index][0];
             delete this.currentData[key];
             const jsonContent = JSON.stringify(this.currentData, null, 2);
             try {
-                const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
+                const response = await fetch(`/api/save-json/${this.currentType}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ json: jsonContent })
@@ -473,10 +587,34 @@ class DataManager {
             }
             return;
         }
+        
+        // calendar.json 삭제 처리
+        if (this.currentType === 'calendar') {
+            this.currentData.splice(index, 1);
+            try {
+                const jsonContent = JSON.stringify(this.currentData, null, 2);
+                const response = await fetch(`/api/save-json/${this.currentType}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ json: jsonContent })
+                });
+                if (!response.ok) {
+                    throw new Error('데이터 삭제 실패');
+                }
+                this.renderTable();
+                alert('데이터가 성공적으로 삭제되었습니다.');
+            } catch (error) {
+                console.error('삭제 실패:', error);
+                alert('데이터 삭제에 실패했습니다.');
+            }
+            return;
+        }
+        
+        // CSV 데이터 삭제
         this.currentData.splice(index, 1);
         try {
             const csvContent = this.convertToCSV(this.currentData);
-            const response = await fetch(`${API_URL}/api/save-csv/characters`, {
+            const response = await fetch(`/api/save-csv/${this.currentType}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -514,56 +652,3 @@ function showAddForm() {
 function hideEditForm() {
     dataManager.hideEditForm();
 }
-
-// 오버레이와 수정창 동기화
-const editForm = document.getElementById('editForm');
-const editOverlay = document.getElementById('editOverlay');
-function showEditFormWithOverlay() {
-    editForm.style.display = 'block';
-    editOverlay.style.display = 'block';
-}
-function hideEditFormWithOverlay() {
-    editForm.style.display = 'none';
-    editOverlay.style.display = 'none';
-    if (window.dataManager) dataManager.hideEditForm();
-}
-// editForm 열릴 때 오버레이도 같이 열기
-const origShowEditForm = dataManager.showEditForm.bind(dataManager);
-dataManager.showEditForm = function(item) {
-    origShowEditForm(item);
-    showEditFormWithOverlay();
-};
-// editForm 닫힐 때 오버레이도 같이 닫기
-const origHideEditForm = dataManager.hideEditForm.bind(dataManager);
-dataManager.hideEditForm = function() {
-    origHideEditForm();
-    hideEditFormWithOverlay();
-};
-function submitAdminPassword() {
-    const pw = document.getElementById('adminPassword').value;
-    fetch(`${API_URL}/api/admin-auth`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pw })
-    })
-    .then(res => {
-        if (!res.ok) throw new Error('fail');
-        return res.json();
-    })
-    .then(data => {
-        if (data.success) {
-            document.getElementById('admin-auth-modal').style.display = 'none';
-            document.getElementById('admin-main').style.display = '';
-        } else {
-            document.getElementById('adminAuthError').innerText = '비밀번호가 틀렸습니다.';
-        }
-    })
-    .catch(() => {
-        document.getElementById('adminAuthError').innerText = '비밀번호가 틀렸습니다.';
-    });
-}
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('adminPassword').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') submitAdminPassword();
-    });
-}); 
