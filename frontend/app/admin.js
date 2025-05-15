@@ -267,7 +267,7 @@ class DataManager {
             nameGroup.className = 'form-group';
             nameGroup.innerHTML = `
                 <label>쿠폰명:</label>
-                <input type="text" name="쿠폰명" value="${item._name || ''}">
+                <input type="text" name="쿠폰명" value="${item._name || ''}" required>
             `;
             this.dataForm.appendChild(nameGroup);
 
@@ -298,7 +298,7 @@ class DataManager {
             nameGroup.className = 'form-group';
             nameGroup.innerHTML = `
                 <label>덱이름:</label>
-                <input type="text" name="덱이름" value="${item._name || ''}">
+                <input type="text" name="덱이름" value="${item._name || ''}" required>
             `;
             this.dataForm.appendChild(nameGroup);
 
@@ -473,6 +473,10 @@ class DataManager {
         else if (this.currentType === 'coupon') {
             const formData = new FormData(this.dataForm);
             const name = formData.get('쿠폰명');
+            if (!name) {
+                alert('쿠폰명을 입력해주세요.');
+                return;
+            }
             const period = formData.get('period');
             const number = formData.get('number');
             const items = (formData.get('items') || '').split(/\r?\n/).filter(x => x);
@@ -488,6 +492,10 @@ class DataManager {
         else if (this.currentType === 'deck') {
             const formData = new FormData(this.dataForm);
             const name = formData.get('덱이름');
+            if (!name) {
+                alert('덱이름을 입력해주세요.');
+                return;
+            }
             const digimon = (formData.get('digimon') || '').split(/\r?\n/).filter(x => x).map(line => {
                 const [n, l] = line.split(',');
                 return { name: n?.trim() || '', level: Number(l) || 0 };
