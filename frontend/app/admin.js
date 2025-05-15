@@ -503,7 +503,6 @@ class DataManager {
             data[name] = newItem;
             this.currentData = data;
         }
-        // ... 기존 JSON 저장 로직 유지 ...
 
         this.renderTable();
         this.hideEditForm();
@@ -525,7 +524,16 @@ class DataManager {
                     throw new Error('데이터 저장 실패');
                 }
             } else {
-                const jsonContent = JSON.stringify(this.currentData, null, 2);
+                let jsonContent;
+                if (this.currentType === 'calendar') {
+                    jsonContent = JSON.stringify(this.currentData, null, 2);
+                } else if (this.currentType === 'coupon' || this.currentType === 'deck') {
+                    // coupon과 deck은 객체 형태로 저장
+                    jsonContent = JSON.stringify(this.currentData, null, 2);
+                } else {
+                    jsonContent = JSON.stringify(this.currentData, null, 2);
+                }
+
                 const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
