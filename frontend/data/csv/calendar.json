@@ -2,7 +2,8 @@
   "디지패스 2025 시즌4": {
     "start": "2025-05-08T00:00:00",
     "end": "2025-06-05T10:00:00",
-    "backgroundColor": "gray"
+    "backgroundColor": "gray",
+    "textColor": "white"
   },
   "카네이션을 만들자": {
     "start": "2025-05-08T00:00:00",
