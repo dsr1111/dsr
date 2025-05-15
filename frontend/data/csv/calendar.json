@@ -3,8 +3,8 @@
     "title": "디지패스 2025 시즌4",
     "start": "2025-05-08T00:00:00",
     "end": "2025-06-05T10:00:00",
-    "backgroundColor": "gray",
-    "textColor": "white"
+    "backgroundColor": "#b5b5b5",
+    "textColor": "#000000"
   },
   {
     "title": "카네이션을 만들자",
@@ -17,8 +17,8 @@
     "title": "보코몬의 서신",
     "start": "2025-04-24T00:00:00",
     "end": "2025-05-31T10:00:00",
-    "backgroundColor": "purple",
-    "textColor": "white"
+    "backgroundColor": "#a66bff",
+    "textColor": "#ffffff"
   },
   {
     "title": "스승의 가르침",
