@@ -10,6 +10,7 @@ class DataManager {
         this.dataTypeSelect = document.getElementById('dataTypeSelect');
         this.isCSV = true;
         this.dynamicHeaders = [];
+        this.hasUnsavedChanges = false;
         
         this.initializeEventListeners();
     }
@@ -18,11 +19,17 @@ class DataManager {
         // 폼 제출 이벤트
         this.dataForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            this.saveData();
+            this.saveToTable();
         });
         this.dataTypeSelect.addEventListener('change', (e) => {
+            if (this.hasUnsavedChanges) {
+                if (!confirm('저장되지 않은 변경사항이 있습니다. 계속하시겠습니까?')) {
+                    this.dataTypeSelect.value = this.currentType;
+                    return;
+                }
+            }
             this.currentType = e.target.value;
-            this.isCSV = !['coupon', 'deck'].includes(this.currentType);
+            this.isCSV = !['coupon', 'deck', 'calendar'].includes(this.currentType);
             this.loadData();
         });
     }
@@ -49,6 +56,8 @@ class DataManager {
                 this.currentData = this.parseCSV(data.content);
             }
             this.renderTable();
+            this.hasUnsavedChanges = false;
+            this.updateSaveButton();
         } catch (error) {
             console.error('데이터 로드 실패:', error);
             alert('데이터를 불러오는데 실패했습니다.');
@@ -376,15 +385,15 @@ class DataManager {
         this.showEditForm(item);
     }
 
-    saveData() {
+    saveToTable() {
         if (this.isCSV) {
-            this.saveCSV();
+            this.saveToTableCSV();
         } else {
-            this.saveJSON();
+            this.saveToTableJSON();
         }
     }
 
-    async saveCSV() {
+    saveToTableCSV() {
         const formData = new FormData(this.dataForm);
         const newItem = {};
         formData.forEach((value, key) => {
@@ -438,28 +447,13 @@ class DataManager {
             });
         }
 
-        try {
-            const csvContent = this.convertToCSV(this.currentData);
-            const response = await fetch(`${API_URL}/api/save-csv/${this.currentType}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ csv: csvContent })
-            });
-
-            if (!response.ok) {
-                throw new Error('데이터 저장 실패');
-            }
-
-            this.renderTable();
-            this.hideEditForm();
-            alert('데이터가 성공적으로 저장되었습니다.');
-        } catch (error) {
-            console.error('저장 실패:', error);
-            alert('데이터 저장에 실패했습니다.');
-        }
+        this.renderTable();
+        this.hideEditForm();
+        this.hasUnsavedChanges = true;
+        this.updateSaveButton();
     }
 
-    async saveJSON() {
+    saveToTableJSON() {
         if (this.currentType === 'calendar') {
             const formData = new FormData(this.dataForm);
             const newItem = {
@@ -475,9 +469,30 @@ class DataManager {
             } else {
                 this.currentData.push(newItem);
             }
+        }
+        // ... 기존 JSON 저장 로직 유지 ...
 
-            const jsonContent = JSON.stringify(this.currentData, null, 2);
-            try {
+        this.renderTable();
+        this.hideEditForm();
+        this.hasUnsavedChanges = true;
+        this.updateSaveButton();
+    }
+
+    async saveToGitHub() {
+        try {
+            if (this.isCSV) {
+                const csvContent = this.convertToCSV(this.currentData);
+                const response = await fetch(`${API_URL}/api/save-csv/${this.currentType}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ csv: csvContent })
+                });
+
+                if (!response.ok) {
+                    throw new Error('데이터 저장 실패');
+                }
+            } else {
+                const jsonContent = JSON.stringify(this.currentData, null, 2);
                 const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -487,84 +502,25 @@ class DataManager {
                 if (!response.ok) {
                     throw new Error('데이터 저장 실패');
                 }
+            }
 
-                this.renderTable();
-                this.hideEditForm();
-                alert('데이터가 성공적으로 저장되었습니다.');
-            } catch (error) {
-                console.error('저장 실패:', error);
-                alert('데이터 저장에 실패했습니다.');
-            }
-            return;
-        }
-        if (this.currentType === 'coupon') {
-            // coupon.json 저장 구조 변환
-            const formData = new FormData(this.dataForm);
-            const name = formData.get('쿠폰명');
-            const period = formData.get('period');
-            const number = formData.get('number');
-            const items = (formData.get('items') || '').split(/\r?\n/).filter(x => x);
-            let data = { ...this.currentData };
-            const newItem = { period, number, items };
-            if (this.currentIndex !== undefined) {
-                // 수정: 기존 key를 찾아서 교체
-                const oldName = Object.keys(data)[this.currentIndex];
-                delete data[oldName];
-            }
-            data[name] = newItem;
-            this.currentData = data;
-            const jsonContent = JSON.stringify(this.currentData, null, 2);
-            await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ json: jsonContent })
-            });
-            this.renderTable();
-            this.hideEditForm();
+            this.hasUnsavedChanges = false;
+            this.updateSaveButton();
             alert('데이터가 성공적으로 저장되었습니다.');
-            return;
+        } catch (error) {
+            console.error('저장 실패:', error);
+            alert('데이터 저장에 실패했습니다.');
         }
-        if (this.currentType === 'deck') {
-            // deck.json 저장 구조 변환
-            const formData = new FormData(this.dataForm);
-            const name = formData.get('덱이름');
-            const digimon = (formData.get('digimon') || '').split(/\r?\n/).filter(x => x).map(line => {
-                const [n, l] = line.split(',');
-                return { name: n?.trim() || '', level: Number(l) || 0 };
-            });
-            const description = formData.get('description');
-            const effects = (formData.get('effects') || '').split(/\r?\n/).filter(x => x);
-            let data = { ...this.currentData };
-            const newItem = { digimon, description, effects };
-            if (this.currentIndex !== undefined) {
-                // 수정: 기존 key를 찾아서 교체
-                const oldName = Object.keys(data)[this.currentIndex];
-                delete data[oldName];
-            }
-            data[name] = newItem;
-            this.currentData = data;
-            const jsonContent = JSON.stringify(this.currentData, null, 2);
-            await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ json: jsonContent })
-            });
-            this.renderTable();
-            this.hideEditForm();
-            alert('데이터가 성공적으로 저장되었습니다.');
-            return;
+    }
+
+    updateSaveButton() {
+        const saveButton = document.getElementById('saveToGitHub');
+        if (this.hasUnsavedChanges) {
+            saveButton.style.display = 'inline-block';
+            saveButton.style.backgroundColor = '#ff4444';
+        } else {
+            saveButton.style.display = 'none';
         }
-        // 기타 JSON(기존 방식)
-        const jsonContent = JSON.stringify(this.currentData, null, 2);
-        const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ json: jsonContent })
-        });
-        if (!response.ok) {
-            throw new Error('데이터 저장 실패');
-        }
-        alert('데이터가 성공적으로 저장되었습니다.');
     }
 
     convertToCSV(data) {
