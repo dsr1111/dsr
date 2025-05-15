@@ -206,6 +206,18 @@ class DataManager {
             `;
             this.dataForm.appendChild(endGroup);
 
+            // 색상 미리보기 컨테이너
+            const previewContainer = document.createElement('div');
+            previewContainer.className = 'form-group';
+            previewContainer.style.marginBottom = '20px';
+            previewContainer.innerHTML = `
+                <label>색상 미리보기:</label>
+                <div id="colorPreview" style="padding: 15px; border-radius: 8px; margin-top: 8px; text-align: center; font-weight: bold;">
+                    색상 미리보기 텍스트
+                </div>
+            `;
+            this.dataForm.appendChild(previewContainer);
+
             // 배경색
             const bgColorGroup = document.createElement('div');
             bgColorGroup.className = 'form-group';
@@ -223,6 +235,22 @@ class DataManager {
                 <input type="color" name="textColor" value="${item.textColor || '#000000'}" required>
             `;
             this.dataForm.appendChild(textColorGroup);
+
+            // 색상 미리보기 업데이트 함수
+            const updateColorPreview = () => {
+                const bgColor = this.dataForm.querySelector('[name="backgroundColor"]').value;
+                const textColor = this.dataForm.querySelector('[name="textColor"]').value;
+                const preview = document.getElementById('colorPreview');
+                preview.style.backgroundColor = bgColor;
+                preview.style.color = textColor;
+            };
+
+            // 초기 미리보기 설정
+            updateColorPreview();
+
+            // 색상 변경 이벤트 리스너 추가
+            this.dataForm.querySelector('[name="backgroundColor"]').addEventListener('input', updateColorPreview);
+            this.dataForm.querySelector('[name="textColor"]').addEventListener('input', updateColorPreview);
         }
         else if (this.currentType === 'coupon') {
             // 쿠폰명(키)
