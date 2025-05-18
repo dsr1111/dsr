@@ -189,14 +189,23 @@ document.addEventListener("DOMContentLoaded", function () {
             const tooltipHeight = tooltip.offsetHeight;
             const viewportHeight = window.innerHeight;
             const cursorY = event.clientY;
+            const tooltipWidth = tooltip.offsetWidth;
+            const viewportWidth = window.innerWidth;
             
-            if (cursorY > viewportHeight / 2) {
-              tooltip.style.top = `${event.pageY - tooltipHeight - 10}px`;
-            } else {
-              tooltip.style.top = `${event.pageY + 10}px`;
+            // 툴팁이 상단에 가려지지 않도록 최소 top 위치 설정
+            let topPosition = event.pageY + 10;
+            if (topPosition + tooltipHeight > viewportHeight) {
+              topPosition = event.pageY - tooltipHeight - 10;
             }
-          
-            tooltip.style.left = `${event.pageX + 10}px`;
+            
+            // 툴팁이 좌우로 가려지지 않도록 처리
+            let leftPosition = event.pageX + 10;
+            if (leftPosition + tooltipWidth > viewportWidth) {
+              leftPosition = viewportWidth - tooltipWidth - 10;
+            }
+            
+            tooltip.style.top = `${Math.max(10, topPosition)}px`;
+            tooltip.style.left = `${Math.max(10, leftPosition)}px`;
           }
 
           const numberEl = document.createElement("div");
