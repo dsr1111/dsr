@@ -145,6 +145,7 @@ class CustomNav extends HTMLElement {
                     </div>
                     <ul class="dropdown__menu">
                       <li><a href="../calculator.html" class="dropdown__link">데미지 계산기</a></li>
+                      <li><a href="../exp.html" class="dropdown-item">경험치 물약 계산기</a></li>
                     </ul>
                   </li>
                   <li class="dropdown__item">
