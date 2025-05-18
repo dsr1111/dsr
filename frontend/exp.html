@@ -114,13 +114,13 @@
             <!-- 입력 폼 -->
             <div class="mb-6 md:mb-0">
               <div class="bg-[#f8f9fa] p-4 rounded-lg mb-6">
-                <h2 class="text-xl font-bold mb-4">현재 상태</h2>
+                <h2 class="text-xl font-bold mb-4">초기 상태</h2>
                 <div class="mb-4">
-                  <label for="current-level" class="block mb-2">현재 레벨</label>
+                  <label for="current-level" class="block mb-2">레벨</label>
                   <input type="number" id="current-level" min="1" max="99" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-md">
                 </div>
                 <div class="mb-4">
-                  <label for="current-exp" class="block mb-2">현재 경험치</label>
+                  <label for="current-exp" class="block mb-2">경험치</label>
                   <input type="number" id="current-exp" min="0" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md">
                 </div>
               </div>
@@ -225,9 +225,7 @@
             <!-- 결과 출력 -->
             <div>
               <div class="bg-[#f8f9fa] p-4 rounded-lg h-full">
-                <h2 class="text-xl font-bold mb-4">레벨 시뮬레이션</h2>
                 <div id="level-simulation" class="mb-6 p-3 bg-white rounded-md">
-                  <h3 class="font-bold mb-2">레벨 시뮬레이션</h3>
                   <p>물약 사용 후 레벨: <span id="sim-final-level" class="font-bold">1</span></p>
                   <p>물약 사용 후 경험치: <span id="sim-final-exp" class="font-bold">0</span></p>
                 </div>
