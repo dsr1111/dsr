@@ -292,6 +292,31 @@ class CustomNav extends HTMLElement {
               }
           });
       }
+
+      function unifyDropdownWidths() {
+      const menus = document.querySelectorAll('.dropdown__menu');
+
+      menus.forEach(menu => {
+        const links = menu.querySelectorAll('.dropdown__link');
+        let maxWidth = 0;
+
+        // 너비 측정 (보이기 전에 display: none 상태면 제대로 안 잡힐 수 있음)
+        links.forEach(link => {
+          link.style.width = 'auto'; // 초기화
+          const width = link.offsetWidth;
+          if (width > maxWidth) maxWidth = width;
+        });
+
+        // 최대 너비로 통일
+        links.forEach(link => {
+          link.style.width = maxWidth + 'px';
+        });
+      });
+    }
+
+    window.addEventListener('load', unifyDropdownWidths);
+    window.addEventListener('resize', unifyDropdownWidths);
+    
   }
 }
 
