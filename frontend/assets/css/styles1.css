@@ -206,7 +206,7 @@ a {
 .dropdown__link,
 .dropdown__sublink {
   font-family: "Pretendard-Regular", sans-serif;
-  width: 10rem;
+  width: max-content;
   padding: 1.25rem 1.25rem 1.25rem 2.5rem;
   color: var(--white-color);
   background-color: var(--black-color-light);
