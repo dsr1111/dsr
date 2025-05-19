@@ -115,13 +115,21 @@
             <div class="mb-6 md:mb-0">
               <div class="bg-[#f8f9fa] p-4 rounded-lg mb-6">
                 <h2 class="text-xl font-bold mb-4">초기 상태</h2>
-                <div class="mb-4">
-                  <label for="current-level" class="block mb-2">레벨</label>
-                  <input type="number" id="current-level" min="1" max="99" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                </div>
-                <div class="mb-4">
-                  <label for="current-exp" class="block mb-2">경험치</label>
-                  <input type="number" id="current-exp" min="0" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-24">
+                    <label for="current-level" class="block mb-2">레벨</label>
+                    <input type="number" id="current-level" min="1" max="99" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                  </div>
+                  <div class="w-24">
+                    <label for="current-exp" class="block mb-2">경험치</label>
+                    <input type="number" id="current-exp" min="0" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                  </div>
+                  <div id="evolution-checkbox-container" class="flex items-center">
+                    <label class="flex items-center gap-2 mt-8">
+                      <input type="checkbox" id="evolution-checkbox" class="w-4 h-4">
+                      <span id="evolution-checkbox-text">성숙기 진화 여부</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -382,6 +390,18 @@
         // 입력값 변경 이벤트 리스너 추가 (초기 상태 저장 및 결과 갱신)
         document.getElementById('current-level').addEventListener('input', function() {
           initialLevel = parseInt(this.value);
+          // 레벨에 따라 체크박스 표시 및 텍스트 변경 (항상 동작 보장)
+          const checkboxContainer = document.getElementById('evolution-checkbox-container');
+          const checkboxText = document.getElementById('evolution-checkbox-text');
+          if (initialLevel >= 1 && initialLevel <= 15) {
+            checkboxContainer.classList.remove('hidden');
+            checkboxText.textContent = '성숙기 진화 여부';
+          } else if (initialLevel >= 50 && initialLevel <= 60) {
+            checkboxContainer.classList.remove('hidden');
+            checkboxText.textContent = '완전체 진화 여부';
+          } else {
+            checkboxContainer.classList.add('hidden');
+          }
           updateResults();
         });
         document.getElementById('current-exp').addEventListener('input', function() {
@@ -518,6 +538,7 @@
         // 현재 상태 입력값
         let simLevel = parseInt(document.getElementById('current-level').value);
         let simExp = parseInt(document.getElementById('current-exp').value);
+        const isEvolutionChecked = document.getElementById('evolution-checkbox').checked;
 
         // 시뮬레이션: 카운터 값만큼 반복 적용
         document.querySelectorAll('.potion-item').forEach(item => {
@@ -531,7 +552,10 @@
               if (nextExp >= expToNext) {
                 nextExp -= expToNext;
                 nextLevel++;
-                if (evolutionLevels.includes(nextLevel)) {
+                // 체크박스가 체크되어 있지 않을 때만 경험치 초기화
+                if (evolutionLevels.includes(nextLevel) && 
+                    !((nextLevel === 15 && simLevel <= 15 && isEvolutionChecked) || 
+                      (nextLevel === 60 && simLevel >= 50 && simLevel <= 60 && isEvolutionChecked))) {
                   nextExp = 0;
                   break;
                 }
