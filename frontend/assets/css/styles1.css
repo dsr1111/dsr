@@ -206,7 +206,7 @@ a {
 .dropdown__link,
 .dropdown__sublink {
   font-family: "Pretendard-Regular", sans-serif;
-  max-width: max-content;
+  width: 10rem;
   padding: 1.25rem 1.25rem 1.25rem 2.5rem;
   color: var(--white-color);
   background-color: var(--black-color-light);
@@ -215,6 +215,13 @@ a {
   column-gap: 0.5rem;
   font-weight: var(--font-semi-bold);
   transition: background-color 0.3s;
+}
+
+.dropdown__link {
+  white-space: nowrap;
+  min-width: max-content;
+  flex: 1 1 auto;
+  text-align: left;
 }
 
 .dropdown__link i,
@@ -337,6 +344,12 @@ a {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s, top 0.3s;
+  }
+
+  .dropdown__menu {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   }
 
   .dropdown__link,
