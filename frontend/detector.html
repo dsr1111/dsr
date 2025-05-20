@@ -1,78 +1,53 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="image/icon.webp" type="image/x-icon" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" href="image/icon.webp" type="image/x-icon">
     <title>탐지기 | DSR WIKI</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="assets/css/detector.css" />
-    <link rel="stylesheet" href="assets/css/styles1.css" />
-    <script src="app/detector.js" defer></script>
+    <link rel="stylesheet" href="assets/css/styles1.css">
+    <link rel="stylesheet" href="assets/css/detector.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="app/nav.js" defer></script>
-  </head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-V5VLCXSKM7');
-  </script>
-  <body>
+    <script src="app/detector.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V5VLCXSKM7');
+    </script>
+</head>
+<body class="bg-gray-100" style="font-family: 'Pretendard-Regular', sans-serif;">
     <custom-nav></custom-nav>
-    <!--=============== MAIN JS ===============-->
-    <script src="assets/js/main.js"></script>
-
-    <div class="container1" style="position: relative">
-      <div class="filters">
-        <div class="filter-row">
-          <label class="filter-label">탐지기</label>
-          <div class="detector-buttons">
-            <button class="detector-button" data-detector="구형">
-              구형 탐지기
-            </button>
-            <button class="detector-button" data-detector="보급형">
-              보급형 탐지기
-            </button>
-            <button class="detector-button" data-detector="특수">
-              특수 탐지기
-            </button>
-            <button class="detector-button" data-detector="신형">
-              신형 탐지기
-            </button>
-            <button class="detector-button" data-detector="계곡">
-              계곡 탐지기
-            </button>
-            <button class="detector-button" data-detector="B형">
-              현실 세계 B형 탐지기
-            </button>
-            <button class="detector-button" data-detector="A형">
-              현실 세계 A형 탐지기
-            </button>
-            <button class="detector-button" data-detector="스파이럴">
-              스파이럴 탐지기
-            </button>
-            <button class="detector-button" data-detector="변조">
-              변조된 스파이럴 탐지기
-            </button>
-            <button class="detector-button" data-detector="데이터">
-              데이터 세계 탐지기
-            </button>
-          </div>
+    <div class="mt-20 md:mt-28">
+        <div class="container mx-auto px-4">
+            
+            <div class="mb-8">
+                <div class="section-title">탐지기 선택</div>
+                <div id="detectorGrid" class="detector-flex mb-4">
+                    <!-- 탐지기 버튼들이 여기에 동적으로 추가됩니다 -->
+                </div>
+                <hr class="section-divider">
+                <div class="section-title">디지몬 선택</div>
+                <div id="digimonGrid" class="digimon-flex mb-4 hidden">
+                    <!-- 디지몬 버튼들이 여기에 동적으로 추가됩니다 -->
+                </div>
+                <div class="flex flex-col md:flex-row items-start gap-0 mt-12">
+                    <div id="mapContainer" class="relative map-img-wrap hidden">
+                        <img id="mapImage" class="rounded-lg shadow-lg" src="" alt="맵 이미지">
+                        <div id="digimonMarker" class="absolute w-7 h-7 -translate-x-1/2 -translate-y-1/2 cursor-pointer hidden blink-shadow" style="background: rgb(52,52,52); border-radius: 3px;">
+                            <img class="w-7 h-7 object-contain" src="" alt="디지몬">
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-0 md:ml-4 w-full md:w-auto mt-4 md:mt-0">
+                        <div id="digimonInfoCard" class="hidden flex flex-col justify-center w-full md:w-auto md:min-w-[400px] md:h-[500px]"></div>
+                        <div id="digimonMechanicCard" class="hidden flex flex-col justify-center w-full md:w-auto md:min-w-[400px] md:h-[500px] md:ml-4 mt-4 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="filter-row">
-          <label class="filter-label">악역 디지몬</label>
-          <div class="mob-buttons"></div>
-        </div>
-        <div class="map-and-detail">
-          <div id="map-container" style="margin-top: 20px"></div>
-          <div class="detail" style="margin-left: 20px"></div>
-        </div>
-      </div>
     </div>
-  </body>
-</html>
+</body>
+</html> 
