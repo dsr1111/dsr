@@ -15,8 +15,8 @@ function populateDetectorGrid() {
     const detectorGrid = document.getElementById('detectorGrid');
     detectorGrid.innerHTML = '';
     Object.keys(detectorData).forEach(detector => {
-        // 상자 관련 항목 제외
-        if (!detector.includes('균열 데이터 상자')) {
+        // 상자 관련 항목과 작은 사랑의 꾸러미 제외
+        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미') {
             const button = document.createElement('button');
             button.className = 'detector-button';
             button.dataset.detector = detector;
@@ -58,29 +58,108 @@ function populateDigimonGrid(detector) {
     document.getElementById('digimonMechanicCard').innerHTML = '';
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
-        const button = document.createElement('button');
-        button.className = 'digimon-button';
-        button.dataset.digimon = digimon;
-        const imgBg = document.createElement('div');
-        imgBg.className = 'digimon-img-bg';
-        const img = document.createElement('img');
-        img.src = `image/digimon/${digimon}/${digimon}.webp`;
-        img.alt = digimon;
-        imgBg.appendChild(img);
-        const span = document.createElement('span');
-        span.textContent = digimon;
-        button.appendChild(imgBg);
-        button.appendChild(span);
-        button.addEventListener('click', () => {
-            // 이전에 선택된 버튼의 스타일 제거
-            const prevSelected = document.querySelector('.digimon-button.selected');
-            if (prevSelected) prevSelected.classList.remove('selected');
-            button.classList.add('selected');
-            selectedDigimon = digimon;
-            showMapAndMarker(selectedDetector, selectedDigimon);
-            showDigimonInfo(selectedDetector, selectedDigimon);
-        });
-        digimonGrid.appendChild(button);
+        // 베놈묘티스몬과 로제몬:버스트모드는 초기 목록에서 제외
+        if (digimon !== '베놈묘티스몬' && digimon !== '로제몬:버스트모드') {
+            const button = document.createElement('button');
+            button.className = 'digimon-button';
+            button.dataset.digimon = digimon;
+            const imgBg = document.createElement('div');
+            imgBg.className = 'digimon-img-bg';
+            const img = document.createElement('img');
+            img.src = `image/digimon/${digimon}/${digimon}.webp`;
+            img.alt = digimon;
+            imgBg.appendChild(img);
+            const span = document.createElement('span');
+            span.textContent = digimon;
+            button.appendChild(imgBg);
+            button.appendChild(span);
+            button.addEventListener('click', () => {
+                // 이전에 선택된 버튼의 스타일 제거
+                const prevSelected = document.querySelector('.digimon-button.selected');
+                if (prevSelected) prevSelected.classList.remove('selected');
+                button.classList.add('selected');
+                selectedDigimon = digimon;
+                showMapAndMarker(selectedDetector, selectedDigimon);
+                showDigimonInfo(selectedDetector, selectedDigimon);
+
+                // 묘티스몬이 아닌 다른 디지몬 선택 시 베놈묘티스몬 버튼 제거
+                if (digimon !== '묘티스몬' && detector === '현실 세계 A형 탐지기') {
+                    const venomButton = document.querySelector('.digimon-button[data-digimon="베놈묘티스몬"]');
+                    if (venomButton) {
+                        venomButton.remove();
+                    }
+                }
+
+                // 로제몬이 아닌 다른 디지몬 선택 시 로제몬:버스트모드 버튼 제거
+                if (digimon !== '로제몬' && detector === '로제몬 탐지기') {
+                    const burstButton = document.querySelector('.digimon-button[data-digimon="로제몬:버스트모드"]');
+                    if (burstButton) {
+                        burstButton.remove();
+                    }
+                }
+
+                // 묘티스몬 선택 시 베놈묘티스몬 버튼 추가
+                if (digimon === '묘티스몬' && detector === '현실 세계 A형 탐지기') {
+                    // 이미 베놈묘티스몬 버튼이 있는지 확인
+                    const existingVenomButton = document.querySelector('.digimon-button[data-digimon="베놈묘티스몬"]');
+                    if (!existingVenomButton) {
+                        const venomButton = document.createElement('button');
+                        venomButton.className = 'digimon-button';
+                        venomButton.dataset.digimon = '베놈묘티스몬';
+                        const venomImgBg = document.createElement('div');
+                        venomImgBg.className = 'digimon-img-bg';
+                        const venomImg = document.createElement('img');
+                        venomImg.src = 'image/digimon/베놈묘티스몬/베놈묘티스몬.webp';
+                        venomImg.alt = '베놈묘티스몬';
+                        venomImgBg.appendChild(venomImg);
+                        const venomSpan = document.createElement('span');
+                        venomSpan.textContent = '베놈묘티스몬';
+                        venomButton.appendChild(venomImgBg);
+                        venomButton.appendChild(venomSpan);
+                        venomButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            venomButton.classList.add('selected');
+                            selectedDigimon = '베놈묘티스몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(venomButton);
+                    }
+                }
+
+                // 로제몬 선택 시 로제몬:버스트모드 버튼 추가
+                if (digimon === '로제몬' && detector === '로제몬 탐지기') {
+                    // 이미 로제몬:버스트모드 버튼이 있는지 확인
+                    const existingBurstButton = document.querySelector('.digimon-button[data-digimon="로제몬:버스트모드"]');
+                    if (!existingBurstButton) {
+                        const burstButton = document.createElement('button');
+                        burstButton.className = 'digimon-button';
+                        burstButton.dataset.digimon = '로제몬:버스트모드';
+                        const burstImgBg = document.createElement('div');
+                        burstImgBg.className = 'digimon-img-bg';
+                        const burstImg = document.createElement('img');
+                        burstImg.src = 'image/digimon/로제몬:버스트모드/로제몬:버스트모드.webp';
+                        burstImg.alt = '로제몬:버스트모드';
+                        burstImgBg.appendChild(burstImg);
+                        const burstSpan = document.createElement('span');
+                        burstSpan.textContent = '로제몬:버스트모드';
+                        burstButton.appendChild(burstImgBg);
+                        burstButton.appendChild(burstSpan);
+                        burstButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            burstButton.classList.add('selected');
+                            selectedDigimon = '로제몬:버스트모드';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(burstButton);
+                    }
+                }
+            });
+            digimonGrid.appendChild(button);
+        }
     });
 }
 
@@ -264,7 +343,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             })
             .join('');
 
-        const extraInfo = name.includes('균열 데이터 상자')
+        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미')
             ? `<span style="background-color: #FFC107; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset; cursor: pointer; position: relative;" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
                 구성품 확인
                 <div class="custom-tooltip" style="display: none; position: absolute; top: 50%; left: 100%; transform: translateY(-50%); margin-left: 10px; background-color: rgba(0, 0, 0, 0.9); border: 1px solid #ccc; border-radius: 5px; padding: 5px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1); white-space: nowrap; z-index: 9999; width: max-content; max-height: 80vh; overflow-y: auto;">
