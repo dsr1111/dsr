@@ -139,7 +139,7 @@ function populateDigimonGrid(detector) {
                         const burstImgBg = document.createElement('div');
                         burstImgBg.className = 'digimon-img-bg';
                         const burstImg = document.createElement('img');
-                        burstImg.src = 'image/digimon/로제몬:버스트모드/로제몬:버스트모드.webp';
+                        burstImg.src = 'image/digimon/로제몬_버스트모드/로제몬_버스트모드.webp';
                         burstImg.alt = '로제몬:버스트모드';
                         burstImgBg.appendChild(burstImg);
                         const burstSpan = document.createElement('span');
@@ -176,7 +176,8 @@ function showMapAndMarker(detector, digimon) {
     // 디지몬 마커 설정
     const marker = document.getElementById('digimonMarker');
     const markerImg = marker.querySelector('img');
-    markerImg.src = `image/digimon/${digimon}/${digimon}.webp`;
+    const digimonImageName = digimon.replace(':', '_');
+    markerImg.src = `image/digimon/${digimonImageName}/${digimonImageName}.webp`;
     
     // 환경별 좌표 재계산
     const isMobile = window.innerWidth <= 768;
