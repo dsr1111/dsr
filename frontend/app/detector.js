@@ -204,6 +204,7 @@ async function showDigimonSkills(digimon) {
     ];
     const skillTables = await Promise.all(skillFiles.map(f => fetch(f).then(res => res.text())));
     let skillRows = [];
+    const digimonImageName = digimon.replace(':', '_');
     skillTables.forEach((csv, idx) => {
         const rows = csv.split('\n').slice(1);
         const row = rows.find(r => {
@@ -213,7 +214,7 @@ async function showDigimonSkills(digimon) {
         if (row) {
             const cols = row.split(',');
             skillRows.push({
-                img: `image/digimon/${digimon}/skill${idx + 1}.webp`,
+                img: `image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
                 name: cols[12], // 13번째 컬럼 (0-based index)
                 attribute: cols[15], // 16번째 컬럼
                 detail1: cols[14], // 15번째 컬럼
@@ -278,11 +279,12 @@ async function showDigimonInfo(detector, digimon) {
         }
     }).join('') : '';
     const skillTable = await showDigimonSkills(digimon);
+    const digimonImageName = digimon.replace(':', '_');
     document.getElementById('digimonInfoCard').innerHTML = `
       <div class="bg-white rounded-lg shadow p-4 w-full h-full flex flex-col">
         <div class="flex items-center gap-2 mb-2">
           <div style="width: 64px; height: 64px; background: rgb(52,52,52); border-radius: 3px; display: flex; align-items: center; justify-content: center;">
-            <img src="image/digimon/${digimon}/${digimon}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
+            <img src="image/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
           </div>
           <span class="font-bold text-lg">${digimon}</span>
         </div>
