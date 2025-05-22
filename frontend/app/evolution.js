@@ -285,8 +285,36 @@
         }
         return;
       }
-      const digimonInfo = DataModule.conditionData.find(d => d.name === parentData.name);
+
+      // 진화 조건 데이터 찾기
+      let digimonInfo = null;
+      const allConditions = DataModule.conditionData.filter(d => d.name === parentData.name);
+      
+      if (allConditions.length > 1) {
+        // 여러 조건이 있는 경우, 진화 타입에 따라 선택
+        if (evoType === "dark" && parentData.암흑진화 === digimonName) {
+          digimonInfo = allConditions.find(d => d.암흑진화재료);
+        } else if (evoType === "special" && parentData.특수진화 === digimonName) {
+          digimonInfo = allConditions.find(d => d.특수진화재료);
+        } else if (evoType === "burst" && parentData.버스트진화 === digimonName) {
+          digimonInfo = allConditions.find(d => d.버스트진화재료);
+        } else {
+          // 일반 진화인 경우
+          const normalEvolutions = [
+            parentData.evol1, parentData.evol2, parentData.evol3, parentData.evol4, parentData.evol5,
+            parentData.evol6, parentData.evol7, parentData.evol8, parentData.evol9, parentData.evol10,
+            parentData.evol11, parentData.조그레스
+          ];
+          if (normalEvolutions.includes(digimonName)) {
+            digimonInfo = allConditions.find(d => d.진화재료);
+          }
+        }
+      } else {
+        digimonInfo = allConditions[0];
+      }
+
       if (!digimonInfo) return;
+
       let tableHtml = `<table class="tooltip-table">
                          <tr><th colspan="2">진화 조건</th></tr>`;
       if (digimonInfo["name"]) {
@@ -316,6 +344,8 @@
         tableHtml += `<tr><th>진화 재료</th><td>${digimonInfo["암흑진화재료"]}</td></tr>`;
       } else if (evoType === "special" && digimonInfo["특수진화재료"]?.trim()) {
         tableHtml += `<tr><th>진화 재료</th><td>${digimonInfo["특수진화재료"]}</td></tr>`;
+      } else if (evoType === "burst" && digimonInfo["버스트진화재료"]?.trim()) {
+        tableHtml += `<tr><th>진화 재료</th><td>${digimonInfo["버스트진화재료"]}</td></tr>`;
       }
       tableHtml += `</table>`;
       let tooltip = document.querySelector('.tooltip');
@@ -457,7 +487,7 @@
         [
           d.evol1, d.evol2, d.evol3, d.evol4, d.evol5,
           d.evol6, d.evol7, d.evol8, d.evol9, d.evol10,
-          d.evol11, d.조그레스, d.암흑진화, d.특수진화
+          d.evol11, d.조그레스, d.암흑진화, d.특수진화, d.버스트진화
         ].includes(digimonName)
       );
       direct.forEach(d => {
@@ -482,7 +512,7 @@
       const evolutions = [
         digimon.evol1, digimon.evol2, digimon.evol3, digimon.evol4, digimon.evol5,
         digimon.evol6, digimon.evol7, digimon.evol8, digimon.evol9, digimon.evol10,
-        digimon.evol11, digimon.조그레스, digimon.암흑진화, digimon.특수진화
+        digimon.evol11, digimon.조그레스, digimon.암흑진화, digimon.특수진화, digimon.버스트진화
       ].filter(e => e);
       for (const evo of evolutions) {
         const next = DataModule.allData.find(d => d.name === evo);
@@ -558,7 +588,8 @@
         { name: digimon.evol11, percent: digimon.percent11 },
         { name: digimon.조그레스, percent: digimon.percent12 },
         { name: digimon.암흑진화, percent: digimon.percent13, evoType: "dark" },
-        { name: digimon.특수진화, percent: digimon.percent14, evoType: "special" }
+        { name: digimon.특수진화, percent: digimon.percent14, evoType: "special" },
+        { name: digimon.버스트진화, percent: digimon.percent15, evoType: "burst" }
       ].filter(e => e.name);
       const hasEvolution = evolutions.length > 0;
       if (hasEvolution) {
@@ -588,6 +619,15 @@
                   evoLabel.classList.add("evo-label");
                   evoLabel.setAttribute("data-evo-type", evo.evoType);
                   evoLabel.textContent = evo.evoType === "dark" ? "암흑진화" : "특수진화";
+                  horizontalConnector.appendChild(evoLabel);
+                }
+
+                // 버스트진화 텍스트 추가
+                if (evo.evoType === "burst") {
+                  const evoLabel = document.createElement("div");
+                  evoLabel.classList.add("evo-label");
+                  evoLabel.setAttribute("data-evo-type", evo.evoType);
+                  evoLabel.textContent = "버스트진화";
                   horizontalConnector.appendChild(evoLabel);
                 }
 

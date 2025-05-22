@@ -35,9 +35,9 @@ body {
   border-radius: 5px;
   padding: 10px;
   margin: 20px auto;
-  max-width: 1100px;
+  min-width: max-content;
+  max-width: 1300px;
   margin-bottom: 300px;
-  overflow-x: auto;
   overflow-y: visible;
 }
 .stage-container {
@@ -139,6 +139,9 @@ body {
 .horizontal-connector.special-evo {
   background-color: #e3d400;
 }
+.horizontal-connector.burst-evo {
+  background-color: #ffa500;
+}
 .percentage-text {
   position: absolute;
   top: -15px;
@@ -161,6 +164,11 @@ body {
   color: #b39b00;
   font-weight: 600;
 }
+.evo-label[data-evo-type="burst"] {
+  color: #ffa500;
+  font-weight: 600;
+  font-size: 12px;
+}
 .horizontal-connector.dark-evo .evo-label {
   color: #5a2d82;
   text-align: center;
@@ -169,6 +177,11 @@ body {
 .horizontal-connector.special-evo .evo-label {
   color: #e3d400;
   text-align: center;
+}
+.horizontal-connector.burst-evo .evo-label {
+  color: #ffa500;
+  text-align: center;
+  font-size: 12px;
 }
 .children-container {
   display: none;

@@ -1,4 +1,4 @@
-name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4,evol5,percent5,evol6,percent6,evol7,percent7,evol8,percent8,evol9,percent9,evol10,percent10,evol11,percent11,조그레스,percent12,조그레스재료,암흑진화,percent13,암흑진화재료,특수진화,percent14,특수진화재료
+name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4,evol5,percent5,evol6,percent6,evol7,percent7,evol8,percent8,evol9,percent9,evol10,percent10,evol11,percent11,조그레스,percent12,조그레스재료,암흑진화,percent13,암흑진화재료,특수진화,percent14,특수진화재료,버스트진화,percent15,버스트진화재료
 깜몬,1,와냐몬,20,코로몬,20,퍼그몬,20,토코몬,20,피나몬,20
 도도몬,1,도리몬,100
 레레몬,1,포코몬,100
@@ -290,7 +290,8 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 디아블로몬,6,아마게몬,100
 레이브몬,6
 로드나이트몬,6
-로제몬,6,할매몬,100
+로제몬,6,할매몬,100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,로제몬:버스트모드,100,유진의 디지소울
+로제몬:버스트모드,6
 리리스몬,6
 마르스몬,6
 마린엔젤몬,6
