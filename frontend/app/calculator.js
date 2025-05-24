@@ -116,12 +116,13 @@ async function displaySkillImage(characterName) {
     const skillImageCell = document.getElementById("skill-cell");
 
     skillImageCell.innerHTML = `
-      <img 
-        src="${skillImagePath}" 
-         
-        alt="${skillImageName}" 
-        style="width: 25px; height: 25px; vertical-align: middle; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;">
-      <div style="display: inline-block; margin-left: 5px; vertical-align: middle;">/ ${skillText}</div>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+        <img 
+          src="${skillImagePath}" 
+          alt="${skillImageName}" 
+          style="width: 25px; height: 25px; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;">
+        <span>/ ${skillText}</span>
+      </div>
     `;
   }
   
@@ -250,7 +251,7 @@ window.addEventListener("DOMContentLoaded", async function () {
   }
 
   const characters = await fetchCSVData("../data/csv/characters.csv");
-  populateCharacterDropdown(characters, "완전체");
+  populateCharacterDropdown(characters, "성장기");
 
   const skillSelect = document.getElementById("skill-select");
   skillSelect.value = "skill1";
@@ -262,7 +263,7 @@ window.addEventListener("DOMContentLoaded", async function () {
   skillLevelSelect.dispatchEvent(new Event("change"));
 
   const firstCharacter = characters.find(
-    (character) => character[1] === "완전체"
+    (character) => character[1] === "성장기"
   )[0];
   displaySkillImage(firstCharacter);
 });

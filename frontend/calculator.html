@@ -56,6 +56,8 @@
               <td class="border border-[#ddd] text-center text-sm">진화 단계</td>
               <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
                 <select id="stage-select" class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                  <option value="성장기">성장기</option>
+                  <option value="성숙기">성숙기</option>
                   <option value="완전체">완전체</option>
                   <option value="궁극체">궁극체</option>
                 </select>
@@ -275,8 +277,13 @@
         align-items: center;
       }
   
-      #type-image-cell img, #skill-cell img, #mob-type img, #mob-strong img, #mob-weak img {
+      #type-image-cell img, #mob-type img, #mob-strong img, #mob-weak img {
         margin: 0 auto;
+      }
+
+      #skill-cell img {
+        margin: 0 6px 0 0 !important;
+        display: inline-block;
       }
     </style>
   </body>
