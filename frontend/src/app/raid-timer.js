@@ -1,7 +1,7 @@
 function getImagePath(name) {
   // :를 _로 대체
   const safeName = name.replace(/:/g, '_');
-  return `image/digimon/${safeName}/${safeName}.webp`;
+  return `/image/digimon/${safeName}/${safeName}.webp`;
 }
 
 // 레이드 정보 배열

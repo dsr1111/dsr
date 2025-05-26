@@ -106,8 +106,8 @@ class CustomNav extends HTMLElement {
           <header class="header">
             <nav class="nav container">
               <div class="nav__data">
-                <a href="index.html">
-                  <img src="image/logo2.webp" class="nav__logo" />
+                <a href="/index">
+                  <img src="/image/logo2.webp" class="nav__logo" />
                 </a>
 
                 <div class="nav__toggle" id="nav-toggle">
@@ -123,19 +123,19 @@ class CustomNav extends HTMLElement {
                       디지몬 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                     </div>
                     <ul class="dropdown__menu">
-                      <li><a href="digimon.html" class="dropdown__link">도감</a></li>
-                      <li><a href="deck.html" class="dropdown__link">덱</a></li>
-                      <li><a href="evolution.html" class="dropdown__link">진화트리</a></li>
+                      <li><a href="/digimon" class="dropdown__link">도감</a></li>
+                      <li><a href="/deck" class="dropdown__link">덱</a></li>
+                      <li><a href="/evolution" class="dropdown__link">진화트리</a></li>
                     </ul>
                   </li>
-                  <li><a href="map.html" class="nav__link">맵</a></li>
+                  <li><a href="/map" class="nav__link">맵</a></li>
                   <li class="dropdown__item">
                     <div class="nav__link dropdown__toggle">
                       던전 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                     </div>
                     <ul class="dropdown__menu">
-                      <li><a href="detector.html" class="dropdown__link">탐지기</a></li>
-                      <li><a href="overflow.html" class="dropdown__link">오버플로우</a></li>
+                      <li><a href="/detector" class="dropdown__link">탐지기</a></li>
+                      <li><a href="/overflow" class="dropdown__link">오버플로우</a></li>
                     </ul>
                   </li>
                   <li class="dropdown__item">
@@ -143,8 +143,8 @@ class CustomNav extends HTMLElement {
                       도구 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                     </div>
                     <ul class="dropdown__menu">
-                      <li><a href="calculator.html" class="dropdown__link">데미지 계산기</a></li>
-                      <li><a href="exp.html" class="dropdown__link">EXP 물약 시뮬레이터</a></li>
+                      <li><a href="/calculator" class="dropdown__link">데미지 계산기</a></li>
+                      <li><a href="/exp" class="dropdown__link">EXP 물약 시뮬레이터</a></li>
                     </ul>
                   </li>
                   <li class="dropdown__item">

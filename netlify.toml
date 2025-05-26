@@ -1,6 +1,7 @@
 [build]
-  publish = ""
-  command = ""
+  base = "frontend"
+  publish = "dist"
+  command = "npm run build"
 
 [[headers]]
   for = "/image/*.png"

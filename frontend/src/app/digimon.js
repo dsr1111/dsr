@@ -81,13 +81,13 @@
     async fetchCSV() {
       // skill 파일 3종 로드
       const [skill1Data, skill2Data, skill3Data] = await Promise.all([
-        CSVLoader.loadCSV("data/csv/skill1.csv"),
-        CSVLoader.loadCSV("data/csv/skill2.csv"),
-        CSVLoader.loadCSV("data/csv/skill3.csv"),
+        CSVLoader.loadCSV("/data/csv/skill1.csv"),
+        CSVLoader.loadCSV("/data/csv/skill2.csv"),
+        CSVLoader.loadCSV("/data/csv/skill3.csv"),
       ]);
 
       // characters.csv 로드
-      const response = await fetch("data/csv/characters.csv");
+      const response = await fetch("/data/csv/characters.csv");
       const text = await response.text();
       const rows = text.split("\n").slice(1).filter((row) => row.trim() !== "");
       const tableBody = document.getElementById("characterTable");
@@ -112,7 +112,7 @@
         const 약점효과 = columns[14];
         const 필드 = columns[15];
 
-        const typeImagePath = `image/${type}.webp`;
+        const typeImagePath = `/image/${type}.webp`;
         const typeImgHtml = `<img src="${typeImagePath}" alt="${type}" 
           style="width:23px;height:23px;display:block;margin:0 auto;cursor:pointer;"
           onmouseenter="showCustomTooltip(event, '${type}')"
@@ -121,8 +121,8 @@
         >`;
 
         const strongHtml = 강점
-          ? `<img src="image/${강점}.webp" alt="${강점}" 
-              style="width:25px;height:25px;vertical-align:middle;background-image:url('image/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+          ? `<img src="/image/${강점}.webp" alt="${강점}" 
+              style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
               onmouseenter="showCustomTooltip(event, '${강점}')"
               onmousemove="showCustomTooltip(event, '${강점}')"
               onmouseleave="hideCustomTooltip()"
@@ -130,8 +130,8 @@
           : "";
 
         const weakHtml = 약점
-          ? `<img src="image/${약점}.webp" alt="${약점}" 
-              style="width:25px;height:25px;vertical-align:middle;background-image:url('image/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+          ? `<img src="/image/${약점}.webp" alt="${약점}" 
+              style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
               onmouseenter="showCustomTooltip(event, '${약점}')"
               onmousemove="showCustomTooltip(event, '${약점}')"
               onmouseleave="hideCustomTooltip()"
@@ -145,7 +145,7 @@
               .filter(field => field !== "") // 빈 문자열 제거
               .map(
                 (field) =>
-                  `<img src="image/field/${field}.webp" alt="${field}" 
+                  `<img src="/image/field/${field}.webp" alt="${field}" 
                     style="width:25px;height:25px;cursor:pointer;"
                     onmouseenter="showCustomTooltip(event, '${field}')"
                     onmousemove="showCustomTooltip(event, '${field}')"
@@ -213,10 +213,10 @@
               ? effectDescriptionsLower[normalizedEffect]
               : "효과 설명을 찾을 수 없습니다.";
           let effectImagePath = skill.effect
-            ? `image/debuff/${skill.effect}.webp`
+            ? `/image/debuff/${skill.effect}.webp`
             : "";
           if (normalizedEffect === "회복") {
-            effectImagePath = `image/digimon/${digimonName}/skill${skillNumber}.webp`;
+            effectImagePath = `/image/digimon/${digimonName}/skill${skillNumber}.webp`;
           }
           const effectTooltipHtml =
             skill.effect && effectDescription
@@ -232,8 +232,8 @@
               : "";
           return `
             <td style="${backgroundColor}">
-              <img src="image/${skill.속성}.webp" alt="${skill.속성}" 
-                style="width:25px;height:25px;vertical-align:middle;background-image:url('image/background.webp');background-size:120%;background-position:center;cursor:pointer;"
+              <img src="/image/${skill.속성}.webp" alt="${skill.속성}" 
+                style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/background.webp');background-size:120%;background-position:center;cursor:pointer;"
                 onmouseenter="showCustomTooltip(event, '${skill.속성}')"
                 onmousemove="showCustomTooltip(event, '${skill.속성}')"
                 onmouseleave="hideCustomTooltip()"
@@ -246,7 +246,7 @@
 
         // 이미지 경로 (특수문자 ':' 은 '_'로 변경)
         const sanitizedName = name.replace(/[:]/g, "_");
-        const characterImagePath = `image/digimon/${sanitizedName}/${sanitizedName}.webp`;
+        const characterImagePath = `/image/digimon/${sanitizedName}/${sanitizedName}.webp`;
 
         // 행 생성 및 데이터 속성 저장 (필터링 용)
         const newRow = document.createElement("tr");
@@ -270,7 +270,7 @@
         newRow.innerHTML = `
           <td>
             <div style="width:25px;height:25px;background-color:black;display:inline-block;vertical-align:middle;">
-              <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='image/digimon/default.webp';">
+              <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='/image/digimon/default.webp';">
             </div>
             <a href="detail.html?name=${encodeURIComponent(name)}" style="text-decoration:none;color:black;">${name}</a>
           </td>
