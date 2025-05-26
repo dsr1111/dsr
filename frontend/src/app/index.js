@@ -1,3 +1,8 @@
+import '/src/assets/css/index.css';
+import '/src/assets/css/styles1.css';
+import './nav.js';
+import './raid-timer.js';
+
 document.addEventListener("DOMContentLoaded", function () {
   var calendarEl = document.getElementById("calendar");
   var tooltipEl = document.getElementById("tooltip");
