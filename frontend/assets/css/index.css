@@ -338,4 +338,20 @@ input[type="number"] {
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 8px solid rgba(40,40,40,0.95);
+}
+
+/* 레이드 타이머 스크롤바 슬림 스타일 */
+#raid-timers::-webkit-scrollbar {
+  width: 2px;
+}
+#raid-timers::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 3px;
+}
+#raid-timers::-webkit-scrollbar-track {
+  background: transparent;
+}
+#raid-timers {
+  scrollbar-width: thin;
+  scrollbar-color: #222 transparent;
 } 
