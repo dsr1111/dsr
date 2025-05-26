@@ -65,9 +65,16 @@ const masterTyrannoRaid = {
   map: '용의 눈 호수',
 };
 
+function getCurrentKST() {
+  const now = new Date();
+  const kstOffset = 9 * 60; // KST는 UTC+9
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  return new Date(utc + (kstOffset * 60000));
+}
+
 function getNextDailyTime(timeStr) {
   const [hour, min] = timeStr.split(':').map(Number);
-  const now = new Date();
+  const now = getCurrentKST();
   let next = new Date(now);
   next.setHours(hour, min, 0, 0);
   if (next <= now) {
@@ -78,7 +85,7 @@ function getNextDailyTime(timeStr) {
 
 function getNextBiweeklyTime(day, timeStr, weekType) {
   const [hour, min] = timeStr.split(':').map(Number);
-  const now = new Date();
+  const now = getCurrentKST();
   let next = new Date(now);
   // 이번주가 짝수주인지 홀수주인지 계산
   const onejan = new Date(now.getFullYear(), 0, 1);
@@ -102,7 +109,7 @@ function getNextBiweeklyTime(day, timeStr, weekType) {
 }
 
 function getTimeDiffString(target) {
-  const now = new Date();
+  const now = getCurrentKST();
   let diff = Math.floor((target - now) / 1000);
   if (diff < 0) return '-00:00:00';
   const h = Math.floor(diff / 3600).toString().padStart(2, '0');
