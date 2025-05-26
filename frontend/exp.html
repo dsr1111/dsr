@@ -523,18 +523,22 @@
           const counterInput = item.querySelector('.counter-value');
           const count = parseInt(counterInput.value);
           
-          // 레벨 제한 확인
           if (currentLevel > maxLevel) {
             plusBtn.disabled = true;
-            counterInput.disabled = true;
-            // 카운트가 0인 경우에만 마이너스 버튼 비활성화
+            plusBtn.classList.add('opacity-50');
+            // 입력창은 항상 활성화 및 스타일 정상
+            counterInput.disabled = false;
+            counterInput.classList.remove('opacity-50');
             minusBtn.disabled = count === 0;
-            item.classList.add('opacity-50');
+            minusBtn.classList.remove('opacity-50');
+            item.classList.remove('opacity-50');
           } else {
             plusBtn.disabled = false;
+            plusBtn.classList.remove('opacity-50');
             counterInput.disabled = false;
-            // 카운트가 0인 경우에만 마이너스 버튼 비활성화
+            counterInput.classList.remove('opacity-50');
             minusBtn.disabled = count === 0;
+            minusBtn.classList.remove('opacity-50');
             item.classList.remove('opacity-50');
           }
         });
@@ -599,15 +603,22 @@
           const plusBtn = item.querySelector('.plus-btn');
           const minusBtn = item.querySelector('.minus-btn');
           const counterInput = item.querySelector('.counter-value');
+          const count = parseInt(counterInput.value);
           if (simLevel > maxLevel) {
             plusBtn.disabled = true;
-            minusBtn.disabled = true;
-            counterInput.disabled = true;
-            item.classList.add('opacity-50');
+            plusBtn.classList.add('opacity-50');
+            counterInput.disabled = false;
+            counterInput.classList.remove('opacity-50');
+            minusBtn.disabled = count === 0;
+            minusBtn.classList.remove('opacity-50');
+            item.classList.remove('opacity-50');
           } else {
             plusBtn.disabled = false;
-            minusBtn.disabled = parseInt(counterInput.value) === 0;
+            plusBtn.classList.remove('opacity-50');
             counterInput.disabled = false;
+            counterInput.classList.remove('opacity-50');
+            minusBtn.disabled = count === 0;
+            minusBtn.classList.remove('opacity-50');
             item.classList.remove('opacity-50');
           }
         });
