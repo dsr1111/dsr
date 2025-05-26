@@ -7,7 +7,7 @@ class CustomNav extends HTMLElement {
   connectedCallback() {
       this.shadowRoot.innerHTML = `
           <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet"/>
-          <link rel="stylesheet" href="/src/assets/css/styles1.css">
+          <link rel="stylesheet" href="/assets/css/styles1.css">
           <style>
             .feedback-btn {
               background-color: #3B82F6;
