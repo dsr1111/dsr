@@ -106,7 +106,7 @@ class CustomNav extends HTMLElement {
           <header class="header">
             <nav class="nav container">
               <div class="nav__data">
-                <a href="../index.html">
+                <a href="../index">
                   <img src="../image/logo2.webp" class="nav__logo" />
                 </a>
 
