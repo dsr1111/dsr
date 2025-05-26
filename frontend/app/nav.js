@@ -138,7 +138,6 @@ class CustomNav extends HTMLElement {
                       <li><a href="../overflow" class="dropdown__link">오버플로우</a></li>
                     </ul>
                   </li>
-                  <li><a href="../tip" class="nav__link">공략&TIP</a></li>
                   <li class="dropdown__item">
                     <div class="nav__link dropdown__toggle">
                       도구 <i class="ri-arrow-down-s-line dropdown__arrow"></i>
