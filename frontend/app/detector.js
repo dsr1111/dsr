@@ -3,7 +3,7 @@ let selectedDetector = null;
 let selectedDigimon = null;
 
 // JSON 데이터 로드
-fetch('/data/csv/detector.json')
+fetch('data/csv/detector.json')
     .then(response => response.json())
     .then(data => {
         detectorData = data;
@@ -21,9 +21,9 @@ function populateDetectorGrid() {
             button.className = 'detector-button';
             button.dataset.detector = detector;
             // 변조된 스파이럴 탐지기는 스파이럴 탐지기 이미지 사용
-            let imgSrc = `/image/item/${detector}.webp`;
+            let imgSrc = `image/item/${detector}.webp`;
             if (detector.replace(/\s/g, '') === '변조된스파이럴탐지기') {
-                imgSrc = '/image/item/스파이럴 탐지기.webp';
+                imgSrc = 'image/item/스파이럴 탐지기.webp';
             }
             const img = document.createElement('img');
             img.src = imgSrc;
@@ -66,7 +66,7 @@ function populateDigimonGrid(detector) {
             const imgBg = document.createElement('div');
             imgBg.className = 'digimon-img-bg';
             const img = document.createElement('img');
-            img.src = `/image/digimon/${digimon}/${digimon}.webp`;
+            img.src = `image/digimon/${digimon}/${digimon}.webp`;
             img.alt = digimon;
             imgBg.appendChild(img);
             const span = document.createElement('span');
@@ -109,7 +109,7 @@ function populateDigimonGrid(detector) {
                         const venomImgBg = document.createElement('div');
                         venomImgBg.className = 'digimon-img-bg';
                         const venomImg = document.createElement('img');
-                        venomImg.src = '/image/digimon/베놈묘티스몬/베놈묘티스몬.webp';
+                        venomImg.src = 'image/digimon/베놈묘티스몬/베놈묘티스몬.webp';
                         venomImg.alt = '베놈묘티스몬';
                         venomImgBg.appendChild(venomImg);
                         const venomSpan = document.createElement('span');
@@ -139,7 +139,7 @@ function populateDigimonGrid(detector) {
                         const burstImgBg = document.createElement('div');
                         burstImgBg.className = 'digimon-img-bg';
                         const burstImg = document.createElement('img');
-                        burstImg.src = '/image/digimon/로제몬_버스트모드/로제몬_버스트모드.webp';
+                        burstImg.src = 'image/digimon/로제몬_버스트모드/로제몬_버스트모드.webp';
                         burstImg.alt = '로제몬:버스트모드';
                         burstImgBg.appendChild(burstImg);
                         const burstSpan = document.createElement('span');
@@ -172,12 +172,12 @@ function showMapAndMarker(detector, digimon) {
     }
     // 맵 이미지 설정
     const mapImage = document.getElementById('mapImage');
-    mapImage.src = `/image/map/${mapName}.webp`;
+    mapImage.src = `image/map/${mapName}.webp`;
     // 디지몬 마커 설정
     const marker = document.getElementById('digimonMarker');
     const markerImg = marker.querySelector('img');
     const digimonImageName = digimon.replace(':', '_');
-    markerImg.src = `/image/digimon/${digimonImageName}/${digimonImageName}.webp`;
+    markerImg.src = `image/digimon/${digimonImageName}/${digimonImageName}.webp`;
     
     // 환경별 좌표 재계산
     const isMobile = window.innerWidth <= 768;
@@ -198,9 +198,9 @@ function showMapAndMarker(detector, digimon) {
 // 카드 하단에 스킬 테이블 추가
 async function showDigimonSkills(digimon) {
     const skillFiles = [
-        '/data/csv/skill1.csv',
-        '/data/csv/skill2.csv',
-        '/data/csv/skill3.csv'
+        'data/csv/skill1.csv',
+        'data/csv/skill2.csv',
+        'data/csv/skill3.csv'
     ];
     const skillTables = await Promise.all(skillFiles.map(f => fetch(f).then(res => res.text())));
     let skillRows = [];
@@ -214,7 +214,7 @@ async function showDigimonSkills(digimon) {
         if (row) {
             const cols = row.split(',');
             skillRows.push({
-                img: `/image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
+                img: `image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
                 name: cols[12], // 13번째 컬럼 (0-based index)
                 attribute: cols[15], // 16번째 컬럼
                 detail1: cols[14], // 15번째 컬럼
@@ -232,7 +232,7 @@ async function showDigimonSkills(digimon) {
                 <div class="skill-info">
                     <div class="skill-header">
                         <span class="skill-name">${skill.name}</span>
-                        <span class="skill-attribute"><img src="/image/${skill.attribute}.webp" alt="${skill.attribute}"></span>
+                        <span class="skill-attribute"><img src="image/${skill.attribute}.webp" alt="${skill.attribute}"></span>
                     </div>
                     <div class="skill-details">
                         <span style="background-color: ${skill.detail1 === '원거리' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle;">${skill.detail1 || '정보 없음'}</span>
@@ -255,14 +255,14 @@ async function showDigimonInfo(detector, digimon) {
     let typeIcon = '';
     if (data.type) {
         typeIcon = `<span style="display:flex;align-items:center;justify-content:center;">
-            <img src="/image/${data.type}.webp" alt="${data.type}" style="width:24px;height:24px;margin-left:5px;">
+            <img src="image/${data.type}.webp" alt="${data.type}" style="width:24px;height:24px;margin-left:5px;">
         </span>`;
     }
     const strongBadges = data.strong ? data.strong.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
-            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('/image/strongbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img src="/image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('image/strongbackground.webp') center/cover no-repeat;border-radius:5px;">
+                <img src="image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
             </span>`;
         } else {
             return `<span style="margin-right:8px;">${value}</span>`;
@@ -271,8 +271,8 @@ async function showDigimonInfo(detector, digimon) {
     const weakBadges = data.weak ? data.weak.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
-            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('/image/weakbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img src="/image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('image/weakbackground.webp') center/cover no-repeat;border-radius:5px;">
+                <img src="image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
             </span>`;
         } else {
             return `<span style="margin-right:8px;">${value}</span>`;
@@ -284,7 +284,7 @@ async function showDigimonInfo(detector, digimon) {
       <div class="bg-white rounded-lg shadow p-4 w-full h-full flex flex-col">
         <div class="flex items-center gap-2 mb-2">
           <div style="width: 64px; height: 64px; background: rgb(52,52,52); border-radius: 3px; display: flex; align-items: center; justify-content: center;">
-            <img src="/image/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
+            <img src="image/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
           </div>
           <span class="font-bold text-lg">${digimon}</span>
         </div>
@@ -322,7 +322,7 @@ function showDigimonMechanicInfo(detector, digimon) {
         }
 
         const finalImageName = imageName.includes('균열 데이터 상자') ? '균열 데이터 상자' : imageName;
-        const imagePath = `/image/item/${finalImageName}.webp`;
+        const imagePath = `image/item/${finalImageName}.webp`;
         const tradeStatusColor = tradeStatus.trim() === '거래가능' ? 'green' : '#D32F2F';
         const dropTypeColor = dropType.trim() === '확률' ? 'green' : '#D32F2F';
 
@@ -331,7 +331,7 @@ function showDigimonMechanicInfo(detector, digimon) {
         const tooltipContent = Object.entries(itemsList)
             .map(([itemName, itemData]) => {
                 const cleanName = itemName.replace(/\s*x\s*\d+$/, '').replace(/\s*x\s*\d+/g, '').trim();
-                const imagePath = `/image/item/${cleanName}.webp`;
+                const imagePath = `image/item/${cleanName}.webp`;
                 const tradeStatusText = itemData.tradeStatus === '거래가능' ? '(거래가능)' : '(거래불가)';
                 const tradeStatusColor = itemData.tradeStatus === '거래가능' ? 'green' : 'red';
 
@@ -339,7 +339,7 @@ function showDigimonMechanicInfo(detector, digimon) {
                     <div style="display: flex; align-items: center;">
                         <img src="${imagePath}" 
                             style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;"
-                            onerror="this.onerror=null; this.src='/image/item/default.webp';">
+                            onerror="this.onerror=null; this.src='image/item/default.webp';">
                         <span style="color: ${tradeStatusColor};">${tradeStatusText}</span>
                         <span>${itemName}</span>
                     </div>`;
@@ -370,7 +370,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             ${data.gimmick ? `
                 <div class="mb-4">
                     <h3 class="font-bold text-lg mb-2">
-                        <img src="/image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                        <img src="image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
                         패턴
                     </h3>
                     <div class="text-sm text-gray-700" style="font-weight: bold;">
@@ -380,7 +380,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             ` : ''}
             <div>
                 <h3 class="font-bold text-lg mb-2">
-                    <img src="/image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                    <img src="image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
                     드롭 아이템
                 </h3>
                 <div class="overflow-x-auto md:overflow-x-visible space-y-1 whitespace-nowrap">

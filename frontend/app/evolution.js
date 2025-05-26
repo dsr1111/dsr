@@ -11,10 +11,10 @@
 
     async loadCSVFiles() {
       await Promise.all([
-        this.loadCSV("/data/csv/evolution.csv", "allData"),
-        this.loadCSV("/data/csv/condition.csv", "conditionData"),
-        this.loadCSV("/data/csv/jogress.csv", "jogressData"),
-        this.loadCSV("/data/csv/characters.csv", "charactersData")
+        this.loadCSV("../data/csv/evolution.csv", "allData"),
+        this.loadCSV("../data/csv/condition.csv", "conditionData"),
+        this.loadCSV("../data/csv/jogress.csv", "jogressData"),
+        this.loadCSV("../data/csv/characters.csv", "charactersData")
       ]);
       // CSV 로드 후 전체 데이터의 이미지 리스트를 생성
       UIManager.createDigimonImageList(this.allData);
@@ -86,7 +86,7 @@
         imgContainer.classList.add("digimon-image-container");
 
         const img = document.createElement("img");
-        img.src = `/image/digimon/${safeName}/${safeName}.webp`;
+        img.src = `../image/digimon/${safeName}/${safeName}.webp`;
         img.alt = digimon.name;
         img.dataset.evoType = "normal";
         img.width = 100;
@@ -542,13 +542,13 @@
       digimonDiv.classList.add("digimon");
       const safeName = digimon.name.replace(":", "_");
       const img = document.createElement("img");
-      img.src = `/image/digimon/${safeName}/${safeName}.webp`;
+      img.src = `../image/digimon/${safeName}/${safeName}.webp`;
       img.alt = digimon.name;
       img.dataset.evoType = evoType;
       const characterInfo = DataModule.charactersData.find(c => c.name === digimon.name);
       if (characterInfo && characterInfo.type) {
         const typeImg = document.createElement("img");
-        typeImg.src = `/image/${characterInfo.type}.webp`;
+        typeImg.src = `../image/${characterInfo.type}.webp`;
         typeImg.alt = characterInfo.type;
         typeImg.classList.add("type-image");
         digimonDiv.appendChild(typeImg);
@@ -634,7 +634,7 @@
                 // jogress-image(중간 작은 이미지)는 forEach 내부에서만 생성
                 if (evo.name === digimon.조그레스) {
                   const jogressImageName = digimon[Object.keys(digimon)[26]];
-                  const jogressImagePath = `/image/digimon/${jogressImageName}/${jogressImageName}.webp`;
+                  const jogressImagePath = `../image/digimon/${jogressImageName}/${jogressImageName}.webp`;
                   const jogressImg = document.createElement("img");
                   jogressImg.src = jogressImagePath;
                   jogressImg.classList.add("jogress-image");

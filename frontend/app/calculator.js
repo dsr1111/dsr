@@ -14,7 +14,7 @@ document
   .getElementById("stage-select")
   .addEventListener("change", async function () {
     const stage = this.value;
-    const characters = await fetchCSVData("/data/csv/characters.csv");
+    const characters = await fetchCSVData("../data/csv/characters.csv");
     populateCharacterDropdown(characters, stage);
   });
 
@@ -22,7 +22,7 @@ document
   .getElementById("character-select")
   .addEventListener("change", async function () {
     const characterName = this.value;
-    const characters = await fetchCSVData("/data/csv/characters.csv");
+    const characters = await fetchCSVData("../data/csv/characters.csv");
     displayCharacterType(characters, characterName);
     displayCharacterImage(characterName);
     displayCharacterLevelAndPower(characters, characterName);
@@ -68,14 +68,14 @@ function displayCharacterType(characters, characterName) {
     (character) => character[0] === characterName
   );
   const type = character[2];
-  const imagePath = `/image/${type}.webp`;
+  const imagePath = `../image/${type}.webp`;
   const typeImageCell = document.getElementById("type-image-cell");
   typeImageCell.innerHTML = `<img src="${imagePath}" alt="${type}" style="width: 25px; height: 25px;">`;
 }
 
 function displayCharacterImage(characterName) {
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
-  const characterImagePath = `/image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
+  const characterImagePath = `../image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
   const characterImageCell = document.getElementById("character-image-cell");
   characterImageCell.innerHTML = `<img src="${characterImagePath}" alt="${sanitizedCharacterName}" class="character-image">`;
 }
@@ -99,11 +99,11 @@ async function displaySkillImage(characterName) {
   let skillFile = "";
 
   if (skillSelect === "skill1") {
-    skillFile = "/data/csv/skill1.csv";
+    skillFile = "../data/csv/skill1.csv";
   } else if (skillSelect === "skill2") {
-    skillFile = "/data/csv/skill2.csv";
+    skillFile = "../data/csv/skill2.csv";
   } else if (skillSelect === "skill3") {
-    skillFile = "/data/csv/skill3.csv";
+    skillFile = "../data/csv/skill3.csv";
   }
 
   const skillData = await fetchCSVData(skillFile);
@@ -111,7 +111,7 @@ async function displaySkillImage(characterName) {
 
   if (skillRow) {
     const skillImageName = skillRow[15];
-    const skillImagePath = `/image/${skillImageName}.webp`;
+    const skillImagePath = `../image/${skillImageName}.webp`;
     const skillText = skillRow[17];
     const skillImageCell = document.getElementById("skill-cell");
 
@@ -120,7 +120,7 @@ async function displaySkillImage(characterName) {
         <img 
           src="${skillImagePath}" 
           alt="${skillImageName}" 
-          style="width: 25px; height: 25px; background-image: url('/image/background.webp'); background-size: 120%; background-position: center;">
+          style="width: 25px; height: 25px; background-image: url('../image/background.webp'); background-size: 120%; background-position: center;">
         <span>/ ${skillText}</span>
       </div>
     `;
@@ -132,7 +132,7 @@ document
   .getElementById("map1-select")
   .addEventListener("change", async function () {
     const selectedRegion = this.value;
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("../data/csv/mob.csv");
 
     const filteredLocations = [
       ...new Set(
@@ -160,7 +160,7 @@ document
   .getElementById("map2-select")
   .addEventListener("change", async function () {
     const selectedLocation = this.value;
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("../data/csv/mob.csv");
     updateMobSelect(mobData, selectedLocation);
   });
 
@@ -191,7 +191,7 @@ document
   .getElementById("mob-select")
   .addEventListener("change", async function () {
     const selectedMob = this.value;
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("../data/csv/mob.csv");
     updateMobDetails(mobData, selectedMob);
   });
 
@@ -203,7 +203,7 @@ function updateMobDetails(mobData, selectedMob) {
 
   if (mobRow) {
     document.getElementById("mob-level").textContent = mobRow[3];
-    const mobTypeImage = mobRow[4] ? `/image/${mobRow[4]}.webp` : "-";
+    const mobTypeImage = mobRow[4] ? `../image/${mobRow[4]}.webp` : "-";
     document.getElementById("mob-type").innerHTML = mobRow[4]
       ? `<img src="${mobTypeImage}"  alt="${mobRow[4]}" style="width: 25px; height: 25px;">`
       : "-";
@@ -211,15 +211,15 @@ function updateMobDetails(mobData, selectedMob) {
     document.getElementById("mob-def").textContent = parseFloat(
       mobRow[6]
     ).toFixed(2);
-    const mobWeaknessImage = mobRow[7] ? `/image/${mobRow[7]}.webp` : "-";
+    const mobWeaknessImage = mobRow[7] ? `../image/${mobRow[7]}.webp` : "-";
     document.getElementById("mob-weak").innerHTML = mobRow[7]
-      ? `<img src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('/image/weakbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('../image/weakbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
-    const mobStrengthImage = mobRow[8] ? `/image/${mobRow[8]}.webp` : "-";
+    const mobStrengthImage = mobRow[8] ? `../image/${mobRow[8]}.webp` : "-";
     document.getElementById("mob-strong").innerHTML = mobRow[8]
-      ? `<img src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('/image/strongbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('../image/strongbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
-    const mobImagePath = `/image/digimon/${selectedMob}/${selectedMob}.webp`;
+    const mobImagePath = `../image/digimon/${selectedMob}/${selectedMob}.webp`;
     const mobImageCell = document.getElementById("mob-image-cell");
     mobImageCell.innerHTML = `<img src="${mobImagePath}"  alt="${selectedMob}" class="mob-image">`;
   }
@@ -229,7 +229,7 @@ window.addEventListener("DOMContentLoaded", async function () {
   const map1Select = document.getElementById("map1-select");
   const defaultRegion = map1Select.value;
 
-  const mobData = await fetchCSVData("/data/csv/mob.csv");
+  const mobData = await fetchCSVData("../data/csv/mob.csv");
   const filteredLocations = [
     ...new Set(
       mobData.filter((row) => row[0] === defaultRegion).map((row) => row[1])
@@ -250,7 +250,7 @@ window.addEventListener("DOMContentLoaded", async function () {
     updateMobSelect(mobData, filteredLocations[0]);
   }
 
-  const characters = await fetchCSVData("/data/csv/characters.csv");
+  const characters = await fetchCSVData("../data/csv/characters.csv");
   populateCharacterDropdown(characters, "성장기");
 
   const skillSelect = document.getElementById("skill-select");
@@ -275,7 +275,7 @@ async function calculateStrengthResult() {
   }
 
   const characterName = document.getElementById("character-select").value;
-  const charactersData = await fetchCSVData("/data/csv/characters.csv");
+  const charactersData = await fetchCSVData("../data/csv/characters.csv");
   const characterRow = charactersData.find((row) => row[0] === characterName);
 
   let basePower = 0;
@@ -322,7 +322,7 @@ async function calculateNeedStr() {
   let mobStrong = "";
   let mobWeak = "";
 
-  const mobData = await fetchCSVData("/data/csv/mob.csv");
+  const mobData = await fetchCSVData("../data/csv/mob.csv");
   const mobRow = mobData.find(
     (row) => row[2] === mobName && row[1] === selectedMap
   );
@@ -341,7 +341,7 @@ async function calculateNeedStr() {
   const characterName = document.getElementById("character-select").value;
   let myType = "";
   let myLevel = 1;
-  const characterData = await fetchCSVData("/data/csv/characters.csv");
+  const characterData = await fetchCSVData("../data/csv/characters.csv");
   const characterRow = characterData.find((row) => row[0] === characterName);
 
   if (characterRow) {
@@ -358,7 +358,7 @@ async function calculateNeedStr() {
   let hitCount = 1;
   let mySkillElement = "";
 
-  const skillData = await fetchCSVData(`/data/csv/${skillSelect}.csv`);
+  const skillData = await fetchCSVData(`../data/csv/${skillSelect}.csv`);
   const skillRow = skillData.find((row) => row[10] === characterName);
 
   if (skillRow) {
