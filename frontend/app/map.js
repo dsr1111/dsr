@@ -105,7 +105,7 @@ window.onload = function () {
 let maps = {};
 
 // JSON 데이터 처리
-fetch("../data/csv/map.json")
+fetch("data/csv/map.json")
   .then((response) => response.json())
   .then((data) => {
     maps = data;
@@ -316,7 +316,7 @@ function createCheckbox(
     let evolIcon = null;
     if (item.evol) {
       evolIcon = document.createElement("img");
-      evolIcon.src = "../image/icon.webp";
+      evolIcon.src = "image/icon.webp";
       evolIcon.style.position = "absolute";
       evolIcon.style.top = `${item.top + 20}px`;
       evolIcon.style.left = `${item.left + 5}px`;
@@ -343,7 +343,7 @@ function createCheckbox(
       imgElement.classList.add("mob-image");
 
       const typeElement = document.createElement("img");
-      typeElement.src = `../image/${item.type}.webp`;
+      typeElement.src = `image/${item.type}.webp`;
       typeElement.style.position = "absolute";
       typeElement.style.top = `${item.top - 5}px`;
       typeElement.style.left = `${item.left - 5}px`;
@@ -424,11 +424,11 @@ function showSpecialTooltipAtImage(
   tooltip.className = "special-tooltip";
 
   const 강점Parts = 강점.split(",");
-  const 강점이미지 = 강점Parts[0] ? `../image/${강점Parts[0].trim()}.webp` : null;
+  const 강점이미지 = 강점Parts[0] ? `image/${강점Parts[0].trim()}.webp` : null;
   const 강점텍스트 = 강점Parts[1] ? 강점Parts[1].trim() : "";
 
   const 약점Parts = 약점.split(",");
-  const 약점이미지 = 약점Parts[0] ? `../image/${약점Parts[0].trim()}.webp` : null;
+  const 약점이미지 = 약점Parts[0] ? `image/${약점Parts[0].trim()}.webp` : null;
   const 약점텍스트 = 약점Parts[1] ? 약점Parts[1].trim() : "";
 
   const 드랍아이템목록 = Array.isArray(items) ? items : [];
@@ -441,7 +441,7 @@ function showSpecialTooltipAtImage(
                 <div style="margin-bottom: 5px; margin-top: 5px; color: white;"><span>레벨 :</span> ${level}</div>
                 <div style="margin-bottom: 5px; color: white;"><span>체력 :</span> ${hp}</div>
                 <div style= "color: white;"><span>강점 :</span> 
-                    <div style="background-image: url('../image/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle;">
+                    <div style="background-image: url('image/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle;">
                         ${
                           강점이미지
                             ? `<img src="${강점이미지}" alt="${강점Parts[0]}" style="width: 24px; height: 24px;">`
@@ -451,7 +451,7 @@ function showSpecialTooltipAtImage(
                     ${강점텍스트 ? `<span>${강점텍스트}</span>` : ""}
                 </div>
                 <div style= "color: white;"><span>약점 :</span>
-                    <div style="background-image: url('../image/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle;">
+                    <div style="background-image: url('image/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle;">
                         ${
                           약점이미지
                             ? `<img src="${약점이미지}" alt="${약점Parts[0]}" style="width: 24px; height: 24px;">`
@@ -467,8 +467,8 @@ function showSpecialTooltipAtImage(
                 ${드랍아이템목록
                   .map((item) => {
                     const itemImageSrc = item.includes("조합법")
-                      ? "../image/item/조합법.webp"
-                      : `../image/item/${item.trim()}.webp`;
+                      ? "image/item/조합법.webp"
+                      : `image/item/${item.trim()}.webp`;
                     return `
                         <li style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;">
                             <img src="${itemImageSrc}"  alt="${item.trim()}" style="width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;">
@@ -483,7 +483,7 @@ function showSpecialTooltipAtImage(
             ? `
         <div style="text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);"><strong>조건 진화</strong></div>
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-        <img src="../image/digimon/${evol}/${evol}.webp"  alt="${evol}" style="width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;">
+        <img src="image/digimon/${evol}/${evol}.webp"  alt="${evol}" style="width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;">
          </div>
         `
             : ""
