@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.title = `${characterName} | DSRWIKI`;
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
 
-  fetch("data/csv/characters.csv")
+  fetch("/data/csv/characters.csv")
     .then((response) => response.text())
     .then((data) => {
       const rows = data.split("\n").slice(1);
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (character) {
         const columns = character.split(",");
-        const characterImgPath = `image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
+        const characterImgPath = `/image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
         const evolutionStage = columns[1];
         const type = columns[2];
         const fields = columns[15]
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 1; i <= 3; i++) {
           const fieldImgElement = document.getElementById(`field-img${i}`);
           if (fields[i - 1]) {
-            fieldImgElement.src = `image/field/${fields[i - 1]}.webp`;
+            fieldImgElement.src = `/image/field/${fields[i - 1]}.webp`;
             fieldImgElement.alt = `${fields[i - 1]} 이미지`;
             addTooltipToElement(fieldImgElement, fields[i - 1]);
             fieldImgElement.style.display = "inline";
@@ -92,11 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
         addTooltipToElement(characterImg, characterName);
         
         const evolutionImg = document.getElementById("evolution-img");
-        evolutionImg.src = `image/${evolutionStage}.webp`;
+        evolutionImg.src = `/image/${evolutionStage}.webp`;
         addTooltipToElement(evolutionImg, evolutionStage);
         
         const typeImg = document.getElementById("type-img");
-        typeImg.src = `image/${type}.webp`;
+        typeImg.src = `/image/${type}.webp`;
         addTooltipToElement(typeImg, type);
         
         // 스탯 설정
@@ -143,8 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
           strengthsHTML += `
             <tr>
               <td class=\"sw-icon\">
-                <div class=\"sw-icon-container\" style=\"background-image: url('image/strongbackground.webp');\">
-                  <img src=\"image/${str}.webp\" alt=\"${str} 이미지\" title=\"${str}\">
+                <div class=\"sw-icon-container\" style=\"background-image: url('/image/strongbackground.webp');\">
+                  <img src=\"/image/${str}.webp\" alt=\"${str} 이미지\" title=\"${str}\">
                 </div>
               </td>
               <td class=\"sw-description\">${descText}</td>
@@ -170,8 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
           weaknessesHTML += `
             <tr>
               <td class=\"sw-icon\">
-                <div class=\"sw-icon-container\" style=\"background-image: url('image/weakbackground.webp');\">
-                  <img src=\"image/${weak}.webp\" alt=\"${weak} 이미지\" title=\"${weak}\">
+                <div class=\"sw-icon-container\" style=\"background-image: url('/image/weakbackground.webp');\">
+                  <img src=\"/image/${weak}.webp\" alt=\"${weak} 이미지\" title=\"${weak}\">
                 </div>
               </td>
               <td class=\"sw-description\">${descText}</td>
@@ -185,9 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 스킬 정보 가져오기
         Promise.all([
-          fetch("data/csv/skill1.csv").then((res) => res.text()),
-          fetch("data/csv/skill2.csv").then((res) => res.text()),
-          fetch("data/csv/skill3.csv").then((res) => res.text()),
+          fetch("/data/csv/skill1.csv").then((res) => res.text()),
+          fetch("/data/csv/skill2.csv").then((res) => res.text()),
+          fetch("/data/csv/skill3.csv").then((res) => res.text()),
         ]).then(([skill1Data, skill2Data, skill3Data]) => {
           const skills = [skill1Data, skill2Data, skill3Data];
           const skillDetailsTable = document.getElementById("skill-details");
@@ -211,8 +211,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
               }
 
-              const skillImgPath = `image/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
-              const skill1ImgPath = `image/${skillColumns[15]}.webp`;
+              const skillImgPath = `/image/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
+              const skill1ImgPath = `/image/${skillColumns[15]}.webp`;
 
               const levelData = skillColumns.slice(0, 10).map((value) => {
                 let percentage = isNaN(parseFloat(value))
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // 덱 정보 가져오기
-  fetch("data/csv/deck.json")
+  fetch("/data/csv/deck.json")
     .then(response => response.json())
     .then(deckData => {
       const deckContainer = document.getElementById("deck-container");
@@ -316,9 +316,9 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="digimon-container">
                 ${deck.digimon.map(d => `
                   <div class="digimon-avatar ${d.name === characterName ? 'highlight' : ''}">
-                    <img src="image/digimon/${d.name.replace(/:/g, '_')}/${d.name.replace(/:/g, '_')}.webp" 
+                    <img src="/image/digimon/${d.name.replace(/:/g, '_')}/${d.name.replace(/:/g, '_')}.webp" 
                          alt="${d.name}" 
-                         onerror="this.src='image/digimon/default.webp'">
+                         onerror="this.src='/image/digimon/default.webp'">
                     <div class="digimon-tooltip">Lv.${d.level} ${d.name}</div>
                   </div>
                 `).join('')}
