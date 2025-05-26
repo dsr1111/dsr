@@ -68,12 +68,14 @@ const masterTyrannoRaid = {
 // 한국 시간을 가져오는 함수
 async function getKoreaTime() {
   try {
-    const response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Seoul');
-    const data = await response.json();
-    return new Date(data.datetime);
+    const response = await fetch('https://www.naver.com', { method: 'HEAD' });
+    const serverTime = response.headers.get('date');
+    return new Date(serverTime);
   } catch (error) {
-    console.error('한국 시간을 가져오는데 실패했습니다:', error);
-    return new Date(); // 실패시 로컬 시간 반환
+    console.error('네이버 서버 시간을 가져오는데 실패했습니다:', error);
+    // 실패시 로컬 시간 + 9시간으로 폴백
+    const now = new Date();
+    return new Date(now.getTime() + (9 * 60 * 60 * 1000));
   }
 }
 
