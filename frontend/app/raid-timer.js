@@ -65,12 +65,34 @@ const masterTyrannoRaid = {
   map: '용의 눈 호수',
 };
 
+// 한국 시간을 가져오는 함수
+async function getKoreaTime() {
+  try {
+    const response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Seoul');
+    const data = await response.json();
+    return new Date(data.datetime);
+  } catch (error) {
+    console.error('한국 시간을 가져오는데 실패했습니다:', error);
+    return new Date(); // 실패시 로컬 시간 반환
+  }
+}
+
+// 현재 시간을 저장할 변수
+let currentKoreaTime = new Date();
+
+// 한국 시간을 주기적으로 업데이트
+async function updateKoreaTime() {
+  currentKoreaTime = await getKoreaTime();
+}
+
+// 1분마다 한국 시간 업데이트
+setInterval(updateKoreaTime, 60000);
+
 function getNextDailyTime(timeStr) {
   const [hour, min] = timeStr.split(':').map(Number);
-  const now = new Date();
-  let next = new Date(now);
+  let next = new Date(currentKoreaTime);
   next.setHours(hour, min, 0, 0);
-  if (next <= now) {
+  if (next <= currentKoreaTime) {
     next.setDate(next.getDate() + 1);
   }
   return next;
@@ -78,17 +100,16 @@ function getNextDailyTime(timeStr) {
 
 function getNextBiweeklyTime(day, timeStr, weekType) {
   const [hour, min] = timeStr.split(':').map(Number);
-  const now = new Date();
-  let next = new Date(now);
+  let next = new Date(currentKoreaTime);
   // 이번주가 짝수주인지 홀수주인지 계산
-  const onejan = new Date(now.getFullYear(), 0, 1);
-  const week = Math.ceil((((now - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+  const onejan = new Date(currentKoreaTime.getFullYear(), 0, 1);
+  const week = Math.ceil((((currentKoreaTime - onejan) / 86400000) + onejan.getDay() + 1) / 7);
   let isEvenWeek = week % 2 === 0;
   let targetWeek = (weekType === 'even') ? isEvenWeek : !isEvenWeek;
   // 이번주에 해당하면 이번주, 아니면 다음주
   next.setDate(next.getDate() + ((7 + day - next.getDay()) % 7));
   next.setHours(hour, min, 0, 0);
-  if (!targetWeek || next <= now) {
+  if (!targetWeek || next <= currentKoreaTime) {
     // 다음주로 넘김
     next.setDate(next.getDate() + 7);
     // 홀짝주 반전
@@ -102,8 +123,7 @@ function getNextBiweeklyTime(day, timeStr, weekType) {
 }
 
 function getTimeDiffString(target) {
-  const now = new Date();
-  let diff = Math.floor((target - now) / 1000);
+  let diff = Math.floor((target - currentKoreaTime) / 1000);
   if (diff < 0) return '-00:00:00';
   const h = Math.floor(diff / 3600).toString().padStart(2, '0');
   const m = Math.floor((diff % 3600) / 60).toString().padStart(2, '0');
@@ -217,7 +237,8 @@ function updateTimers() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await updateKoreaTime(); // 초기 한국 시간 설정
   renderRaids();
   setInterval(updateTimers, 1000);
 }); 
