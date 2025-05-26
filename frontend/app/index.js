@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   calendarEl.style.margin = "0 auto";
 
   // 캘린더 이벤트 데이터를 불러옵니다
-  fetch("../data/csv/calendar.json")
+  fetch("data/csv/calendar.json")
     .then(response => response.json())
     .then(data => {
       var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
 
-  fetch("../data/csv/coupon.json")
+  fetch("data/csv/coupon.json")
     .then((response) => response.json())
     .then((data) => {
       const couponContainer = document.querySelector(".coupon-container");
@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const [itemName, itemQty, itemGrade] = item.split("x");
             let cleanItemName = itemName.trim().replace(/\s*\(\d+(일|시간)\)$/, "");
             const sanitizedName = cleanItemName.replace(/%/g, "^");
-            const imgPath = `../image/item/${sanitizedName}.webp`;
-            const backgroundPath = `../image/item/item${itemGrade.trim()}.webp`;
+            const imgPath = `image/item/${sanitizedName}.webp`;
+            const backgroundPath = `image/item/item${itemGrade.trim()}.webp`;
 
             const itemElement = document.createElement("div");
             itemElement.classList.add("tooltip-item");

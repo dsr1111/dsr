@@ -4,7 +4,7 @@
 
     // DOMContentLoaded 에서 JSON 로드 후 초기화
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('/data/csv/deck.json')
+      fetch('data/csv/deck.json')
         .then(res => {
           if (!res.ok) throw new Error('deck.json 로드 실패');
           return res.json();
