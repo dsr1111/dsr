@@ -61,7 +61,7 @@ const raids = [
 const masterTyrannoRaid = {
   name: '마스터티라노몬',
   image: getImagePath('마스터티라노몬'),
-  nextRaid: '2025-05-26T21:05:00',
+  nextRaid: '2025-05-27T21:05:00',
   map: '용의 눈 호수',
 };
 
