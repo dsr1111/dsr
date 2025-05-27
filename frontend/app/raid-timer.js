@@ -132,7 +132,8 @@ function formatTimeToKR(str) {
 }
 
 function getMasterTyrannoNextTime() {
-  const baseDate = new Date(masterTyrannoRaid.baseDate);
+  // baseDate를 KST로 맞춰서 생성
+  const baseDate = new Date(masterTyrannoRaid.baseDate + 'T00:00:00+09:00');
   const [baseHour, baseMin] = masterTyrannoRaid.baseTime.split(':').map(Number);
   const now = getCurrentKST();
   
