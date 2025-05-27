@@ -159,16 +159,6 @@ function getMasterTyrannoNextTime() {
     nextTime.setDate(nextTime.getDate() + 1);
     nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
   }
-  
-  console.log('마스터티라노몬 시간 계산:', {
-    baseDate: baseDate.toISOString(),
-    baseTime: `${baseHour}:${baseMin}`,
-    now: now.toISOString(),
-    diffDays,
-    totalMinutes,
-    nextTime: nextTime.toISOString()
-  });
-  
   return nextTime;
 }
 
