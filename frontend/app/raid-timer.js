@@ -150,13 +150,23 @@ function getMasterTyrannoNextTime() {
   
   // 이미 지난 시간이면 다음날로 설정
   if (nextTime <= now) {
-    nextTime.setDate(nextTime.getDate() + 1);
-    // 다음날의 시간도 25분 증가
-    const nextDayMinutes = (hours * 60 + minutes) + 25;
+    // 다음날의 시간 계산
+    const nextDayMinutes = totalMinutes + 25;
     const nextDayHours = Math.floor(nextDayMinutes / 60) % 24;
     const nextDayMinutesRemainder = nextDayMinutes % 60;
+    
+    nextTime.setDate(nextTime.getDate() + 1);
     nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
   }
+  
+  console.log('마스터티라노몬 시간 계산:', {
+    baseDate: baseDate.toISOString(),
+    baseTime: `${baseHour}:${baseMin}`,
+    now: now.toISOString(),
+    diffDays,
+    totalMinutes,
+    nextTime: nextTime.toISOString()
+  });
   
   return nextTime;
 }
