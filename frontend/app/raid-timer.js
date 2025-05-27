@@ -131,6 +131,31 @@ function formatTimeToKR(str) {
   return result.trim();
 }
 
+function getMasterTyrannoNextTime() {
+  const baseDate = new Date(masterTyrannoRaid.baseDate);
+  const [baseHour, baseMin] = masterTyrannoRaid.baseTime.split(':').map(Number);
+  const now = getCurrentKST();
+  
+  // 기준 날짜부터 현재까지의 일수 차이 계산
+  const diffDays = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
+  
+  // 25분씩 증가하는 시간 계산
+  const totalMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
+  const hours = Math.floor(totalMinutes / 60) % 24;
+  const minutes = totalMinutes % 60;
+  
+  // 다음 레이드 시간 설정
+  const nextTime = new Date(now);
+  nextTime.setHours(hours, minutes, 0, 0);
+  
+  // 이미 지난 시간이면 다음날로 설정
+  if (nextTime <= now) {
+    nextTime.setDate(nextTime.getDate() + 1);
+  }
+  
+  return nextTime;
+}
+
 let sortedRaids = [];
 
 function renderRaids() {
@@ -223,31 +248,6 @@ function updateTimers() {
       }
     }
   }
-}
-
-function getMasterTyrannoNextTime() {
-  const baseDate = new Date(masterTyrannoRaid.baseDate);
-  const [baseHour, baseMin] = masterTyrannoRaid.baseTime.split(':').map(Number);
-  const now = getCurrentKST();
-  
-  // 기준 날짜부터 현재까지의 일수 차이 계산
-  const diffDays = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
-  
-  // 25분씩 증가하는 시간 계산
-  const totalMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
-  const hours = Math.floor(totalMinutes / 60) % 24;
-  const minutes = totalMinutes % 60;
-  
-  // 다음 레이드 시간 설정
-  const nextTime = new Date(now);
-  nextTime.setHours(hours, minutes, 0, 0);
-  
-  // 이미 지난 시간이면 다음날로 설정
-  if (nextTime <= now) {
-    nextTime.setDate(nextTime.getDate() + 1);
-  }
-  
-  return nextTime;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
