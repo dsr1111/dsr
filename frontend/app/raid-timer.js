@@ -151,6 +151,11 @@ function getMasterTyrannoNextTime() {
   // 이미 지난 시간이면 다음날로 설정
   if (nextTime <= now) {
     nextTime.setDate(nextTime.getDate() + 1);
+    // 다음날의 시간도 25분 증가
+    const nextDayMinutes = (hours * 60 + minutes) + 25;
+    const nextDayHours = Math.floor(nextDayMinutes / 60) % 24;
+    const nextDayMinutesRemainder = nextDayMinutes % 60;
+    nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
   }
   
   return nextTime;
