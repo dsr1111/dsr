@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
                           <div class="digicore-item-badges">
                             <div class="digicore-item-probability ${item.probability === '확정' ? 'guaranteed' : 'probability'}">${item.probability}</div>
                             ${item.tradeable !== undefined ? `
-                              <div class="digicore-item-tradeable ${item.tradeable ? 'tradeable' : 'untradeable'}">${item.tradeable ? '교환가능' : '교환불가'}</div>
+                              <div class="digicore-item-tradeable ${item.tradeable ? 'tradeable' : 'untradeable'}">${item.tradeable ? '거래가능' : '거래불가'}</div>
                             ` : ''}
                           </div>
                         </div>
