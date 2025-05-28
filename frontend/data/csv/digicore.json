@@ -218,12 +218,6 @@
           "probability": "확률",
           "tradeable": true,
           "count": 1
-        },
-        {
-          "name": "포텐셜 조각",
-          "tradeable": true,
-          "probability": "확률",
-          "count": 1
         }
       ]
     },
@@ -249,12 +243,6 @@
               "count": 1
             }
           ]
-        },
-        {
-          "name": "포텐셜 조각",
-          "tradeable": true,
-          "probability": "확률",
-          "count": 1
         }
       ]
     },

@@ -111,18 +111,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
             switch(evolutionStage) {
               case "성장기":
-                defaultDigicore = {
-                  name: "성장기 디지코어 꾸러미",
-                  probability: "확정",
-                  tradeable: true,
-                  count: 1
-                };
+                defaultDigicore = [
+                  {
+                    name: "성장기 디지코어 꾸러미",
+                    probability: "확정",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
+                    name: "유년기1 디지타마",
+                    probability: "확률",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
+                    name: "포텐셜 조각",
+                    probability: "확률",
+                    tradeable: true,
+                    count: 1
+                  }
+                ];
                 break;
               case "성숙기":
                 defaultDigicore = [
                   {
                     name: "성숙기 디지코어 꾸러미",
                     probability: "확정",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
+                    name: "유년기1 디지타마",
+                    probability: "확률",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
+                    name: "포텐셜 조각",
+                    probability: "확률",
                     tradeable: true,
                     count: 1
                   },
@@ -143,6 +169,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     count: 1
                   },
                   {
+                    name: "유년기1 디지타마",
+                    probability: "확률",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
+                    name: "포텐셜 조각",
+                    probability: "확률",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
                     name: "돌연변이 치료제",
                     probability: "확률",
                     tradeable: true,
@@ -155,6 +193,18 @@ document.addEventListener("DOMContentLoaded", () => {
                   {
                     name: "궁극체 디지코어 꾸러미",
                     probability: "확정",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
+                    name: "유년기1 디지타마",
+                    probability: "확률",
+                    tradeable: true,
+                    count: 1
+                  },
+                  {
+                    name: "포텐셜 조각",
+                    probability: "확률",
                     tradeable: true,
                     count: 1
                   },
