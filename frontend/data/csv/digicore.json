@@ -1,0 +1,234 @@
+{
+  "digicore": {
+    "갓드라몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확정",
+          "tradeable": true
+        }
+      ]
+    },
+    "오파니몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확정",
+          "tradeable": true
+        }
+      ]
+    },
+    "페닉스몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확정",
+          "tradeable": true
+        }
+      ]
+    },
+    "마린엔젤몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확정",
+          "tradeable": true
+        }
+      ]
+    },
+    "홀리엔젤몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "패롯몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "엔젤우몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "에이프몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "플롯트몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "테이파몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "가트몬":{
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "그랜쿠가몬":{
+      "items": [
+        {
+          "name": "강인한 그랜쿠가몬의 디지코어",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "메가드라몬":{
+      "items": [
+        {
+          "name": "메가 핸드",
+          "probability": "확정",
+          "tradeable": true
+        }
+      ]
+    },
+    "타임몬":{
+      "items": [
+        {
+          "name": "타임몬의 시계바늘(1시간)",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "메탈그레이몬":{
+      "items": [
+        {
+          "name": "메탈그레이몬의 파츠 데이터",
+          "probability": "확정",
+          "tradeable": false,
+          "description": "사용 시 다음 아이템 중 하나를 획득할 수 있습니다.",
+          "possible_items": [
+            {
+              "name": "트라이던트 암",
+              "tradeable": true,
+              "probability": "확률"
+            },
+            {
+              "name": "메탈그레이몬의 갈기",
+              "tradeable": true,
+              "probability": "확률"
+            }
+          ]
+        }
+      ]
+    },
+    "엔젤몬":{
+      "items": [
+        {
+          "name": "엔젤몬의 날개",
+          "probability": "확률",
+          "tradeable": true
+        },
+        {
+          "name": "홀리 링",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "가루몬":{
+      "items": [
+        {
+          "name": "가루몬의 다리",
+          "probability": "확률",
+          "tradeable": true
+        }
+      ]
+    },
+    "로프몬":{
+      "items": [
+        {
+          "name": "로프몬의 의지",
+          "probability": "확정",
+          "tradeable": true
+        }
+      ]
+    },
+    "메탈콩알몬": {
+      "items": [
+        {
+          "name": "사이코 블래스터",
+          "probability": "확정",
+          "tradeable": true
+        }
+      ]
+    },
+    "발두르몬": {
+      "items": [
+        {
+          "name": "발두르몬의 깃털",
+          "probability": "확률",
+          "tradeable": true
+        },
+        {
+          "name": "포텐셜 조각",
+          "tradeable": true,
+          "probability": "확률"
+        }
+      ]
+    },
+    "오메가몬": {
+      "items": [
+        {
+          "name": "오메가몬의 성스러운 데이터",
+          "probability": "확정",
+          "tradeable": false,
+          "description": "사용 시 다음 아이템 중 하나를 획득할 수 있습니다.",
+          "possible_items": [
+            {
+              "name": "발두르몬의 깃털",
+              "tradeable": false,
+              "probability": "확률"
+            },
+            {
+              "name": "오메가 블레이드",
+              "tradeable": true,
+              "probability": "확률"
+            }
+          ]
+        },
+        {
+          "name": "포텐셜 조각",
+          "tradeable": true,
+          "probability": "확률"
+        }
+      ]
+    }
+  }
+} 

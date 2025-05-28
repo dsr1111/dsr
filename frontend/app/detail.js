@@ -98,7 +98,132 @@ document.addEventListener("DOMContentLoaded", () => {
         const typeImg = document.getElementById("type-img");
         typeImg.src = `/image/${type}.webp`;
         addTooltipToElement(typeImg, type);
-        
+
+        // 디지코어화 정보 가져오기
+        fetch("/data/csv/digicore.json")
+          .then(response => response.json())
+          .then(digicoreData => {
+            const digicoreContainer = document.getElementById("digicore-container");
+            const characterDigicore = digicoreData.digicore[characterName];
+
+            // 진화 단계에 따른 기본 디지코어 꾸러미 추가
+            let defaultDigicore = null;
+
+            switch(evolutionStage) {
+              case "성장기":
+                defaultDigicore = {
+                  name: "성장기 디지코어 꾸러미",
+                  probability: "확정",
+                  tradeable: true
+                };
+                break;
+              case "성숙기":
+                defaultDigicore = [
+                  {
+                    name: "성숙기 디지코어 꾸러미",
+                    probability: "확정",
+                    tradeable: true
+                  },
+                  {
+                    name: "돌연변이 치료제",
+                    probability: "확률",
+                    tradeable: true
+                  }
+                ];
+                break;
+              case "완전체":
+                defaultDigicore = [
+                  {
+                    name: "완전체 디지코어 꾸러미",
+                    probability: "확정",
+                    tradeable: true
+                  },
+                  {
+                    name: "돌연변이 치료제",
+                    probability: "확률",
+                    tradeable: true
+                  }
+                ];
+                break;
+              case "궁극체":
+                defaultDigicore = [
+                  {
+                    name: "궁극체 디지코어 꾸러미",
+                    probability: "확정",
+                    tradeable: true
+                  },
+                  {
+                    name: "돌연변이 치료제",
+                    probability: "확률",
+                    tradeable: true
+                  }
+                ];
+                break;
+            }
+
+            // 기본 디지코어 꾸러미와 특별 아이템 합치기
+            const allItems = defaultDigicore ? 
+              (Array.isArray(defaultDigicore) ? [...defaultDigicore, ...(characterDigicore?.items || [])] : [defaultDigicore, ...(characterDigicore?.items || [])]) : 
+              (characterDigicore?.items || []);
+
+            if (allItems.length > 0) {
+              const itemsHTML = `
+                <div class="digicore-items">
+                  ${allItems.map(item => `
+                    <div class="digicore-item">
+                      <div class="digicore-item-main">
+                        <div class="digicore-item-image">
+                          <img src="/image/item/${item.name}.webp" alt="${item.name}" title="${item.name}">
+                        </div>
+                        <div class="digicore-item-info">
+                          <div class="digicore-item-name">${item.name}</div>
+                          <div class="digicore-item-badges">
+                            <div class="digicore-item-probability ${item.probability === '확정' ? 'guaranteed' : 'probability'}">${item.probability}</div>
+                            ${item.tradeable !== undefined ? `
+                              <div class="digicore-item-tradeable ${item.tradeable ? 'tradeable' : 'untradeable'}">${item.tradeable ? '교환가능' : '교환불가'}</div>
+                            ` : ''}
+                          </div>
+                        </div>
+                      </div>
+                      ${item.possible_items ? `
+                        <div class="digicore-item-expanded">
+                          <div class="digicore-item-description">${item.description}</div>
+                          <div class="possible-items-title">획득 가능한 아이템</div>
+                          <div class="possible-items-list">
+                            ${item.possible_items.map(possibleItem => `
+                              <div class="possible-item">
+                                <div class="possible-item-image">
+                                  <img src="/image/item/${possibleItem.name}.webp" alt="${possibleItem.name}" title="${possibleItem.name}">
+                                </div>
+                                <div class="possible-item-info">
+                                  <div class="possible-item-name">${possibleItem.name}</div>
+                                  <div class="digicore-item-badges">
+                                    <div class="possible-item-probability ${possibleItem.probability === '확정' ? 'guaranteed' : 'probability'}">${possibleItem.probability}</div>
+                                    ${possibleItem.tradeable !== undefined ? `
+                                      <div class="digicore-item-tradeable ${possibleItem.tradeable ? 'tradeable' : 'untradeable'}">${possibleItem.tradeable ? '교환가능' : '교환불가'}</div>
+                                    ` : ''}
+                                  </div>
+                                </div>
+                              </div>
+                            `).join('')}
+                          </div>
+                        </div>
+                      ` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              `;
+              digicoreContainer.innerHTML = itemsHTML;
+            } else {
+              digicoreContainer.innerHTML = '<p class="no-digicore-message">이 디지몬의 디지코어화 정보가 없습니다.</p>';
+            }
+          })
+          .catch(error => {
+            console.error("디지코어화 데이터를 불러오는 중 오류가 발생했습니다:", error);
+            document.getElementById("digicore-container").innerHTML = 
+              '<p class="error-message">디지코어화 정보를 불러오는 중 오류가 발생했습니다.</p>';
+          });
+
         // 스탯 설정
         document.getElementById("stat-level").textContent = columns[3];
         document.getElementById("stat-hp").textContent = columns[4];
