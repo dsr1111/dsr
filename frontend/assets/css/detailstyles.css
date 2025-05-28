@@ -711,6 +711,14 @@ body {
     font-size: 10px;
     padding: 2px 4px;
   }
+
+  .digicore-container {
+    overflow-x: auto;
+  }
+  .digicore-items {
+    min-width: 340px;
+    width: max-content;
+  }
 }
 
 @media (max-width: 600px) {
@@ -1012,6 +1020,14 @@ body {
   margin-top: 5px;
 }
 
+.digicore-item-expanded .digicore-item-expanded {
+  margin-top: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 10px;
+}
+
 .digicore-item-description {
   color: #666;
   font-size: 13px;
@@ -1033,14 +1049,25 @@ body {
   gap: 8px;
 }
 
+.possible-items-list .possible-items-list {
+  margin-top: 8px;
+  padding-left: 0;
+}
+
 .possible-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.possible-item-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  border: 1px solid #e5e7eb;
 }
 
 .possible-item-image {
@@ -1140,7 +1167,7 @@ body {
   }
 
   .digicore-item-tradeable {
-    font-size: 11px;
+    font-size: 13px;
     padding: 3px 6px;
   }
 }
@@ -1160,11 +1187,11 @@ body {
   }
 
   .digicore-item-name {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .digicore-item-probability {
-    font-size: 12px;
+    font-size: 11px;
     padding: 3px 6px;
   }
 
@@ -1190,7 +1217,13 @@ body {
   }
 
   .digicore-item-tradeable {
-    font-size: 10px;
+    font-size: 11px;
     padding: 3px 6px;
   }
+}
+
+.item-count {
+  color: #888;
+  font-size: 12px;
+  margin-left: 2px;
 }

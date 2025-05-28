@@ -114,7 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 defaultDigicore = {
                   name: "성장기 디지코어 꾸러미",
                   probability: "확정",
-                  tradeable: true
+                  tradeable: true,
+                  count: 1
                 };
                 break;
               case "성숙기":
@@ -122,12 +123,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   {
                     name: "성숙기 디지코어 꾸러미",
                     probability: "확정",
-                    tradeable: true
+                    tradeable: true,
+                    count: 1
                   },
                   {
                     name: "돌연변이 치료제",
                     probability: "확률",
-                    tradeable: true
+                    tradeable: true,
+                    count: 1
                   }
                 ];
                 break;
@@ -136,12 +139,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   {
                     name: "완전체 디지코어 꾸러미",
                     probability: "확정",
-                    tradeable: true
+                    tradeable: true,
+                    count: 1
                   },
                   {
                     name: "돌연변이 치료제",
                     probability: "확률",
-                    tradeable: true
+                    tradeable: true,
+                    count: 1
                   }
                 ];
                 break;
@@ -150,12 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   {
                     name: "궁극체 디지코어 꾸러미",
                     probability: "확정",
-                    tradeable: true
+                    tradeable: true,
+                    count: 1
                   },
                   {
                     name: "돌연변이 치료제",
                     probability: "확률",
-                    tradeable: true
+                    tradeable: true,
+                    count: 1
                   }
                 ];
                 break;
@@ -176,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
                           <img src="/image/item/${item.name}.webp" alt="${item.name}" title="${item.name}">
                         </div>
                         <div class="digicore-item-info">
-                          <div class="digicore-item-name">${item.name}</div>
+                          <div class="digicore-item-name">${item.name}${item.count ? ` <span class=\"item-count\">x${item.count}</span>` : ''}</div>
                           <div class="digicore-item-badges">
                             <div class="digicore-item-probability ${item.probability === '확정' ? 'guaranteed' : 'probability'}">${item.probability}</div>
                             ${item.tradeable !== undefined ? `
@@ -192,18 +199,46 @@ document.addEventListener("DOMContentLoaded", () => {
                           <div class="possible-items-list">
                             ${item.possible_items.map(possibleItem => `
                               <div class="possible-item">
-                                <div class="possible-item-image">
-                                  <img src="/image/item/${possibleItem.name}.webp" alt="${possibleItem.name}" title="${possibleItem.name}">
-                                </div>
-                                <div class="possible-item-info">
-                                  <div class="possible-item-name">${possibleItem.name}</div>
-                                  <div class="digicore-item-badges">
-                                    <div class="possible-item-probability ${possibleItem.probability === '확정' ? 'guaranteed' : 'probability'}">${possibleItem.probability}</div>
-                                    ${possibleItem.tradeable !== undefined ? `
-                                      <div class="digicore-item-tradeable ${possibleItem.tradeable ? 'tradeable' : 'untradeable'}">${possibleItem.tradeable ? '교환가능' : '교환불가'}</div>
-                                    ` : ''}
+                                <div class="possible-item-row">
+                                  <div class="possible-item-image">
+                                    <img src="/image/item/${possibleItem.name}.webp" alt="${possibleItem.name}" title="${possibleItem.name}">
+                                  </div>
+                                  <div class="possible-item-info">
+                                    <div class="possible-item-name">${possibleItem.name}${possibleItem.count ? ` <span class=\"item-count\">x${possibleItem.count}</span>` : ''}</div>
+                                    <div class="digicore-item-badges">
+                                      <div class="possible-item-probability ${possibleItem.probability === '확정' ? 'guaranteed' : 'probability'}">${possibleItem.probability}</div>
+                                      ${possibleItem.tradeable !== undefined ? `
+                                        <div class="digicore-item-tradeable ${possibleItem.tradeable ? 'tradeable' : 'untradeable'}">${possibleItem.tradeable ? '교환가능' : '교환불가'}</div>
+                                      ` : ''}
+                                    </div>
                                   </div>
                                 </div>
+                                ${possibleItem.possible_items ? `
+                                  <div class="digicore-item-expanded">
+                                    <div class="digicore-item-description">${possibleItem.description}</div>
+                                    <div class="possible-items-title">획득 가능한 아이템</div>
+                                    <div class="possible-items-list">
+                                      ${possibleItem.possible_items.map(subItem => `
+                                        <div class="possible-item">
+                                          <div class="possible-item-row">
+                                            <div class="possible-item-image">
+                                              <img src="/image/item/${subItem.name}.webp" alt="${subItem.name}" title="${subItem.name}">
+                                            </div>
+                                            <div class="possible-item-info">
+                                              <div class="possible-item-name">${subItem.name}${subItem.count ? ` <span class=\"item-count\">x${subItem.count}</span>` : ''}</div>
+                                              <div class="digicore-item-badges">
+                                                <div class="possible-item-probability ${subItem.probability === '확정' ? 'guaranteed' : 'probability'}">${subItem.probability}</div>
+                                                ${subItem.tradeable !== undefined ? `
+                                                  <div class="digicore-item-tradeable ${subItem.tradeable ? 'tradeable' : 'untradeable'}">${subItem.tradeable ? '교환가능' : '교환불가'}</div>
+                                                ` : ''}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      `).join('')}
+                                    </div>
+                                  </div>
+                                ` : ''}
                               </div>
                             `).join('')}
                           </div>

@@ -5,7 +5,8 @@
         {
           "name": "홀리 링",
           "probability": "확정",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -14,7 +15,8 @@
         {
           "name": "홀리 링",
           "probability": "확정",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -23,7 +25,8 @@
         {
           "name": "홀리 링",
           "probability": "확정",
-          "tradeable": true
+          "tradeable": true,
+          "count": 2
         }
       ]
     },
@@ -32,7 +35,8 @@
         {
           "name": "홀리 링",
           "probability": "확정",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -41,7 +45,8 @@
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -50,7 +55,8 @@
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 2
         }
       ]
     },
@@ -59,7 +65,8 @@
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -68,7 +75,8 @@
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -77,7 +85,8 @@
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -86,7 +95,8 @@
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -95,7 +105,8 @@
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -104,7 +115,8 @@
         {
           "name": "강인한 그랜쿠가몬의 디지코어",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -113,7 +125,8 @@
         {
           "name": "메가 핸드",
           "probability": "확정",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -122,7 +135,8 @@
         {
           "name": "타임몬의 시계바늘(1시간)",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -132,17 +146,20 @@
           "name": "메탈그레이몬의 파츠 데이터",
           "probability": "확정",
           "tradeable": false,
+          "count": 1,
           "description": "사용 시 다음 아이템 중 하나를 획득할 수 있습니다.",
           "possible_items": [
             {
               "name": "트라이던트 암",
               "tradeable": true,
-              "probability": "확률"
+              "probability": "확률",
+              "count": 1
             },
             {
               "name": "메탈그레이몬의 갈기",
               "tradeable": true,
-              "probability": "확률"
+              "probability": "확률",
+              "count": 1
             }
           ]
         }
@@ -153,12 +170,14 @@
         {
           "name": "엔젤몬의 날개",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         },
         {
           "name": "홀리 링",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -167,7 +186,8 @@
         {
           "name": "가루몬의 다리",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -176,7 +196,8 @@
         {
           "name": "로프몬의 의지",
           "probability": "확정",
-          "tradeable": true
+          "tradeable": true,
+          "count": "?"
         }
       ]
     },
@@ -185,7 +206,8 @@
         {
           "name": "사이코 블래스터",
           "probability": "확정",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         }
       ]
     },
@@ -194,12 +216,14 @@
         {
           "name": "발두르몬의 깃털",
           "probability": "확률",
-          "tradeable": true
+          "tradeable": true,
+          "count": 1
         },
         {
           "name": "포텐셜 조각",
           "tradeable": true,
-          "probability": "확률"
+          "probability": "확률",
+          "count": 1
         }
       ]
     },
@@ -209,24 +233,95 @@
           "name": "오메가몬의 성스러운 데이터",
           "probability": "확정",
           "tradeable": false,
-          "description": "사용 시 다음 아이템 중 하나를 획득할 수 있습니다.",
+          "count": 1,
+          "description": "구성품 중 하나를 랜덤하게 획득 가능",
           "possible_items": [
             {
               "name": "발두르몬의 깃털",
               "tradeable": false,
-              "probability": "확률"
+              "probability": "확률",
+              "count": 1
             },
             {
               "name": "오메가 블레이드",
               "tradeable": true,
-              "probability": "확률"
+              "probability": "확률",
+              "count": 1
             }
           ]
         },
         {
           "name": "포텐셜 조각",
           "tradeable": true,
-          "probability": "확률"
+          "probability": "확률",
+          "count": 1
+        }
+      ]
+    },
+    "밀레니엄몬":{
+      "items": [
+        {
+          "name": "밀레니엄몬의 데이터 덩어리",
+          "probability": "확정",
+          "tradeable": false,
+          "count": 1,
+          "description": "구성품 중 하나를 랜덤하게 획득 가능",
+          "possible_items": [
+            {
+              "name": "문밀레니엄몬의 데이터 흔적",
+              "tradeable": false,
+              "probability": "확률",
+              "count": 1,
+              "description": "구성품 중 하나를 랜덤하게 획득 가능",
+              "possible_items": [
+                {
+                  "name": "밀레니엄몬의 어둠의 마음",
+                  "tradeable": true,
+                  "probability": "확률",
+                  "count": 1
+                },
+                {
+                  "name": "불길한 마음의 조각",
+                  "tradeable": false,
+                  "probability": "확률",
+                  "count": 100
+                },
+                {
+                  "name": "불길한 마음의 조각",
+                  "tradeable": true,
+                  "probability": "확률",
+                  "count": 100
+                }
+              ]
+            },
+            {
+              "name": "지드밀레니엄몬의 데이터 흔적",
+              "tradeable": false,
+              "probability": "확률",
+              "count": 1,
+              "description": "구성품 중 하나를 랜덤하게 획득 가능",
+              "possible_items": [
+                {
+                  "name": "밀레니엄몬의 어둠의 영혼",
+                  "tradeable": true,
+                  "probability": "확률",
+                  "count": 1
+                },
+                {
+                  "name": "불길한 광석",
+                  "tradeable": false,
+                  "probability": "확률",
+                  "count": 100
+                },
+                {
+                  "name": "불길한 광석",
+                  "tradeable": true,
+                  "probability": "확률",
+                  "count": 100
+                }
+              ]
+            }            
+          ]
         }
       ]
     }
