@@ -392,6 +392,9 @@
       // 초기 상태 저장
       let initialLevel = 1;
       let initialExp = 0;
+      // 진화 상태 저장
+      let isMatureEvolution = false;
+      let isPerfectEvolution = false;
 
       document.addEventListener('DOMContentLoaded', function() {
         // 입력값 변경 이벤트 리스너 추가 (초기 상태 저장 및 결과 갱신)
@@ -403,11 +406,17 @@
           if (initialLevel >= 1 && initialLevel <= 15) {
             checkboxContainer.classList.remove('hidden');
             checkboxText.textContent = '성숙기 진화 여부';
+            isMatureEvolution = document.getElementById('evolution-checkbox').checked;
+            isPerfectEvolution = false;
           } else if (initialLevel >= 50 && initialLevel <= 60) {
             checkboxContainer.classList.remove('hidden');
             checkboxText.textContent = '완전체 진화 여부';
+            isPerfectEvolution = document.getElementById('evolution-checkbox').checked;
+            isMatureEvolution = false;
           } else {
             checkboxContainer.classList.add('hidden');
+            isMatureEvolution = false;
+            isPerfectEvolution = false;
           }
           updateResults();
         });
@@ -449,6 +458,18 @@
           input.addEventListener('input', function() {
             updateResults();
           });
+        });
+
+        // 체크박스 변경 이벤트 리스너 추가
+        document.getElementById('evolution-checkbox').addEventListener('change', function() {
+          if (initialLevel >= 1 && initialLevel <= 15) {
+            isMatureEvolution = this.checked;
+            isPerfectEvolution = false;
+          } else if (initialLevel >= 50 && initialLevel <= 60) {
+            isPerfectEvolution = this.checked;
+            isMatureEvolution = false;
+          }
+          updateResults();
         });
 
         // 초기 계산
@@ -549,7 +570,6 @@
         // 현재 상태 입력값
         let simLevel = parseInt(document.getElementById('current-level').value);
         let simExp = parseInt(document.getElementById('current-exp').value);
-        const isEvolutionChecked = document.getElementById('evolution-checkbox').checked;
 
         // 시뮬레이션: 카운터 값만큼 반복 적용
         document.querySelectorAll('.potion-item').forEach(item => {
@@ -563,12 +583,18 @@
               if (nextExp >= expToNext) {
                 nextExp -= expToNext;
                 nextLevel++;
-                // 체크박스가 체크되어 있지 않을 때만 경험치 초기화
-                if (evolutionLevels.includes(nextLevel) && 
-                    !((nextLevel === 15 && simLevel <= 15 && isEvolutionChecked) || 
-                      (nextLevel === 60 && simLevel >= 50 && simLevel <= 60 && isEvolutionChecked))) {
-                  nextExp = 0;
-                  break;
+                // 진화 레벨에서 경험치 초기화 로직 수정
+                if (evolutionLevels.includes(nextLevel)) {
+                  if (nextLevel === 15 && !isMatureEvolution) {
+                    nextExp = 0;
+                    break;
+                  } else if (nextLevel === 60 && !isPerfectEvolution) {
+                    nextExp = 0;
+                    break;
+                  } else if (nextLevel === 90) {
+                    nextExp = 0;
+                    break;
+                  }
                 }
               } else {
                 break;
