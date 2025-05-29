@@ -62,7 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((response) => response.text())
     .then((data) => {
       const rows = data.split("\n").slice(1);
-      const character = rows.find((row) => row.includes(characterName));
+      const character = rows.find((row) => {
+        const columns = row.split(",");
+        return columns[0].trim() === characterName;
+      });
 
       if (character) {
         const columns = character.split(",");
