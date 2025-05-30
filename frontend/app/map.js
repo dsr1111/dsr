@@ -103,12 +103,16 @@ window.onload = function () {
 };
 
 let maps = {};
+let digimonData = {};
 
 // JSON 데이터 처리
-fetch("/data/csv/map.json")
-  .then((response) => response.json())
-  .then((data) => {
-    maps = data;
+Promise.all([
+  fetch("/data/csv/map.json").then(response => response.json()),
+  fetch("/data/csv/digimon.json").then(response => response.json())
+])
+  .then(([mapData, digimonData]) => {
+    maps = mapData;
+    window.digimonData = digimonData; // 전역 변수로 저장
     initializeDropdownOptions(); // 드롭다운 옵션 초기화
   })
   .catch((error) => console.error("Error loading JSON data:", error));
@@ -391,8 +395,14 @@ function addSpecialTooltipToMobs(
   items,
   evol
 ) {
+  let tooltip = null;
+
   imageElement.addEventListener("mouseenter", function (event) {
-    showSpecialTooltipAtImage(
+    // 이전 툴팁이 있다면 제거
+    if (tooltip) {
+      tooltip.remove();
+    }
+    tooltip = showSpecialTooltipAtImage(
       event,
       imageElement,
       name,
@@ -405,7 +415,13 @@ function addSpecialTooltipToMobs(
       evol
     );
   });
-  imageElement.addEventListener("mouseleave", hideSpecialTooltip);
+
+  imageElement.addEventListener("mouseleave", function () {
+    if (tooltip) {
+      tooltip.remove();
+      tooltip = null;
+    }
+  });
 }
 
 function showSpecialTooltipAtImage(
@@ -423,13 +439,17 @@ function showSpecialTooltipAtImage(
   let tooltip = document.createElement("div");
   tooltip.className = "special-tooltip";
 
-  const 강점Parts = 강점.split(",");
-  const 강점이미지 = 강점Parts[0] ? `/image/${강점Parts[0].trim()}.webp` : null;
-  const 강점텍스트 = 강점Parts[1] ? 강점Parts[1].trim() : "";
-
-  const 약점Parts = 약점.split(",");
-  const 약점이미지 = 약점Parts[0] ? `/image/${약점Parts[0].trim()}.webp` : null;
-  const 약점텍스트 = 약점Parts[1] ? 약점Parts[1].trim() : "";
+  // map.json의 mobs 데이터에서 해당 몹 정보 찾기
+  const selectedMap = maps[mapDropdown.value];
+  const mobData = selectedMap.mobs.find(m => m.name === name);
+  
+  // 강점과 약점 정보 가져오기 (콤마 앞은 이미지, 뒤는 텍스트)
+  const 강점Parts = typeof mobData?.강점 === "string"
+    ? mobData.강점.split(',').map(s => s.trim()).filter(Boolean)
+    : Array.isArray(mobData?.강점) ? mobData.강점 : [];
+  const 약점Parts = typeof mobData?.약점 === "string"
+    ? mobData.약점.split(',').map(s => s.trim()).filter(Boolean)
+    : Array.isArray(mobData?.약점) ? mobData.약점 : [];
 
   const 드랍아이템목록 = Array.isArray(items) ? items : [];
 
@@ -440,25 +460,25 @@ function showSpecialTooltipAtImage(
             <div style="margin-left: 5px;">
                 <div style="margin-bottom: 5px; margin-top: 5px; color: white;"><span>레벨 :</span> ${level}</div>
                 <div style="margin-bottom: 5px; color: white;"><span>체력 :</span> ${hp}</div>
-                <div style= "color: white;"><span>강점 :</span> 
-                    <div style="background-image: url('/image/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle;">
-                        ${
-                          강점이미지
-                            ? `<img src="${강점이미지}" alt="${강점Parts[0]}" style="width: 24px; height: 24px;">`
-                            : ""
-                        }
-                    </div>
-                    ${강점텍스트 ? `<span>${강점텍스트}</span>` : ""}
+                <div style="color: white;"><span>강점 :</span>
+                  ${
+                    강점Parts.length ? `
+                      <div style=\"background-image: url('/image/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;\">
+                        <img src=\"/image/${강점Parts[0]}.webp\" alt=\"${강점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+                      </div>
+                      <span>${강점Parts[1] ? 강점Parts[1] : ''}</span>
+                    ` : ''
+                  }
                 </div>
-                <div style= "color: white;"><span>약점 :</span>
-                    <div style="background-image: url('/image/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle;">
-                        ${
-                          약점이미지
-                            ? `<img src="${약점이미지}" alt="${약점Parts[0]}" style="width: 24px; height: 24px;">`
-                            : ""
-                        }
-                    </div>
-                    ${약점텍스트 ? `<span>${약점텍스트}</span>` : ""}
+                <div style="color: white;"><span>약점 :</span>
+                  ${
+                    약점Parts.length ? `
+                      <div style=\"background-image: url('/image/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;\">
+                        <img src=\"/image/${약점Parts[0]}.webp\" alt=\"${약점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+                      </div>
+                      <span>${약점Parts[1] ? 약점Parts[1] : ''}</span>
+                    ` : ''
+                  }
                 </div>
             </div>
         </div>
@@ -470,8 +490,8 @@ function showSpecialTooltipAtImage(
                       ? "/image/item/조합법.webp"
                       : `/image/item/${item.trim()}.webp`;
                     return `
-                        <li style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;">
-                            <img src="${itemImageSrc}"  alt="${item.trim()}" style="width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;">
+                        <li style=\"display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;\">
+                            <img src=\"${itemImageSrc}\"  alt=\"${item.trim()}\" style=\"width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;\">
                             ${item.trim()}
                         </li>`;
                   })
@@ -481,9 +501,9 @@ function showSpecialTooltipAtImage(
         ${
           evol
             ? `
-        <div style="text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);"><strong>조건 진화</strong></div>
-        <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-        <img src="/image/digimon/${evol}/${evol}.webp"  alt="${evol}" style="width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;">
+        <div style=\"text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);\"><strong>조건 진화</strong></div>
+        <div style=\"display: flex; justify-content: center; align-items: center; margin-top: 10px;\">
+        <img src=\"/image/digimon/${evol}/${evol}.webp\"  alt=\"${evol}\" style=\"width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;\">
          </div>
         `
             : ""
@@ -510,13 +530,8 @@ function showSpecialTooltipAtImage(
   tooltip.style.position = "absolute";
   tooltip.style.left = `${imageBottomRightX + 10}px`;
   tooltip.style.top = `${tooltipTop}px`;
-}
 
-function hideSpecialTooltip() {
-  const tooltip = document.querySelector(".special-tooltip");
-  if (tooltip) {
-    tooltip.remove();
-  }
+  return tooltip;
 }
 
 function updateActiveButton(activeButton) {

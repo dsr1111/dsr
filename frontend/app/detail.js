@@ -58,23 +58,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.title = `${characterName} | DSRWIKI`;
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
 
-  fetch("/data/csv/characters.csv")
-    .then((response) => response.text())
+  // 디지몬 데이터 가져오기
+  fetch("/data/csv/digimon.json")
+    .then((response) => response.json())
     .then((data) => {
-      const rows = data.split("\n").slice(1);
-      const character = rows.find((row) => {
-        const columns = row.split(",");
-        return columns[0].trim() === characterName;
-      });
+      const character = data.find((digimon) => digimon.name[0] === characterName);
 
       if (character) {
-        const columns = character.split(",");
         const characterImgPath = `/image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
-        const evolutionStage = columns[1];
-        const type = columns[2];
-        const fields = columns[15]
-          ? columns[15].split(";").map((field) => field.trim())
-          : [];
+        const evolutionStage = character.evolution_stage[0];
+        const type = character.type[0];
+        const fields = character.필드 || [];
 
         // 필드 이미지 설정
         for (let i = 1; i <= 3; i++) {
@@ -313,30 +307,22 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
         // 스탯 설정
-        document.getElementById("stat-level").textContent = columns[3];
-        document.getElementById("stat-hp").textContent = columns[4];
-        document.getElementById("stat-sp").textContent = columns[5];
-        document.getElementById("stat-power").textContent = columns[6];
-        document.getElementById("stat-intelligence").textContent = columns[7];
-        document.getElementById("stat-defense").textContent = columns[8];
-        document.getElementById("stat-resistance").textContent = columns[9];
-        document.getElementById("stat-speed").textContent = columns[10];
+        document.getElementById("stat-level").textContent = character.레벨;
+        document.getElementById("stat-hp").textContent = character.HP;
+        document.getElementById("stat-sp").textContent = character.SP;
+        document.getElementById("stat-power").textContent = character.힘;
+        document.getElementById("stat-intelligence").textContent = character.지능;
+        document.getElementById("stat-defense").textContent = character.수비;
+        document.getElementById("stat-resistance").textContent = character.저항;
+        document.getElementById("stat-speed").textContent = character.속도;
 
-        // 강점과 약점 정보 추출
-        const strengths = columns[11]
-          ? columns[11].split(";").map((str) => str.trim())
-          : [];
-        const strengthsDesc = columns[12]
-          ? columns[12].split(";").map((desc) => desc.trim())
-          : [];
-        const weaknesses = columns[13]
-          ? columns[13].split(";").map((weak) => weak.trim())
-          : [];
-        const weaknessesDesc = columns[14]
-          ? columns[14].split(";").map((desc) => desc.trim())
-          : [];
+        // 강점과 약점 정보
+        const strengths = character.강점 || [];
+        const strengthsDesc = character.강점효과 || [];
+        const weaknesses = character.약점 || [];
+        const weaknessesDesc = character.약점효과 || [];
 
-                  // 강약점 테이블 생성
+        // 강약점 테이블 생성
         const swTableBody = document.getElementById("sw").querySelector("tbody");
         
         // 강점 행 생성
@@ -396,102 +382,87 @@ document.addEventListener("DOMContentLoaded", () => {
         // 테이블에 HTML 추가
         swTableBody.innerHTML = strengthsHTML + weaknessesHTML;
 
-        // 스킬 정보 가져오기
-        Promise.all([
-          fetch("/data/csv/skill1.csv").then((res) => res.text()),
-          fetch("/data/csv/skill2.csv").then((res) => res.text()),
-          fetch("/data/csv/skill3.csv").then((res) => res.text()),
-        ]).then(([skill1Data, skill2Data, skill3Data]) => {
-          const skills = [skill1Data, skill2Data, skill3Data];
-          const skillDetailsTable = document.getElementById("skill-details");
-          skillDetailsTable.innerHTML = "";
+        // 스킬 정보 표시
+        const skillDetailsTable = document.getElementById("skill-details");
+        skillDetailsTable.innerHTML = "";
 
-          let isAdultStage = false;
+        let isAdultStage = false;
+        const skills = character.skills;
 
-          skills.forEach((skillData, index) => {
-            const skillRows = skillData.split("\n").slice(1);
-            const skill = skillRows.find((row) => {
-              const columns = row.split(",");
-              return columns[10].trim() === characterName;
+        Object.entries(skills).forEach(([skillKey, skillData], index) => {
+          if (skillData.evolution_stage[0] === "성장기") {
+            isAdultStage = true;
+          }
+          if (index === 2 && isAdultStage) {
+            return;
+          }
+
+          const skillImgPath = `/image/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
+          const skill1ImgPath = `/image/${skillData.속성[0]}.webp`;
+
+          const levelData = Object.entries(skillData)
+            .filter(([key]) => !isNaN(key))
+            .map(([_, value]) => {
+              let percentage = isNaN(parseFloat(value)) ? 0 : parseFloat(value) * 100;
+              return `${parseFloat(percentage.toFixed(2))}%`;
             });
 
-            if (skill) {
-              const skillColumns = skill.split(",");
-              if (skillColumns[11] === "성장기") {
-                isAdultStage = true;
-              }
-              if (index === 2 && isAdultStage) {
-                return;
-              }
-
-              const skillImgPath = `/image/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
-              const skill1ImgPath = `/image/${skillColumns[15]}.webp`;
-
-              const levelData = skillColumns.slice(0, 10).map((value) => {
-                let percentage = isNaN(parseFloat(value))
-                  ? 0
-                  : parseFloat(value) * 100;
-                return `${parseFloat(percentage.toFixed(2))}%`;
-              });
-
-              // 각 스킬 행 생성
-              const skillRow = document.createElement('tr');
+          // 각 스킬 행 생성
+          const skillRow = document.createElement('tr');
+          
+          // 스킬 정보 셀 생성
+          const skillCell = document.createElement('td');
+          skillCell.innerHTML = `
+            <div class="skill-row">
+              <table class="skill-header-table">
+                <tr>
+                  <td rowspan="2" class="skill-icon-cell">
+                    <img src="${skillImgPath}" alt="스킬 아이콘" class="skill-icon">
+                  </td>
+                  <td class="skill-name-cell">
+                    <div class="skill-name-container">
+                      <span class="skill-name">${skillData.skillName[0]}</span>
+                      <img src="${skill1ImgPath}" alt="속성" class="skill-attribute">
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="skill-tags-cell">
+                    <div class="skill-tags">
+                      <span class="skill-tag tag-range ${skillData.범위[0] === '원거리' ? 'long-range' : ''}">${skillData.범위[0]}</span>
+                      <span class="skill-tag tag-target"> ${skillData.targetCount[0]}</span>
+                      <span class="skill-tag tag-hit">${isNaN(skillData.타수) ? skillData.타수 : `${skillData.타수}타`}</span>
+                      ${skillData.effect ? `<span class="skill-tag tag-effect">${skillData.effect[0]}</span>` : ''}
+                      ${skillData.cast ? `<span class="skill-tag tag-cast">추가 시전 턴 : ${skillData.cast}턴</span>` : ''}
+                    </div>
+                  </td>
+                </tr>
+              </table>
               
-              // 스킬 정보 셀 생성
-              const skillCell = document.createElement('td');
-              skillCell.innerHTML = `
-                <div class="skill-row">
-                  <table class="skill-header-table">
-                    <tr>
-                      <td rowspan="2" class="skill-icon-cell">
-                        <img src="${skillImgPath}" alt="스킬 아이콘" class="skill-icon">
-                      </td>
-                      <td class="skill-name-cell">
-                        <div class="skill-name-container">
-                          <span class="skill-name">${skillColumns[12]}</span>
-                          <img src="${skill1ImgPath}" alt="속성" class="skill-attribute">
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="skill-tags-cell">
-                        <div class="skill-tags">
-                          <span class="skill-tag tag-range ${skillColumns[14] === '원거리' ? 'long-range' : ''}">${skillColumns[14]}</span>
-                          <span class="skill-tag tag-target">${skillColumns[16]} ${skillColumns[17]}</span>
-                          <span class="skill-tag tag-hit">${isNaN(skillColumns[13]) ? skillColumns[13] : `${skillColumns[13]}타`}</span>
-                          ${skillColumns[18] ? `<span class="skill-tag tag-effect">${skillColumns[18]}</span>` : ''}
-                          ${skillColumns[19] ? `<span class="skill-tag tag-cast">추가 시전 턴 : ${skillColumns[19]}턴</span>` : ''}
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <div class="level-table-container">
-                    <table class="level-table">
-                      <tr>
-                        <th>1레벨</th>
-                        <th>2레벨</th>
-                        <th>3레벨</th>
-                        <th>4레벨</th>
-                        <th>5레벨</th>
-                        <th>6레벨</th>
-                        <th>7레벨</th>
-                        <th>8레벨</th>
-                        <th>9레벨</th>
-                        <th>10레벨</th>
-                      </tr>
-                      <tr>
-                        ${levelData.map(level => `<td title="${level}">${level}</td>`).join('')}
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              `;
-              
-              skillRow.appendChild(skillCell);
-              skillDetailsTable.appendChild(skillRow);
-            }
-          });
+              <div class="level-table-container">
+                <table class="level-table">
+                  <tr>
+                    <th>1레벨</th>
+                    <th>2레벨</th>
+                    <th>3레벨</th>
+                    <th>4레벨</th>
+                    <th>5레벨</th>
+                    <th>6레벨</th>
+                    <th>7레벨</th>
+                    <th>8레벨</th>
+                    <th>9레벨</th>
+                    <th>10레벨</th>
+                  </tr>
+                  <tr>
+                    ${levelData.map(level => `<td title="${level}">${level}</td>`).join('')}
+                  </tr>
+                </table>
+              </div>
+            </div>
+          `;
+          
+          skillRow.appendChild(skillCell);
+          skillDetailsTable.appendChild(skillRow);
         });
       } else {
         document.getElementById("character-name").textContent = "캐릭터 정보를 찾을 수 없습니다.";

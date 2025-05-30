@@ -197,34 +197,29 @@ function showMapAndMarker(detector, digimon) {
 
 // 카드 하단에 스킬 테이블 추가
 async function showDigimonSkills(digimon) {
-    const skillFiles = [
-        '/data/csv/skill1.csv',
-        '/data/csv/skill2.csv',
-        '/data/csv/skill3.csv'
-    ];
-    const skillTables = await Promise.all(skillFiles.map(f => fetch(f).then(res => res.text())));
-    let skillRows = [];
+    // digimon.json에서 스킬 정보 가져오기
+    const response = await fetch('/data/csv/digimon.json');
+    const digimonData = await response.json();
+    const digimonInfo = digimonData.find(d => d.name[0] === digimon);
+    
+    if (!digimonInfo || !digimonInfo.skills) {
+        return '';
+    }
+
     const digimonImageName = digimon.replace(':', '_');
-    skillTables.forEach((csv, idx) => {
-        const rows = csv.split('\n').slice(1);
-        const row = rows.find(r => {
-            const cols = r.split(',');
-            return cols[10] && cols[10].trim() === digimon;
-        });
-        if (row) {
-            const cols = row.split(',');
-            skillRows.push({
-                img: `/image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
-                name: cols[12], // 13번째 컬럼 (0-based index)
-                attribute: cols[15], // 16번째 컬럼
-                detail1: cols[14], // 15번째 컬럼
-                detail2: cols[17], // 18번째 컬럼
-                hit: cols[13], // 14번째 컬럼
-                detail3: cols[18], // 19번째 컬럼
-                cooldown: cols[19] // 20번째 컬럼
-            });
-        }
+    const skillRows = Object.entries(digimonInfo.skills).map(([skillKey, skillData], idx) => {
+        return {
+            img: `/image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
+            name: skillData.skillName[0],
+            attribute: skillData.속성[0],
+            detail1: skillData.범위[0],
+            detail2: `${skillData.targetCount[0]}`,
+            hit: skillData.타수,
+            detail3: skillData.effect ? skillData.effect[0] : '',
+            cooldown: skillData.cast
+        };
     });
+
     if (skillRows.length > 0) {
         const skillsHtml = skillRows.map(skill => `
             <div class="skill-row">

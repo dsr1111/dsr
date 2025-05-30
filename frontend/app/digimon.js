@@ -56,11 +56,11 @@
   const JSONLoader = {
     async loadJSON(url) {
       try {
-        const response = await fetch(url);
+      const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const text = await response.text();
+      const text = await response.text();
         console.log('Raw JSON text length:', text.length);
         const data = JSON.parse(text);
         console.log('Parsed JSON data length:', data.length);
@@ -87,8 +87,8 @@
           return;
         }
 
-        const tableBody = document.getElementById("characterTable");
-        tableBody.innerHTML = "";
+      const tableBody = document.getElementById("characterTable");
+      tableBody.innerHTML = "";
 
         // 청크 단위로 처리
         const CHUNK_SIZE = 50;
@@ -121,196 +121,196 @@
                   const 약점효과 = digimon.약점효과 ? digimon.약점효과[0] : "";
                   const 필드 = digimon.필드 ? digimon.필드.join(";") : "";
 
-                  const typeImagePath = `/image/${type}.webp`;
-                  const typeImgHtml = `<img src="${typeImagePath}" alt="${type}" 
-                    style="width:23px;height:23px;display:block;margin:0 auto;cursor:pointer;"
-                    onmouseenter="showCustomTooltip(event, '${type}')"
-                    onmousemove="showCustomTooltip(event, '${type}')"
-                    onmouseleave="hideCustomTooltip()"
-                  >`;
+        const typeImagePath = `/image/${type}.webp`;
+        const typeImgHtml = `<img src="${typeImagePath}" alt="${type}" 
+          style="width:23px;height:23px;display:block;margin:0 auto;cursor:pointer;"
+          onmouseenter="showCustomTooltip(event, '${type}')"
+          onmousemove="showCustomTooltip(event, '${type}')"
+          onmouseleave="hideCustomTooltip()"
+        >`;
 
-                  const strongHtml = 강점
-                    ? `<img src="/image/${강점}.webp" alt="${강점}" 
-                        style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
-                        onmouseenter="showCustomTooltip(event, '${강점}')"
-                        onmousemove="showCustomTooltip(event, '${강점}')"
-                        onmouseleave="hideCustomTooltip()"
-                      > <span>${강점효과 ? 강점효과 : ""}</span>`
-                    : "";
+        const strongHtml = 강점
+          ? `<img src="/image/${강점}.webp" alt="${강점}" 
+              style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+              onmouseenter="showCustomTooltip(event, '${강점}')"
+              onmousemove="showCustomTooltip(event, '${강점}')"
+              onmouseleave="hideCustomTooltip()"
+            > <span>${강점효과 ? 강점효과 : ""}</span>`
+          : "";
 
-                  const weakHtml = 약점
-                    ? `<img src="/image/${약점}.webp" alt="${약점}" 
-                        style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
-                        onmouseenter="showCustomTooltip(event, '${약점}')"
-                        onmousemove="showCustomTooltip(event, '${약점}')"
-                        onmouseleave="hideCustomTooltip()"
-                      > <span>${약점효과 ? 약점효과 : ""}</span>`
-                    : "";
+        const weakHtml = 약점
+          ? `<img src="/image/${약점}.webp" alt="${약점}" 
+              style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+              onmouseenter="showCustomTooltip(event, '${약점}')"
+              onmousemove="showCustomTooltip(event, '${약점}')"
+              onmouseleave="hideCustomTooltip()"
+            > <span>${약점효과 ? 약점효과 : ""}</span>`
+          : "";
 
-                  const fieldsHtml = 필드
-                    ? 필드
-                        .split(";")
+        const fieldsHtml = 필드
+          ? 필드
+              .split(";")
                         .map(field => field.trim())
                         .filter(field => field !== "")
-                        .map(
-                          (field) =>
-                            `<img src="/image/field/${field}.webp" alt="${field}" 
-                              style="width:25px;height:25px;cursor:pointer;"
-                              onmouseenter="showCustomTooltip(event, '${field}')"
-                              onmousemove="showCustomTooltip(event, '${field}')"
-                              onmouseleave="hideCustomTooltip()"
-                            >`
-                        )
-                        .join("")
-                    : "";
+              .map(
+                (field) =>
+                  `<img src="/image/field/${field}.webp" alt="${field}" 
+                    style="width:25px;height:25px;cursor:pointer;"
+                    onmouseenter="showCustomTooltip(event, '${field}')"
+                    onmousemove="showCustomTooltip(event, '${field}')"
+                    onmouseleave="hideCustomTooltip()"
+                  >`
+              )
+              .join("")
+          : "";
 
                   // 스킬 데이터 가져오기
                   const skill1 = digimon.skills?.skill1 || null;
                   const skill2 = digimon.skills?.skill2 || null;
                   const skill3 = digimon.skills?.skill3 || null;
 
-                  const format타수 = (타수) => {
+        const format타수 = (타수) => {
                     if (타수 === undefined || 타수 === null) return "";
-                    return isNaN(타수) || 타수 === "" ? 타수 : `${타수}타`;
-                  };
+          return isNaN(타수) || 타수 === "" ? 타수 : `${타수}타`;
+        };
 
-                  // 스킬 셀 생성 함수
-                  const createSkillHtml = (skill, skillNumber, digimonName) => {
-                    if (!skill) return "<td></td>";
-                    let backgroundColor = "";
-                    if (skill.additionalTurn) {
-                      backgroundColor = "background-color: rgb(255,234,234);";
-                    }
+        // 스킬 셀 생성 함수
+        const createSkillHtml = (skill, skillNumber, digimonName) => {
+          if (!skill) return "<td></td>";
+          let backgroundColor = "";
+          if (skill.additionalTurn) {
+            backgroundColor = "background-color: rgb(255,234,234);";
+          }
                     if (skill.targetCount && Array.isArray(skill.targetCount) && skill.targetCount[0] === "전체") {
-                      backgroundColor = "background-color: rgb(220,248,248);";
-                    }
+            backgroundColor = "background-color: rgb(220,248,248);";
+          }
 
-                    // 스킬 효과 설명 매핑 (소문자로 비교)
-                    const effectDescriptions = {
-                      출혈: "* 출혈<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물리속성에 취약해집니다.<br>힐 받을 경우 해제됩니다.",
-                      화상: "* 화상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>바람속성에 취약해집니다.<br>물속성 피격 시 해제됩니다.",
-                      중독: "* 중독<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>어둠속성에 취약해집니다.<br>불속성 피격 시 해제됩니다.",
-                      감전: "* 감전<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
-                      빙결: "* 빙결<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>천둥속성에 취약해집니다.<br>천둥속성 피격 시 해제됩니다.",
-                      석화: "* 석화<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>강철속성에 취약해집니다.<br>강철속성 피격 시 해제됩니다.",
-                      격리: "* 격리<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>빛속성에 취약해집니다.<br>빛속성 피격 시 해제됩니다.",
-                      스턴: "* 스턴<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.",
-                      연소: "* 연소<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 대상의 SP 추가 소모.<br>스킬 레벨에 따라 소모량 증가.",
-                      매료: "* 매료<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
-                      "방어력 감소": "* 방어력 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 DEF x% 감소",
-                      "방어력 증가": "* 방어력 증가<br>일정 턴 동안 DEF x% 증가",
-                      "공격력 증가": "* 공격력 증가<br>일정 턴 동안 STR x% 증가",
-                      "속도 감소": "* 속도 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 SPD x% 감소",
-                      "속도 증가": "* 속도 증가<br>일정 턴 동안 SPD x% 증가",
-                      "치명타율 증가": "* 치명타율 증가<br>일정 턴 동안 치명타율 x% 증가",
-                      "회피율 증가": "* 회피율 증가<br>일정 턴 동안 회피율 x% 증가",
-                      회복: "* 회복",
-                      혼란: "* 혼란<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
-                    };
+          // 스킬 효과 설명 매핑 (소문자로 비교)
+          const effectDescriptions = {
+            출혈: "* 출혈<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물리속성에 취약해집니다.<br>힐 받을 경우 해제됩니다.",
+            화상: "* 화상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>바람속성에 취약해집니다.<br>물속성 피격 시 해제됩니다.",
+            중독: "* 중독<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>어둠속성에 취약해집니다.<br>불속성 피격 시 해제됩니다.",
+            감전: "* 감전<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
+            빙결: "* 빙결<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>천둥속성에 취약해집니다.<br>천둥속성 피격 시 해제됩니다.",
+            석화: "* 석화<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>강철속성에 취약해집니다.<br>강철속성 피격 시 해제됩니다.",
+            격리: "* 격리<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>빛속성에 취약해집니다.<br>빛속성 피격 시 해제됩니다.",
+            스턴: "* 스턴<br>공격 시 x% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.",
+            연소: "* 연소<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 대상의 SP 추가 소모.<br>스킬 레벨에 따라 소모량 증가.",
+            매료: "* 매료<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
+            "방어력 감소": "* 방어력 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 DEF x% 감소",
+            "방어력 증가": "* 방어력 증가<br>일정 턴 동안 DEF x% 증가",
+            "공격력 증가": "* 공격력 증가<br>일정 턴 동안 STR x% 증가",
+            "속도 감소": "* 속도 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 SPD x% 감소",
+            "속도 증가": "* 속도 증가<br>일정 턴 동안 SPD x% 증가",
+            "치명타율 증가": "* 치명타율 증가<br>일정 턴 동안 치명타율 x% 증가",
+            "회피율 증가": "* 회피율 증가<br>일정 턴 동안 회피율 x% 증가",
+            회복: "* 회복",
+            혼란: "* 혼란<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
+          };
 
-                    const normalizedEffect = skill.effect
+          const normalizedEffect = skill.effect
                       ? (typeof skill.effect === 'string' ? skill.effect : Array.isArray(skill.effect) ? skill.effect[0] : '').trim().toLowerCase()
-                      : "";
-                    const effectDescriptionsLower = Object.keys(effectDescriptions).reduce(
-                      (acc, key) => {
-                        acc[key.toLowerCase()] = effectDescriptions[key];
-                        return acc;
-                      },
-                      {}
-                    );
-                    const effectDescription =
-                      normalizedEffect && effectDescriptionsLower[normalizedEffect]
-                        ? effectDescriptionsLower[normalizedEffect]
-                        : "효과 설명을 찾을 수 없습니다.";
-                    let effectImagePath = skill.effect
+            : "";
+          const effectDescriptionsLower = Object.keys(effectDescriptions).reduce(
+            (acc, key) => {
+              acc[key.toLowerCase()] = effectDescriptions[key];
+              return acc;
+            },
+            {}
+          );
+          const effectDescription =
+            normalizedEffect && effectDescriptionsLower[normalizedEffect]
+              ? effectDescriptionsLower[normalizedEffect]
+              : "효과 설명을 찾을 수 없습니다.";
+          let effectImagePath = skill.effect
                       ? `/image/debuff/${typeof skill.effect === 'string' ? skill.effect : Array.isArray(skill.effect) ? skill.effect[0] : ''}.webp`
-                      : "";
-                    if (normalizedEffect === "회복") {
-                      effectImagePath = `/image/digimon/${digimonName}/skill${skillNumber}.webp`;
-                    }
-                    const effectTooltipHtml =
-                      skill.effect && effectDescription
-                        ? `<div class="tooltip">
+            : "";
+          if (normalizedEffect === "회복") {
+            effectImagePath = `/image/digimon/${digimonName}/skill${skillNumber}.webp`;
+          }
+          const effectTooltipHtml =
+            skill.effect && effectDescription
+              ? `<div class="tooltip">
                            <img src="${effectImagePath}" alt="${typeof skill.effect === 'string' ? skill.effect : Array.isArray(skill.effect) ? skill.effect[0] : ''}" style="width:23px;height:23px;vertical-align:middle;border-radius:50%;">
-                           <div class="tooltiptext">
-                             <div class="tooltip-content">
+                   <div class="tooltiptext">
+                     <div class="tooltip-content">
                                <img src="${effectImagePath}" alt="${typeof skill.effect === 'string' ? skill.effect : Array.isArray(skill.effect) ? skill.effect[0] : ''} 이미지" style="width:30px;height:30px;border-radius:50%;">
-                               <div class="tooltip-description">${effectDescription}</div>
-                             </div>
-                           </div>
-                         </div>`
-                        : "";
+                       <div class="tooltip-description">${effectDescription}</div>
+                     </div>
+                   </div>
+                 </div>`
+              : "";
 
                     // 스킬 속성과 범위 안전하게 접근
                     const skill속성 = Array.isArray(skill.속성) ? skill.속성[0] : skill.속성 || '';
                     const skill범위 = Array.isArray(skill.범위) ? skill.범위[0] : skill.범위 || '';
 
-                    return `
-                      <td style="${backgroundColor}">
+          return `
+            <td style="${backgroundColor}">
                         <img src="/image/${skill속성}.webp" alt="${skill속성}" 
-                          style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/background.webp');background-size:120%;background-position:center;cursor:pointer;"
+                style="width:25px;height:25px;vertical-align:middle;background-image:url('/image/background.webp');background-size:120%;background-position:center;cursor:pointer;"
                           onmouseenter="showCustomTooltip(event, '${skill속성}')"
                           onmousemove="showCustomTooltip(event, '${skill속성}')"
-                          onmouseleave="hideCustomTooltip()"
-                        >
-                        ${effectTooltipHtml}
+                onmouseleave="hideCustomTooltip()"
+              >
+              ${effectTooltipHtml}
                         <span>${format타수(skill.타수)} / ${skill범위}</span>
-                      </td>
-                    `;
-                  };
+            </td>
+          `;
+        };
 
-                  // 이미지 경로 (특수문자 ':' 은 '_'로 변경)
-                  const sanitizedName = name.replace(/[:]/g, "_");
-                  const characterImagePath = `/image/digimon/${sanitizedName}/${sanitizedName}.webp`;
+        // 이미지 경로 (특수문자 ':' 은 '_'로 변경)
+        const sanitizedName = name.replace(/[:]/g, "_");
+        const characterImagePath = `/image/digimon/${sanitizedName}/${sanitizedName}.webp`;
 
-                  // 행 생성 및 데이터 속성 저장 (필터링 용)
-                  const newRow = document.createElement("tr");
-                  newRow.dataset.name = name;
-                  newRow.dataset.evolution = evolution;
-                  newRow.dataset.type = type;
-                  newRow.dataset.level = level;
-                  newRow.dataset.hp = HP;
-                  newRow.dataset.sp = SP;
-                  newRow.dataset.힘 = 힘;
-                  newRow.dataset.지능 = 지능;
-                  newRow.dataset.수비 = 수비;
-                  newRow.dataset.저항 = 저항;
-                  newRow.dataset.속도 = 속도;
-                  newRow.dataset.강점 = 강점;
-                  newRow.dataset.강점효과 = 강점효과;
-                  newRow.dataset.약점 = 약점;
-                  newRow.dataset.약점효과 = 약점효과;
-                  newRow.dataset.fields = 필드;
+        // 행 생성 및 데이터 속성 저장 (필터링 용)
+        const newRow = document.createElement("tr");
+        newRow.dataset.name = name;
+        newRow.dataset.evolution = evolution;
+        newRow.dataset.type = type;
+        newRow.dataset.level = level;
+        newRow.dataset.hp = HP;
+        newRow.dataset.sp = SP;
+        newRow.dataset.힘 = 힘;
+        newRow.dataset.지능 = 지능;
+        newRow.dataset.수비 = 수비;
+        newRow.dataset.저항 = 저항;
+        newRow.dataset.속도 = 속도;
+        newRow.dataset.강점 = 강점;
+        newRow.dataset.강점효과 = 강점효과;
+        newRow.dataset.약점 = 약점;
+        newRow.dataset.약점효과 = 약점효과;
+        newRow.dataset.fields = 필드;
 
-                  newRow.innerHTML = `
-                    <td>
-                      <div style="width:25px;height:25px;background-color:black;display:inline-block;vertical-align:middle;">
-                        <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='/image/digimon/default.webp';">
-                      </div>
-                      <a href="detail.html?name=${encodeURIComponent(name)}" style="text-decoration:none;color:black;">${name}</a>
-                    </td>
-                    <td style="text-align:center;vertical-align:middle;">${level}</td>
-                    <td style="text-align:center;vertical-align:middle;">${evolution}</td>
-                    <td style="text-align:center;vertical-align:middle;">
-                      ${typeImgHtml}
-                    </td>
-                    <td style="text-align:center;vertical-align:middle;border-left:2px solid darkgrey;">${HP}</td>
-                    <td style="text-align:center;vertical-align:middle;">${SP}</td>
-                    <td style="text-align:center;vertical-align:middle;">${힘}</td>
-                    <td style="text-align:center;vertical-align:middle;">${지능}</td>
-                    <td style="text-align:center;vertical-align:middle;">${수비}</td>
-                    <td style="text-align:center;vertical-align:middle;">${저항}</td>
-                    <td style="text-align:center;vertical-align:middle;">${속도}</td>
-                    <td style="border-left:2px solid darkgrey;">${strongHtml}</td>
-                    <td style="border-right:2px solid darkgrey;">${weakHtml}</td>
-                    ${createSkillHtml(skill1, 1, name)}
-                    ${createSkillHtml(skill2, 2, name)}
-                    ${createSkillHtml(skill3, 3, name)}
-                    <td style="border-left:2px solid darkgrey;">${fieldsHtml}</td>
-                  `;
-                  // 기본적으로 행은 숨김
-                  newRow.style.display = "none";
-                  tableBody.appendChild(newRow);
+        newRow.innerHTML = `
+          <td>
+            <div style="width:25px;height:25px;background-color:black;display:inline-block;vertical-align:middle;">
+              <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='/image/digimon/default.webp';">
+            </div>
+            <a href="detail.html?name=${encodeURIComponent(name)}" style="text-decoration:none;color:black;">${name}</a>
+          </td>
+          <td style="text-align:center;vertical-align:middle;">${level}</td>
+          <td style="text-align:center;vertical-align:middle;">${evolution}</td>
+          <td style="text-align:center;vertical-align:middle;">
+            ${typeImgHtml}
+          </td>
+          <td style="text-align:center;vertical-align:middle;border-left:2px solid darkgrey;">${HP}</td>
+          <td style="text-align:center;vertical-align:middle;">${SP}</td>
+          <td style="text-align:center;vertical-align:middle;">${힘}</td>
+          <td style="text-align:center;vertical-align:middle;">${지능}</td>
+          <td style="text-align:center;vertical-align:middle;">${수비}</td>
+          <td style="text-align:center;vertical-align:middle;">${저항}</td>
+          <td style="text-align:center;vertical-align:middle;">${속도}</td>
+          <td style="border-left:2px solid darkgrey;">${strongHtml}</td>
+          <td style="border-right:2px solid darkgrey;">${weakHtml}</td>
+          ${createSkillHtml(skill1, 1, name)}
+          ${createSkillHtml(skill2, 2, name)}
+          ${createSkillHtml(skill3, 3, name)}
+          <td style="border-left:2px solid darkgrey;">${fieldsHtml}</td>
+        `;
+        // 기본적으로 행은 숨김
+        newRow.style.display = "none";
+        tableBody.appendChild(newRow);
                   processedCount++;
 
                   if (processedCount % 100 === 0) {
@@ -325,8 +325,8 @@
           });
         }
 
-        // 원래 순서 저장
-        originalRows = Array.from(tableBody.rows);
+      // 원래 순서 저장
+      originalRows = Array.from(tableBody.rows);
       } catch (error) {
         console.error('Error processing digimon data:', error);
       }
