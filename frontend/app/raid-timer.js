@@ -255,7 +255,7 @@ function updateTimers() {
             
             setTimeout(() => {
               alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
-            }, 500);
+            }, 1500);
           }
           notified[notifyKey] = true;
         }
