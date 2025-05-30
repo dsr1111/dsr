@@ -14,7 +14,6 @@
         this.loadCSV("/data/csv/evolution.csv", "allData"),
         this.loadCSV("/data/csv/condition.csv", "conditionData"),
         this.loadCSV("/data/csv/jogress.csv", "jogressData"),
-        this.loadCSV("/data/csv/characters.csv", "charactersData")
       ]);
       // CSV 로드 후 전체 데이터의 이미지 리스트를 생성
       UIManager.createDigimonImageList(this.allData);
@@ -225,9 +224,22 @@
       }
       tooltip.textContent = name;
       tooltip.classList.add('visible-tooltip');
+
+      // 툴팁 위치 계산
+      const tooltipRect = tooltip.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      let tooltipTop;
+
       if (window.innerWidth > 1024) {
+        tooltipTop = event.clientY - 20;
+
+        // 툴팁이 화면 아래로 넘어가는지 확인
+        if (tooltipTop + tooltipRect.height > windowHeight) {
+          tooltipTop = windowHeight - tooltipRect.height - 10; // 10px 여백
+        }
+
         tooltip.style.left = `${event.clientX + 12}px`;
-        tooltip.style.top = `${event.clientY - 20}px`;
+        tooltip.style.top = `${tooltipTop}px`;
         tooltip.style.bottom = '';
         tooltip.style.transform = '';
       } else {
@@ -356,16 +368,35 @@
       }
       tooltip.innerHTML = tableHtml;
       tooltip.classList.add('visible-tooltip');
+
+      // 툴팁 위치 계산
+      const tooltipRect = tooltip.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const nameTooltip = document.querySelector('.name-tooltip');
+      let tooltipTop;
+
       if (window.innerWidth > 1024) {
-        const nameTooltip = document.querySelector('.name-tooltip');
         if (nameTooltip && nameTooltip.classList.contains('visible-tooltip')) {
           const nameTooltipRect = nameTooltip.getBoundingClientRect();
-          tooltip.style.left = `${event.clientX + 12}px`;
-          tooltip.style.top = `${nameTooltipRect.bottom + 5}px`;
+          tooltipTop = nameTooltipRect.bottom + 5;
+
+          // 이름 툴팁이 화면 아래쪽에 있는 경우, 이름 툴팁을 위로 이동
+          if (nameTooltipRect.bottom + tooltipRect.height > windowHeight) {
+            const newNameTooltipTop = windowHeight - nameTooltipRect.height - tooltipRect.height - 15; // 15px 여백
+            nameTooltip.style.top = `${newNameTooltipTop}px`;
+            tooltipTop = newNameTooltipTop + nameTooltipRect.height + 5;
+          }
         } else {
-          tooltip.style.left = `${event.clientX + 12}px`;
-          tooltip.style.top = `${event.clientY - 20}px`;
+          tooltipTop = event.clientY - 20;
         }
+
+        // 툴팁이 화면 아래로 넘어가는지 확인
+        if (tooltipTop + tooltipRect.height > windowHeight) {
+          tooltipTop = windowHeight - tooltipRect.height - 10; // 10px 여백
+        }
+
+        tooltip.style.left = `${event.clientX + 12}px`;
+        tooltip.style.top = `${tooltipTop}px`;
         tooltip.style.bottom = '';
         tooltip.style.transform = '';
       } else {
@@ -374,6 +405,7 @@
         tooltip.style.bottom = '20px';
         tooltip.style.transform = 'translateX(-50%)';
       }
+
       this.observeNodeChanges(event.target, tooltip);
     },
     showJogressTooltip(event, jogressEntry) {
@@ -416,16 +448,35 @@
       }
       tableHtml += `</table>`;
       tooltip.innerHTML = tableHtml;
+
+      // 툴팁 위치 계산
+      const tooltipRect = tooltip.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const nameTooltip = document.querySelector('.name-tooltip');
+      let tooltipTop;
+
       if (window.innerWidth > 1024) {
-        const nameTooltip = document.querySelector('.name-tooltip');
         if (nameTooltip && nameTooltip.classList.contains('visible-tooltip')) {
           const nameTooltipRect = nameTooltip.getBoundingClientRect();
-          tooltip.style.left = `${event.clientX + 12}px`;
-          tooltip.style.top = `${nameTooltipRect.bottom + 5}px`;
+          tooltipTop = nameTooltipRect.bottom + 5;
+
+          // 이름 툴팁이 화면 아래쪽에 있는 경우, 이름 툴팁을 위로 이동
+          if (nameTooltipRect.bottom + tooltipRect.height > windowHeight) {
+            const newNameTooltipTop = windowHeight - nameTooltipRect.height - tooltipRect.height - 15; // 15px 여백
+            nameTooltip.style.top = `${newNameTooltipTop}px`;
+            tooltipTop = newNameTooltipTop + nameTooltipRect.height + 5;
+          }
         } else {
-          tooltip.style.left = `${event.clientX + 12}px`;
-          tooltip.style.top = `${event.clientY - 20}px`;
+          tooltipTop = event.clientY - 20;
         }
+
+        // 툴팁이 화면 아래로 넘어가는지 확인
+        if (tooltipTop + tooltipRect.height > windowHeight) {
+          tooltipTop = windowHeight - tooltipRect.height - 10; // 10px 여백
+        }
+
+        tooltip.style.left = `${event.clientX + 12}px`;
+        tooltip.style.top = `${tooltipTop}px`;
         tooltip.style.bottom = '';
         tooltip.style.transform = '';
       } else {
@@ -434,6 +485,7 @@
         tooltip.style.bottom = '20px';
         tooltip.style.transform = 'translateX(-50%)';
       }
+
       tooltip.classList.add("visible-tooltip");
       tooltip.classList.add("jogress-tooltip");
     },
