@@ -5,7 +5,6 @@ async function fetchJSONData(fileName) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(`Loaded ${fileName}:`, data);
     return data;
   } catch (error) {
     console.error(`Error loading ${fileName}:`, error);
@@ -21,7 +20,6 @@ async function fetchCSVData(fileName) {
     }
     const data = await response.text();
     const rows = data.split("\n").map((row) => row.split(","));
-    console.log(`Loaded ${fileName}:`, rows);
     return rows;
   } catch (error) {
     console.error(`Error loading ${fileName}:`, error);
@@ -170,7 +168,7 @@ document
 
     if (filteredLocations.length > 0) {
       map2Select.value = filteredLocations[0];
-      updateMobSelect(mobData, filteredLocations[0]);
+      await updateMobSelect(mobData, filteredLocations[0]);
     }
   });
 
@@ -179,10 +177,10 @@ document
   .addEventListener("change", async function () {
     const selectedLocation = this.value;
     const mobData = await fetchCSVData("/data/csv/mob.csv");
-    updateMobSelect(mobData, selectedLocation);
+    await updateMobSelect(mobData, selectedLocation);
   });
 
-function updateMobSelect(mobData, selectedLocation) {
+async function updateMobSelect(mobData, selectedLocation) {
   const filteredMobs = [
     ...new Set(
       mobData.filter((row) => row[1] === selectedLocation).map((row) => row[2])
@@ -200,7 +198,7 @@ function updateMobSelect(mobData, selectedLocation) {
 
   if (filteredMobs.length > 0) {
     mobSelect.value = filteredMobs[0];
-    updateMobDetails(mobData, filteredMobs[0]);
+    await updateMobDetails(mobData, filteredMobs[0]);
     mobSelect.dispatchEvent(new Event("change"));
   }
 }
@@ -210,10 +208,10 @@ document
   .addEventListener("change", async function () {
     const selectedMob = this.value;
     const mobData = await fetchCSVData("/data/csv/mob.csv");
-    updateMobDetails(mobData, selectedMob);
+    await updateMobDetails(mobData, selectedMob);
   });
 
-function updateMobDetails(mobData, selectedMob) {
+async function updateMobDetails(mobData, selectedMob) {
   const selectedMap = document.getElementById("map2-select").value;
   const mobRow = mobData.find(
     (row) => row[2] === selectedMob && row[1] === selectedMap
@@ -245,14 +243,10 @@ function updateMobDetails(mobData, selectedMob) {
 
 window.addEventListener("DOMContentLoaded", async function () {
   try {
-    console.log("DOMContentLoaded event fired");
-    
     const map1Select = document.getElementById("map1-select");
     const defaultRegion = map1Select.value;
-    console.log("Default region:", defaultRegion);
 
     const mobData = await fetchCSVData("/data/csv/mob.csv");
-    console.log("Mob data loaded:", mobData);
 
     if (mobData && mobData.length > 0) {
       const filteredLocations = [
@@ -260,7 +254,6 @@ window.addEventListener("DOMContentLoaded", async function () {
           mobData.filter((row) => row[0] === defaultRegion).map((row) => row[1])
         ),
       ];
-      console.log("Filtered locations:", filteredLocations);
 
       const map2Select = document.getElementById("map2-select");
       map2Select.innerHTML = "";
@@ -274,15 +267,14 @@ window.addEventListener("DOMContentLoaded", async function () {
 
       if (filteredLocations.length > 0) {
         map2Select.value = filteredLocations[0];
-        updateMobSelect(mobData, filteredLocations[0]);
+        await updateMobSelect(mobData, filteredLocations[0]);
       }
     }
 
     const digimonData = await fetchJSONData("/data/csv/digimon.json");
-    console.log("Digimon data loaded:", digimonData);
 
     if (digimonData && digimonData.length > 0) {
-      populateCharacterDropdown(digimonData, "성장기");
+      await populateCharacterDropdown(digimonData, "성장기");
 
       const skillSelect = document.getElementById("skill-select");
       skillSelect.value = "skill1";
@@ -298,14 +290,12 @@ window.addEventListener("DOMContentLoaded", async function () {
       );
       
       if (firstCharacter) {
-        console.log("First character found:", firstCharacter);
-        displaySkillImage(firstCharacter.name[0]);
-      } else {
-        console.log("No 성장기 digimon found");
+        await displaySkillImage(firstCharacter.name[0]);
       }
-    } else {
-      console.log("No digimon data loaded");
     }
+
+    await calculateStrengthResult();
+    await calculateNeedStr();
   } catch (error) {
     console.error("Error in DOMContentLoaded:", error);
   }
@@ -356,150 +346,147 @@ document
 window.addEventListener("DOMContentLoaded", calculateStrengthResult);
 
 async function calculateNeedStr() {
-  const mobName = document.getElementById("mob-select").value;
-  const selectedMap = document.getElementById("map2-select").value;
+  try {
+    const mobName = document.getElementById("mob-select").value;
+    const selectedMap = document.getElementById("map2-select").value;
 
-  let mobHP = 0;
-  let mobDef = 0;
-  let mobType = "";
-  let mobStrong = "";
-  let mobWeak = "";
+    if (!mobName || !selectedMap) {
+      console.log("Missing mob name or selected map");
+      document.getElementById("needstr").textContent = "계산 불가";
+      return;
+    }
 
-  const mobData = await fetchCSVData("/data/csv/mob.csv");
-  const mobRow = mobData.find(
-    (row) => row[2] === mobName && row[1] === selectedMap
-  );
+    let mobHP = 0;
+    let mobDef = 0;
+    let mobType = "";
+    let mobStrong = "";
+    let mobWeak = "";
 
-  if (mobRow) {
+    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobRow = mobData.find(
+      (row) => row[2] === mobName && row[1] === selectedMap
+    );
+
+    if (!mobRow) {
+      document.getElementById("needstr").textContent = "계산 불가";
+      return;
+    }
+
     mobHP = parseFloat(mobRow[5]);
     mobDef = parseFloat(mobRow[6]);
     mobType = mobRow[4];
     mobStrong = mobRow[8];
     mobWeak = mobRow[7];
-  } else {
-    document.getElementById("needstr").textContent = "계산 불가";
-    return;
-  }
 
-  const characterName = document.getElementById("character-select").value;
-  let myType = "";
-  let myLevel = 1;
-  const digimonData = await fetchJSONData("/data/csv/digimon.json");
-  const digimon = digimonData.find(d => d.name[0] === characterName);
+    const characterName = document.getElementById("character-select").value;
+    if (!characterName) {
+      console.log("Character name not found");
+      document.getElementById("needstr").textContent = "계산 불가";
+      return;
+    }
 
-  if (digimon) {
+    let myType = "";
+    let myLevel = 1;
+    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    const digimon = digimonData.find(d => d.name[0] === characterName);
+
+    if (!digimon) {
+      console.log("Digimon data not found:", characterName);
+      document.getElementById("needstr").textContent = "계산 불가";
+      return;
+    }
+
     myType = digimon.type[0];
     myLevel = parseInt(digimon.레벨, 10);
-  } else {
-    document.getElementById("needstr").textContent = "계산 불가";
-    return;
-  }
 
-  const skillSelect = document.getElementById("skill-select").value;
-  const skillLevel = document.getElementById("skilllevel-select").value;
-  let skillCoefficient = 0;
-  let hitCount = 1;
-  let mySkillElement = "";
+    const skillSelect = document.getElementById("skill-select").value;
+    const skillLevel = document.getElementById("skilllevel-select").value;
+    let skillCoefficient = 0;
+    let hitCount = 1;
+    let mySkillElement = "";
 
-  if (digimon && digimon.skills) {
-    const skillKey = skillSelect === "skill1" ? "skill1" : skillSelect === "skill2" ? "skill2" : "skill3";
-    const skillData = digimon.skills[skillKey];
-    
-    if (skillData) {
-      const levelIndex = parseInt(skillLevel) - 1;
-      skillCoefficient = parseFloat(skillData.damage[levelIndex]);
-      hitCount = parseFloat(skillData.hitCount);
-      mySkillElement = skillData.속성[0];
+    if (digimon.skills) {
+      const skillKey = skillSelect;
+      const skillData = digimon.skills[skillKey];
+
+      if (skillData) {
+        const levelNumber = parseInt(skillLevel);
+        skillCoefficient = parseFloat(skillData[levelNumber]) || 0;
+        hitCount = Array.isArray(skillData.타수) ? 
+          parseFloat(skillData.타수[0]) : 
+          parseFloat(skillData.타수);
+        mySkillElement = skillData.속성?.[0] || "";
+      }
     }
-  }
 
-  const skillCount = document.getElementById("skillcount").value;
+    if (!skillCoefficient) {
+      skillCoefficient = 1;
+    }
 
-  if (skillCount === "2킬") {
-    mobHP = mobHP / 2;
-  } else if (skillCount === "3킬") {
-    mobHP = mobHP / 3;
-  } else if (skillCount === "4킬") {
-    mobHP = mobHP / 4;
-  } else if (skillCount === "5킬") {
-    mobHP = mobHP / 5;
-  }
+    const skillCount = document.getElementById("skillcount").value;
 
-  let compatibility = 1.0;
+    if (skillCount === "2킬") {
+      mobHP = mobHP / 2;
+    } else if (skillCount === "3킬") {
+      mobHP = mobHP / 3;
+    } else if (skillCount === "4킬") {
+      mobHP = mobHP / 4;
+    } else if (skillCount === "5킬") {
+      mobHP = mobHP / 5;
+    }
 
-  // 기존 강점 조건
-  if (myType === "백신" && mobType === "바이러스") compatibility = 1.25;
-  else if (myType === "바이러스" && mobType === "데이터") compatibility = 1.25;
-  else if (myType === "데이터" && mobType === "백신") compatibility = 1.25;
-  
-  // 추가된 약점 조건 (반대 상황일 때)
-  else if (myType === "바이러스" && mobType === "백신") compatibility = 0.75;
-  else if (myType === "데이터" && mobType === "바이러스") compatibility = 0.75;
-  else if (myType === "백신" && mobType === "데이터") compatibility = 0.75;
-  
-  // 프리 타입 조건
-  else if (
-    myType === "프리" &&
-    ["백신", "데이터", "바이러스"].includes(mobType)
-  )
-    compatibility = 1.0;
-  else if (myType === "프리" && mobType === "언노운") compatibility = 1.25;
-  
-  // 언노운 타입 조건
-  else if (
-    myType === "언노운" &&
-    ["백신", "데이터", "바이러스"].includes(mobType)
-  )
-    compatibility = 1.125;
-  else if (myType === "언노운" && mobType === "프리") compatibility = 0.75;
-  
-  // 동일 타입 조건
-  else if (myType === mobType) compatibility = 1.0;  
+    let compatibility = 1.0;
 
-  let elementalFactor = 1.0;
+    if (myType === "백신" && mobType === "바이러스") compatibility = 1.25;
+    else if (myType === "바이러스" && mobType === "데이터") compatibility = 1.25;
+    else if (myType === "데이터" && mobType === "백신") compatibility = 1.25;
+    
+    else if (myType === "바이러스" && mobType === "백신") compatibility = 0.75;
+    else if (myType === "데이터" && mobType === "바이러스") compatibility = 0.75;
+    else if (myType === "백신" && mobType === "데이터") compatibility = 0.75;
+    
+    else if (
+      myType === "프리" &&
+      ["백신", "데이터", "바이러스"].includes(mobType)
+    )
+      compatibility = 1.0;
+    else if (myType === "프리" && mobType === "언노운") compatibility = 1.25;
+    
+    else if (
+      myType === "언노운" &&
+      ["백신", "데이터", "바이러스"].includes(mobType)
+    )
+      compatibility = 1.125;
+    else if (myType === "언노운" && mobType === "프리") compatibility = 0.75;
+    
+    else if (myType === mobType) compatibility = 1.0;  
 
-  if (mySkillElement === mobStrong) elementalFactor = 0.75;
-  else if (mySkillElement === mobWeak) elementalFactor = 1.25;
+    let elementalFactor = 1.0;
 
-  const minDamageRatio = 0.95;
-  const constant = myLevel * 12 + 24;
+    if (mySkillElement === mobStrong) elementalFactor = 0.75;
+    else if (mySkillElement === mobWeak) elementalFactor = 1.25;
 
-  let equipment2Value = parseFloat(document.getElementById("equipment2").value);
-  if (!isNaN(equipment2Value)) {
+    const minDamageRatio = 0.95;
+    const levelConstant = myLevel * 12 + 24;
+
+    let equipment2Value = parseFloat(document.getElementById("equipment2").value) || 0;
+    if (!isNaN(equipment2Value)) {
       let adjustedEquipment2Value = Math.ceil((equipment2Value / 100) * 10000) / 10000;
       let increaseValue = skillCoefficient * adjustedEquipment2Value;
       increaseValue = Math.ceil(increaseValue * 10000) / 10000;
       skillCoefficient += increaseValue;
+    }
+
+    const totalStrength = await calculateStrengthResult();
+
+    const needStr = Math.floor(mobHP / (skillCoefficient * hitCount * compatibility * elementalFactor * levelConstant * minDamageRatio / mobDef));
+
+    document.getElementById("needstr").textContent = needStr;
+    document.getElementById("min-damage").textContent = Math.ceil(totalStrength * skillCoefficient * hitCount * compatibility * elementalFactor * levelConstant * minDamageRatio / mobDef);
+  } catch (error) {
+    console.error("Error in calculateNeedStr:", error);
+    document.getElementById("needstr").textContent = "계산 불가";
   }
-  
-
-  const totalStrength = await calculateStrengthResult();
-  const needStr = Math.ceil(
-    mobHP /
-      ((hitCount *
-        skillCoefficient *
-        compatibility *
-        elementalFactor *
-        constant *
-        minDamageRatio) /
-        mobDef)
-  );
-  console.log(skillCoefficient);
-  const strResult =
-    parseFloat(document.getElementById("str-result").textContent) || 0;
-  const minDamage = Math.ceil(
-    (totalStrength *
-      hitCount *
-      skillCoefficient *
-      compatibility *
-      elementalFactor *
-      constant *
-      minDamageRatio) /
-      mobDef
-  );
-
-  document.getElementById("needstr").textContent = needStr;
-  document.getElementById("min-damage").textContent = minDamage;
 }
 
 document
