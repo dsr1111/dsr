@@ -239,12 +239,27 @@ let notified = {};
 function updateTimers() {
   const items = document.querySelectorAll('.raid-timer-item');
   const now = getCurrentKST();
+  let needsRerender = false;
   
   for (let i = 0; i < items.length; i++) {
     const remainSpan = items[i].querySelector('.remain');
     if (sortedRaids[i]) {
       const diff = Math.floor((sortedRaids[i].nextTime - now) / 1000);
       remainSpan.textContent = getTimeDiffString(sortedRaids[i].nextTime);
+      
+      // 남은 시간이 0이 되면 다음 시간으로 업데이트
+      if (diff <= 0) {
+        const raid = raids.find(r => r.name === sortedRaids[i].name);
+        if (raid) {
+          if (raid.type === 'daily') {
+            sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
+          } else if (raid.type === 'biweekly') {
+            sortedRaids[i].nextTime = getNextBiweeklyTime(raid.day, sortedRaids[i].timeStr, raid.weekType);
+          }
+          needsRerender = true;
+        }
+      }
+      
       if (diff > 0 && diff <= 300) {
         const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
         if (!notified[notifyKey]) {
@@ -255,17 +270,22 @@ function updateTimers() {
             
             setTimeout(() => {
               alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
-            }, 1500);
+            }, 500);
           }
           notified[notifyKey] = true;
         }
       }
-      if (diff > 0 && diff < 300) {
+      if (diff > 0 && diff < 600) {
         remainSpan.style.color = '#e74c3c'; // 빨간색
       } else {
         remainSpan.style.color = '';
       }
     }
+  }
+  
+  // 시간이 업데이트된 경우 전체 목록을 다시 렌더링
+  if (needsRerender) {
+    renderRaids();
   }
 }
 
