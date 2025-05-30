@@ -67,10 +67,9 @@ const masterTyrannoRaid = {
 };
 
 function getCurrentKST() {
-  const now = new Date();
-  const kstOffset = 9 * 60; // KST는 UTC+9
-  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-  return new Date(utc + (kstOffset * 60000));
+  // 'Asia/Seoul' 시간대를 명시적으로 지정하고 10초 보정
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  return new Date(now.getTime()); // 10초 보정
 }
 
 function getNextDailyTime(timeStr) {
@@ -159,6 +158,16 @@ function getMasterTyrannoNextTime() {
     nextTime.setDate(nextTime.getDate() + 1);
     nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
   }
+  
+  console.log('마스터티라노몬 시간 계산:', {
+    baseDate: baseDate.toISOString(),
+    baseTime: `${baseHour}:${baseMin}`,
+    now: now.toISOString(),
+    diffDays,
+    totalMinutes,
+    nextTime: nextTime.toISOString()
+  });
+  
   return nextTime;
 }
 
@@ -229,10 +238,11 @@ let notified = {};
 
 function updateTimers() {
   const items = document.querySelectorAll('.raid-timer-item');
+  const now = getCurrentKST();
+  
   for (let i = 0; i < items.length; i++) {
     const remainSpan = items[i].querySelector('.remain');
     if (sortedRaids[i]) {
-      const now = new Date();
       const diff = Math.floor((sortedRaids[i].nextTime - now) / 1000);
       remainSpan.textContent = getTimeDiffString(sortedRaids[i].nextTime);
       if (diff > 0 && diff <= 300) {
@@ -242,7 +252,10 @@ function updateTimers() {
           if (alarmToggle && alarmToggle.checked) {
             alarmAudio.currentTime = 0;
             alarmAudio.play();
-            alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
+            
+            setTimeout(() => {
+              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
+            }, 500);
           }
           notified[notifyKey] = true;
         }
@@ -257,6 +270,23 @@ function updateTimers() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  const alarmToggle = document.getElementById('raid-alarm-toggle');
+  
+  alarmToggle.addEventListener('change', async function() {
+    if (this.checked) {
+      if (Notification.permission === "default") {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          this.checked = false;
+          alert("알림 권한이 필요합니다.");
+        }
+      } else if (Notification.permission === "denied") {
+        this.checked = false;
+        alert("알림 권한이 거부되었습니다. 브라우저 설정에서 권한을 허용해주세요.");
+      }
+    }
+  });
+  
   renderRaids();
   setInterval(updateTimers, 1000);
 }); 
