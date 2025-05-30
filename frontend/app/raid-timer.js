@@ -260,7 +260,7 @@ function updateTimers() {
           notified[notifyKey] = true;
         }
       }
-      if (diff > 0 && diff < 600) {
+      if (diff > 0 && diff < 300) {
         remainSpan.style.color = '#e74c3c'; // 빨간색
       } else {
         remainSpan.style.color = '';
