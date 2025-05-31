@@ -25,7 +25,7 @@ const raids = [
     image: getImagePath('블랙세라피몬'),
     times: ['23:00'],
     type: 'biweekly',
-    weekType: 'even', // 이번주(짝수주)
+    weekType: 'odd', // 이번주(짝수주)
     day: 6, // 토요일
     map: '???',
   },
