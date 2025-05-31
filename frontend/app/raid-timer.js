@@ -34,7 +34,7 @@ const raids = [
     image: getImagePath('오파니몬:폴다운모드'),
     times: ['23:00'],
     type: 'biweekly',
-    weekType: 'odd', // 다음주(홀수주)
+    weekType: 'even', // 다음주(홀수주)
     day: 6, // 토요일
     map: '???',
   },
@@ -43,7 +43,7 @@ const raids = [
     image: getImagePath('메기드라몬'),
     times: ['22:00'],
     type: 'biweekly',
-    weekType: 'odd', // 다음주(홀수주)
+    weekType: 'even', // 다음주(홀수주)
     day: 0, // 일요일
     map: '???',
   },
@@ -52,7 +52,7 @@ const raids = [
     image: getImagePath('오메가몬'),
     times: ['22:00'],
     type: 'biweekly',
-    weekType: 'even', // 이번주(짝수주)
+    weekType: 'odd', // 이번주(짝수주)
     day: 0, // 일요일
     map: '어둠성 계곡',
   },
