@@ -24,6 +24,7 @@
   </head>
   <body>
     <custom-nav></custom-nav>
+    <script src="assets/js/main.js"></script>
 
     <div class="calendar-container">
       <div class="left-container">
@@ -65,7 +66,7 @@
               <input type="checkbox" id="raid-alarm-toggle" style="vertical-align:middle;"> 알림 켜기
             </label>
             <div style="font-size:12px; color:#888;">
-              5분 전 팝업과 사운드가 재생됩니다.
+              <span id="notification-time" contenteditable="true" style="border-bottom: 1px dashed #888; padding: 0 2px; cursor: pointer; color: #4a90e2; font-weight: bold;" title="클릭하여 알림 시간을 수정할 수 있습니다">5</span>분 전 팝업과 사운드가 재생됩니다.
             </div>
           </div>
           <div id="raid-timers"></div>

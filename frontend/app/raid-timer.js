@@ -227,11 +227,21 @@ function renderRaids() {
 
 const alarmAudio = new Audio('assets/sound/alarm.mp3');
 let notified = {};
+let notificationTime = 5; // 기본값 5분
 
 function updateTimers() {
   const items = document.querySelectorAll('.raid-timer-item');
   const now = getCurrentKST();
   let needsRerender = false;
+  
+  // 알림 시간 설정값 가져오기
+  const notificationTimeSpan = document.getElementById('notification-time');
+  if (notificationTimeSpan) {
+    const time = parseInt(notificationTimeSpan.textContent);
+    if (!isNaN(time) && time > 0 && time <= 60) {
+      notificationTime = time;
+    }
+  }
   
   for (let i = 0; i < items.length; i++) {
     const remainSpan = items[i].querySelector('.remain');
@@ -241,18 +251,24 @@ function updateTimers() {
       
       // 남은 시간이 0이 되면 다음 시간으로 업데이트
       if (diff <= 0) {
-        const raid = raids.find(r => r.name === sortedRaids[i].name);
-        if (raid) {
-          if (raid.type === 'daily') {
-            sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
-          } else if (raid.type === 'biweekly') {
-            sortedRaids[i].nextTime = getNextBiweeklyTime(sortedRaids[i].timeStr, raid.baseDate);
+        if (sortedRaids[i].name === masterTyrannoRaid.name) {
+          // 마스터티라노몬의 경우 다음 시간 계산
+          sortedRaids[i].nextTime = getMasterTyrannoNextTime();
+        } else {
+          const raid = raids.find(r => r.name === sortedRaids[i].name);
+          if (raid) {
+            if (raid.type === 'daily') {
+              sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
+            } else if (raid.type === 'biweekly') {
+              sortedRaids[i].nextTime = getNextBiweeklyTime(sortedRaids[i].timeStr, raid.baseDate);
+            }
           }
-          needsRerender = true;
         }
+        needsRerender = true;
       }
       
-      if (diff > 0 && diff <= 300) {
+      // 알림 시간을 초 단위로 변환하여 비교
+      if (diff > 0 && diff <= notificationTime * 60) {
         const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
         if (!notified[notifyKey]) {
           const alarmToggle = document.getElementById('raid-alarm-toggle');
@@ -261,13 +277,13 @@ function updateTimers() {
             alarmAudio.play();
             
             setTimeout(() => {
-            alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
+              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
             }, 500);
           }
           notified[notifyKey] = true;
         }
       }
-      if (diff > 0 && diff < 600) {
+      if (diff > 0 && diff < notificationTime * 60) {
         remainSpan.style.color = '#e74c3c'; // 빨간색
       } else {
         remainSpan.style.color = '';
@@ -283,6 +299,36 @@ function updateTimers() {
 
 document.addEventListener('DOMContentLoaded', () => {
   const alarmToggle = document.getElementById('raid-alarm-toggle');
+  const notificationTimeSpan = document.getElementById('notification-time');
+  
+  // 알림 시간 입력 제한
+  notificationTimeSpan.addEventListener('input', function() {
+    // 빈 문자열이면 그대로 두기
+    if (this.textContent === '') return;
+    
+    let value = parseInt(this.textContent);
+    if (isNaN(value)) {
+      this.textContent = '';
+    } else if (value > 60) {
+      this.textContent = '60';
+    }
+  });
+  
+  // 알림 시간 입력 완료 시 유효성 검사
+  notificationTimeSpan.addEventListener('blur', function() {
+    let value = parseInt(this.textContent);
+    if (isNaN(value) || value < 1) {
+      this.textContent = '5';
+      notificationTime = 5;
+    } else if (value > 60) {
+      this.textContent = '60';
+      notificationTime = 60;
+    } else {
+      notificationTime = value;
+    }
+    // 알림 시간이 변경되면 notified 객체 초기화
+    notified = {};
+  });
   
   alarmToggle.addEventListener('change', async function() {
     if (this.checked) {
