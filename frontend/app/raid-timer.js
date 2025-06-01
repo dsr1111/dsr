@@ -25,8 +25,7 @@ const raids = [
     image: getImagePath('블랙세라피몬'),
     times: ['23:00'],
     type: 'biweekly',
-    weekType: 'odd', // 이번주(짝수주)
-    day: 6, // 토요일
+    baseDate: '2025-05-31',
     map: '???',
   },
   {
@@ -34,8 +33,7 @@ const raids = [
     image: getImagePath('오파니몬:폴다운모드'),
     times: ['23:00'],
     type: 'biweekly',
-    weekType: 'even', // 다음주(홀수주)
-    day: 6, // 토요일
+    baseDate: '2025-06-07',
     map: '???',
   },
   {
@@ -43,8 +41,7 @@ const raids = [
     image: getImagePath('메기드라몬'),
     times: ['22:00'],
     type: 'biweekly',
-    weekType: 'even', // 다음주(홀수주)
-    day: 0, // 일요일
+    baseDate: '2025-06-08',
     map: '???',
   },
   {
@@ -52,8 +49,7 @@ const raids = [
     image: getImagePath('오메가몬'),
     times: ['22:00'],
     type: 'biweekly',
-    weekType: 'odd', // 이번주(짝수주)
-    day: 0, // 일요일
+    baseDate: '2025-06-01',
     map: '어둠성 계곡',
   },
 ];
@@ -83,29 +79,25 @@ function getNextDailyTime(timeStr) {
   return next;
 }
 
-function getNextBiweeklyTime(day, timeStr, weekType) {
+function getNextBiweeklyTime(timeStr, baseDate) {
   const [hour, min] = timeStr.split(':').map(Number);
   const now = getCurrentKST();
-  let next = new Date(now);
-  // 이번주가 짝수주인지 홀수주인지 계산
-  const onejan = new Date(now.getFullYear(), 0, 1);
-  const week = Math.ceil((((now - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-  let isEvenWeek = week % 2 === 0;
-  let targetWeek = (weekType === 'even') ? isEvenWeek : !isEvenWeek;
-  // 이번주에 해당하면 이번주, 아니면 다음주
-  next.setDate(next.getDate() + ((7 + day - next.getDay()) % 7));
-  next.setHours(hour, min, 0, 0);
-  if (!targetWeek || next <= now) {
-    // 다음주로 넘김
-    next.setDate(next.getDate() + 7);
-    // 홀짝주 반전
-    if (weekType === 'even') {
-      if ((week + 1) % 2 !== 0) next.setDate(next.getDate() + 7);
-    } else {
-      if ((week + 1) % 2 === 0) next.setDate(next.getDate() + 7);
-    }
+  const base = new Date(baseDate + 'T00:00:00+09:00');
+  
+  // 기준 날짜부터 현재까지의 일수 차이 계산
+  const diffDays = Math.floor((now - base) / (1000 * 60 * 60 * 24));
+  
+  // 2주(14일) 간격으로 다음 레이드 시간 계산
+  const nextDate = new Date(base);
+  nextDate.setDate(base.getDate() + Math.ceil(diffDays / 14) * 14);
+  nextDate.setHours(hour, min, 0, 0);
+  
+  // 이미 지난 시간이면 다음 2주 후로 설정
+  if (nextDate <= now) {
+    nextDate.setDate(nextDate.getDate() + 14);
   }
-  return next;
+  
+  return nextDate;
 }
 
 function getTimeDiffString(target) {
@@ -186,7 +178,7 @@ function renderRaids() {
       if (raid.type === 'daily') {
         nextTime = getNextDailyTime(timeStr);
       } else if (raid.type === 'biweekly') {
-        nextTime = getNextBiweeklyTime(raid.day, timeStr, raid.weekType);
+        nextTime = getNextBiweeklyTime(timeStr, raid.baseDate);
       }
       allRaids.push({
         name: raid.name,
@@ -254,7 +246,7 @@ function updateTimers() {
           if (raid.type === 'daily') {
             sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
           } else if (raid.type === 'biweekly') {
-            sortedRaids[i].nextTime = getNextBiweeklyTime(raid.day, sortedRaids[i].timeStr, raid.weekType);
+            sortedRaids[i].nextTime = getNextBiweeklyTime(sortedRaids[i].timeStr, raid.baseDate);
           }
           needsRerender = true;
         }
@@ -269,7 +261,7 @@ function updateTimers() {
             alarmAudio.play();
             
             setTimeout(() => {
-              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
+            alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
             }, 500);
           }
           notified[notifyKey] = true;
