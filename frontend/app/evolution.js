@@ -746,6 +746,56 @@
   document.addEventListener("DOMContentLoaded", () => {
     UIManager.init();
     DataModule.loadCSVFiles();
+
+    const feedbackPopup = document.getElementById('feedback-popup');
+    const closeButton = document.getElementById('close-feedback-popup');
+    const hideTodayButton = document.getElementById('hide-feedback-popup-today');
+
+    const FEEDBACK_POPUP_HIDDEN_COOKIE = 'feedbackPopupHidden';
+
+    // 쿠키 가져오기 함수
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // 쿠키 설정 함수 (만료 시간을 하루로 설정)
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // 페이지 로드 시 팝업 표시 여부 결정
+    if (!getCookie(FEEDBACK_POPUP_HIDDEN_COOKIE)) {
+        if (feedbackPopup) {
+            feedbackPopup.style.display = 'block';
+        }
+    }
+
+    // 닫기 버튼 이벤트 리스너
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            if (feedbackPopup) {
+                feedbackPopup.style.display = 'none';
+            }
+        });
+    }
+
+    // 하루 동안 보지 않기 버튼 이벤트 리스너
+    if (hideTodayButton) {
+        hideTodayButton.addEventListener('click', () => {
+            setCookie(FEEDBACK_POPUP_HIDDEN_COOKIE, 'true', 1);
+            if (feedbackPopup) {
+                feedbackPopup.style.display = 'none';
+            }
+        });
+    }
   });
 
   // 인라인 이벤트(HTML onclick)를 사용할 수 있도록 전역 함수 노출
