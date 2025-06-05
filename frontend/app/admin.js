@@ -1,16 +1,18 @@
-const API_URL = 'https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app';
+// API_URL 제거
+// const API_URL = 'https://port-0-dsr-m85aqy8qfc2589fd.sel4.cloudtype.app';
 
 // 데이터 관리 클래스
 class DataManager {
     constructor() {
         this.currentData = [];
-        this.currentType = 'characters';
+        this.currentType = 'digimon';
         this.editForm = document.getElementById('editForm');
         this.dataForm = document.getElementById('dataForm');
         this.dataTypeSelect = document.getElementById('dataTypeSelect');
-        this.isCSV = true;
+        this.isCSV = false;
         this.dynamicHeaders = [];
         this.hasUnsavedChanges = false;
+        this.currentIndex = null;
         
         this.initializeEventListeners();
     }
@@ -29,32 +31,17 @@ class DataManager {
                 }
             }
             this.currentType = e.target.value;
-            this.isCSV = !['coupon', 'deck', 'calendar'].includes(this.currentType);
             this.loadData();
         });
     }
 
     async loadData() {
         try {
-            const response = await fetch(`${API_URL}/api/data/${this.currentType}`, {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
+            const response = await fetch(`data/csv/${this.currentType}.json`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
-            }
-            if (data.isJson) {
-                this.isCSV = false;
-                this.currentData = this.parseJSON(data.content);
-            } else {
-                this.isCSV = true;
-                this.currentData = this.parseCSV(data.content);
-            }
+            this.currentData = await response.json();
             this.renderTable();
             this.hasUnsavedChanges = false;
             this.updateSaveButton();
@@ -92,6 +79,63 @@ class DataManager {
         const tableHead = document.querySelector('.data-table thead tr');
         tableBody.innerHTML = '';
         
+        // digimon.json 전용 테이블
+        if (this.currentType === 'digimon') {
+            tableHead.innerHTML = `
+                <th>이름</th>
+                <th>진화단계</th>
+                <th>타입</th>
+                <th>레벨</th>
+                <th>HP</th>
+                <th>SP</th>
+                <th>힘</th>
+                <th>지능</th>
+                <th>수비</th>
+                <th>저항</th>
+                <th>속도</th>
+                <th>강점</th>
+                <th>강점효과</th>
+                <th>약점</th>
+                <th>약점효과</th>
+                <th>필드</th>
+                <th>스킬1</th>
+                <th>스킬2</th>
+                <th>스킬3</th>
+                <th>관리</th>
+            `;
+            
+            this.currentData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name?.[0] || ''}</td>
+                    <td>${item.evolution_stage?.[0] || ''}</td>
+                    <td>${item.type?.[0] || ''}</td>
+                    <td>${item.레벨 || ''}</td>
+                    <td>${item.HP || ''}</td>
+                    <td>${item.SP || ''}</td>
+                    <td>${item.힘 || ''}</td>
+                    <td>${item.지능 || ''}</td>
+                    <td>${item.수비 || ''}</td>
+                    <td>${item.저항 || ''}</td>
+                    <td>${item.속도 || ''}</td>
+                    <td>${item.강점?.[0] || ''}</td>
+                    <td>${item.강점효과?.[0] || ''}</td>
+                    <td>${item.약점?.[0] || ''}</td>
+                    <td>${item.약점효과?.[0] || ''}</td>
+                    <td>${Array.isArray(item.필드) ? item.필드.join(', ') : ''}</td>
+                    <td>${item.skills?.skill1?.skillName?.[0] || ''}</td>
+                    <td>${item.skills?.skill2?.skillName?.[0] || ''}</td>
+                    <td>${item.skills?.skill3?.skillName?.[0] || ''}</td>
+                    <td>
+                        <button onclick="dataManager.editData(${index})">수정</button>
+                        <button onclick="dataManager.deleteData(${index})">삭제</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            return;
+        }
+
         // calendar.json 전용 테이블
         if (this.currentType === 'calendar') {
             tableHead.innerHTML = '<th>제목</th><th>시작일</th><th>종료일</th><th>배경색</th><th>글자색</th><th>관리</th>';
@@ -187,7 +231,145 @@ class DataManager {
     showEditForm(item = {}) {
         this.dataForm.innerHTML = '';
 
-        if (this.currentType === 'calendar') {
+        if (this.currentType === 'digimon') {
+            const fields = [
+                { name: 'name', label: '이름', type: 'text', required: true },
+                { name: 'evolution_stage', label: '진화단계', type: 'select', options: ['성장기', '성숙기', '완전체', '궁극체'], required: true },
+                { name: 'type', label: '타입', type: 'select', options: ['바이러스', '백신', '데이터', '프리', '언노운'], required: true },
+                { name: '레벨', label: '레벨', type: 'number', required: true },
+                { name: 'HP', label: 'HP', type: 'number', required: true },
+                { name: 'SP', label: 'SP', type: 'number', required: true },
+                { name: '힘', label: '힘', type: 'number', required: true },
+                { name: '지능', label: '지능', type: 'number', required: true },
+                { name: '수비', label: '수비', type: 'number', required: true },
+                { name: '저항', label: '저항', type: 'number', required: true },
+                { name: '속도', label: '속도', type: 'number', required: true },
+                { name: '강점', label: '강점', type: 'select', options: ['어둠', '얼음', '불', '바람', '물', '물리', '천둥', '흙', '나무', '강철', '빛'], required: false },
+                { name: '강점효과', label: '강점효과', type: 'select', options: ['반사', '회피', '내성'], required: false },
+                { name: '약점', label: '약점', type: 'select', options: ['어둠', '얼음', '불', '바람', '물', '물리', '천둥', '흙', '나무', '강철', '빛'], required: false },
+                { name: '약점효과', label: '약점효과', type: 'select', options: ['약점', '회피불가', '효과확률'], required: false }
+            ];
+
+            fields.forEach(field => {
+                const group = document.createElement('div');
+                group.className = 'form-group';
+                
+                if (field.type === 'select') {
+                    group.innerHTML = `
+                        <label>${field.label}:</label>
+                        <select name="${field.name}" ${field.required ? 'required' : ''}>
+                            <option value="">선택 안함</option>
+                            ${field.options.map(opt => `
+                                <option value="${opt}" ${(item[field.name]?.[0] === opt) ? 'selected' : ''}>${opt}</option>
+                            `).join('')}
+                        </select>
+                    `;
+                } else {
+                    group.innerHTML = `
+                        <label>${field.label}:</label>
+                        <input type="${field.type}" name="${field.name}" 
+                            value="${field.type === 'number' ? (item[field.name] || '') : (item[field.name]?.[0] || '')}"
+                            ${field.required ? 'required' : ''}>
+                    `;
+                }
+                this.dataForm.appendChild(group);
+            });
+
+            // 필드 입력 (쉼표로 구분된 여러 값)
+            const fieldGroup = document.createElement('div');
+            fieldGroup.className = 'form-group';
+            const fieldValue = Array.isArray(item.필드) ? item.필드.join(', ') : (item.필드?.[0] || '');
+            fieldGroup.innerHTML = `
+                <label>필드 (쉼표로 구분):</label>
+                <input type="text" name="필드" value="${fieldValue}">
+            `;
+            this.dataForm.appendChild(fieldGroup);
+
+            // 스킬 입력 필드 추가
+            ['skill1', 'skill2', 'skill3'].forEach((skillKey, index) => {
+                const skillGroup = document.createElement('div');
+                skillGroup.className = 'form-group';
+                skillGroup.style.border = '1px solid #ddd';
+                skillGroup.style.padding = '10px';
+                skillGroup.style.marginBottom = '15px';
+                skillGroup.style.borderRadius = '5px';
+
+                const skillName = item.skills?.[skillKey]?.skillName?.[0] || '';
+                const skillCoefficients = item.skills?.[skillKey] || {};
+                
+                skillGroup.innerHTML = `
+                    <h3 style="margin-top: 0;">스킬${index + 1}</h3>
+                    <div class="form-group">
+                        <label>스킬명:</label>
+                        <input type="text" name="${skillKey}_name" 
+                            value="${skillName}">
+                    </div>
+                    <div class="form-group">
+                        <label>타수:</label>
+                        <input type="number" name="${skillKey}_타수" 
+                            value="${skillCoefficients.타수 || 1}"
+                            min="1" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>범위:</label>
+                        <select name="${skillKey}_범위">
+                            <option value="">선택 안함</option>
+                            <option value="근거리" ${skillCoefficients.범위?.[0] === '근거리' ? 'selected' : ''}>근거리</option>
+                            <option value="원거리" ${skillCoefficients.범위?.[0] === '원거리' ? 'selected' : ''}>원거리</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>속성:</label>
+                        <select name="${skillKey}_속성">
+                            <option value="">선택 안함</option>
+                            <option value="어둠" ${skillCoefficients.속성?.[0] === '어둠' ? 'selected' : ''}>어둠</option>
+                            <option value="얼음" ${skillCoefficients.속성?.[0] === '얼음' ? 'selected' : ''}>얼음</option>
+                            <option value="불" ${skillCoefficients.속성?.[0] === '불' ? 'selected' : ''}>불</option>
+                            <option value="바람" ${skillCoefficients.속성?.[0] === '바람' ? 'selected' : ''}>바람</option>
+                            <option value="물" ${skillCoefficients.속성?.[0] === '물' ? 'selected' : ''}>물</option>
+                            <option value="물리" ${skillCoefficients.속성?.[0] === '물리' ? 'selected' : ''}>물리</option>
+                            <option value="천둥" ${skillCoefficients.속성?.[0] === '천둥' ? 'selected' : ''}>천둥</option>
+                            <option value="흙" ${skillCoefficients.속성?.[0] === '흙' ? 'selected' : ''}>흙</option>
+                            <option value="나무" ${skillCoefficients.속성?.[0] === '나무' ? 'selected' : ''}>나무</option>
+                            <option value="강철" ${skillCoefficients.속성?.[0] === '강철' ? 'selected' : ''}>강철</option>
+                            <option value="빛" ${skillCoefficients.속성?.[0] === '빛' ? 'selected' : ''}>빛</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>대상:</label>
+                        <select name="${skillKey}_target">
+                            <option value="">선택 안함</option>
+                            <option value="적" ${skillCoefficients.target?.[0] === '적' ? 'selected' : ''}>적</option>
+                            <option value="아군" ${skillCoefficients.target?.[0] === '아군' ? 'selected' : ''}>아군</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>대상 수:</label>
+                        <select name="${skillKey}_targetCount">
+                            <option value="">선택 안함</option>
+                            <option value="단일" ${skillCoefficients.targetCount?.[0] === '단일' ? 'selected' : ''}>단일</option>
+                            <option value="전체" ${skillCoefficients.targetCount?.[0] === '전체' ? 'selected' : ''}>전체</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>스킬 계수 (1~10레벨):</label>
+                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+                            ${[1,2,3,4,5,6,7,8,9,10].map(level => `
+                                <div>
+                                    <label style="font-size: 12px;">Lv.${level}</label>
+                                    <input type="number" name="${skillKey}_coefficient_${level}" 
+                                        value="${skillCoefficients[level] || 0}"
+                                        step="0.0001" min="0" max="10"
+                                        style="width: 100%;">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                this.dataForm.appendChild(skillGroup);
+            });
+        }
+        else if (this.currentType === 'calendar') {
             // 제목
             const titleGroup = document.createElement('div');
             titleGroup.className = 'form-group';
@@ -381,12 +563,164 @@ class DataManager {
             return;
         }
         let item = this.currentData[index];
+        // 디지몬 데이터의 경우 skills 객체를 깊은 복사
+        if (this.currentType === 'digimon') {
+            item = {
+                ...item,
+                skills: item.skills ? {
+                    skill1: { ...item.skills.skill1 },
+                    skill2: { ...item.skills.skill2 },
+                    skill3: { ...item.skills.skill3 }
+                } : {}
+            };
+        }
         this.currentIndex = index;
         this.showEditForm(item);
     }
 
     saveToTable() {
-        if (this.isCSV) {
+        if (this.currentType === 'digimon') {
+            const formData = new FormData(this.dataForm);
+            const newItem = {};
+            
+            // 필수 필드들 먼저 처리
+            const requiredFields = {
+                name: formData.get('name'),
+                evolution_stage: formData.get('evolution_stage'),
+                type: formData.get('type'),
+                레벨: formData.get('레벨'),
+                HP: formData.get('HP'),
+                SP: formData.get('SP'),
+                힘: formData.get('힘'),
+                지능: formData.get('지능'),
+                수비: formData.get('수비'),
+                저항: formData.get('저항'),
+                속도: formData.get('속도')
+            };
+
+            // 필수 필드 검증
+            const missingFields = Object.entries(requiredFields)
+                .filter(([_, value]) => !value)
+                .map(([key]) => key);
+
+            if (missingFields.length > 0) {
+                alert(`다음 필수 필드를 입력해주세요: ${missingFields.join(', ')}`);
+                return;
+            }
+
+            // 배열로 저장해야 하는 필드들
+            ['name', 'evolution_stage', 'type'].forEach(field => {
+                newItem[field] = [requiredFields[field]];
+            });
+
+            // 숫자 필드들
+            ['레벨', 'HP', 'SP', '힘', '지능', '수비', '저항', '속도'].forEach(field => {
+                newItem[field] = parseInt(requiredFields[field]);
+            });
+
+            // 선택적 배열 필드들
+            const optionalArrayFields = ['강점', '강점효과', '약점', '약점효과'];
+            optionalArrayFields.forEach(field => {
+                const value = formData.get(field);
+                if (value) {
+                    newItem[field] = [value];
+                }
+            });
+
+            // 필드 (쉼표로 구분된 문자열을 배열로 변환)
+            const fieldValue = formData.get('필드');
+            if (fieldValue) {
+                newItem.필드 = fieldValue.split(',').map(f => f.trim()).filter(f => f);
+            }
+
+            // 스킬 정보
+            newItem.skills = {};
+            ['skill1', 'skill2', 'skill3'].forEach(skillKey => {
+                const skillName = formData.get(`${skillKey}_name`);
+                if (skillName) {
+                    // 기존 스킬 데이터 가져오기
+                    const existingSkill = this.currentData[this.currentIndex]?.skills?.[skillKey] || {};
+                    
+                    const skill = {
+                        ...existingSkill, // 기존 스킬 데이터 유지
+                        skillName: [skillName],
+                        evolution_stage: [newItem.evolution_stage[0]]
+                    };
+
+                    // 타수
+                    const 타수 = formData.get(`${skillKey}_타수`);
+                    if (타수) {
+                        skill.타수 = parseInt(타수);
+                    }
+
+                    // 범위
+                    const 범위 = formData.get(`${skillKey}_범위`);
+                    if (범위) {
+                        skill.범위 = [범위];
+                    }
+
+                    // 속성
+                    const 속성 = formData.get(`${skillKey}_속성`);
+                    if (속성) {
+                        skill.속성 = [속성];
+                    }
+
+                    // 대상
+                    const target = formData.get(`${skillKey}_target`);
+                    if (target) {
+                        skill.target = [target];
+                    }
+
+                    // 대상 수
+                    const targetCount = formData.get(`${skillKey}_targetCount`);
+                    if (targetCount) {
+                        skill.targetCount = [targetCount];
+                    }
+
+                    // 스킬 계수 추가
+                    for (let level = 1; level <= 10; level++) {
+                        const coefficient = parseFloat(formData.get(`${skillKey}_coefficient_${level}`));
+                        if (!isNaN(coefficient)) {
+                            skill[level] = coefficient;
+                        }
+                    }
+
+                    newItem.skills[skillKey] = skill;
+                }
+            });
+
+            console.log('새로 추가할 아이템:', newItem);
+            console.log('현재 데이터 길이:', this.currentData.length);
+
+            if (this.currentIndex != null) {
+                // 수정인 경우 기존 데이터와 병합
+                this.currentData[this.currentIndex] = {
+                    ...this.currentData[this.currentIndex],
+                    ...newItem
+                };
+            } else {
+                // 새로 추가하는 경우
+                this.currentData = [...this.currentData, newItem];
+            }
+
+            console.log('추가 후 데이터 길이:', this.currentData.length);
+            console.log('마지막 아이템:', this.currentData[this.currentData.length - 1]);
+
+            // 진화단계와 이름으로 정렬
+            const stageOrder = ["성장기", "성숙기", "완전체", "궁극체"];
+            this.currentData.sort((a, b) => {
+                const stageA = stageOrder.indexOf(a.evolution_stage[0]);
+                const stageB = stageOrder.indexOf(b.evolution_stage[0]);
+                if (stageA !== stageB) return stageA - stageB;
+                return a.name[0].localeCompare(b.name[0], 'ko');
+            });
+
+            this.renderTable();
+            this.hideEditForm();
+            this.hasUnsavedChanges = true;
+            this.updateSaveButton();
+        }
+        else if (this.isCSV) {
             this.saveToTableCSV();
         } else {
             this.saveToTableJSON();
@@ -529,42 +863,23 @@ class DataManager {
 
     async saveToGitHub() {
         try {
-            if (this.isCSV) {
-                const csvContent = this.convertToCSV(this.currentData);
-                const response = await fetch(`${API_URL}/api/save-csv/${this.currentType}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ csv: csvContent })
-                });
-
-                if (!response.ok) {
-                    throw new Error('데이터 저장 실패');
-                }
-            } else {
-                let jsonContent;
-                if (this.currentType === 'calendar') {
-                    jsonContent = JSON.stringify(this.currentData, null, 2);
-                } else if (this.currentType === 'coupon' || this.currentType === 'deck') {
-                    // coupon과 deck은 객체 형태로 저장
-                    jsonContent = JSON.stringify(this.currentData, null, 2);
-                } else {
-                    jsonContent = JSON.stringify(this.currentData, null, 2);
-                }
-
-                const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ json: jsonContent })
-                });
-
-                if (!response.ok) {
-                    throw new Error('데이터 저장 실패');
-                }
-            }
+            console.log('저장할 데이터:', this.currentData);
+            const jsonContent = JSON.stringify(this.currentData, null, 2);
+            
+            // 파일 다운로드 링크 생성
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${this.currentType}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
 
             this.hasUnsavedChanges = false;
             this.updateSaveButton();
-            alert('데이터가 성공적으로 저장되었습니다.');
+            alert('JSON 파일이 다운로드되었습니다. 파일을 data/csv 폴더에 저장해주세요.');
         } catch (error) {
             console.error('저장 실패:', error);
             alert('데이터 저장에 실패했습니다.');
@@ -597,49 +912,10 @@ class DataManager {
         if (!confirm('정말로 이 항목을 삭제하시겠습니까?')) {
             return;
         }
-        if (this.currentType === 'coupon' || this.currentType === 'deck') {
-            const entries = Object.entries(this.currentData);
-            const key = entries[index][0];
-            delete this.currentData[key];
-            const jsonContent = JSON.stringify(this.currentData, null, 2);
-            try {
-                const response = await fetch(`${API_URL}/api/save-json/${this.currentType}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ json: jsonContent })
-                });
-                if (!response.ok) {
-                    throw new Error('데이터 삭제 실패');
-                }
-                this.renderTable();
-                alert('데이터가 성공적으로 삭제되었습니다.');
-            } catch (error) {
-                console.error('삭제 실패:', error);
-                alert('데이터 삭제에 실패했습니다.');
-            }
-            return;
-        }
         this.currentData.splice(index, 1);
-        try {
-            const csvContent = this.convertToCSV(this.currentData);
-            const response = await fetch(`${API_URL}/api/save-csv/characters`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ csv: csvContent })
-            });
-
-            if (!response.ok) {
-                throw new Error('데이터 삭제 실패');
-            }
-
-            this.renderTable();
-            alert('데이터가 성공적으로 삭제되었습니다.');
-        } catch (error) {
-            console.error('삭제 실패:', error);
-            alert('데이터 삭제에 실패했습니다.');
-        }
+        this.renderTable();
+        this.hasUnsavedChanges = true;
+        this.updateSaveButton();
     }
 }
 
@@ -651,9 +927,9 @@ document.addEventListener('DOMContentLoaded', () => {
     dataManager.loadData();
 });
 
-// 전역 함수
+// 전역 함수들
 function showAddForm() {
-    dataManager.currentIndex = undefined;
+    dataManager.currentIndex = null;
     dataManager.showEditForm();
 }
 
@@ -673,43 +949,17 @@ function hideEditFormWithOverlay() {
     editOverlay.style.display = 'none';
     if (window.dataManager) dataManager.hideEditForm();
 }
+
 // editForm 열릴 때 오버레이도 같이 열기
 const origShowEditForm = dataManager.showEditForm.bind(dataManager);
 dataManager.showEditForm = function(item) {
     origShowEditForm(item);
     showEditFormWithOverlay();
 };
+
 // editForm 닫힐 때 오버레이도 같이 닫기
 const origHideEditForm = dataManager.hideEditForm.bind(dataManager);
 dataManager.hideEditForm = function() {
     origHideEditForm();
     hideEditFormWithOverlay();
-};
-function submitAdminPassword() {
-    const pw = document.getElementById('adminPassword').value;
-    fetch(`${API_URL}/api/admin-auth`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pw })
-    })
-    .then(res => {
-        if (!res.ok) throw new Error('fail');
-        return res.json();
-    })
-    .then(data => {
-        if (data.success) {
-            document.getElementById('admin-auth-modal').style.display = 'none';
-            document.getElementById('admin-main').style.display = '';
-        } else {
-            document.getElementById('adminAuthError').innerText = '비밀번호가 틀렸습니다.';
-        }
-    })
-    .catch(() => {
-        document.getElementById('adminAuthError').innerText = '비밀번호가 틀렸습니다.';
-    });
-}
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('adminPassword').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') submitAdminPassword();
-    });
-}); 
+}; 
