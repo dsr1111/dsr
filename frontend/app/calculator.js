@@ -14,13 +14,13 @@ async function fetchJSONData(fileName) {
 
 async function fetchCSVData(fileName) {
   try {
-    const response = await fetch(fileName);
+  const response = await fetch(fileName);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data = await response.text();
-    const rows = data.split("\n").map((row) => row.split(","));
-    return rows;
+  const data = await response.text();
+  const rows = data.split("\n").map((row) => row.split(","));
+  return rows;
   } catch (error) {
     console.error(`Error loading ${fileName}:`, error);
     return [];
@@ -127,20 +127,20 @@ async function displaySkillImage(characterName) {
 
     if (skillData) {
       const skillImageName = skillData.속성[0];
-      const skillImagePath = `/image/${skillImageName}.webp`;
+    const skillImagePath = `/image/${skillImageName}.webp`;
       const skillText = skillData.targetCount;
-      const skillImageCell = document.getElementById("skill-cell");
+    const skillImageCell = document.getElementById("skill-cell");
 
-      skillImageCell.innerHTML = `
-        <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-          <img 
-            src="${skillImagePath}" 
-            alt="${skillImageName}" 
-            style="width: 25px; height: 25px; background-image: url('/image/background.webp'); background-size: 120%; background-position: center;">
-          <span>/ ${skillText}</span>
-        </div>
-      `;
-    }
+    skillImageCell.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+        <img 
+          src="${skillImagePath}" 
+          alt="${skillImageName}" 
+          style="width: 25px; height: 25px; background-image: url('/image/background.webp'); background-size: 120%; background-position: center;">
+        <span>/ ${skillText}</span>
+      </div>
+    `;
+  }
   }
 }
 
@@ -243,47 +243,47 @@ async function updateMobDetails(mobData, selectedMob) {
 
 window.addEventListener("DOMContentLoaded", async function () {
   try {
-    const map1Select = document.getElementById("map1-select");
-    const defaultRegion = map1Select.value;
+  const map1Select = document.getElementById("map1-select");
+  const defaultRegion = map1Select.value;
 
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+  const mobData = await fetchCSVData("/data/csv/mob.csv");
 
     if (mobData && mobData.length > 0) {
-      const filteredLocations = [
-        ...new Set(
-          mobData.filter((row) => row[0] === defaultRegion).map((row) => row[1])
-        ),
-      ];
+  const filteredLocations = [
+    ...new Set(
+      mobData.filter((row) => row[0] === defaultRegion).map((row) => row[1])
+    ),
+  ];
 
-      const map2Select = document.getElementById("map2-select");
-      map2Select.innerHTML = "";
+  const map2Select = document.getElementById("map2-select");
+  map2Select.innerHTML = "";
 
-      filteredLocations.forEach((location) => {
-        const option = document.createElement("option");
-        option.value = location;
-        option.textContent = location;
-        map2Select.appendChild(option);
-      });
+  filteredLocations.forEach((location) => {
+    const option = document.createElement("option");
+    option.value = location;
+    option.textContent = location;
+    map2Select.appendChild(option);
+  });
 
-      if (filteredLocations.length > 0) {
-        map2Select.value = filteredLocations[0];
+  if (filteredLocations.length > 0) {
+    map2Select.value = filteredLocations[0];
         await updateMobSelect(mobData, filteredLocations[0]);
       }
-    }
+  }
 
     const digimonData = await fetchJSONData("/data/csv/digimon.json");
 
     if (digimonData && digimonData.length > 0) {
       await populateCharacterDropdown(digimonData, "성장기");
 
-      const skillSelect = document.getElementById("skill-select");
-      skillSelect.value = "skill1";
+  const skillSelect = document.getElementById("skill-select");
+  skillSelect.value = "skill1";
 
-      const skillLevelSelect = document.getElementById("skilllevel-select");
-      skillLevelSelect.value = "1레벨";
+  const skillLevelSelect = document.getElementById("skilllevel-select");
+  skillLevelSelect.value = "1레벨";
 
-      skillSelect.dispatchEvent(new Event("change"));
-      skillLevelSelect.dispatchEvent(new Event("change"));
+  skillSelect.dispatchEvent(new Event("change"));
+  skillLevelSelect.dispatchEvent(new Event("change"));
 
       const firstCharacter = digimonData.find(
         (digimon) => digimon.evolution_stage[0] === "성장기"
@@ -416,6 +416,17 @@ async function calculateNeedStr() {
           parseFloat(skillData.타수[0]) : 
           parseFloat(skillData.타수);
         mySkillElement = skillData.속성?.[0] || "";
+
+        // 전체 공격 스킬의 경우 몹 수에 따라 계수 조정
+        console.log("Skill Data:", skillData);
+        console.log("Target Count:", skillData.targetCount);
+        if (skillData.targetCount && skillData.targetCount[0] === "전체") {
+          console.log("전체 공격 스킬 감지");
+          const mobCount = parseInt(document.getElementById("mob-count").value);
+          console.log("몹 수:", mobCount);
+          skillCoefficient = skillCoefficient / mobCount;
+          console.log("조정된 계수:", skillCoefficient);
+        }
       }
     }
 
@@ -482,13 +493,11 @@ async function calculateNeedStr() {
     const needStr = Math.floor(mobHP / (skillCoefficient * hitCount * compatibility * elementalFactor * levelConstant * minDamageRatio / mobDef));
 
     document.getElementById("needstr").textContent = needStr;
-    document.getElementById("min-damage").textContent = Math.ceil(totalStrength * skillCoefficient * hitCount * compatibility * elementalFactor * levelConstant * minDamageRatio / mobDef);
   } catch (error) {
     console.error("Error in calculateNeedStr:", error);
     document.getElementById("needstr").textContent = "계산 불가";
   }
 }
-
 document
   .querySelectorAll(
     "#potential, #correction, #synergy, #buff, #specialization, #equipment1, #equipment2"
@@ -516,7 +525,13 @@ document
   .getElementById("map2-select")
   .addEventListener("change", calculateNeedStr);
 
+// 몹 수 선택 이벤트 리스너 추가
+document
+  .getElementById("mob-count")
+  .addEventListener("change", calculateNeedStr);
+
 window.addEventListener("DOMContentLoaded", async () => {
   await calculateStrengthResult();
   await calculateNeedStr();
 });
+

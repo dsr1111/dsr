@@ -41,6 +41,7 @@
     <header class="header">
     </header>
     <custom-nav></custom-nav>
+
     <div class="w-[90%] max-w-[1000px] mx-auto mt-[100px]">
       <div class="bg-white p-5 rounded-lg md:mt-[200px] md:grid md:grid-cols-3 md:gap-5">
         
@@ -227,6 +228,16 @@
               <td id="str-result" class="border border-[#ddd] text-center text-sm"></td>
             </tr>
             <tr>
+              <td class="border border-[#ddd] text-center text-sm h-10">몹 수</td>
+              <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                <select id="mob-count" class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                  <option value="1">1마리</option>
+                  <option value="2">2마리</option>
+                  <option value="3">3마리</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
               <td rowspan="2" class="border border-[#ddd] text-center text-sm">필요 힘</td>
               <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
                 <select id="skillcount" class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
@@ -240,10 +251,6 @@
             </tr>
             <tr>
               <td id="needstr" class="border border-[#ddd] text-center text-sm h-10"></td>
-            </tr>
-            <tr>
-              <td class="border border-[#ddd] text-center text-sm h-10">스킬 사용 시 최소 데미지</td>
-              <td id="min-damage" class="border border-[#ddd] text-center text-sm"></td>
             </tr>
           </table>
         </div>
