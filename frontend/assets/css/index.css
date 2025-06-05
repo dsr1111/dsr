@@ -13,9 +13,8 @@
 }
 
 @font-face {
-  font-family: "paybooc-Bold";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/paybooc-Bold.woff")
-    format("woff");
+  font-family: 'GongGothicMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -181,7 +180,7 @@ input[type="number"] {
 }
 
 .tooltip-coupon {
-  font-family: "paybooc-Bold";
+  font-family: "GongGothicMedium";
   position: absolute;
   background-color: #1c233a;
   color: #fff;

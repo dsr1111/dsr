@@ -5,15 +5,14 @@
 }
 
 @font-face {
-  font-family: "paybooc-Bold";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/paybooc-Bold.woff")
-    format("woff");
+  font-family: 'GongGothicMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  font-family: "paybooc-Bold", sans-serif;
+  font-family: "GongGothicMedium", sans-serif;
   font-weight: normal;
   background-color: #f4f4f9;
 }
@@ -65,7 +64,7 @@ body {
 }
 
 .stage-btn {
-  font-family: "paybooc-Bold", sans-serif;
+  font-family: "GongGothicMedium", sans-serif;
 }
 
 .scrollable-content {
@@ -139,7 +138,7 @@ body {
 }
 
 .map-select {
-  font-family: "paybooc-Bold", sans-serif;
+  font-family: "GongGothicMedium", sans-serif;
   position: absolute;
   top: 20px;
   left: 50%;
@@ -148,7 +147,7 @@ body {
 }
 
 .map-select select {
-  font-family: "paybooc-Bold", sans-serif;
+  font-family: "GongGothicMedium", sans-serif;
   width: 306px;
   height: 40px;
   font-size: 20px;
