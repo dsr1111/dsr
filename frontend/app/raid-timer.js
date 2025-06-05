@@ -55,11 +55,11 @@ const raids = [
 ];
 
 const masterTyrannoRaid = {
-  name: '마스터티라노몬',
-  image: getImagePath('마스터티라노몬'),
-  baseTime: '21:05',
-  baseDate: '2025-05-28',
-  map: '용의 눈 호수',
+  name: '슈퍼스타몬',
+  image: getImagePath('슈퍼스타몬'),
+  baseTime: '19:00',
+  baseDate: '2025-06-05',
+  map: '기어 사바나',
 };
 
 function getCurrentKST() {
@@ -151,15 +151,6 @@ function getMasterTyrannoNextTime() {
     nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
   }
   
-  console.log('마스터티라노몬 시간 계산:', {
-    baseDate: baseDate.toISOString(),
-    baseTime: `${baseHour}:${baseMin}`,
-    now: now.toISOString(),
-    diffDays,
-    totalMinutes,
-    nextTime: nextTime.toISOString()
-  });
-  
   return nextTime;
 }
 
@@ -170,7 +161,6 @@ function renderRaids() {
   container.innerHTML = '';
   container.style.maxHeight = '200px';
   container.style.overflowY = 'auto';
-  // 모든 레이드(시간별)와 마스터티라노몬을 하나의 배열로 만들어서 정렬
   let allRaids = [];
   raids.forEach(raid => {
     raid.times.forEach(timeStr => {
@@ -189,7 +179,7 @@ function renderRaids() {
       });
     });
   });
-  // 마스터티라노몬(변동)
+
   const tyrannoTime = getMasterTyrannoNextTime();
   allRaids.push({
     name: masterTyrannoRaid.name,
@@ -252,7 +242,6 @@ function updateTimers() {
       // 남은 시간이 0이 되면 다음 시간으로 업데이트
       if (diff <= 0) {
         if (sortedRaids[i].name === masterTyrannoRaid.name) {
-          // 마스터티라노몬의 경우 다음 시간 계산
           sortedRaids[i].nextTime = getMasterTyrannoNextTime();
         } else {
           const raid = raids.find(r => r.name === sortedRaids[i].name);
