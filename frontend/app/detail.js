@@ -433,7 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       <span class="skill-tag tag-target"> ${skillData.targetCount[0]}</span>
                       <span class="skill-tag tag-hit">${isNaN(skillData.타수) ? skillData.타수 : `${skillData.타수}타`}</span>
                       ${skillData.effect ? `<span class="skill-tag tag-effect">${skillData.effect[0]}</span>` : ''}
-                      ${skillData.cast ? `<span class="skill-tag tag-cast">추가 시전 턴 : ${skillData.cast}턴</span>` : ''}
+                      ${skillData.additionalTurn ? `<span class="skill-tag tag-cast">추가 시전 턴 : ${skillData.additionalTurn}턴</span>` : ''}
                     </div>
                   </td>
                 </tr>
