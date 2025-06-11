@@ -301,19 +301,65 @@ window.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
+document.getElementById("manual-mode").addEventListener("change", function() {
+  const isManualMode = this.checked;
+  document.getElementById("manual-input-row").style.display = isManualMode ? "table-row" : "none";
+  document.getElementById("normal-mode-row").style.display = isManualMode ? "none" : "table-row";
+  document.getElementById("character-image-cell").style.display = isManualMode ? "none" : "table-cell";
+  
+  // 수동 입력 모드일 때 숨길 요소들
+  document.getElementById("character-select-row").style.display = isManualMode ? "none" : "table-row";
+  document.getElementById("type-row").style.display = isManualMode ? "none" : "table-row";
+  document.getElementById("level-row").style.display = isManualMode ? "none" : "table-row";
+  document.getElementById("power-row").style.display = isManualMode ? "none" : "table-row";
+  document.getElementById("skill-select-area-row").style.display = isManualMode ? "none" : "table-row";
+  document.getElementById("skill-image-row").style.display = isManualMode ? "none" : "table-row";
+
+  // 테이블 테두리 유지
+  document.querySelector("table").style.border = "1px solid #ccc";
+
+  // 수동 입력 모드일 때 계산 함수 호출
+  if (isManualMode) {
+    calculateStrengthResult();
+    calculateNeedStr();
+  }
+});
+
+// 수동 입력 필드들의 이벤트 리스너 추가
+document.querySelectorAll("#manual-type, #manual-level, #manual-power, #manual-skill-coefficient, #manual-hit-count, #manual-skill-element, #manual-target-type").forEach(input => {
+  input.addEventListener("input", () => {
+    if (document.getElementById("manual-mode").checked) {
+      calculateStrengthResult();
+      calculateNeedStr();
+    }
+  });
+});
+
 async function calculateStrengthResult() {
   function getInputValue(id) {
     const value = document.getElementById(id).value;
     return value ? parseFloat(value) : 0;
   }
 
+  const isManualMode = document.getElementById("manual-mode").checked;
+  let basePower = 0;
+  let myType = "";
+  let myLevel = 1;
+
+  if (isManualMode) {
+    basePower = getInputValue("manual-power");
+    myType = document.getElementById("manual-type").value;
+    myLevel = getInputValue("manual-level");
+  } else {
   const characterName = document.getElementById("character-select").value;
   const digimonData = await fetchJSONData("/data/csv/digimon.json");
   const digimon = digimonData.find(d => d.name[0] === characterName);
 
-  let basePower = 0;
   if (digimon) {
     basePower = parseFloat(digimon.힘) || 0;
+      myType = digimon.type[0];
+      myLevel = parseInt(digimon.레벨, 10);
+    }
   }
 
   const potential = getInputValue("potential") / 100;
@@ -378,15 +424,28 @@ async function calculateNeedStr() {
     mobStrong = mobRow[8];
     mobWeak = mobRow[7];
 
-    const characterName = document.getElementById("character-select").value;
-    if (!characterName) {
-      console.log("Character name not found");
-      document.getElementById("needstr").textContent = "계산 불가";
-      return;
-    }
-
+    const isManualMode = document.getElementById("manual-mode").checked;
     let myType = "";
     let myLevel = 1;
+    let skillCoefficient = 0;
+    let hitCount = 1;
+    let mySkillElement = "";
+
+    if (isManualMode) {
+      myType = document.getElementById("manual-type").value;
+      myLevel = parseFloat(document.getElementById("manual-level").value) || 1;
+      skillCoefficient = (parseFloat(document.getElementById("manual-skill-coefficient").value) || 0) / 100;
+      hitCount = parseFloat(document.getElementById("manual-hit-count").value) || 1;
+      mySkillElement = document.getElementById("manual-skill-element").value;
+      const manualTargetType = document.getElementById("manual-target-type").value;
+      if (manualTargetType === "전체") {
+        const mobCount = parseInt(document.getElementById("mob-count").value);
+        if (mobCount > 0) {
+          skillCoefficient = skillCoefficient / mobCount;
+        }
+      }
+    } else {
+      const characterName = document.getElementById("character-select").value;
     const digimonData = await fetchJSONData("/data/csv/digimon.json");
     const digimon = digimonData.find(d => d.name[0] === characterName);
 
@@ -401,9 +460,6 @@ async function calculateNeedStr() {
 
     const skillSelect = document.getElementById("skill-select").value;
     const skillLevel = document.getElementById("skilllevel-select").value;
-    let skillCoefficient = 0;
-    let hitCount = 1;
-    let mySkillElement = "";
 
     if (digimon.skills) {
       const skillKey = skillSelect;
@@ -417,15 +473,10 @@ async function calculateNeedStr() {
           parseFloat(skillData.타수);
         mySkillElement = skillData.속성?.[0] || "";
 
-        // 전체 공격 스킬의 경우 몹 수에 따라 계수 조정
-        console.log("Skill Data:", skillData);
-        console.log("Target Count:", skillData.targetCount);
         if (skillData.targetCount && skillData.targetCount[0] === "전체") {
-          console.log("전체 공격 스킬 감지");
           const mobCount = parseInt(document.getElementById("mob-count").value);
-          console.log("몹 수:", mobCount);
           skillCoefficient = skillCoefficient / mobCount;
-          console.log("조정된 계수:", skillCoefficient);
+          }
         }
       }
     }
