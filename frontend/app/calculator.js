@@ -301,7 +301,7 @@ window.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
-document.getElementById("manual-mode").addEventListener("change", function() {
+document.getElementById("manual-mode").addEventListener("change", async function() {
   const isManualMode = this.checked;
   document.getElementById("manual-input-row").style.display = isManualMode ? "table-row" : "none";
   document.getElementById("normal-mode-row").style.display = isManualMode ? "none" : "table-row";
@@ -318,8 +318,20 @@ document.getElementById("manual-mode").addEventListener("change", function() {
   // 테이블 테두리 유지
   document.querySelector("table").style.border = "1px solid #ccc";
 
-  // 수동 입력 모드일 때 계산 함수 호출
   if (isManualMode) {
+    // 수동 입력 모드일 때 계산 함수 호출
+    calculateStrengthResult();
+    calculateNeedStr();
+  } else {
+    // 일반 모드로 돌아올 때 캐릭터 정보 다시 불러오기
+    const characterName = document.getElementById("character-select").value;
+    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    displayCharacterType(digimonData, characterName);
+    displayCharacterImage(characterName);
+    displayCharacterLevelAndPower(digimonData, characterName);
+    displaySkillImage(characterName);
+    
+    // 계산 함수 호출
     calculateStrengthResult();
     calculateNeedStr();
   }
