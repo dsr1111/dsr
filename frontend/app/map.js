@@ -152,7 +152,12 @@ let currentMobs = [];
 
 function addTooltipToImage(imageElement, tooltipText) {
   imageElement.addEventListener("mouseenter", function (event) {
-    showTooltipAtImageBottomRight(event, imageElement, tooltipText);
+    // 데이터 큐브인 경우 특별한 툴팁 표시
+    if (imageElement.classList.contains("datacube-image")) {
+      showDatacubeTooltip(event, imageElement, tooltipText);
+    } else {
+      showTooltipAtImageBottomRight(event, imageElement, tooltipText);
+    }
   });
   imageElement.addEventListener("mouseleave", hideTooltip);
 }
@@ -175,8 +180,12 @@ function showTooltipAtImageBottomRight(event, imageElement, text) {
 
 function hideTooltip() {
   const tooltip = document.querySelector(".tooltip");
+  const imageContainer = document.querySelector(".datacube-image-container");
   if (tooltip) {
     tooltip.remove();
+  }
+  if (imageContainer) {
+    imageContainer.remove();
   }
 }
 
@@ -441,7 +450,8 @@ function showSpecialTooltipAtImage(
 
   // map.json의 mobs 데이터에서 해당 몹 정보 찾기
   const selectedMap = maps[mapDropdown.value];
-  const mobData = selectedMap.mobs.find(m => m.name === name);
+  // src를 포함하여 정확한 몹 정보 찾기
+  const mobData = selectedMap.mobs.find(m => m.name === name && m.src === src);
   
   // 강점과 약점 정보 가져오기 (콤마 앞은 이미지, 뒤는 텍스트)
   const 강점Parts = typeof mobData?.강점 === "string"
@@ -532,6 +542,51 @@ function showSpecialTooltipAtImage(
   tooltip.style.top = `${tooltipTop}px`;
 
   return tooltip;
+}
+
+function showDatacubeTooltip(event, imageElement, tooltipText) {
+  // 툴팁 생성
+  let tooltip = document.createElement("div");
+  tooltip.className = "tooltip";
+  tooltip.innerHTML = `<div style="color: white;">${tooltipText}</div>`;
+
+  // 데이터 큐브 이미지를 위한 별도의 컨테이너 생성
+  let imageContainer = document.createElement("div");
+  imageContainer.className = "datacube-image-container";
+  imageContainer.style.position = "absolute";
+  imageContainer.style.zIndex = "1000";
+  imageContainer.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+  imageContainer.style.padding = "10px";
+  imageContainer.style.borderRadius = "5px";
+  imageContainer.style.border = "1px solid white";
+  
+  // 데이터 큐브 이미지 경로 생성
+  const encodedTooltipText = encodeURIComponent(tooltipText);
+  const datacubeImagePath = `/image/map/datacube/${encodedTooltipText}.png`;
+  
+  imageContainer.innerHTML = `
+    <img src="${datacubeImagePath}" alt="${tooltipText}" style="max-width: 540px; max-height: 400px; object-fit: contain;">
+  `;
+
+  const rect = imageElement.getBoundingClientRect(); // 데이터 큐브 아이콘의 위치
+  const imageBottomRightX = rect.right + window.pageXOffset;
+  const imageBottomRightY = rect.bottom + window.pageYOffset;
+
+  // 툴팁 위치 설정 (데이터 큐브 아이콘 옆에 유지)
+  tooltip.style.position = "absolute";
+  tooltip.style.left = `${imageBottomRightX - 10}px`;
+  tooltip.style.top = `${imageBottomRightY}px`;
+
+  // 메인 지도 컨테이너의 위치를 가져옴
+  const mainMapContainer = document.getElementById("image-container");
+  const mainMapRect = mainMapContainer.getBoundingClientRect();
+
+  // 이미지 컨테이너 위치 설정 (메인 지도 컨테이너의 오른쪽에 배치)
+  imageContainer.style.left = `${mainMapRect.right + 20}px`; // 지도 컨테이너 오른쪽에서 20px 떨어지게
+  imageContainer.style.top = `${mainMapRect.top}px`; // 지도 컨테이너의 상단과 정렬
+
+  document.body.appendChild(tooltip);
+  document.body.appendChild(imageContainer);
 }
 
 function updateActiveButton(activeButton) {
