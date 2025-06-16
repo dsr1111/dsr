@@ -147,8 +147,14 @@ function getMasterTyrannoNextTime() {
     const nextDayHours = Math.floor(nextDayMinutes / 60) % 24;
     const nextDayMinutesRemainder = nextDayMinutes % 60;
     
-    nextTime.setDate(nextTime.getDate() + 1);
-    nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
+    // 날짜가 바뀌는 순간에는 00시로 설정
+    if (hours === 23 && minutes >= 35) {
+      nextTime.setDate(nextTime.getDate() + 1);
+      nextTime.setHours(0, 0, 0, 0);
+    } else {
+      nextTime.setDate(nextTime.getDate() + 1);
+      nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
+    }
   }
   
   return nextTime;
