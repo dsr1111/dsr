@@ -123,40 +123,42 @@ function formatTimeToKR(str) {
 }
 
 function getMasterTyrannoNextTime() {
-  // baseDate를 KST로 맞춰서 생성
   const baseDate = new Date(masterTyrannoRaid.baseDate + 'T00:00:00+09:00');
   const [baseHour, baseMin] = masterTyrannoRaid.baseTime.split(':').map(Number);
   const now = getCurrentKST();
-  
+
   // 기준 날짜부터 현재까지의 일수 차이 계산
-  const diffDays = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
-  
+  let diffDays = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
+
   // 25분씩 증가하는 시간 계산
-  const totalMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
-  const hours = Math.floor(totalMinutes / 60) % 24;
-  const minutes = totalMinutes % 60;
-  
-  // 다음 레이드 시간 설정
-  const nextTime = new Date(now);
-  nextTime.setHours(hours, minutes, 0, 0);
-  
-  // 이미 지난 시간이면 다음날로 설정
-  if (nextTime <= now) {
-    // 다음날의 시간 계산
-    const nextDayMinutes = totalMinutes + 25;
-    const nextDayHours = Math.floor(nextDayMinutes / 60) % 24;
-    const nextDayMinutesRemainder = nextDayMinutes % 60;
-    
-    // 날짜가 바뀌는 순간에는 00시로 설정
-    if (hours === 23 && minutes >= 35) {
-      nextTime.setDate(nextTime.getDate() + 1);
-      nextTime.setHours(0, 0, 0, 0);
-    } else {
-      nextTime.setDate(nextTime.getDate() + 1);
-      nextTime.setHours(nextDayHours, nextDayMinutesRemainder, 0, 0);
-    }
+  let totalMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
+
+  // 23:35(1415분) 이상이면 00:00으로 고정
+  if (totalMinutes >= 1415) {
+    totalMinutes = 0;
   }
-  
+
+  let hours = Math.floor(totalMinutes / 60);
+  let minutes = totalMinutes % 60;
+
+  // 다음 레이드 시간 설정
+  let nextTime = new Date(now);
+  nextTime.setHours(hours, minutes, 0, 0);
+
+  // 이미 지난 시간이면, 내일 기준으로 다시 계산
+  if (nextTime <= now) {
+    diffDays += 1;
+    let tomorrowMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
+    if (tomorrowMinutes >= 1415) {
+      tomorrowMinutes = 0;
+    }
+    hours = Math.floor(tomorrowMinutes / 60);
+    minutes = tomorrowMinutes % 60;
+    nextTime = new Date(now);
+    nextTime.setDate(nextTime.getDate() + 1);
+    nextTime.setHours(hours, minutes, 0, 0);
+  }
+
   return nextTime;
 }
 
