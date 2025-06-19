@@ -16,7 +16,7 @@ function populateDetectorGrid() {
     detectorGrid.innerHTML = '';
     Object.keys(detectorData).forEach(detector => {
         // 상자 관련 항목과 작은 사랑의 꾸러미 제외
-        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미') {
+        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미' && detector !== '분노에 잠식된 꾸러미') {
             const button = document.createElement('button');
             button.className = 'detector-button';
             button.dataset.detector = detector;
@@ -58,8 +58,8 @@ function populateDigimonGrid(detector) {
     document.getElementById('digimonMechanicCard').innerHTML = '';
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
-        // 베놈묘티스몬, 베리얼묘티스몬, 로제몬:버스트모드는 초기 목록에서 제외
-        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드') {
+        // 베놈묘티스몬, 베리얼묘티스몬, 로제몬:버스트모드, 마왕몬은 초기 목록에서 제외
+        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬') {
             const button = document.createElement('button');
             button.className = 'digimon-button';
             button.dataset.digimon = digimon;
@@ -95,6 +95,14 @@ function populateDigimonGrid(detector) {
                     const burstButton = document.querySelector('.digimon-button[data-digimon="로제몬:버스트모드"]');
                     if (burstButton) {
                         burstButton.remove();
+                    }
+                }
+
+                // 블랙세라피몬이 아닌 다른 디지몬 선택 시 마왕몬 버튼 제거
+                if (digimon !== '블랙세라피몬' && detector === '타락한 세라피몬 탐지기') {
+                    const mawangButton = document.querySelector('.digimon-button[data-digimon="마왕몬"]');
+                    if (mawangButton) {
+                        mawangButton.remove();
                     }
                 }
 
@@ -155,6 +163,36 @@ function populateDigimonGrid(detector) {
                             showDigimonInfo(selectedDetector, selectedDigimon);
                         });
                         digimonGrid.appendChild(burstButton);
+                    }
+                }
+
+                // 블랙세라피몬 선택 시 마왕몬 버튼 추가
+                if (digimon === '블랙세라피몬' && detector === '타락한 세라피몬 탐지기') {
+                    // 이미 마왕몬 버튼이 있는지 확인
+                    const existingMawangButton = document.querySelector('.digimon-button[data-digimon="마왕몬"]');
+                    if (!existingMawangButton) {
+                        const mawangButton = document.createElement('button');
+                        mawangButton.className = 'digimon-button';
+                        mawangButton.dataset.digimon = '마왕몬';
+                        const mawangImgBg = document.createElement('div');
+                        mawangImgBg.className = 'digimon-img-bg';
+                        const mawangImg = document.createElement('img');
+                        mawangImg.src = '/image/digimon/마왕몬/마왕몬.webp';
+                        mawangImg.alt = '마왕몬';
+                        mawangImgBg.appendChild(mawangImg);
+                        const mawangSpan = document.createElement('span');
+                        mawangSpan.textContent = '마왕몬';
+                        mawangButton.appendChild(mawangImgBg);
+                        mawangButton.appendChild(mawangSpan);
+                        mawangButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            mawangButton.classList.add('selected');
+                            selectedDigimon = '마왕몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(mawangButton);
                     }
                 }
             });
@@ -394,7 +432,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             })
             .join('');
 
-        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미')
+        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미' || name === '분노에 잠식된 꾸러미')
             ? `<span style="background-color: #FFC107; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset; cursor: pointer; position: relative;" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
                 구성품 확인
                 <div class="custom-tooltip" style="display: none; position: absolute; top: 50%; left: 100%; transform: translateY(-50%); margin-left: 10px; background-color: rgba(0, 0, 0, 0.9); border: 1px solid #ccc; border-radius: 5px; padding: 5px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1); white-space: nowrap; z-index: 9999; width: max-content; max-height: 80vh; overflow-y: auto;">
