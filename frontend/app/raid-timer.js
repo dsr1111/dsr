@@ -55,11 +55,11 @@ const raids = [
 ];
 
 const masterTyrannoRaid = {
-  name: '슈퍼스타몬',
-  image: getImagePath('슈퍼스타몬'),
+  name: '도우몬',
+  image: getImagePath('도우몬'),
   baseTime: '19:00',
-  baseDate: '2025-06-05',
-  map: '기어 사바나',
+  baseDate: '2025-06-19',
+  map: '무한 산',
 };
 
 function getCurrentKST() {
