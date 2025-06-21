@@ -396,31 +396,45 @@ async function showDigimonInfo(detector, digimon) {
 function showDigimonMechanicInfo(detector, digimon) {
     const data = detectorData[detector]['악역 디지몬'][digimon];
     
-    // 아이템 정보 HTML 생성
-    const itemHtml = data.item ? data.item.map(item => {
-        const [name, tradeStatus, dropType] = item.split(',');
-        let imageName;
+    // 아이템 정보 HTML 생성 (이름별로 거래상태/드롭타입 병합)
+    const itemMap = {};
+    if (data.item) {
+        data.item.forEach(item => {
+            const [name, tradeStatus, dropType] = item.split(',');
+            if (!itemMap[name]) {
+                itemMap[name] = { tradeStatus: new Set(), dropType: new Set(), raw: item };
+            }
+            itemMap[name].tradeStatus.add(tradeStatus.trim());
+            itemMap[name].dropType.add(dropType.trim());
+        });
+    }
 
+    const itemHtml = Object.entries(itemMap).length > 0 ? Object.entries(itemMap).map(([name, info]) => {
+        let imageName;
         if (name.includes('Data : ')) {
             imageName = name.replace(/\s/g, '').replace(':', '');
         } else {
             imageName = name.trim();
         }
-
         const finalImageName = imageName.includes('균열 데이터 상자') ? '균열 데이터 상자' : imageName;
         const imagePath = `/image/item/${finalImageName}.webp`;
-        const tradeStatusColor = tradeStatus.trim() === '거래가능' ? 'green' : '#D32F2F';
-        const dropTypeColor = dropType.trim() === '확률' ? 'green' : '#D32F2F';
+        // 거래상태 뱃지들
+        const tradeBadges = Array.from(info.tradeStatus).map(status =>
+            `<span style="background-color: ${status === '거래가능' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset;">${status}</span>`
+        ).join('');
+        // 드롭타입 뱃지들
+        const dropBadges = Array.from(info.dropType).map(type =>
+            `<span style="background-color: ${type === '확률' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset;">${type}</span>`
+        ).join('');
 
+        // 구성품 툴팁 처리
         const itemsList = detectorData[name]?.items || {};
-
         const tooltipContent = Object.entries(itemsList)
             .map(([itemName, itemData]) => {
                 const cleanName = itemName.replace(/\s*x\s*\d+$/, '').replace(/\s*x\s*\d+/g, '').trim();
                 const imagePath = `/image/item/${cleanName}.webp`;
                 const tradeStatusText = itemData.tradeStatus === '거래가능' ? '(거래가능)' : '(거래불가)';
                 const tradeStatusColor = itemData.tradeStatus === '거래가능' ? 'green' : 'red';
-
                 return `
                     <div style="display: flex; align-items: center;">
                         <img src="${imagePath}" 
@@ -431,7 +445,6 @@ function showDigimonMechanicInfo(detector, digimon) {
                     </div>`;
             })
             .join('');
-
         const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미' || name === '분노에 잠식된 꾸러미')
             ? `<span style="background-color: #FFC107; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset; cursor: pointer; position: relative;" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
                 구성품 확인
@@ -440,13 +453,12 @@ function showDigimonMechanicInfo(detector, digimon) {
                 </div>
             </span>`
             : '';
-
         return `
             <div style="color: black; font-size: 14px; display: flex; align-items: center;">
                 <img src="${imagePath}" alt="${name.trim()}" style="width: 30px; height: 30px; margin-right: 5px; margin-top: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
                 <span style="font-weight: bold;">${name.trim()}</span>
-                <span style="background-color: ${tradeStatusColor}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset;">${tradeStatus.trim()}</span>
-                <span style="background-color: ${dropTypeColor}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset;">${dropType.trim()}</span>
+                ${tradeBadges}
+                ${dropBadges}
                 ${extraInfo}
             </div>`;
     }).join('') : '<div style="color: black; font-size: 14px;">정보 없음</div>';
