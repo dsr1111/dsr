@@ -52,6 +52,14 @@ const raids = [
     baseDate: '2025-06-01',
     map: '어둠성 계곡',
   },
+  {
+    name: '위그드라실_7D6',
+    image: getImagePath('위그드라실_7D6'),
+    times: ['21:00'],
+    type: 'weekly',
+    days: [5, 6, 0], // 금(5), 토(6), 일(0)
+    map: '무한 산',
+  },
 ];
 
 const masterTyrannoRaid = {
@@ -98,6 +106,28 @@ function getNextBiweeklyTime(timeStr, baseDate) {
   }
   
   return nextDate;
+}
+
+function getNextWeeklyTime(timeStr, days) {
+  const [hour, min] = timeStr.split(':').map(Number);
+  const now = getCurrentKST();
+  let next = new Date(now);
+  next.setHours(hour, min, 0, 0);
+
+  let addDays = 0;
+  while (true) {
+    const candidate = new Date(now);
+    candidate.setDate(now.getDate() + addDays);
+    candidate.setHours(hour, min, 0, 0);
+    const dayOfWeek = candidate.getDay();
+    if (days.includes(dayOfWeek) && candidate > now) {
+      next = candidate;
+      break;
+    }
+    addDays++;
+    if (addDays > 14) break; // 안전장치
+  }
+  return next;
 }
 
 function getTimeDiffString(target) {
@@ -177,6 +207,8 @@ function renderRaids() {
         nextTime = getNextDailyTime(timeStr);
       } else if (raid.type === 'biweekly') {
         nextTime = getNextBiweeklyTime(timeStr, raid.baseDate);
+      } else if (raid.type === 'weekly') {
+        nextTime = getNextWeeklyTime(timeStr, raid.days);
       }
       allRaids.push({
         name: raid.name,
@@ -258,6 +290,8 @@ function updateTimers() {
               sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
             } else if (raid.type === 'biweekly') {
               sortedRaids[i].nextTime = getNextBiweeklyTime(sortedRaids[i].timeStr, raid.baseDate);
+            } else if (raid.type === 'weekly') {
+              sortedRaids[i].nextTime = getNextWeeklyTime(sortedRaids[i].timeStr, raid.days);
             }
           }
         }
