@@ -55,11 +55,11 @@ const raids = [
 ];
 
 const masterTyrannoRaid = {
-  name: '도우몬',
-  image: getImagePath('도우몬'),
+  name: '묘티스몬',
+  image: getImagePath('묘티스몬'),
   baseTime: '19:00',
-  baseDate: '2025-06-19',
-  map: '무한 산',
+  baseDate: '2025-07-03',
+  map: '어둠성 계곡',
 };
 
 function getCurrentKST() {
