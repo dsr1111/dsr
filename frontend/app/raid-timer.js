@@ -133,7 +133,9 @@ function getNextWeeklyTime(timeStr, days) {
 function getTimeDiffString(target) {
   const now = getCurrentKST();
   let diff = Math.floor((target - now) / 1000);
-  if (diff < 0) return '-00:00:00';
+
+  if (diff <= 0) diff = 0; // 음수일 경우 0초로 보정
+
   const h = Math.floor(diff / 3600).toString().padStart(2, '0');
   const m = Math.floor((diff % 3600) / 60).toString().padStart(2, '0');
   const s = (diff % 60).toString().padStart(2, '0');
