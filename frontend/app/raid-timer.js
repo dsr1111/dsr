@@ -325,6 +325,10 @@ function updateTimers() {
   if (needsRerender) {
     renderRaids();
   }
+
+  console.log(`[디버그] ${sortedRaids[i].name} nextTime:`, sortedRaids[i].nextTime);
+console.log(`[디버그] 현재시간:`, now);
+console.log(`[디버그] 차이:`, (sortedRaids[i].nextTime - now) / 1000, '초');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
