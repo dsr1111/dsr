@@ -164,7 +164,7 @@ function getMasterTyrannoNextTime() {
   let totalMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
 
   // 23:35(1415분) 이상이면 00:00으로 고정
-  if (totalMinutes >= 1415) {
+  if (totalMinutes >= 1440) {
     totalMinutes = 0;
   }
 
