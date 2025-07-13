@@ -157,16 +157,28 @@ function formatTimeToKR(str) {
 function getMasterTyrannoNextTime() {
   const baseDate = new Date(masterTyrannoRaid.baseDate + 'T' + masterTyrannoRaid.baseTime + ':00+09:00');
   const now = getCurrentKST();
-  let nextDate = new Date(baseDate);
+  
+  // 기준 시간과 현재 시간의 자정(00:00)을 기준으로 날짜 차이 계산
+  const baseDateOnly = new Date(baseDate);
+  baseDateOnly.setHours(0, 0, 0, 0);
+  
+  const nowDateOnly = new Date(now);
+  nowDateOnly.setHours(0, 0, 0, 0);
 
-  // 25분 단위로 증가
-  const intervalMs = 25 * 60 * 1000;
+  const diffDays = Math.floor((nowDateOnly - baseDateOnly) / (1000 * 60 * 60 * 24));
 
-  while (nextDate <= now) {
-    nextDate = new Date(nextDate.getTime() + intervalMs);
+  // 날짜 차이에 따라 25분씩 밀린 시간을 더해줌
+  const offsetMinutes = diffDays * 25;
+  
+  let nextTime = new Date(baseDate.getTime() + offsetMinutes * 60 * 1000);
+
+  // 만약 계산된 오늘의 레이드 시간이 이미 지났다면, 내일 시간으로 다시 계산
+  if (nextTime <= now) {
+    const nextDayOffsetMinutes = (diffDays + 1) * 25;
+    nextTime = new Date(baseDate.getTime() + nextDayOffsetMinutes * 60 * 1000);
   }
 
-  return nextDate;
+  return nextTime;
 }
 
 
