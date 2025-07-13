@@ -159,38 +159,37 @@ function getMasterTyrannoNextTime() {
 
   const baseMinutes = baseHour * 60 + baseMin;
   const diffMs = now - baseDate;
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  let totalMinutes = baseMinutes + Math.floor(diffMs / (1000 * 60 * 60 * 24)) * 25;
 
-  // 총 경과 시간 (기준 시간 + 25분 * 일수)
-  let totalMinutes = baseMinutes + diffDays * 25;
+  // 다음 시간 계산
+  let nextDate = new Date(baseDate);
+  nextDate.setMinutes(baseMinutes); // 기준 시간 세팅
 
-  // 기준 날짜 복사
-  const nextTime = new Date(baseDate);
-
-  // 날짜 + 시간 계산
-  const additionalDays = Math.floor(totalMinutes / 1440); // 하루 = 1440분
+  // 총 추가일자
+  const additionalDays = Math.floor(totalMinutes / 1440); // 하루는 1440분
   const remainingMinutes = totalMinutes % 1440;
   const hours = Math.floor(remainingMinutes / 60);
   const minutes = remainingMinutes % 60;
 
-  nextTime.setDate(nextTime.getDate() + additionalDays);
-  nextTime.setHours(hours, minutes, 0, 0);
+  nextDate.setDate(baseDate.getDate() + additionalDays);
+  nextDate.setHours(hours, minutes, 0, 0);
 
-  // 이미 지난 경우 → 1일 더해서 다음 시간으로
-  if (nextTime <= now) {
+  // 다음 레이드가 현재보다 과거이면 25분 더해서 재계산
+  if (nextDate <= now) {
     totalMinutes += 25;
+    const newDays = Math.floor(totalMinutes / 1440);
+    const newRemain = totalMinutes % 1440;
+    const h = Math.floor(newRemain / 60);
+    const m = newRemain % 60;
 
-    const nextAdditionalDays = Math.floor(totalMinutes / 1440);
-    const nextRemainingMinutes = totalMinutes % 1440;
-    const nextHours = Math.floor(nextRemainingMinutes / 60);
-    const nextMinutes = nextRemainingMinutes % 60;
-
-    nextTime.setDate(baseDate.getDate() + nextAdditionalDays);
-    nextTime.setHours(nextHours, nextMinutes, 0, 0);
+    nextDate = new Date(baseDate);
+    nextDate.setDate(baseDate.getDate() + newDays);
+    nextDate.setHours(h, m, 0, 0);
   }
 
-  return nextTime;
+  return nextDate;
 }
+
 
 let sortedRaids = [];
 
