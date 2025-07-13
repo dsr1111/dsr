@@ -251,72 +251,53 @@ let notified = {};
 let notificationTime = 5; // 기본값 5분
 
 function updateTimers() {
-  const items = document.querySelectorAll('.raid-timer-item');
   const now = getCurrentKST();
-  let needsRerender = false;
-  
-  // 알림 시간 설정값 가져오기
-  const notificationTimeSpan = document.getElementById('notification-time');
-  if (notificationTimeSpan) {
-    const time = parseInt(notificationTimeSpan.textContent);
-    if (!isNaN(time) && time > 0 && time <= 60) {
-      notificationTime = time;
+
+  // 1. 만료된 타이머가 있는지 먼저 확인합니다.
+  for (let i = 0; i < sortedRaids.length; i++) {
+    const diff = Math.floor((sortedRaids[i].nextTime - now) / 1000);
+
+    // 타이머가 만료되었다면 (0초 이하)
+    if (diff <= 0) {
+      // 즉시 renderRaids()를 호출해 목록 전체를 새로고침하고,
+      renderRaids();
+      // updateTimers 함수를 즉시 종료하여 아래의 DOM 조작 코드가 실행되지 않도록 합니다.
+      return;
     }
   }
-  
-  for (let i = 0; i < items.length; i++) {
-    const remainSpan = items[i].querySelector('.remain');
+
+  // 2. 만료된 타이머가 없을 때만 남은 시간을 업데이트합니다.
+  // (이 부분은 성능에 효율적입니다)
+  const items = document.querySelectorAll('.raid-timer-item');
+  items.forEach((item, i) => {
     if (sortedRaids[i]) {
-      const diff = Math.floor((sortedRaids[i].nextTime - now) / 1000);
-      remainSpan.textContent = getTimeDiffString(sortedRaids[i].nextTime);
-      
-      // 남은 시간이 0이 되면 다음 시간으로 업데이트
-      if (diff <= 0) {
-        if (sortedRaids[i].name === masterTyrannoRaid.name) {
-          sortedRaids[i].nextTime = getMasterTyrannoNextTime();
-        } else {
-          const raid = raids.find(r => r.name === sortedRaids[i].name);
-          if (raid) {
-            if (raid.type === 'daily') {
-              sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
-            } else if (raid.type === 'biweekly') {
-              sortedRaids[i].nextTime = getNextBiweeklyTime(sortedRaids[i].timeStr, raid.baseDate);
-            } else if (raid.type === 'weekly') {
-              sortedRaids[i].nextTime = getNextWeeklyTime(sortedRaids[i].timeStr, raid.days);
-            }
-          }
-        }
-        needsRerender = true;
-      }
-      
-      // 알림 시간을 초 단위로 변환하여 비교
-      if (diff > 0 && diff <= notificationTime * 60) {
-        const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
+      const remainSpan = item.querySelector('.remain');
+      const nextTime = sortedRaids[i].nextTime;
+      const diffSeconds = Math.floor((nextTime - now) / 1000);
+
+      // 남은 시간 텍스트 업데이트
+      remainSpan.textContent = getTimeDiffString(nextTime);
+
+      // 알림 및 색상 변경 로직은 그대로 유지
+      const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
+      if (diffSeconds > 0 && diffSeconds <= notificationTime * 60) {
         if (!notified[notifyKey]) {
           const alarmToggle = document.getElementById('raid-alarm-toggle');
           if (alarmToggle && alarmToggle.checked) {
             alarmAudio.currentTime = 0;
             alarmAudio.play();
-            
             setTimeout(() => {
-              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
+              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(nextTime))} 남았습니다!`);
             }, 500);
           }
           notified[notifyKey] = true;
         }
-      }
-      if (diff > 0 && diff < notificationTime * 60) {
         remainSpan.style.color = '#e74c3c'; // 빨간색
       } else {
         remainSpan.style.color = '';
       }
     }
-  }
-  
-  // 시간이 업데이트된 경우 전체 목록을 다시 렌더링
-  if (needsRerender) {
-    renderRaids();
-  }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
