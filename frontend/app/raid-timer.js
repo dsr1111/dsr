@@ -155,20 +155,20 @@ function formatTimeToKR(str) {
 }
 
 function getMasterTyrannoNextTime() {
-  const baseDateTime = new Date(masterTyrannoRaid.baseDate + 'T' + masterTyrannoRaid.baseTime + ':00+09:00');
+  const baseDate = new Date(masterTyrannoRaid.baseDate + 'T' + masterTyrannoRaid.baseTime + ':00+09:00');
   const now = getCurrentKST();
+  let nextDate = new Date(baseDate);
 
-  const diffMs = now - baseDateTime;
-  const totalElapsedMinutes = Math.floor(diffMs / (1000 * 60));
-  const intervalsPassed = Math.floor(totalElapsedMinutes / 25);
-  const nextInterval = intervalsPassed + 1;
-  const totalMinutes = nextInterval * 25;
+  // 25분 단위로 증가
+  const intervalMs = 25 * 60 * 1000;
 
-  const nextDate = new Date(baseDateTime);
-  nextDate.setMinutes(baseDateTime.getMinutes() + totalMinutes);
+  while (nextDate <= now) {
+    nextDate = new Date(nextDate.getTime() + intervalMs);
+  }
 
   return nextDate;
 }
+
 
 
 let sortedRaids = [];
