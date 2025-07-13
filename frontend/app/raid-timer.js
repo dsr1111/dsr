@@ -179,7 +179,7 @@ function getMasterTyrannoNextTime() {
   if (nextTime <= now) {
     diffDays += 1;
     let tomorrowMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
-    if (tomorrowMinutes >= 1415) {
+    if (tomorrowMinutes >= 1440) {
       tomorrowMinutes = 0;
     }
     hours = Math.floor(tomorrowMinutes / 60);
