@@ -133,9 +133,7 @@ function getNextWeeklyTime(timeStr, days) {
 function getTimeDiffString(target) {
   const now = getCurrentKST();
   let diff = Math.floor((target - now) / 1000);
-
-  if (diff <= 0) diff = 0; // 음수일 경우 0초로 보정
-
+  if (diff < 0) return '-00:00:00';
   const h = Math.floor(diff / 3600).toString().padStart(2, '0');
   const m = Math.floor((diff % 3600) / 60).toString().padStart(2, '0');
   const s = (diff % 60).toString().padStart(2, '0');
@@ -155,33 +153,44 @@ function formatTimeToKR(str) {
 }
 
 function getMasterTyrannoNextTime() {
-  const baseDate = new Date(masterTyrannoRaid.baseDate + 'T' + masterTyrannoRaid.baseTime + ':00+09:00');
+  const baseDate = new Date(masterTyrannoRaid.baseDate + 'T00:00:00+09:00');
+  const [baseHour, baseMin] = masterTyrannoRaid.baseTime.split(':').map(Number);
   const now = getCurrentKST();
-  
-  // 기준 시간과 현재 시간의 자정(00:00)을 기준으로 날짜 차이 계산
-  const baseDateOnly = new Date(baseDate);
-  baseDateOnly.setHours(0, 0, 0, 0);
-  
-  const nowDateOnly = new Date(now);
-  nowDateOnly.setHours(0, 0, 0, 0);
 
-  const diffDays = Math.floor((nowDateOnly - baseDateOnly) / (1000 * 60 * 60 * 24));
+  // 기준 날짜부터 현재까지의 일수 차이 계산
+  let diffDays = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
 
-  // 날짜 차이에 따라 25분씩 밀린 시간을 더해줌
-  const offsetMinutes = diffDays * 25;
-  
-  let nextTime = new Date(baseDate.getTime() + offsetMinutes * 60 * 1000);
+  // 25분씩 증가하는 시간 계산
+  let totalMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
 
-  // 만약 계산된 오늘의 레이드 시간이 이미 지났다면, 내일 시간으로 다시 계산
+  // 23:35(1415분) 이상이면 00:00으로 고정
+  if (totalMinutes >= 1415) {
+    totalMinutes = 0;
+  }
+
+  let hours = Math.floor(totalMinutes / 60);
+  let minutes = totalMinutes % 60;
+
+  // 다음 레이드 시간 설정
+  let nextTime = new Date(now);
+  nextTime.setHours(hours, minutes, 0, 0);
+
+  // 이미 지난 시간이면, 내일 기준으로 다시 계산
   if (nextTime <= now) {
-    const nextDayOffsetMinutes = (diffDays + 1) * 25;
-    nextTime = new Date(baseDate.getTime() + nextDayOffsetMinutes * 60 * 1000);
+    diffDays += 1;
+    let tomorrowMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
+    if (tomorrowMinutes >= 1415) {
+      tomorrowMinutes = 0;
+    }
+    hours = Math.floor(tomorrowMinutes / 60);
+    minutes = tomorrowMinutes % 60;
+    nextTime = new Date(now);
+    nextTime.setDate(nextTime.getDate() + 1);
+    nextTime.setHours(hours, minutes, 0, 0);
   }
 
   return nextTime;
 }
-
-
 
 let sortedRaids = [];
 
@@ -251,53 +260,72 @@ let notified = {};
 let notificationTime = 5; // 기본값 5분
 
 function updateTimers() {
+  const items = document.querySelectorAll('.raid-timer-item');
   const now = getCurrentKST();
-
-  // 1. 만료된 타이머가 있는지 먼저 확인합니다.
-  for (let i = 0; i < sortedRaids.length; i++) {
-    const diff = Math.floor((sortedRaids[i].nextTime - now) / 1000);
-
-    // 타이머가 만료되었다면 (0초 이하)
-    if (diff <= 0) {
-      // 즉시 renderRaids()를 호출해 목록 전체를 새로고침하고,
-      renderRaids();
-      // updateTimers 함수를 즉시 종료하여 아래의 DOM 조작 코드가 실행되지 않도록 합니다.
-      return;
+  let needsRerender = false;
+  
+  // 알림 시간 설정값 가져오기
+  const notificationTimeSpan = document.getElementById('notification-time');
+  if (notificationTimeSpan) {
+    const time = parseInt(notificationTimeSpan.textContent);
+    if (!isNaN(time) && time > 0 && time <= 60) {
+      notificationTime = time;
     }
   }
-
-  // 2. 만료된 타이머가 없을 때만 남은 시간을 업데이트합니다.
-  // (이 부분은 성능에 효율적입니다)
-  const items = document.querySelectorAll('.raid-timer-item');
-  items.forEach((item, i) => {
+  
+  for (let i = 0; i < items.length; i++) {
+    const remainSpan = items[i].querySelector('.remain');
     if (sortedRaids[i]) {
-      const remainSpan = item.querySelector('.remain');
-      const nextTime = sortedRaids[i].nextTime;
-      const diffSeconds = Math.floor((nextTime - now) / 1000);
-
-      // 남은 시간 텍스트 업데이트
-      remainSpan.textContent = getTimeDiffString(nextTime);
-
-      // 알림 및 색상 변경 로직은 그대로 유지
-      const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
-      if (diffSeconds > 0 && diffSeconds <= notificationTime * 60) {
+      const diff = Math.floor((sortedRaids[i].nextTime - now) / 1000);
+      remainSpan.textContent = getTimeDiffString(sortedRaids[i].nextTime);
+      
+      // 남은 시간이 0이 되면 다음 시간으로 업데이트
+      if (diff <= 0) {
+        if (sortedRaids[i].name === masterTyrannoRaid.name) {
+          sortedRaids[i].nextTime = getMasterTyrannoNextTime();
+        } else {
+          const raid = raids.find(r => r.name === sortedRaids[i].name);
+          if (raid) {
+            if (raid.type === 'daily') {
+              sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
+            } else if (raid.type === 'biweekly') {
+              sortedRaids[i].nextTime = getNextBiweeklyTime(sortedRaids[i].timeStr, raid.baseDate);
+            } else if (raid.type === 'weekly') {
+              sortedRaids[i].nextTime = getNextWeeklyTime(sortedRaids[i].timeStr, raid.days);
+            }
+          }
+        }
+        needsRerender = true;
+      }
+      
+      // 알림 시간을 초 단위로 변환하여 비교
+      if (diff > 0 && diff <= notificationTime * 60) {
+        const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
         if (!notified[notifyKey]) {
           const alarmToggle = document.getElementById('raid-alarm-toggle');
           if (alarmToggle && alarmToggle.checked) {
             alarmAudio.currentTime = 0;
             alarmAudio.play();
+            
             setTimeout(() => {
-              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(nextTime))} 남았습니다!`);
+              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
             }, 500);
           }
           notified[notifyKey] = true;
         }
+      }
+      if (diff > 0 && diff < notificationTime * 60) {
         remainSpan.style.color = '#e74c3c'; // 빨간색
       } else {
         remainSpan.style.color = '';
       }
     }
-  });
+  }
+  
+  // 시간이 업데이트된 경우 전체 목록을 다시 렌더링
+  if (needsRerender) {
+    renderRaids();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
