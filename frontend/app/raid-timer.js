@@ -171,27 +171,36 @@ function getMasterTyrannoNextTime() {
   let hours = Math.floor(totalMinutes / 60);
   let minutes = totalMinutes % 60;
 
-  // 다음 레이드 시간 설정
   let nextTime = new Date(now);
+  
+  if (totalMinutes === 0) {
+    // 00:00인 경우는 무조건 다음 날 자정으로
+    nextTime.setDate(nextTime.getDate() + 1);
+  }
+
   nextTime.setHours(hours, minutes, 0, 0);
 
-  // 이미 지난 시간이면, 내일 기준으로 다시 계산
+  // 혹시 과거 시간일 경우, 다시 계산
   if (nextTime <= now) {
     diffDays += 1;
     let tomorrowMinutes = (baseHour * 60 + baseMin) + (diffDays * 25);
     if (tomorrowMinutes >= 1415) {
       tomorrowMinutes = 0;
+      hours = 0;
+      minutes = 0;
+      nextTime = new Date(now);
+      nextTime.setDate(now.getDate() + 2); // 2일 후 자정
+    } else {
+      hours = Math.floor(tomorrowMinutes / 60);
+      minutes = tomorrowMinutes % 60;
+      nextTime = new Date(now);
+      nextTime.setDate(now.getDate() + 1);
     }
-    hours = Math.floor(tomorrowMinutes / 60);
-    minutes = tomorrowMinutes % 60;
-    nextTime = new Date(now);
-    nextTime.setDate(nextTime.getDate() + 1);
     nextTime.setHours(hours, minutes, 0, 0);
   }
 
   return nextTime;
 }
-
 let sortedRaids = [];
 
 function renderRaids() {
