@@ -302,27 +302,16 @@
       let digimonInfo = null;
       const allConditions = DataModule.conditionData.filter(d => d.name === parentData.name);
       
-      if (allConditions.length > 1) {
-        // 여러 조건이 있는 경우, 진화 타입에 따라 선택
-        if (evoType === "dark" && parentData.암흑진화 === digimonName) {
-          digimonInfo = allConditions.find(d => d.암흑진화재료);
-        } else if (evoType === "special" && parentData.특수진화 === digimonName) {
-          digimonInfo = allConditions.find(d => d.특수진화재료);
-        } else if (evoType === "burst" && parentData.버스트진화 === digimonName) {
-          digimonInfo = allConditions.find(d => d.버스트진화재료);
-        } else {
-          // 일반 진화인 경우
-          const normalEvolutions = [
-            parentData.evol1, parentData.evol2, parentData.evol3, parentData.evol4, parentData.evol5,
-            parentData.evol6, parentData.evol7, parentData.evol8, parentData.evol9, parentData.evol10,
-            parentData.evol11, parentData.조그레스
-          ];
-          if (normalEvolutions.includes(digimonName)) {
-            digimonInfo = allConditions.find(d => d.진화재료);
-          }
-        }
+      // 진화타입 컬럼만으로 분기 (진화재료 유무와 무관)
+      if (evoType === "dark") {
+        digimonInfo = allConditions.find(d => (d["진화타입"] || "").trim() === "암흑진화");
+      } else if (evoType === "special") {
+        digimonInfo = allConditions.find(d => (d["진화타입"] || "").trim() === "특수진화");
+      } else if (evoType === "burst") {
+        digimonInfo = allConditions.find(d => (d["진화타입"] || "").trim() === "버스트진화");
       } else {
-        digimonInfo = allConditions[0];
+        // 일반진화: 진화타입 컬럼이 비어있는 row
+        digimonInfo = allConditions.find(d => !d["진화타입"] || d["진화타입"].trim() === "");
       }
 
       if (!digimonInfo) return;
