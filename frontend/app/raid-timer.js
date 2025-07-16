@@ -66,7 +66,7 @@ const RotationRaid = {
   name: '조커몬',
   image: getImagePath('조커몬'),
   baseTime: '19:00',
-  baseDate: '2025-07-18',
+  baseDate: '2025-07-17',
   map: '무한 산',
 };
 
