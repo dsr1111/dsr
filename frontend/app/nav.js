@@ -88,10 +88,28 @@ class CustomNav extends HTMLElement {
               background-color: #45a049;
             }
             
-            .feedback-btn-wrapper {
+            .feedback-expcarry-wrapper {
               display: flex;
               align-items: center;
               height: 100%;
+            }
+            .feedback-expcarry-wrapper .feedback-btn {
+              margin-right: 4px;
+            }
+            
+            .expcarry-btn {
+              background-color: #27ae60;
+              color: white;
+              padding: 8px 16px;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              margin-left: 10px;
+              display: flex;
+              align-items: center;
+            }
+            .expcarry-btn:hover {
+              background-color: #219150;
             }
             
             @media screen and (max-width: 768px) {
@@ -156,7 +174,10 @@ class CustomNav extends HTMLElement {
                       <li><a href="https://cafe.naver.com/movedsr" class="dropdown__link" target="_blank">공식 카페</a></li>
                     </ul>
                   </li>
-                  <li class="feedback-btn-wrapper"><button class="feedback-btn" id="feedbackBtn">피드백</button></li>
+                  <li class="feedback-expcarry-wrapper">
+                    <button class="feedback-btn" id="feedbackBtn">피드백</button>
+                    <button class="expcarry-btn" id="expcarryBtn">쫄작 문의</button>
+                  </li>
                 </ul>
               </div>
             </nav>
@@ -190,6 +211,7 @@ class CustomNav extends HTMLElement {
       const modal = this.shadowRoot.getElementById("feedbackModal");
       const closeBtn = this.shadowRoot.querySelector(".close");
       const feedbackForm = this.shadowRoot.getElementById("feedbackForm");
+      const expcarryBtn = this.shadowRoot.getElementById("expcarryBtn");
 
       // 기존 이벤트 리스너
       if (navToggle && navMenu) {
@@ -290,6 +312,12 @@ class CustomNav extends HTMLElement {
                   alert("오류가 발생했습니다. 다시 시도해 주세요.");
               }
           });
+      }
+
+      if (expcarryBtn) {
+        expcarryBtn.addEventListener("click", () => {
+          window.open("https://open.kakao.com/o/gUkDeqpg", "_blank");
+        });
       }
 
       function unifyDropdownWidths() {
