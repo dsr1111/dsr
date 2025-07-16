@@ -62,12 +62,12 @@ const raids = [
   },
 ];
 
-const masterTyrannoRaid = {
-  name: '묘티스몬',
-  image: getImagePath('묘티스몬'),
+const RotationRaid = {
+  name: '조커몬',
+  image: getImagePath('조커몬'),
   baseTime: '19:00',
-  baseDate: '2025-07-03',
-  map: '어둠성 계곡',
+  baseDate: '2025-07-18',
+  map: '무한 산',
 };
 
 function getCurrentKST() {
@@ -153,8 +153,8 @@ function formatTimeToKR(str) {
 }
 
 function getMasterTyrannoNextTime() {
-  const baseDate = new Date(masterTyrannoRaid.baseDate + 'T00:00:00+09:00');
-  const [baseHour, baseMin] = masterTyrannoRaid.baseTime.split(':').map(Number);
+  const baseDate = new Date(RotationRaid.baseDate + 'T00:00:00+09:00');
+  const [baseHour, baseMin] = RotationRaid.baseTime.split(':').map(Number);
   const now = getCurrentKST();
 
   // 기준 날짜부터 현재까지의 일수 차이 계산
@@ -217,10 +217,10 @@ function renderRaids() {
 
   const tyrannoTime = getMasterTyrannoNextTime();
   allRaids.push({
-    name: masterTyrannoRaid.name,
-    image: masterTyrannoRaid.image,
+    name: RotationRaid.name,
+    image: RotationRaid.image,
     timeStr: tyrannoTime.getHours().toString().padStart(2,'0') + ':' + tyrannoTime.getMinutes().toString().padStart(2,'0'),
-    map: masterTyrannoRaid.map,
+    map: RotationRaid.map,
     nextTime: tyrannoTime,
   });
   // 남은 시간이 적은 순서로 정렬
@@ -276,7 +276,7 @@ function updateTimers() {
       
       // 남은 시간이 0이 되면 다음 시간으로 업데이트
       if (diff <= 0) {
-        if (sortedRaids[i].name === masterTyrannoRaid.name) {
+        if (sortedRaids[i].name === RotationRaid.name) {
           sortedRaids[i].nextTime = getMasterTyrannoNextTime();
         } else {
           const raid = raids.find(r => r.name === sortedRaids[i].name);
