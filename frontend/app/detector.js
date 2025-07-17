@@ -59,7 +59,7 @@ function populateDigimonGrid(detector) {
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
         // 베놈묘티스몬, 베리얼묘티스몬, 로제몬:버스트모드, 마왕몬은 초기 목록에서 제외
-        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬') {
+        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드') {
             const button = document.createElement('button');
             button.className = 'digimon-button';
             button.dataset.digimon = digimon;
@@ -101,6 +101,14 @@ function populateDigimonGrid(detector) {
                 // 블랙세라피몬이 아닌 다른 디지몬 선택 시 마왕몬 버튼 제거
                 if (digimon !== '블랙세라피몬' && detector === '타락한 세라피몬 탐지기') {
                     const mawangButton = document.querySelector('.digimon-button[data-digimon="마왕몬"]');
+                    if (mawangButton) {
+                        mawangButton.remove();
+                    }
+                }
+
+                // 레이브몬 아닌 다른 디지몬 선택 시 레이브몬:버스트모드 버튼 제거
+                if (digimon !== '레이브몬' && detector === '레이브몬 탐지기') {
+                    const mawangButton = document.querySelector('.digimon-button[data-digimon="레이브몬:버스트모드"]');
                     if (mawangButton) {
                         mawangButton.remove();
                     }
