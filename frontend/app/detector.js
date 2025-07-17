@@ -16,7 +16,7 @@ function populateDetectorGrid() {
     detectorGrid.innerHTML = '';
     Object.keys(detectorData).forEach(detector => {
         // 상자 관련 항목과 작은 사랑의 꾸러미 제외
-        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미' && detector !== '분노에 잠식된 꾸러미') {
+        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미' && detector !== '분노에 잠식된 꾸러미' && detector !== '검은 날개의 꾸러미') {
             const button = document.createElement('button');
             button.className = 'detector-button';
             button.dataset.detector = detector;
