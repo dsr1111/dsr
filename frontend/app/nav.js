@@ -182,22 +182,6 @@ class CustomNav extends HTMLElement {
               </div>
             </nav>
           </header>
-
-          <div id="feedbackModal" class="modal">
-            <div class="modal-content">
-              <span class="close">&times;</span>
-              <h2>피드백</h2>
-              <form class="feedback-form" id="feedbackForm" action="https://formspree.io/f/xblokoep" method="POST">
-                <select class="feedback-type" name="type" required>
-                  <option value="" disabled selected hidden>문의 유형 선택</option>
-                  <option value="error">오류 제보</option>
-                  <option value="suggestion">건의사항</option>
-                </select>
-                <textarea class="feedback-content" name="content" placeholder="내용을 입력해주세요" required></textarea>
-                <button type="submit" class="submit-btn">제출하기</button>
-              </form>
-            </div>
-          </div>
       `;
 
       this.addEventListeners();
@@ -267,51 +251,12 @@ class CustomNav extends HTMLElement {
           }
         });
       }
-      
 
-      // 피드백 모달 관련 이벤트 리스너
-      if (feedbackBtn && modal) {
-          feedbackBtn.addEventListener("click", () => {
-              modal.style.display = "block";
-          });
 
-          closeBtn.addEventListener("click", () => {
-              modal.style.display = "none";
-          });
-
-          window.addEventListener("click", (event) => {
-              if (event.target === modal) {
-                  modal.style.display = "none";
-              }
-          });
-
-          // AJAX로 Formspree에 제출
-          feedbackForm.addEventListener("submit", async (event) => {
-              event.preventDefault();
-              const type = feedbackForm.querySelector(".feedback-type").value;
-              const content = feedbackForm.querySelector(".feedback-content").value;
-
-              try {
-                  const response = await fetch("https://formspree.io/f/xblokoep", {
-                      method: "POST",
-                      headers: {
-                          "Accept": "application/json",
-                          "Content-Type": "application/json"
-                      },
-                      body: JSON.stringify({ type, content })
-                  });
-
-                  if (response.ok) {
-                      feedbackForm.reset();
-                      modal.style.display = "none";
-                      alert("피드백이 제출되었습니다. 감사합니다!");
-                  } else {
-                      alert("제출에 실패했습니다. 다시 시도해 주세요.");
-                  }
-              } catch (error) {
-                  alert("오류가 발생했습니다. 다시 시도해 주세요.");
-              }
-          });
+      if (expcarryBtn) {
+        expcarryBtn.addEventListener("click", () => {
+          window.open("https://forms.gle/7xSaJBz4A28CPY4z9", "_blank");
+        });
       }
 
       if (expcarryBtn) {
