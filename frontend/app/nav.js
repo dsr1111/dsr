@@ -253,8 +253,8 @@ class CustomNav extends HTMLElement {
       }
 
 
-      if (expcarryBtn) {
-        expcarryBtn.addEventListener("click", () => {
+      if (feedbackBtn) {
+        feedbackBtn.addEventListener("click", () => {
           window.open("https://forms.gle/7xSaJBz4A28CPY4z9", "_blank");
         });
       }
