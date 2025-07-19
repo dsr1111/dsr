@@ -13,9 +13,9 @@ const selectPage = document.querySelector(".select-page");
 mapDropdown.addEventListener("change", function () {
   const selectedMap = mapDropdown.value;
   if (selectedMap !== "default") {
-    selectPage.style.backgroundImage = `url('//image/overflow/${selectedMap}.webp')`;
+    selectPage.style.backgroundImage = `url('/image/overflow/${selectedMap}.webp')`;
   } else {
-    selectPage.style.backgroundImage = `url('//image/overflow/무한 산.webp')`;
+    selectPage.style.backgroundImage = `url('/image/overflow/무한 산.webp')`;
   }
 });
 
