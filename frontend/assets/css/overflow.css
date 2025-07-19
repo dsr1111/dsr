@@ -239,7 +239,7 @@ body {
   content: "";
   position: absolute;
   top: 5px;
-  left: 12px;
+  left: 14px;
   width: 40px; /* 배경 이미지 크기 설정 */
   height: 40px;
   background-image: url("../../image/item/item5.webp");
