@@ -131,7 +131,7 @@ body {
   width: 892px;
   height: 640px;
   border-radius: 10px;
-  background-image: url("../../image/overflow/기어 사바나.png");
+  background-image: url("../../image/overflow/기어 사바나.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -242,7 +242,7 @@ body {
   left: 15px;
   width: 40px; /* 배경 이미지 크기 설정 */
   height: 40px;
-  background-image: url("../../image/item/item5.png");
+  background-image: url("../../image/item/item5.webp");
   background-repeat: no-repeat;
   background-size: auto, contain;
   background-position: top left, center;
