@@ -85,7 +85,7 @@ class DataManager {
             // 객체를 배열로 변환하여 정렬
             const digimonArray = Object.entries(this.currentData).map(([name, data]) => ({ name, ...data }));
 
-            const evolutionOrder = ["성장기", "성숙기", "완전체", "궁극체", "초궁극체", "조그레스", "특수"];
+            const evolutionOrder = ["성장기", "성숙기", "완전체", "궁극체"];
             digimonArray.sort((a, b) => {
                 const stageA = evolutionOrder.indexOf(a.evolution_stage);
                 const stageB = evolutionOrder.indexOf(b.evolution_stage);
