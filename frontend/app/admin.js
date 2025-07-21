@@ -499,8 +499,7 @@ class DataManager {
 
     editData(name) {
         this.currentName = name;
-        const item = this.currentData[name];
-        this.showEditForm(item);
+        this.showEditForm(name);
     }
 
     saveToTable() {
