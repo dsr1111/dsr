@@ -64,9 +64,10 @@
             display: block;
             margin-bottom: 5px;
         }
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 5px;
+            box-sizing: border-box;
         }
         .button-group {
             margin-top: 10px;
@@ -78,7 +79,7 @@
             overflow-x: auto;
             max-height: 80vh;
             overflow-y: auto;
-            width: 120%;
+            width: 100%; /* Changed from 120% to 100% */
         }
         .edit-overlay {
             display: none;
@@ -117,11 +118,11 @@
                         <th>레벨</th>
                         <th>HP</th>
                         <th>SP</th>
-                        <th>힘</th>
-                        <th>지능</th>
-                        <th>수비</th>
-                        <th>저항</th>
-                        <th>속도</th>
+                        <th>STR</th>
+                        <th>INT</th>
+                        <th>DEF</th>
+                        <th>RES</th>
+                        <th>SPD</th>
                         <th>강점</th>
                         <th>강점효과</th>
                         <th>약점</th>
@@ -150,4 +151,4 @@
 
     <script src="app/admin.js"></script>
 </body>
-</html> 
+</html>
