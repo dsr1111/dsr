@@ -27,6 +27,62 @@
           "probability": "확정",
           "tradeable": true,
           "count": 2
+        },
+        {
+          "name": "사랑의 기운",
+          "probability": "확률",
+          "tradeable": false,
+          "count": 1
+        }
+      ]
+    },
+    "세라피몬":{
+      "items": [
+        {
+          "name": "희망의 기운",
+          "probability": "확률",
+          "tradeable": false,
+          "count": 1
+        }
+      ]
+    },
+    "헤라클레스캅테리몬":{
+      "items": [
+        {
+          "name": "지식의 기운",
+          "probability": "확률",
+          "tradeable": false,
+          "count": 1
+        }
+      ]
+    },
+    "로제몬":{
+      "items": [
+        {
+          "name": "순수의 기운",
+          "probability": "확률",
+          "tradeable": false,
+          "count": 1
+        }
+      ]
+    },
+    "바이킹몬":{
+      "items": [
+        {
+          "name": "성실의 기운",
+          "probability": "확률",
+          "tradeable": false,
+          "count": 1
+        }
+      ]
+    },
+    "홀리드라몬":{
+      "items": [
+        {
+          "name": "빛의 기운",
+          "probability": "확률",
+          "tradeable": false,
+          "count": 1
         }
       ]
     },
