@@ -8,7 +8,7 @@ async function fetchJSONData(fileName) {
     return data;
   } catch (error) {
     console.error(`Error loading ${fileName}:`, error);
-    return [];
+    return null;
   }
 }
 
@@ -37,7 +37,9 @@ document
   .addEventListener("change", async function () {
     const stage = this.value;
     const digimonData = await fetchJSONData("/data/csv/digimon.json");
-    populateCharacterDropdown(digimonData, stage);
+    if (digimonData) {
+      populateCharacterDropdown(digimonData, stage);
+    }
   });
 
 document
@@ -45,9 +47,11 @@ document
   .addEventListener("change", async function () {
     const characterName = this.value;
     const digimonData = await fetchJSONData("/data/csv/digimon.json");
-    displayCharacterType(digimonData, characterName);
-    displayCharacterImage(characterName);
-    displayCharacterLevelAndPower(digimonData, characterName);
+    if (digimonData) {
+      displayCharacterType(digimonData, characterName);
+      displayCharacterImage(characterName);
+      displayCharacterLevelAndPower(digimonData, characterName);
+    }
 
     const skillSelect = document.getElementById("skill-select");
     skillSelect.value = "skill1";
@@ -64,35 +68,35 @@ function populateCharacterDropdown(digimonData, stage) {
   const characterSelect = document.getElementById("character-select");
   characterSelect.innerHTML = "";
 
-  const filteredCharacters = digimonData.filter(
-    (digimon) => digimon.evolution_stage[0] === stage
+  const filteredCharacters = Object.entries(digimonData).filter(
+    ([name, digimon]) => digimon.evolution_stage === stage
   );
 
-  filteredCharacters.forEach((digimon) => {
+  filteredCharacters.forEach(([name, digimon]) => {
     const option = document.createElement("option");
-    option.value = digimon.name[0];
-    option.textContent = digimon.name[0];
+    option.value = name;
+    option.textContent = name;
     characterSelect.appendChild(option);
   });
 
   if (filteredCharacters.length > 0) {
-    const firstCharacter = filteredCharacters[0].name[0];
-    characterSelect.value = firstCharacter;
-    displayCharacterType(digimonData, firstCharacter);
-    displayCharacterImage(firstCharacter);
-    displayCharacterLevelAndPower(digimonData, firstCharacter);
-    displaySkillImage(firstCharacter);
+    const firstCharacterName = filteredCharacters[0][0];
+    characterSelect.value = firstCharacterName;
+    displayCharacterType(digimonData, firstCharacterName);
+    displayCharacterImage(firstCharacterName);
+    displayCharacterLevelAndPower(digimonData, firstCharacterName);
+    displaySkillImage(firstCharacterName);
   }
 }
 
 function displayCharacterType(digimonData, characterName) {
-  const digimon = digimonData.find(
-    (digimon) => digimon.name[0] === characterName
-  );
-  const type = digimon.type[0];
-  const imagePath = `/image/${type}.webp`;
-  const typeImageCell = document.getElementById("type-image-cell");
-  typeImageCell.innerHTML = `<img src="${imagePath}" alt="${type}" style="width: 25px; height: 25px;">`;
+  const digimon = digimonData[characterName];
+  if (digimon) {
+    const type = digimon.type;
+    const imagePath = `/image/${type}.webp`;
+    const typeImageCell = document.getElementById("type-image-cell");
+    typeImageCell.innerHTML = `<img src="${imagePath}" alt="${type}" style="width: 25px; height: 25px;">`;
+  }
 }
 
 function displayCharacterImage(characterName) {
@@ -103,44 +107,44 @@ function displayCharacterImage(characterName) {
 }
 
 function displayCharacterLevelAndPower(digimonData, characterName) {
-  const digimon = digimonData.find(
-    (digimon) => digimon.name[0] === characterName
-  );
-  const level = digimon.레벨;
-  const power = digimon.힘;
+  const digimon = digimonData[characterName];
+  if (digimon) {
+    const level = digimon.stats.level;
+    const power = digimon.stats.STR;
 
-  const levelCell = document.getElementById("level-cell");
-  const powerCell = document.getElementById("힘-cell");
+    const levelCell = document.getElementById("level-cell");
+    const powerCell = document.getElementById("힘-cell");
 
-  levelCell.textContent = level;
-  powerCell.textContent = power;
+    levelCell.textContent = level;
+    powerCell.textContent = power;
+  }
 }
 
 async function displaySkillImage(characterName) {
   const skillSelect = document.getElementById("skill-select").value;
   const digimonData = await fetchJSONData("/data/csv/digimon.json");
-  const digimon = digimonData.find(d => d.name[0] === characterName);
+  const digimon = digimonData[characterName];
 
   if (digimon && digimon.skills) {
-    const skillKey = skillSelect === "skill1" ? "skill1" : skillSelect === "skill2" ? "skill2" : "skill3";
-    const skillData = digimon.skills[skillKey];
+    const skillIndex = parseInt(skillSelect.replace('skill', '')) - 1;
+    const skillData = digimon.skills[skillIndex];
 
     if (skillData) {
-      const skillImageName = skillData.속성[0];
-    const skillImagePath = `/image/${skillImageName}.webp`;
-      const skillText = skillData.targetCount;
-    const skillImageCell = document.getElementById("skill-cell");
+      const skillImageName = skillData.attribute;
+      const skillImagePath = `/image/${skillImageName}.webp`;
+      const skillText = skillData.target_count;
+      const skillImageCell = document.getElementById("skill-cell");
 
-    skillImageCell.innerHTML = `
-      <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-        <img 
-          src="${skillImagePath}" 
-          alt="${skillImageName}" 
-          style="width: 25px; height: 25px; background-image: url('/image/background.webp'); background-size: 120%; background-position: center;">
-        <span>/ ${skillText}</span>
-      </div>
-    `;
-  }
+      skillImageCell.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+          <img 
+            src="${skillImagePath}" 
+            alt="${skillImageName}" 
+            style="width: 25px; height: 25px; background-image: url('/image/background.webp'); background-size: 120%; background-position: center;">
+          <span>/ ${skillText}</span>
+        </div>
+      `;
+    }
   }
 }
 
@@ -243,54 +247,52 @@ async function updateMobDetails(mobData, selectedMob) {
 
 window.addEventListener("DOMContentLoaded", async function () {
   try {
-  const map1Select = document.getElementById("map1-select");
-  const defaultRegion = map1Select.value;
+    const map1Select = document.getElementById("map1-select");
+    const defaultRegion = map1Select.value;
 
-  const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("/data/csv/mob.csv");
 
     if (mobData && mobData.length > 0) {
-  const filteredLocations = [
-    ...new Set(
-      mobData.filter((row) => row[0] === defaultRegion).map((row) => row[1])
-    ),
-  ];
+      const filteredLocations = [
+        ...new Set(
+          mobData.filter((row) => row[0] === defaultRegion).map((row) => row[1])
+        ),
+      ];
 
-  const map2Select = document.getElementById("map2-select");
-  map2Select.innerHTML = "";
+      const map2Select = document.getElementById("map2-select");
+      map2Select.innerHTML = "";
 
-  filteredLocations.forEach((location) => {
-    const option = document.createElement("option");
-    option.value = location;
-    option.textContent = location;
-    map2Select.appendChild(option);
-  });
+      filteredLocations.forEach((location) => {
+        const option = document.createElement("option");
+        option.value = location;
+        option.textContent = location;
+        map2Select.appendChild(option);
+      });
 
-  if (filteredLocations.length > 0) {
-    map2Select.value = filteredLocations[0];
+      if (filteredLocations.length > 0) {
+        map2Select.value = filteredLocations[0];
         await updateMobSelect(mobData, filteredLocations[0]);
       }
-  }
+    }
 
     const digimonData = await fetchJSONData("/data/csv/digimon.json");
 
-    if (digimonData && digimonData.length > 0) {
+    if (digimonData) {
       await populateCharacterDropdown(digimonData, "성장기");
 
-  const skillSelect = document.getElementById("skill-select");
-  skillSelect.value = "skill1";
+      const skillSelect = document.getElementById("skill-select");
+      skillSelect.value = "skill1";
 
-  const skillLevelSelect = document.getElementById("skilllevel-select");
-  skillLevelSelect.value = "1레벨";
+      const skillLevelSelect = document.getElementById("skilllevel-select");
+      skillLevelSelect.value = "1레벨";
 
-  skillSelect.dispatchEvent(new Event("change"));
-  skillLevelSelect.dispatchEvent(new Event("change"));
+      skillSelect.dispatchEvent(new Event("change"));
+      skillLevelSelect.dispatchEvent(new Event("change"));
 
-      const firstCharacter = digimonData.find(
-        (digimon) => digimon.evolution_stage[0] === "성장기"
-      );
+      const firstCharacterName = Object.keys(digimonData).find(name => digimonData[name].evolution_stage === "성장기");
       
-      if (firstCharacter) {
-        await displaySkillImage(firstCharacter.name[0]);
+      if (firstCharacterName) {
+        await displaySkillImage(firstCharacterName);
       }
     }
 
@@ -326,10 +328,12 @@ document.getElementById("manual-mode").addEventListener("change", async function
     // 일반 모드로 돌아올 때 캐릭터 정보 다시 불러오기
     const characterName = document.getElementById("character-select").value;
     const digimonData = await fetchJSONData("/data/csv/digimon.json");
-    displayCharacterType(digimonData, characterName);
-    displayCharacterImage(characterName);
-    displayCharacterLevelAndPower(digimonData, characterName);
-    displaySkillImage(characterName);
+    if (digimonData) {
+      displayCharacterType(digimonData, characterName);
+      displayCharacterImage(characterName);
+      displayCharacterLevelAndPower(digimonData, characterName);
+      displaySkillImage(characterName);
+    }
     
     // 계산 함수 호출
     calculateStrengthResult();
@@ -363,14 +367,14 @@ async function calculateStrengthResult() {
     myType = document.getElementById("manual-type").value;
     myLevel = getInputValue("manual-level");
   } else {
-  const characterName = document.getElementById("character-select").value;
-  const digimonData = await fetchJSONData("/data/csv/digimon.json");
-  const digimon = digimonData.find(d => d.name[0] === characterName);
+    const characterName = document.getElementById("character-select").value;
+    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    const digimon = digimonData[characterName];
 
-  if (digimon) {
-    basePower = parseFloat(digimon.힘) || 0;
-      myType = digimon.type[0];
-      myLevel = parseInt(digimon.레벨, 10);
+    if (digimon) {
+      basePower = parseFloat(digimon.stats.STR) || 0;
+      myType = digimon.type;
+      myLevel = parseInt(digimon.stats.level, 10);
     }
   }
 
@@ -458,37 +462,32 @@ async function calculateNeedStr() {
       }
     } else {
       const characterName = document.getElementById("character-select").value;
-    const digimonData = await fetchJSONData("/data/csv/digimon.json");
-    const digimon = digimonData.find(d => d.name[0] === characterName);
+      const digimonData = await fetchJSONData("/data/csv/digimon.json");
+      const digimon = digimonData[characterName];
 
-    if (!digimon) {
-      console.log("Digimon data not found:", characterName);
-      document.getElementById("needstr").textContent = "계산 불가";
-      return;
-    }
+      if (!digimon) {
+        console.log("Digimon data not found:", characterName);
+        document.getElementById("needstr").textContent = "계산 불가";
+        return;
+      }
 
-    myType = digimon.type[0];
-    myLevel = parseInt(digimon.레벨, 10);
+      myType = digimon.type;
+      myLevel = parseInt(digimon.stats.level, 10);
 
-    const skillSelect = document.getElementById("skill-select").value;
-    const skillLevel = document.getElementById("skilllevel-select").value;
+      const skillSelect = document.getElementById("skill-select").value;
+      const skillLevel = document.getElementById("skilllevel-select").value;
+      const skillIndex = parseInt(skillSelect.replace('skill', '')) - 1;
 
-    if (digimon.skills) {
-      const skillKey = skillSelect;
-      const skillData = digimon.skills[skillKey];
+      if (digimon.skills && digimon.skills[skillIndex]) {
+        const skillData = digimon.skills[skillIndex];
+        const levelNumber = parseInt(skillLevel.replace('레벨', '')) - 1;
+        skillCoefficient = parseFloat(skillData.multipliers[levelNumber]) || 0;
+        hitCount = parseFloat(skillData.hits);
+        mySkillElement = skillData.attribute || "";
 
-      if (skillData) {
-        const levelNumber = parseInt(skillLevel);
-        skillCoefficient = parseFloat(skillData[levelNumber]) || 0;
-        hitCount = Array.isArray(skillData.타수) ? 
-          parseFloat(skillData.타수[0]) : 
-          parseFloat(skillData.타수);
-        mySkillElement = skillData.속성?.[0] || "";
-
-        if (skillData.targetCount && skillData.targetCount[0] === "전체") {
+        if (skillData.target_count === "전체") {
           const mobCount = parseInt(document.getElementById("mob-count").value);
           skillCoefficient = skillCoefficient / mobCount;
-          }
         }
       }
     }
@@ -597,4 +596,3 @@ window.addEventListener("DOMContentLoaded", async () => {
   await calculateStrengthResult();
   await calculateNeedStr();
 });
-

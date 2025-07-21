@@ -1,3 +1,4 @@
+
 let detectorData = null;
 let selectedDetector = null;
 let selectedDigimon = null;
@@ -329,23 +330,23 @@ async function showDigimonSkills(digimon) {
     // digimon.json에서 스킬 정보 가져오기
     const response = await fetch('/data/csv/digimon.json');
     const digimonData = await response.json();
-    const digimonInfo = digimonData.find(d => d.name[0] === digimon);
+    const digimonInfo = digimonData[digimon];
     
     if (!digimonInfo || !digimonInfo.skills) {
         return '';
     }
 
     const digimonImageName = digimon.replace(':', '_');
-    const skillRows = Object.entries(digimonInfo.skills).map(([skillKey, skillData], idx) => {
+    const skillRows = digimonInfo.skills.map((skillData, idx) => {
         return {
             img: `/image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
-            name: skillData.skillName[0],
-            attribute: skillData.속성[0],
-            detail1: skillData.범위[0],
-            detail2: `${skillData.targetCount[0]}`,
-            hit: skillData.타수,
-            detail3: skillData.effect ? skillData.effect[0] : '',
-            cooldown: skillData.cast
+            name: skillData.name,
+            attribute: skillData.attribute,
+            detail1: skillData.range,
+            detail2: skillData.target_count,
+            hit: skillData.hits,
+            detail3: skillData.effect || '',
+            cooldown: skillData.additionalTurn
         };
     });
 

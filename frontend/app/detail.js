@@ -62,13 +62,13 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("/data/csv/digimon.json")
     .then((response) => response.json())
     .then((data) => {
-      const character = data.find((digimon) => digimon.name[0] === characterName);
+      const character = data[characterName];
 
       if (character) {
         const characterImgPath = `/image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
-        const evolutionStage = character.evolution_stage[0];
-        const type = character.type[0];
-        const fields = character.필드 || [];
+        const evolutionStage = character.evolution_stage;
+        const type = character.type;
+        const fields = character.fields || [];
 
         // 필드 이미지 설정
         for (let i = 1; i <= 3; i++) {
@@ -307,105 +307,87 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
         // 스탯 설정
-        document.getElementById("stat-level").textContent = character.레벨;
-        document.getElementById("stat-hp").textContent = character.HP;
-        document.getElementById("stat-sp").textContent = character.SP;
-        document.getElementById("stat-power").textContent = character.힘;
-        document.getElementById("stat-intelligence").textContent = character.지능;
-        document.getElementById("stat-defense").textContent = character.수비;
-        document.getElementById("stat-resistance").textContent = character.저항;
-        document.getElementById("stat-speed").textContent = character.속도;
+        document.getElementById("stat-level").textContent = character.stats.level;
+        document.getElementById("stat-hp").textContent = character.stats.hp;
+        document.getElementById("stat-sp").textContent = character.stats.sp;
+        document.getElementById("stat-STR").textContent = character.stats.STR;
+        document.getElementById("stat-INT").textContent = character.stats.INT;
+        document.getElementById("stat-DEF").textContent = character.stats.DEF;
+        document.getElementById("stat-RES").textContent = character.stats.RES;
+        document.getElementById("stat-SPD").textContent = character.stats.SPD;
 
         // 강점과 약점 정보
-        const strengths = character.강점 || [];
-        const strengthsDesc = character.강점효과 || [];
-        const weaknesses = character.약점 || [];
-        const weaknessesDesc = character.약점효과 || [];
+        const strengthAttr = character.strengths.attribute;
+        const strengthEff = character.strengths.effect;
+        const weaknessAttr = character.weaknesses.attribute;
+        const weaknessEff = character.weaknesses.effect;
 
         // 강약점 테이블 생성
         const swTableBody = document.getElementById("sw").querySelector("tbody");
+        swTableBody.innerHTML = ''; // Clear existing rows
         
         // 강점 행 생성
-        let strengthsHTML = '';
-        strengths.forEach((str, index) => {
-          const descText = strengthsDesc[index] || "";
+        if (strengthAttr) {
           let additionalText = "";
-          
-          if (descText === "반사") {
+          if (strengthEff === "반사") {
             additionalText = '해당 속성의 공격을 받으면 <span class="highlight">피해량의 25%</span>를 되돌려 줍니다.';
-          } else if (descText === "회피") {
+          } else if (strengthEff === "회피") {
             additionalText = '해당 속성 공격에 대해 <span class="highlight">회피율이 2배</span>로 적용됩니다.';
-          } else if (descText === "내성") {
+          } else if (strengthEff === "내성") {
             additionalText = '해당 속성의 공격으로 받는 데미지는 <span class="highlight">25% 감소</span>합니다.';
-          }
-          
-          strengthsHTML += `
-            <tr>
-              <td class=\"sw-icon\">
-                <div class=\"sw-icon-container\" style=\"background-image: url('/image/strongbackground.webp');\">
-                  <img src=\"/image/${str}.webp\" alt=\"${str} 이미지\" title=\"${str}\">
-                </div>
-              </td>
-              <td class=\"sw-description\">${descText}</td>
-              <td class=\"sw-description-detail\">${additionalText ? additionalText : ''}</td>
-            </tr>
-          `;
-        });
-        
-        // 약점 행 생성
-        let weaknessesHTML = '';
-        weaknesses.forEach((weak, index) => {
-          const descText = weaknessesDesc[index] || "";
-          let additionalText = "";
-          
-          if (descText === "약점") {
-            additionalText = '해당 속성의 공격으로 <span class="highlight">25% 증가된 데미지</span>를 입습니다.';
-          } else if (descText === "회피불가") {
-            additionalText = '해당 속성의 공격은 <span class="highlight">회피가 불가</span>합니다.';
-          } else if (descText === "효과확률") {
+          } else if (strengthEff === "효과확률") {
             additionalText = '해당 속성의 공격에 효과가 있을 경우, <span class="highlight">효과에 걸릴 확률</span>이 증가합니다.';
           }
           
-          weaknessesHTML += `
+          swTableBody.innerHTML += `
+            <tr>
+              <td class=\"sw-icon\">
+                <div class=\"sw-icon-container\" style=\"background-image: url('/image/strongbackground.webp');\">
+                  <img src=\"/image/${strengthAttr}.webp\" alt=\"${strengthAttr} 이미지\" title=\"${strengthAttr}\">
+                </div>
+              </td>
+              <td class=\"sw-description\">${strengthEff}</td>
+              <td class=\"sw-description-detail\">${additionalText}</td>
+            </tr>
+          `;
+        }
+        
+        // 약점 행 생성
+        if (weaknessAttr) {
+          let additionalText = "";
+          if (weaknessEff === "약점") {
+            additionalText = '해당 속성의 공격으로 <span class="highlight">25% 증가된 데미지</span>를 입습니다.';
+          } else if (weaknessEff === "회피불가") {
+            additionalText = '해당 속성의 공격은 <span class="highlight">회피가 불가</span>합니다.';
+          } else if (weaknessEff === "효과확률") {
+            additionalText = '해당 속성의 공격에 효과가 있을 경우, <span class="highlight">효과에 걸릴 확률</span>이 증가합니다.';
+          }
+          
+          swTableBody.innerHTML += `
             <tr>
               <td class=\"sw-icon\">
                 <div class=\"sw-icon-container\" style=\"background-image: url('/image/weakbackground.webp');\">
-                  <img src=\"/image/${weak}.webp\" alt=\"${weak} 이미지\" title=\"${weak}\">
+                  <img src=\"/image/${weaknessAttr}.webp\" alt=\"${weaknessAttr} 이미지\" title=\"${weaknessAttr}\">
                 </div>
               </td>
-              <td class=\"sw-description\">${descText}</td>
-              <td class=\"sw-description-detail\">${additionalText ? additionalText : ''}</td>
+              <td class=\"sw-description\">${weaknessEff}</td>
+              <td class=\"sw-description-detail\">${additionalText}</td>
             </tr>
           `;
-        });
-        
-        // 테이블에 HTML 추가
-        swTableBody.innerHTML = strengthsHTML + weaknessesHTML;
+        }
 
         // 스킬 정보 표시
         const skillDetailsTable = document.getElementById("skill-details");
         skillDetailsTable.innerHTML = "";
 
-        let isAdultStage = false;
-        const skills = character.skills;
-
-        Object.entries(skills).forEach(([skillKey, skillData], index) => {
-          if (skillData.evolution_stage[0] === "성장기") {
-            isAdultStage = true;
-          }
-          if (index === 2 && isAdultStage) {
-            return;
-          }
-
+        character.skills.forEach((skillData, index) => {
           const skillImgPath = `/image/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
-          const skill1ImgPath = `/image/${skillData.속성[0]}.webp`;
+          const skill1ImgPath = `/image/${skillData.attribute}.webp`;
 
-          const levelData = Object.entries(skillData)
-            .filter(([key]) => !isNaN(key))
-            .map(([_, value]) => {
-              let percentage = isNaN(parseFloat(value)) ? 0 : parseFloat(value) * 100;
-              return `${parseFloat(percentage.toFixed(2))}%`;
-            });
+          const levelData = skillData.multipliers.map(value => {
+            let percentage = isNaN(parseFloat(value)) ? 0 : parseFloat(value) * 100;
+            return `${parseFloat(percentage.toFixed(2))}%`;
+          });
 
           // 각 스킬 행 생성
           const skillRow = document.createElement('tr');
@@ -421,7 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   </td>
                   <td class="skill-name-cell">
                     <div class="skill-name-container">
-                      <span class="skill-name">${skillData.skillName[0]}</span>
+                      <span class="skill-name">${skillData.name}</span>
                       <img src="${skill1ImgPath}" alt="속성" class="skill-attribute">
                     </div>
                   </td>
@@ -429,10 +411,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <tr>
                   <td class="skill-tags-cell">
                     <div class="skill-tags">
-                      <span class="skill-tag tag-range ${skillData.범위[0] === '원거리' ? 'long-range' : ''}">${skillData.범위[0]}</span>
-                      <span class="skill-tag tag-target"> ${skillData.targetCount[0]}</span>
-                      <span class="skill-tag tag-hit">${isNaN(skillData.타수) ? skillData.타수 : `${skillData.타수}타`}</span>
-                      ${skillData.effect ? `<span class="skill-tag tag-effect">${skillData.effect[0]}</span>` : ''}
+                      <span class="skill-tag tag-range ${skillData.range === '원거리' ? 'long-range' : ''}">${skillData.range}</span>
+                      <span class="skill-tag tag-target"> ${skillData.target_count}</span>
+                      <span class="skill-tag tag-hit">${isNaN(skillData.hits) ? skillData.hits : `${skillData.hits}타`}</span>
+                      ${skillData.effect ? `<span class="skill-tag tag-effect">${skillData.effect}</span>` : ''}
                       ${skillData.additionalTurn ? `<span class="skill-tag tag-cast">추가 시전 턴 : ${skillData.additionalTurn}턴</span>` : ''}
                     </div>
                   </td>
@@ -510,7 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="effects-container">
                 ${deck.effects.map(effect => {
                   // 숫자 강조
-                  const html = effect.replace(/(\+\s*[\d\.]+%?)/g, '<span class="effect-value">$1</span>');
+                  const html = effect.replace(/(\+\s*[\d\.]+%?)/g, '<span class=\"effect-value\">$1</span>');
                   return html;
                 }).join(' / ')}
               </div>
