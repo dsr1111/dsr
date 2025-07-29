@@ -561,8 +561,8 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
   imageContainer.style.border = "1px solid white";
 
   // 데이터 큐브 이미지 경로 생성
-  const encodedTooltipText = encodeURIComponent(tooltipText);
-  const datacubeImagePath = `/image/map/datacube/${encodedTooltipText}.png`;
+  const imageName = tooltipText.startsWith('#') ? tooltipText.substring(1) : tooltipText;
+  const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.png`;
 
   // Create the image element
   const datacubeImage = document.createElement('img');
