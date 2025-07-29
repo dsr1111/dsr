@@ -559,34 +559,69 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
   imageContainer.style.padding = "10px";
   imageContainer.style.borderRadius = "5px";
   imageContainer.style.border = "1px solid white";
-  
+
   // 데이터 큐브 이미지 경로 생성
   const encodedTooltipText = encodeURIComponent(tooltipText);
   const datacubeImagePath = `/image/map/datacube/${encodedTooltipText}.png`;
-  
-  imageContainer.innerHTML = `
-    <img src="${datacubeImagePath}" alt="${tooltipText}" style="max-width: 540px; max-height: 400px; object-fit: contain;">
-  `;
 
-  const rect = imageElement.getBoundingClientRect(); // 데이터 큐브 아이콘의 위치
-  const imageBottomRightX = rect.right + window.pageXOffset;
-  const imageBottomRightY = rect.bottom + window.pageYOffset;
+  // Create the image element
+  const datacubeImage = document.createElement('img');
+  datacubeImage.src = datacubeImagePath;
+  datacubeImage.alt = tooltipText;
+  datacubeImage.style.maxWidth = '540px';
+  datacubeImage.style.maxHeight = '400px';
+  datacubeImage.style.objectFit = 'contain';
 
-  // 툴팁 위치 설정 (데이터 큐브 아이콘 옆에 유지)
-  tooltip.style.position = "absolute";
-  tooltip.style.left = `${imageBottomRightX - 10}px`;
-  tooltip.style.top = `${imageBottomRightY}px`;
+  // Append the image to the image container
+  imageContainer.appendChild(datacubeImage);
 
-  // 메인 지도 컨테이너의 위치를 가져옴
-  const mainMapContainer = document.getElementById("image-container");
-  const mainMapRect = mainMapContainer.getBoundingClientRect();
-
-  // 이미지 컨테이너 위치 설정 (메인 지도 컨테이너의 오른쪽에 배치)
-  imageContainer.style.left = `${mainMapRect.right + 20}px`; // 지도 컨테이너 오른쪽에서 20px 떨어지게
-  imageContainer.style.top = `${mainMapRect.top}px`; // 지도 컨테이너의 상단과 정렬
-
+  // Append tooltip and imageContainer to body immediately for initial positioning and size calculation
   document.body.appendChild(tooltip);
   document.body.appendChild(imageContainer);
+
+  // Initial tooltip positioning (relative to the imageElement)
+  const rect = imageElement.getBoundingClientRect();
+  // Use rect.left and rect.top directly for viewport coordinates
+  // Then add window.pageXOffset/pageYOffset when setting style.left/top for document coordinates
+  const tooltipLeft = rect.right - 10; // 10px left from image right edge
+  const tooltipTop = rect.bottom; // At the bottom of the image element
+
+  tooltip.style.position = "absolute";
+  tooltip.style.left = `${tooltipLeft + window.pageXOffset}px`;
+  tooltip.style.top = `${tooltipTop + window.pageYOffset}px`;
+
+  // Wait for the image to load before calculating final position
+  datacubeImage.onload = () => {
+    requestAnimationFrame(() => {
+      const tooltipRect = tooltip.getBoundingClientRect(); // Get current viewport position of tooltip
+
+      // Set imageContainer dimensions based on loaded image dimensions + padding
+      imageContainer.style.width = `${datacubeImage.offsetWidth + 20}px`; // image width + 10px padding left/right
+      imageContainer.style.height = `${datacubeImage.offsetHeight + 20}px`; // image height + 10px padding top/bottom
+
+      const imageContainerRect = imageContainer.getBoundingClientRect(); // Recalculate after setting dimensions
+
+      let finalImageContainerViewportTop; // This will be a viewport coordinate
+
+      // Check if the image container would go off the bottom of the viewport
+      if (tooltipRect.bottom + 5 + imageContainerRect.height > window.innerHeight) {
+        // If it goes off, position it above the tooltip
+        finalImageContainerViewportTop = tooltipRect.top - imageContainerRect.height - 5;
+      } else {
+        // Otherwise, position it below the tooltip
+        finalImageContainerViewportTop = tooltipRect.bottom + 5;
+      }
+
+      // Set the final position using document coordinates
+      imageContainer.style.left = `${tooltipRect.left + window.pageXOffset}px`; // Same X as tooltip
+      imageContainer.style.top = `${finalImageContainerViewportTop + window.pageYOffset}px`;
+    });
+  };
+
+  // If image is already loaded (e.g., from cache), call onload manually
+  if (datacubeImage.complete) {
+    datacubeImage.onload();
+  }
 }
 
 function updateActiveButton(activeButton) {
