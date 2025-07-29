@@ -549,6 +549,7 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
   let tooltip = document.createElement("div");
   tooltip.className = "tooltip";
   tooltip.innerHTML = `<div style="color: white;">${tooltipText}</div>`;
+  tooltip.style.pointerEvents = "none";
 
   // 데이터 큐브 이미지를 위한 별도의 컨테이너 생성
   let imageContainer = document.createElement("div");
@@ -559,6 +560,12 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
   imageContainer.style.padding = "10px";
   imageContainer.style.borderRadius = "5px";
   imageContainer.style.border = "1px solid white";
+  imageContainer.style.pointerEvents = "none";
+  
+  // 초기에 화면 밖에 위치시켜 로딩 중 보이지 않게 함
+  imageContainer.style.left = "-9999px";
+  imageContainer.style.top = "-9999px";
+
 
   // 데이터 큐브 이미지 경로 생성
   const imageName = tooltipText.startsWith('#') ? tooltipText.substring(1) : tooltipText;
