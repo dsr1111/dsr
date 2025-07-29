@@ -189,6 +189,16 @@ function hideTooltip() {
   }
 }
 
+function preloadDatacubeImages(datacubeItems) {
+  datacubeItems.forEach(item => {
+    const tooltipText = item.tooltip;
+    const imageName = tooltipText.startsWith('#') ? tooltipText.substring(1) : tooltipText;
+    const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.png`;
+    const img = new Image();
+    img.src = datacubeImagePath;
+  });
+}
+
 function initMap() {
   mapDropdown.addEventListener("change", function () {
     const selectedMap = maps[mapDropdown.value];
@@ -203,6 +213,10 @@ function initMap() {
       currentDatacube = [];
       currentMobs = [];
       dropdownContent.innerHTML = "";
+
+      if (selectedMap.datacube && selectedMap.datacube.length > 0) {
+        preloadDatacubeImages(selectedMap.datacube);
+      }
 
       // 카테고리별로 체크박스를 생성
       if (selectedMap.portals && selectedMap.portals.length > 0) {
