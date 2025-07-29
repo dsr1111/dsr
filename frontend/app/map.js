@@ -193,7 +193,7 @@ function preloadDatacubeImages(datacubeItems) {
   datacubeItems.forEach(item => {
     const tooltipText = item.tooltip;
     const imageName = tooltipText.startsWith('#') ? tooltipText.substring(1) : tooltipText;
-    const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.png`;
+    const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.webp`;
     const img = new Image();
     img.src = datacubeImagePath;
   });
@@ -583,7 +583,7 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
 
   // 데이터 큐브 이미지 경로 생성
   const imageName = tooltipText.startsWith('#') ? tooltipText.substring(1) : tooltipText;
-  const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.png`;
+  const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.webp`;
 
   // Create the image element
   const datacubeImage = document.createElement('img');
