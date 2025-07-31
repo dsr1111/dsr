@@ -225,7 +225,7 @@ class DataManager {
         if (this.currentType === 'digimon') {
             const fields = [
                 { name: 'name', label: '이름', type: 'text', required: true, value: digimonName || '' },
-                { name: 'evolution_stage', label: '진화단계', type: 'select', options: ['성장기', '성숙기', '완전체', '궁극체', '초궁극체', '조그레스', '특수'], value: item.evolution_stage || '' },
+                { name: 'evolution_stage', label: '진화단계', type: 'select', options: ['성장기', '성숙기', '완전체', '궁극체'], value: item.evolution_stage || '' },
                 { name: 'type', label: '타입', type: 'select', options: ['바이러스', '백신', '데이터', '프리', '언노운', 'NO DATA'], value: item.type || '' },
                 { name: 'level', label: '레벨', type: 'number', value: item.stats?.level || 0 },
                 { name: 'hp', label: 'HP', type: 'number', value: item.stats?.hp || 0 },
