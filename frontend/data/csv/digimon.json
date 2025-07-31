@@ -18488,6 +18488,92 @@
       }
     ]
   },
+  "가이오몬": {
+    "evolution_stage": "궁극체",
+    "type": "바이러스",
+    "stats": {
+      "level": 100,
+      "hp": 6274,
+      "sp": 1867,
+      "STR": 1060,
+      "INT": 873,
+      "DEF": 1030,
+      "RES": 918,
+      "SPD": 504
+    },
+    "strengths": {
+      "attribute": "강철",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "물리",
+      "effect": "회피불가"
+    },
+    "fields": [
+      "DR",
+      "NSp"
+    ],
+    "skills": [
+      {
+        "name": "인화참",
+        "hits": 2,
+        "range": "원거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0.25,
+          0.275,
+          0.3,
+          0.325,
+          0.35,
+          0.375,
+          0.4,
+          0.425,
+          0.45,
+          0.475
+        ]
+      },
+      {
+        "name": "인화격",
+        "hits": 1,
+        "range": "원거리",
+        "attribute": "빛",
+        "target_count": "단일",
+        "effect": "스턴",
+        "multipliers": [
+          0.9,
+          0.9425,
+          0.985,
+          1.0275,
+          1.07,
+          1.1125,
+          1.155,
+          1.1975,
+          1.24,
+          1.2825
+        ]
+      },
+      {
+        "name": "가이아 리액터",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "빛",
+        "target_count": "단일",
+        "multipliers": [
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95
+        ]
+      }
+    ]
+  },
   "갓드라몬": {
     "evolution_stage": "궁극체",
     "type": "백신",
@@ -21146,6 +21232,92 @@
           1.35,
           1.4,
           1.45
+        ]
+      }
+    ]
+  },
+  "반쵸레오몬:버스트모드": {
+    "evolution_stage": "궁극체",
+    "type": "백신",
+    "stats": {
+      "level": 100,
+      "hp": 6229,
+      "sp": 1942,
+      "STR": 1030,
+      "INT": 821,
+      "DEF": 1045,
+      "RES": 1038,
+      "SPD": 500
+    },
+    "strengths": {
+      "attribute": "불",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "물",
+      "effect": "효과확률"
+    },
+    "fields": [
+      "NSp",
+      "VB"
+    ],
+    "skills": [
+      {
+        "name": "남기",
+        "hits": 5,
+        "range": "원거리",
+        "attribute": "불",
+        "target_count": "단일",
+        "multipliers": [
+          0.1,
+          0.105,
+          0.11,
+          0.115,
+          0.12,
+          0.125,
+          0.13,
+          0.135,
+          0.14,
+          0.145
+        ]
+      },
+      {
+        "name": "번 반쵸 펀치",
+        "hits": 10,
+        "range": "근거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0.1,
+          0.105,
+          0.11,
+          0.115,
+          0.12,
+          0.125,
+          0.13,
+          0.135,
+          0.14,
+          0.145
+        ]
+      },
+      {
+        "name": "버닝 반쵸 펀치",
+        "hits": 5,
+        "range": "근거리",
+        "attribute": "불",
+        "target_count": "단일",
+        "effect": "방어력 감소",
+        "multipliers": [
+          0.18,
+          0.1885,
+          0.197,
+          0.2055,
+          0.214,
+          0.2225,
+          0.231,
+          0.2395,
+          0.248,
+          0.2565
         ]
       }
     ]

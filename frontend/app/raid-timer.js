@@ -57,17 +57,17 @@ const raids = [
     image: getImagePath('위그드라실_7D6'),
     times: ['21:00'],
     type: 'weekly',
-    days: [5, 6, 0], // 금(5), 토(6), 일(0)
+    days: [1, 2, 3], // 월(1), 화(2), 수(3)
     map: '무한 산',
   },
 ];
 
 const RotationRaid = {
-  name: '조커몬',
-  image: getImagePath('조커몬'),
+  name: '아라크네몬',
+  image: getImagePath('아라크네몬'),
   baseTime: '19:00',
-  baseDate: '2025-07-17',
-  map: '무한 산',
+  baseDate: '2025-07-31',
+  map: '기어 사바나',
 };
 
 function getCurrentKST() {
