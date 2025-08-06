@@ -251,7 +251,7 @@ function renderRaids() {
   const tyrannoTime = getMasterTyrannoNextTime();
   allRaids.push({
     name: RotationRaid.name,
-    image: RotationRation.image,
+    image: RotationRaid.image,
     timeStr: tyrannoTime.getHours().toString().padStart(2,'0') + ':' + tyrannoTime.getMinutes().toString().padStart(2,'0'),
     map: RotationRaid.map,
     nextTime: tyrannoTime,
