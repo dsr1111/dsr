@@ -70,10 +70,30 @@ const RotationRaid = {
   map: '기어 사바나',
 };
 
+let timeOffset = 0; // 서버 시간과 클라이언트 시간의 차이 (ms)
+
+// 서버 시간을 비동기적으로 가져와 시간 차이 계산
+async function fetchServerTime() {
+  try {
+    const response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Seoul');
+    if (!response.ok) {
+      throw new Error(`Server responded with status: ${response.status}`);
+    }
+    const data = await response.json();
+    const serverTime = new Date(data.utc_datetime).getTime();
+    const clientTime = new Date().getTime();
+    timeOffset = serverTime - clientTime;
+    console.log(`Server time synchronized. Offset: ${timeOffset}ms`);
+  } catch (error) {
+    console.error('Could not sync with server time, using local time instead.', error);
+    timeOffset = 0; // 에러 발생 시 로컬 시간 사용
+  }
+}
+
 function getCurrentKST() {
-  // 'Asia/Seoul' 시간대를 명시적으로 지정하고 10초 보정
-  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-  return new Date(now.getTime()); // 10초 보정
+  // 서버 시간과 동기화된 현재 시간 반환
+  const now = new Date();
+  return new Date(now.getTime() + timeOffset);
 }
 
 function getNextDailyTime(timeStr) {
@@ -323,7 +343,10 @@ function updateTimers() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // 서버 시간 동기화 먼저 실행
+  await fetchServerTime();
+
   const alarmToggle = document.getElementById('raid-alarm-toggle');
   const notificationTimeSpan = document.getElementById('notification-time');
   
