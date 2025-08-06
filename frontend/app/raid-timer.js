@@ -75,17 +75,21 @@ let timeOffset = 0; // 서버 시간과 클라이언트 시간의 차이 (ms)
 // 서버 시간을 비동기적으로 가져와 시간 차이 계산
 async function fetchServerTime() {
   try {
-    const response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Seoul');
+    const apiKey = '7YDXWZM4S9QK';
+    const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=Asia/Seoul`);
     if (!response.ok) {
       throw new Error(`Server responded with status: ${response.status}`);
     }
     const data = await response.json();
-    const serverTime = new Date(data.utc_datetime).getTime();
+    if (data.status !== 'OK') {
+      throw new Error(`TimezoneDB API Error: ${data.message}`);
+    }
+    const serverTime = new Date(data.timestamp * 1000).getTime();
     const clientTime = new Date().getTime();
     timeOffset = serverTime - clientTime;
-    console.log(`Server time synchronized. Offset: ${timeOffset}ms`);
+    console.log(`Server time synchronized using TimezoneDB. Offset: ${timeOffset}ms`);
   } catch (error) {
-    console.error('Could not sync with server time, using local time instead.', error);
+    console.error('Could not sync with TimezoneDB, using local time instead.', error);
     timeOffset = 0; // 에러 발생 시 로컬 시간 사용
   }
 }
