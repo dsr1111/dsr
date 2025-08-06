@@ -55,7 +55,7 @@ const raids = [
   {
     name: '위그드라실_7D6',
     image: getImagePath('위그드라실_7D6'),
-    times: ['21:00'],
+    times: ['21:00'], 
     type: 'weekly',
     days: [1, 2, 3], // 월(1), 화(2), 수(3)
     map: '무한 산',
@@ -72,7 +72,8 @@ const RotationRaid = {
 
 // TimezoneDB API를 사용하여 서울 시간 동기화
 const apiKey = '7YDXWZM4S9QK';
-let timeOffset = 0; // 로컬 시간과 서버 시간의 차이 (밀리초)
+let serverKST = null; // TimezoneDB에서 가져온 서울 시간
+let lastFetchTime = null; // serverKST를 가져온 로컬 시간
 
 async function initializeTime() {
   try {
@@ -82,23 +83,28 @@ async function initializeTime() {
     }
     const data = await response.json();
     if (data.status === 'OK') {
-      const serverTime = data.timestamp * 1000; // Unix timestamp (초) -> 밀리초
-      const localTime = Date.now();
-      timeOffset = serverTime - localTime;
-      console.log('Time synchronized with TimezoneDB. Offset:', timeOffset, 'ms');
+      serverKST = new Date(data.timestamp * 1000); // Unix timestamp (초) -> 밀리초
+      lastFetchTime = Date.now();
+      console.log('Time synchronized with TimezoneDB. Server KST:', serverKST);
     } else {
       throw new Error(`TimezoneDB API Error: ${data.message}`);
     }
   } catch (error) {
     console.error('Failed to initialize time from TimezoneDB:', error);
-    // API 실패 시, 기존 방식으로 대체하거나 사용자에게 알림
     alert('정확한 시간 정보를 가져오는데 실패했습니다. 브라우저의 기본 시간을 사용합니다.');
+    // API 실패 시, 로컬 시간을 사용하도록 대체
+    serverKST = new Date();
+    lastFetchTime = Date.now();
   }
 }
 
 function getCurrentKST() {
-  // 동기화된 시간 오프셋을 사용하여 현재 KST를 계산
-  return new Date(Date.now() + timeOffset);
+  if (!serverKST || !lastFetchTime) {
+    // 아직 시간이 초기화되지 않았거나 API 호출에 실패한 경우 로컬 시간 반환
+    return new Date();
+  }
+  const elapsed = Date.now() - lastFetchTime;
+  return new Date(serverKST.getTime() + elapsed);
 }
 
 function getNextDailyTime(timeStr) {
