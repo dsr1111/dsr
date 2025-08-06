@@ -55,7 +55,7 @@ const raids = [
   {
     name: '위그드라실_7D6',
     image: getImagePath('위그드라실_7D6'),
-    times: [1, 2, 3], // 월(1), 화(2), 수(3)
+    times: ['21:00'],
     type: 'weekly',
     days: [1, 2, 3], // 월(1), 화(2), 수(3)
     map: '무한 산',
