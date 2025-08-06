@@ -55,7 +55,7 @@ const raids = [
   {
     name: '위그드라실_7D6',
     image: getImagePath('위그드라실_7D6'),
-    times: ['21:00'], 
+    times: [1, 2, 3], // 월(1), 화(2), 수(3)
     type: 'weekly',
     days: [1, 2, 3], // 월(1), 화(2), 수(3)
     map: '무한 산',
@@ -86,6 +86,7 @@ async function initializeTime() {
       serverKST = new Date(data.timestamp * 1000); // Unix timestamp (초) -> 밀리초
       lastFetchTime = Date.now();
       console.log('Time synchronized with TimezoneDB. Server KST:', serverKST);
+      console.log('API에서 가져온 서울 시간 (serverKST):', serverKST.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
     } else {
       throw new Error(`TimezoneDB API Error: ${data.message}`);
     }
