@@ -70,34 +70,35 @@ const RotationRaid = {
   map: '기어 사바나',
 };
 
-let timeOffset = 0; // 서버 시간과 클라이언트 시간의 차이 (ms)
+// TimezoneDB API를 사용하여 서울 시간 동기화
+const apiKey = '7YDXWZM4S9QK';
+let timeOffset = 0; // 로컬 시간과 서버 시간의 차이 (밀리초)
 
-// 서버 시간을 비동기적으로 가져와 시간 차이 계산
-async function fetchServerTime() {
+async function initializeTime() {
   try {
-    const apiKey = '7YDXWZM4S9QK';
     const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=Asia/Seoul`);
     if (!response.ok) {
-      throw new Error(`Server responded with status: ${response.status}`);
+      throw new Error(`Network response was not ok: ${response.statusText}`);
     }
     const data = await response.json();
-    if (data.status !== 'OK') {
+    if (data.status === 'OK') {
+      const serverTime = data.timestamp * 1000; // Unix timestamp (초) -> 밀리초
+      const localTime = Date.now();
+      timeOffset = serverTime - localTime;
+      console.log('Time synchronized with TimezoneDB. Offset:', timeOffset, 'ms');
+    } else {
       throw new Error(`TimezoneDB API Error: ${data.message}`);
     }
-    const serverTime = new Date(data.timestamp * 1000).getTime();
-    const clientTime = new Date().getTime();
-    timeOffset = serverTime - clientTime;
-    console.log(`Server time synchronized using TimezoneDB. Offset: ${timeOffset}ms`);
   } catch (error) {
-    console.error('Could not sync with TimezoneDB, using local time instead.', error);
-    timeOffset = 0; // 에러 발생 시 로컬 시간 사용
+    console.error('Failed to initialize time from TimezoneDB:', error);
+    // API 실패 시, 기존 방식으로 대체하거나 사용자에게 알림
+    alert('정확한 시간 정보를 가져오는데 실패했습니다. 브라우저의 기본 시간을 사용합니다.');
   }
 }
 
 function getCurrentKST() {
-  // 서버 시간과 동기화된 현재 시간 반환
-  const now = new Date();
-  return new Date(now.getTime() + timeOffset);
+  // 동기화된 시간 오프셋을 사용하여 현재 KST를 계산
+  return new Date(Date.now() + timeOffset);
 }
 
 function getNextDailyTime(timeStr) {
@@ -348,8 +349,8 @@ function updateTimers() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 서버 시간 동기화 먼저 실행
-  await fetchServerTime();
+  // 페이지 로드 시 먼저 시간 동기화를 수행
+  await initializeTime();
 
   const alarmToggle = document.getElementById('raid-alarm-toggle');
   const notificationTimeSpan = document.getElementById('notification-time');
@@ -400,4 +401,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   renderRaids();
   setInterval(updateTimers, 1000);
-}); 
+});
