@@ -86,8 +86,6 @@ async function initializeTime() {
       // formatted 값을 직접 파싱하여 Date 객체 생성
       serverKST = new Date(data.formatted + ' GMT+0900'); // KST는 GMT+9
       lastFetchTime = Date.now();
-      console.log('API formatted 값:', data.formatted);
-      console.log('파싱된 서울 시간 (serverKST):', serverKST.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
     } else {
       throw new Error(`TimezoneDB API Error: ${data.message}`);
     }
