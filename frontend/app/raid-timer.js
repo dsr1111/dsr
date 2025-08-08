@@ -108,57 +108,71 @@ function getCurrentKST() {
 }
 
 function getNextDailyTime(timeStr) {
-  const [hour, min] = timeStr.split(':').map(Number);
-  const now = getCurrentKST();
-  let next = new Date(now);
-  next.setHours(hour, min, 0, 0);
-  if (next <= now) {
-    next.setDate(next.getDate() + 1);
-  }
-  return next;
+    const now = getCurrentKST();
+    // KST는 UTC+9. toISOString()은 항상 UTC 기준이므로 9시간을 더해 KST 날짜를 구함
+    const kstDate = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+    const kstDateString = kstDate.toISOString().slice(0, 10); // YYYY-MM-DD
+
+    let next = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+
+    if (next <= now) {
+        // 다음 날로 설정 (24시간을 더함)
+        next = new Date(next.getTime() + 24 * 60 * 60 * 1000);
+    }
+    return next;
 }
 
-function getNextBiweeklyTime(timeStr, baseDate) {
-  const [hour, min] = timeStr.split(':').map(Number);
-  const now = getCurrentKST();
-  const base = new Date(baseDate + 'T00:00:00+09:00');
-  
-  // 기준 날짜부터 현재까지의 일수 차이 계산
-  const diffDays = Math.floor((now - base) / (1000 * 60 * 60 * 24));
-  
-  // 2주(14일) 간격으로 다음 레이드 시간 계산
-  const nextDate = new Date(base);
-  nextDate.setDate(base.getDate() + Math.ceil(diffDays / 14) * 14);
-  nextDate.setHours(hour, min, 0, 0);
-  
-  // 이미 지난 시간이면 다음 2주 후로 설정
-  if (nextDate <= now) {
-    nextDate.setDate(nextDate.getDate() + 14);
-  }
-  
-  return nextDate;
+function getNextBiweeklyTime(timeStr, baseDateStr) {
+    const [hour, min] = timeStr.split(':').map(Number);
+    const now = getCurrentKST();
+    const base = new Date(baseDateStr + 'T00:00:00+09:00');
+
+    // now와 base의 시간을 00:00:00 (KST)로 맞춰서 날짜 차이만 계산
+    const nowAtMidnightKST = new Date(new Date(now).setUTCHours(15, 0, 0, 0)); // KST 자정은 UTC 15시
+    const baseAtMidnightKST = new Date(new Date(base).setUTCHours(15, 0, 0, 0));
+    
+    const diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
+    
+    const cycles = Math.floor(diffDays / 14);
+    let nextDate = new Date(base.getTime() + cycles * 14 * 24 * 60 * 60 * 1000);
+    
+    // 다음 레이드 시간을 KST로 설정
+    const kstDate = new Date(nextDate.getTime() + (9 * 60 * 60 * 1000));
+    const kstDateString = kstDate.toISOString().slice(0, 10);
+    let nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+
+    if (nextRaidTime <= now) {
+        nextRaidTime = new Date(nextRaidTime.getTime() + 14 * 24 * 60 * 60 * 1000);
+    }
+
+    return nextRaidTime;
 }
 
 function getNextWeeklyTime(timeStr, days) {
-  const [hour, min] = timeStr.split(':').map(Number);
-  const now = getCurrentKST();
-  let next = new Date(now);
-  next.setHours(hour, min, 0, 0);
+    const [hour, min] = timeStr.split(':').map(Number);
+    const now = getCurrentKST();
+    
+    for (let i = 0; i < 14; i++) { // 최대 2주까지만 탐색
+        const futureDate = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
+        
+        // KST 날짜 문자열 생성
+        const kstDate = new Date(futureDate.getTime() + (9 * 60 * 60 * 1000));
+        const kstDateString = kstDate.toISOString().slice(0, 10);
+        
+        const nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+        
+        // getDay()는 현지 시간 기준이므로, KST 기준 요일을 구해야 함
+        const kstDay = new Date(nextRaidTime.toLocaleString('en-US', { timeZone: 'Asia/Seoul' })).getDay();
 
-  let addDays = 0;
-  while (true) {
-    const candidate = new Date(now);
-    candidate.setDate(now.getDate() + addDays);
-    candidate.setHours(hour, min, 0, 0);
-    const dayOfWeek = candidate.getDay();
-    if (days.includes(dayOfWeek) && candidate > now) {
-      next = candidate;
-      break;
+        if (days.includes(kstDay) && nextRaidTime > now) {
+            return nextRaidTime;
+        }
     }
-    addDays++;
-    if (addDays > 14) break; // 안전장치
-  }
-  return next;
+    // 만약 지난 2주간 해당 요일이 없다면, 기본 로직으로 다음 시간을 반환 (오류 방지)
+    const fallbackDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const kstDate = new Date(fallbackDate.getTime() + (9 * 60 * 60 * 1000));
+    const kstDateString = kstDate.toISOString().slice(0, 10);
+    return new Date(`${kstDateString}T${timeStr}:00+09:00`);
 }
 
 function getTimeDiffString(target) {
