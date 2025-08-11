@@ -202,35 +202,31 @@ function getMasterTyrannoNextTime() {
     const baseDate = new Date(RotationRaid.baseDate + 'T00:00:00+09:00');
     const [baseHour, baseMin] = RotationRaid.baseTime.split(':').map(Number);
 
-    // KST 자정(UTC 15:00)을 기준으로 날짜 차이를 계산하여 시간대 문제를 회피
     const nowInKST = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
     const baseInKST = new Date(baseDate.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
 
     nowInKST.setHours(0, 0, 0, 0);
     baseInKST.setHours(0, 0, 0, 0);
 
-    const diffDays = Math.floor((nowInKST - baseInKST) / (1000 * 60 * 60 * 24));
+    let diffDays = Math.floor((nowInKST - baseInKST) / (1000 * 60 * 60 * 24));
 
-    // 오늘 레이드 시간 계산 (하루는 1440분)
-    let totalMinutesToday = (baseHour * 60 + baseMin + diffDays * 25) % 1440;
-    const hoursToday = Math.floor(totalMinutesToday / 60);
-    const minutesToday = totalMinutesToday % 60;
+    // Get the date for the raid
+    let raidDate = new Date(baseDate.getTime());
+    raidDate.setDate(raidDate.getDate() + diffDays);
 
-    // KST 현재 날짜를 기준으로 다음 레이드 시간 객체 생성
-    const kstNow = new Date(now.getTime() + (9 * 60 * 60 * 1000));
-    const kstDateString = kstNow.toISOString().slice(0, 10);
-    let nextTime = new Date(`${kstDateString}T${String(hoursToday).padStart(2, '0')}:${String(minutesToday).padStart(2, '0')}:00+09:00`);
+    // Get the time for the raid
+    raidDate.setHours(baseHour, baseMin);
+    raidDate.setMinutes(raidDate.getMinutes() + diffDays * 25);
 
-    // 만약 계산된 시간이 이미 지났다면, 내일 시간으로 계산
+    let nextTime = raidDate;
+
     if (nextTime <= now) {
-        let totalMinutesTomorrow = (baseHour * 60 + baseMin + (diffDays + 1) * 25) % 1440;
-        const hoursTomorrow = Math.floor(totalMinutesTomorrow / 60);
-        const minutesTomorrow = totalMinutesTomorrow % 60;
-        
-        // KST 기준 내일 날짜를 구함
-        const kstTomorrow = new Date(now.getTime() + (24 * 60 * 60 * 1000) + (9 * 60 * 60 * 1000));
-        const kstTomorrowDateString = kstTomorrow.toISOString().slice(0, 10);
-        nextTime = new Date(`${kstTomorrowDateString}T${String(hoursTomorrow).padStart(2, '0')}:${String(minutesTomorrow).padStart(2, '0')}:00+09:00`);
+        diffDays++;
+        raidDate = new Date(baseDate.getTime());
+        raidDate.setDate(raidDate.getDate() + diffDays);
+        raidDate.setHours(baseHour, baseMin);
+        raidDate.setMinutes(raidDate.getMinutes() + diffDays * 25);
+        nextTime = raidDate;
     }
 
     return nextTime;
