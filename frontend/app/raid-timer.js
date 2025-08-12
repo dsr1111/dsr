@@ -1,7 +1,7 @@
 function getImagePath(name) {
   // :를 _로 대체
   const safeName = name.replace(/:/g, '_');
-  return `https://media.dsrwiki.com/dsrwiki/image/digimon/${safeName}/${safeName}.webp`;
+  return `https://media.dsrwiki.com/dsrwiki/digimon/${safeName}/${safeName}.webp`;
 }
 
 // 레이드 정보 배열

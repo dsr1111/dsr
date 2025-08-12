@@ -101,7 +101,7 @@ function displayCharacterType(digimonData, characterName) {
 
 function displayCharacterImage(characterName) {
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
-  const characterImagePath = `https://media.dsrwiki.com/dsrwiki/image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
+  const characterImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
   const characterImageCell = document.getElementById("character-image-cell");
   characterImageCell.innerHTML = `<img src="${characterImagePath}" alt="${sanitizedCharacterName}" class="character-image">`;
 }
@@ -131,7 +131,7 @@ async function displaySkillImage(characterName) {
 
     if (skillData) {
       const skillImageName = skillData.attribute;
-      const skillImagePath = `https://media.dsrwiki.com/dsrwiki/image/${skillImageName}.webp`;
+      const skillImagePath = `https://media.dsrwiki.com/dsrwiki/${skillImageName}.webp`;
       const skillText = skillData.target_count;
       const skillImageCell = document.getElementById("skill-cell");
 
@@ -140,7 +140,7 @@ async function displaySkillImage(characterName) {
           <img 
             src="${skillImagePath}" 
             alt="${skillImageName}" 
-            style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/image/background.webp'); background-size: 120%; background-position: center;">
+            style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/background.webp'); background-size: 120%; background-position: center;">
           <span>/ ${skillText}</span>
         </div>
       `;
@@ -223,7 +223,7 @@ async function updateMobDetails(mobData, selectedMob) {
 
   if (mobRow) {
     document.getElementById("mob-level").textContent = mobRow[3];
-    const mobTypeImage = mobRow[4] ? `https://media.dsrwiki.com/dsrwiki/image/${mobRow[4]}.webp` : "-";
+    const mobTypeImage = mobRow[4] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[4]}.webp` : "-";
     document.getElementById("mob-type").innerHTML = mobRow[4]
       ? `<img src="${mobTypeImage}"  alt="${mobRow[4]}" style="width: 25px; height: 25px;">`
       : "-";
@@ -231,15 +231,15 @@ async function updateMobDetails(mobData, selectedMob) {
     document.getElementById("mob-def").textContent = parseFloat(
       mobRow[6]
     ).toFixed(2);
-    const mobWeaknessImage = mobRow[7] ? `https://media.dsrwiki.com/dsrwiki/image/${mobRow[7]}.webp` : "-";
+    const mobWeaknessImage = mobRow[7] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[7]}.webp` : "-";
     document.getElementById("mob-weak").innerHTML = mobRow[7]
-      ? `<img src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/image/weakbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
-    const mobStrengthImage = mobRow[8] ? `https://media.dsrwiki.com/dsrwiki/image/${mobRow[8]}.webp` : "-";
+    const mobStrengthImage = mobRow[8] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[8]}.webp` : "-";
     document.getElementById("mob-strong").innerHTML = mobRow[8]
-      ? `<img src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/image/strongbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
-    const mobImagePath = `https://media.dsrwiki.com/dsrwiki/image/digimon/${selectedMob}/${selectedMob}.webp`;
+    const mobImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${selectedMob}/${selectedMob}.webp`;
     const mobImageCell = document.getElementById("mob-image-cell");
     mobImageCell.innerHTML = `<img src="${mobImagePath}"  alt="${selectedMob}" class="mob-image">`;
   }

@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const character = data[characterName];
 
       if (character) {
-        const characterImgPath = `https://media.dsrwiki.com/dsrwiki/image/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
+        const characterImgPath = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
         const evolutionStage = character.evolution_stage;
         const type = character.type;
         const fields = character.fields || [];
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 1; i <= 3; i++) {
           const fieldImgElement = document.getElementById(`field-img${i}`);
           if (fields[i - 1]) {
-            fieldImgElement.src = `https://media.dsrwiki.com/dsrwiki/image/field/${fields[i - 1]}.webp`;
+            fieldImgElement.src = `https://media.dsrwiki.com/dsrwiki/field/${fields[i - 1]}.webp`;
             fieldImgElement.alt = `${fields[i - 1]} 이미지`;
             addTooltipToElement(fieldImgElement, fields[i - 1]);
             fieldImgElement.style.display = "inline";
@@ -89,11 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
         addTooltipToElement(characterImg, characterName);
         
         const evolutionImg = document.getElementById("evolution-img");
-        evolutionImg.src = `https://media.dsrwiki.com/dsrwiki/image/${evolutionStage}.webp`;
+        evolutionImg.src = `https://media.dsrwiki.com/dsrwiki/${evolutionStage}.webp`;
         addTooltipToElement(evolutionImg, evolutionStage);
         
         const typeImg = document.getElementById("type-img");
-        typeImg.src = `https://media.dsrwiki.com/dsrwiki/image/${type}.webp`;
+        typeImg.src = `https://media.dsrwiki.com/dsrwiki/${type}.webp`;
         addTooltipToElement(typeImg, type);
 
         // 디지코어화 정보 가져오기
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="digicore-item">
                       <div class="digicore-item-main">
                         <div class="digicore-item-image">
-                          <img src="https://media.dsrwiki.com/dsrwiki/image/item/${item.name}.webp" alt="${item.name}" title="${item.name}">
+                          <img src="https://media.dsrwiki.com/dsrwiki/item/${item.name}.webp" alt="${item.name}" title="${item.name}">
                         </div>
                         <div class="digicore-item-info">
                           <div class="digicore-item-name">${item.name}${item.count ? ` <span class=\"item-count\">x${item.count}</span>` : ''}</div>
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
                               <div class="possible-item">
                                 <div class="possible-item-row">
                                   <div class="possible-item-image">
-                                    <img src="https://media.dsrwiki.com/dsrwiki/image/item/${possibleItem.name}.webp" alt="${possibleItem.name}" title="${possibleItem.name}">
+                                    <img src="https://media.dsrwiki.com/dsrwiki/item/${possibleItem.name}.webp" alt="${possibleItem.name}" title="${possibleItem.name}">
                                   </div>
                                   <div class="possible-item-info">
                                     <div class="possible-item-name">${possibleItem.name}${possibleItem.count ? ` <span class=\"item-count\">x${possibleItem.count}</span>` : ''}</div>
@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         <div class="possible-item">
                                           <div class="possible-item-row">
                                             <div class="possible-item-image">
-                                              <img src="https://media.dsrwiki.com/dsrwiki/image/item/${subItem.name}.webp" alt="${subItem.name}" title="${subItem.name}">
+                                              <img src="https://media.dsrwiki.com/dsrwiki/item/${subItem.name}.webp" alt="${subItem.name}" title="${subItem.name}">
                                             </div>
                                             <div class="possible-item-info">
                                               <div class="possible-item-name">${subItem.name}${subItem.count ? ` <span class=\"item-count\">x${subItem.count}</span>` : ''}</div>
@@ -342,8 +342,8 @@ document.addEventListener("DOMContentLoaded", () => {
           swTableBody.innerHTML += `
             <tr>
               <td class=\"sw-icon\">
-                <div class=\"sw-icon-container\" style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/image/strongbackground.webp');\">
-                  <img src=\"https://media.dsrwiki.com/dsrwiki/image/${strengthAttr}.webp\" alt=\"${strengthAttr} 이미지\" title=\"${strengthAttr}\">
+                <div class=\"sw-icon-container\" style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');\">
+                  <img src=\"https://media.dsrwiki.com/dsrwiki/${strengthAttr}.webp\" alt=\"${strengthAttr} 이미지\" title=\"${strengthAttr}\">
                 </div>
               </td>
               <td class=\"sw-description\">${strengthEff}</td>
@@ -366,8 +366,8 @@ document.addEventListener("DOMContentLoaded", () => {
           swTableBody.innerHTML += `
             <tr>
               <td class=\"sw-icon\">
-                <div class=\"sw-icon-container\" style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/image/weakbackground.webp');\">
-                  <img src=\"https://media.dsrwiki.com/dsrwiki/image/${weaknessAttr}.webp\" alt=\"${weaknessAttr} 이미지\" title=\"${weaknessAttr}\">
+                <div class=\"sw-icon-container\" style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');\">
+                  <img src=\"https://media.dsrwiki.com/dsrwiki/${weaknessAttr}.webp\" alt=\"${weaknessAttr} 이미지\" title=\"${weaknessAttr}\">
                 </div>
               </td>
               <td class=\"sw-description\">${weaknessEff}</td>
@@ -381,8 +381,8 @@ document.addEventListener("DOMContentLoaded", () => {
         skillDetailsTable.innerHTML = "";
 
         character.skills.forEach((skillData, index) => {
-          const skillImgPath = `https://media.dsrwiki.com/dsrwiki/image/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
-          const skill1ImgPath = `https://media.dsrwiki.com/dsrwiki/image/${skillData.attribute}.webp`;
+          const skillImgPath = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedCharacterName}/skill${index + 1}.webp`;
+          const skill1ImgPath = `https://media.dsrwiki.com/dsrwiki/${skillData.attribute}.webp`;
 
           const levelData = skillData.multipliers.map(value => {
             let percentage = isNaN(parseFloat(value)) ? 0 : parseFloat(value) * 100;
@@ -482,9 +482,9 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="digimon-container">
                 ${deck.digimon.map(d => `
                   <div class="digimon-avatar ${d.name === characterName ? 'highlight' : ''}">
-                    <img src="https://media.dsrwiki.com/dsrwiki/image/digimon/${d.name.replace(/:/g, '_')}/${d.name.replace(/:/g, '_')}.webp" 
+                    <img src="https://media.dsrwiki.com/dsrwiki/digimon/${d.name.replace(/:/g, '_')}/${d.name.replace(/:/g, '_')}.webp" 
                          alt="${d.name}" 
-                         onerror="this.src='https://media.dsrwiki.com/dsrwiki/image/digimon/default.webp'">
+                         onerror="this.src='https://media.dsrwiki.com/dsrwiki/digimon/default.webp'">
                     <div class="digimon-tooltip">Lv.${d.level} ${d.name}</div>
                   </div>
                 `).join('')}

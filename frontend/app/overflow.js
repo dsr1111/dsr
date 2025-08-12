@@ -13,9 +13,9 @@ const selectPage = document.querySelector(".select-page");
 mapDropdown.addEventListener("change", function () {
   const selectedMap = mapDropdown.value;
   if (selectedMap !== "default") {
-    selectPage.style.backgroundImage = `url('https://media.dsrwiki.com/dsrwiki/image/overflow/${selectedMap}.webp')`;
+    selectPage.style.backgroundImage = `url('https://media.dsrwiki.com/dsrwiki/overflow/${selectedMap}.webp')`;
   } else {
-    selectPage.style.backgroundImage = `url('https://media.dsrwiki.com/dsrwiki/image/overflow/무한 산.webp')`;
+    selectPage.style.backgroundImage = `url('https://media.dsrwiki.com/dsrwiki/overflow/무한 산.webp')`;
   }
 });
 
@@ -128,7 +128,7 @@ function updateMobImages(map, stage) {
           const sanitizedFileName = mob.name.replace(/:/g, "_");
 
           const img = document.createElement("img");
-          img.src = `https://media.dsrwiki.com/dsrwiki/image/digimon/${sanitizedFileName}/${sanitizedFileName}.webp`;
+          img.src = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedFileName}/${sanitizedFileName}.webp`;
           img.alt = mob.name;
 
           const transformedAttribute =
@@ -182,7 +182,7 @@ function updateRepeatRewards(matchingRow) {
       itemContainer.classList.add("item-container");
 
       const img = document.createElement("img");
-      img.src = `https://media.dsrwiki.com/dsrwiki/image/item/${fileName}.webp`;
+      img.src = `https://media.dsrwiki.com/dsrwiki/item/${fileName}.webp`;
       img.alt = reward.name;
       img.classList.add("item-image");
 
@@ -227,7 +227,7 @@ function updateFirstClearRewards(matchingRow) {
       itemContainer.classList.add("item-container");
 
       const img = document.createElement("img");
-      img.src = `https://media.dsrwiki.com/dsrwiki/image/item/${fileName}.webp`;
+      img.src = `https://media.dsrwiki.com/dsrwiki/item/${fileName}.webp`;
       img.alt = reward.name;
       img.classList.add("item-image");
 
@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
   mapDropdown.value = selectedMap;
 
   const selectPage = document.querySelector(".select-page");
-  selectPage.style.backgroundImage = `url('https://media.dsrwiki.com/dsrwiki/image/overflow/${selectedMap}.webp')`;
+  selectPage.style.backgroundImage = `url('https://media.dsrwiki.com/dsrwiki/overflow/${selectedMap}.webp')`;
 
   setActiveDays(selectedMap);
 

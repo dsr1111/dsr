@@ -1,27 +1,27 @@
 {
   "시작의 마을": {
-    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/image/map/시작의마을.webp",
+    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/map/시작의마을.webp",
     "portals": [
       {
         "id": "portal1",
         "tooltip": "용의 눈 호수<br>포탈",
         "top": 402.6575,
         "left": 636.57125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal1",
         "tooltip": "기어 사바나<br>포탈",
         "top": 171.07125,
         "left": 457.35375000000005,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal1",
         "tooltip": "무한 산<br>포탈",
         "top": 114.0475,
         "left": 194.34625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       }
     ],
     "warps": [
@@ -30,21 +30,21 @@
         "tooltip": "워프 포인트<br>시작의 마을 광장",
         "top": 502.73999999999995,
         "left": 296.75624999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp1",
         "tooltip": "워프 포인트<br>시작의 마을 공터",
         "top": 356.57124999999996,
         "left": 52.36875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp1",
         "tooltip": "워프 포인트<br>시작의 마을 아랫마을",
         "top": 230,
         "left": 338,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       }
     ],
     "shops": [
@@ -53,63 +53,63 @@
         "tooltip": "디지털해저드 토큰 교환<br>오파니몬",
         "top": 462.00874999999996,
         "left": 173.39874999999998,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "디지몬 먹이 상인<br>요리사 백조몬",
         "top": 464.33624999999995,
         "left": 203.65625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "균열 교환 상인<br>텐타몬",
         "top": 584.2025,
         "left": 306.06625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "오버플로우 교환 상인<br>피요몬",
         "top": 580.71125,
         "left": 311.885,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "RANK토큰 교환 상인<br>쉬라몬",
         "top": 573.72875,
         "left": 320.03125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "배틀 아이템 상인<br>제작자 데이터몬",
         "top": 535.3249999999999,
         "left": 328.1775,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "소모품 상인<br>먹보 머슈몬",
         "top": 527.17875,
         "left": 320.03125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "세계수의 힘을 원하는 자<br>쥬레이몬",
         "top": 480.62874999999997,
         "left": 337.4875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       },
       {
         "id": "shop1",
         "tooltip": "상자 조각 교환<br>데뀨보물상자",
         "top": 479.46500000000003,
         "left": 300.2475,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       }
     ],
     "datacube": [
@@ -118,140 +118,140 @@
         "tooltip": "#11",
         "top": 558.6,
         "left": 424.76875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube12",
         "tooltip": "#12",
         "top": 581.875,
         "left": 424.76875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube13",
         "tooltip": "#13",
         "top": 640.0625,
         "left": 337.4875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube14",
         "tooltip": "#14",
         "top": 622.6062499999999,
         "left": 244.38750000000002,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube15",
         "tooltip": "#15",
         "top": 535.3249999999999,
         "left": 203.65625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube16",
         "tooltip": "#16",
         "top": 482.95625000000007,
         "left": 250.20624999999998,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube17",
         "tooltip": "#17",
         "top": 459.68125000000003,
         "left": 290.9375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube18",
         "tooltip": "#18",
         "top": 459.68125000000003,
         "left": 349.125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube19",
         "tooltip": "#19",
         "top": 482.95625000000007,
         "left": 418.95,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube20",
         "tooltip": "#20",
         "top": 285.11875000000003,
         "left": 343.30625000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube21",
         "tooltip": "#21",
         "top": 232.75,
         "left": 430.58750000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube22",
         "tooltip": "#22",
         "top": 197.8375,
         "left": 349.125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube23",
         "tooltip": "#23",
         "top": 87.28125,
         "left": 331.66875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube24",
         "tooltip": "#24",
         "top": 151.2875,
         "left": 378.21875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube25",
         "tooltip": "#25",
         "top": 360.7625,
         "left": 302.575,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube26",
         "tooltip": "#26",
         "top": 180.38125,
         "left": 261.84375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube27",
         "tooltip": "#27",
         "top": 368.90875,
         "left": 212.96625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube28",
         "tooltip": "#28",
         "top": 337.4875,
         "left": 151.2875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube29",
         "tooltip": "#29",
         "top": 273.48125,
         "left": 29.09375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube30",
         "tooltip": "#30",
         "top": 154.77875,
         "left": 131.50375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       }
     ],
     "mobs": [
@@ -259,7 +259,7 @@
         "id": "mob1",
         "top": 232.75,
         "left": 349.125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/츄몬/츄몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/츄몬/츄몬.webp",
         "name": "츄몬",
         "level": 20,
         "hp": 315,
@@ -280,7 +280,7 @@
         "id": "mob2",
         "top": 197.8375,
         "left": 407.3125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/츄몬/츄몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/츄몬/츄몬.webp",
         "name": "츄몬",
         "level": 16,
         "hp": 259,
@@ -300,7 +300,7 @@
         "id": "mob2",
         "top": 100.625,
         "left": 358.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/고부리몬/고부리몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/고부리몬/고부리몬.webp",
         "name": "고부리몬",
         "level": 18,
         "hp": 362,
@@ -321,7 +321,7 @@
         "id": "mob2",
         "top": 227.5,
         "left": 463.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/아기벌몬/아기벌몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/아기벌몬/아기벌몬.webp",
         "name": "아기벌몬",
         "level": 20,
         "hp": 343,
@@ -342,7 +342,7 @@
         "id": "mob2",
         "top": 315.0,
         "left": 455.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/고부리몬/고부리몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/고부리몬/고부리몬.webp",
         "name": "고부리몬",
         "level": 20,
         "hp": 396,
@@ -362,21 +362,21 @@
     ]
   },
   "용의 눈 호수": {
-    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/image/map/용의눈호수.webp",
+    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/map/용의눈호수.webp",
     "portals": [
       {
         "id": "portal1",
         "tooltip": "시작의 마을<br>포탈",
         "top": 395.675,
         "left": 104.7375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal1",
         "tooltip": "고래몬<br>고래몬",
         "top": 560.0,
         "left": 446.25,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       }
     ],
     "warps": [
@@ -385,7 +385,7 @@
         "tooltip": "워프 포인트<br>용의 눈 호수 해변가",
         "top": 553.945,
         "left": 381.71000000000004,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       }
     ],
     "datacube": [
@@ -394,70 +394,70 @@
         "tooltip": "#1",
         "top": 331.66875,
         "left": 98.91875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#2",
         "top": 337.4875,
         "left": 430.58750000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#3",
         "top": 442.22499999999997,
         "left": 488.77500000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#4",
         "top": 546.9625,
         "left": 436.40625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#5",
         "top": 279.3,
         "left": 448.04374999999993,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#6",
         "top": 110.55624999999999,
         "left": 610.96875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#7",
         "top": 372.40000000000003,
         "left": 482.95625000000007,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#8",
         "top": 512.0500000000001,
         "left": 325.84999999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#9",
         "top": 648.20875,
         "left": 237.405,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube1",
         "tooltip": "#10",
         "top": 471.31874999999997,
         "left": 296.75624999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       }
     ],
     "mobs": [
@@ -465,7 +465,7 @@
         "id": "mob1",
         "top": 126.875,
         "left": 595.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/기자몬/기자몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/기자몬/기자몬.webp",
         "name": "기자몬",
         "level": 2,
         "hp": 117,
@@ -486,7 +486,7 @@
         "id": "mob1",
         "top": 402.5,
         "left": 288.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/기자몬/기자몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/기자몬/기자몬.webp",
         "name": "기자몬",
         "level": 8,
         "hp": 291,
@@ -507,7 +507,7 @@
         "id": "mob1",
         "top": 516.25,
         "left": 218.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/기자몬/기자몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/기자몬/기자몬.webp",
         "name": "기자몬",
         "level": 14,
         "hp": 467,
@@ -528,7 +528,7 @@
         "id": "mob1",
         "top": 367.5,
         "left": 420.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/베타몬/베타몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/베타몬/베타몬.webp",
         "name": "베타몬",
         "level": 6,
         "hp": 208,
@@ -549,7 +549,7 @@
         "id": "mob1",
         "top": 350.0,
         "left": 113.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/베타몬/베타몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/베타몬/베타몬.webp",
         "name": "베타몬",
         "level": 12,
         "hp": 364,
@@ -570,7 +570,7 @@
         "id": "mob1",
         "top": 472.5,
         "left": 166.25,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/머슈몬/머슈몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/머슈몬/머슈몬.webp",
         "name": "머슈몬",
         "level": 10,
         "hp": 292,
@@ -591,7 +591,7 @@
         "id": "mob1",
         "top": 358.75,
         "left": 148.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/아기벌몬/아기벌몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/아기벌몬/아기벌몬.webp",
         "name": "아기벌몬",
         "level": 12,
         "hp": 270,
@@ -612,7 +612,7 @@
         "id": "mob1",
         "top": 586.25,
         "left": 315.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/쉘몬/쉘몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/쉘몬/쉘몬.webp",
         "name": "신태일에게 패배한 쉘몬",
         "level": 14,
         "hp": 288,
@@ -633,7 +633,7 @@
         "id": "mob1",
         "top": 490.0,
         "left": 411.25,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/쉘몬/쉘몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/쉘몬/쉘몬.webp",
         "name": "쉘몬",
         "level": 14,
         "hp": 288,
@@ -653,7 +653,7 @@
         "id": "mob1",
         "top": 595.0,
         "left": 411.25,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/츄몬/츄몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/츄몬/츄몬.webp",
         "name": "츄몬",
         "level": 22,
         "hp": 689,
@@ -667,7 +667,7 @@
         "id": "mob1",
         "top": 253.75,
         "left": 183.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/시드라몬/시드라몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/시드라몬/시드라몬.webp",
         "name": "화가 난 시드라몬",
         "level": 26,
         "hp": 2218,
@@ -681,7 +681,7 @@
         "id": "mob1",
         "top": 516.25,
         "left": 376.25,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/레어몬/레어몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/레어몬/레어몬.webp",
         "name": "레어몬",
         "level": 40,
         "hp": 856,
@@ -701,7 +701,7 @@
         "id": "mob1",
         "top": 612.5,
         "left": 280.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/레어몬/레어몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/레어몬/레어몬.webp",
         "name": "레어몬",
         "level": 40,
         "hp": 856,
@@ -720,21 +720,21 @@
     ]
   },
   "기어 사바나": {
-    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/image/map/기어사바나.webp",
+    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/map/기어사바나.webp",
     "portals": [
       {
         "id": "portal1",
         "tooltip": "시작의 마을<br>포탈",
         "top": 171.07125,
         "left": 482.95625000000007,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal2",
         "tooltip": "무한 산<br>포탈",
         "top": -17.45625,
         "left": 238.56874999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       }
     ],
     "warps": [
@@ -743,28 +743,28 @@
         "tooltip": "워프 포인트<br>기어 사바나 바위산",
         "top": 180.38125,
         "left": 232.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp2",
         "tooltip": "워프 포인트<br>기어 사바나 어니몬 마을",
         "top": 288.60999999999996,
         "left": 535.3249999999999,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp3",
         "tooltip": "워프 포인트<br>기어 사바나 공장",
         "top": 499.24875000000003,
         "left": 310.72125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp3",
         "tooltip": "워프 포인트<br>기어 사바나 늪지대",
         "top": 395,
         "left": 130,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       }
     ],
     "shops": [
@@ -773,7 +773,7 @@
         "tooltip": "기어 사바나 상인<br>수집가 어니몬",
         "top": 290.9375,
         "left": 550.45375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       }
     ],
     "overflows": [
@@ -782,14 +782,14 @@
         "tooltip": "오버플로우 던전<br>파닥몬",
         "top": 295,
         "left": 590,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/오버플로우.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/오버플로우.webp"
       },
       {
         "id": "overflow2",
         "tooltip": "무한 오버플로우 던전<br>운석몬",
         "top": 210,
         "left": 350,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/오버플로우.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/오버플로우.webp"
       }
     ],
     "datacube": [
@@ -798,140 +798,140 @@
         "tooltip": "#31",
         "top": 445.71625,
         "left": 258.35249999999996,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube32",
         "tooltip": "#32",
         "top": 622.6062499999999,
         "left": 267.66249999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube33",
         "tooltip": "#33",
         "top": 599.3312500000001,
         "left": 209.475,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube34",
         "tooltip": "#34",
         "top": 624.93375,
         "left": 306.06625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube35",
         "tooltip": "#35",
         "top": 659.84625,
         "left": 322.35875000000004,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube36",
         "tooltip": "#36",
         "top": 591.185,
         "left": 301.41125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube37",
         "tooltip": "#37",
         "top": 517.86875,
         "left": 267.66249999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube38",
         "tooltip": "#38",
         "top": 445.71625,
         "left": 212.96625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube39",
         "tooltip": "#39",
         "top": 669.15625,
         "left": 157.10625000000002,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube40",
         "tooltip": "#40",
         "top": 570.2375000000001,
         "left": 157.10625000000002,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube41",
         "tooltip": "#41",
         "top": 546.9625,
         "left": 98.91875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube42",
         "tooltip": "#42",
         "top": 378.21875,
         "left": 349.125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube43",
         "tooltip": "#43",
         "top": 250.20624999999998,
         "left": 238.56874999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube44",
         "tooltip": "#44",
         "top": 256.02500000000003,
         "left": 337.4875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube45",
         "tooltip": "#45",
         "top": 116.375,
         "left": 494.59375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube46",
         "tooltip": "#46",
         "top": 203.65625,
         "left": 325.84999999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube47",
         "tooltip": "#47",
         "top": 308.39375,
         "left": 430.58750000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube48",
         "tooltip": "#48",
         "top": 366.58125,
         "left": 401.49375000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube49",
         "tooltip": "#49",
         "top": 517.86875,
         "left": 285.11875000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube50",
         "tooltip": "#50",
         "top": 75.64375,
         "left": 186.20000000000002,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       }
     ],
     "mobs": [
@@ -939,7 +939,7 @@
         "id": "mob1",
         "top": 297.5,
         "left": 503.125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/캔들몬/캔들몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/캔들몬/캔들몬.webp",
         "name": "캔들몬",
         "level": 20,
         "hp": 377,
@@ -961,7 +961,7 @@
         "id": "mob1",
         "top": 507.5,
         "left": 472.5,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/캔들몬/캔들몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/캔들몬/캔들몬.webp",
         "name": "캔들몬",
         "level": 20,
         "hp": 377,
@@ -983,7 +983,7 @@
         "id": "mob1",
         "top": 175.0,
         "left": 385.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/캔들몬/캔들몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/캔들몬/캔들몬.webp",
         "name": "캔들몬",
         "level": 30,
         "hp": 1092,
@@ -1004,7 +1004,7 @@
         "id": "mob1",
         "top": 100.625,
         "left": 323.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/캔들몬/캔들몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/캔들몬/캔들몬.webp",
         "name": "캔들몬",
         "level": 32,
         "hp": 1158,
@@ -1025,7 +1025,7 @@
         "id": "mob1",
         "top": 341.25,
         "left": 525.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/레어몬/레어몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/레어몬/레어몬.webp",
         "name": "레어몬",
         "level": 26,
         "hp": 3060,
@@ -1039,7 +1039,7 @@
         "id": "mob1",
         "top": 385.0,
         "left": 91.875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/레어몬/레어몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/레어몬/레어몬.webp",
         "name": "레어몬",
         "level": 28,
         "hp": 1228,
@@ -1059,7 +1059,7 @@
         "id": "mob1",
         "top": 192.5,
         "left": 183.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/레어몬/레어몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/레어몬/레어몬.webp",
         "name": "레어몬",
         "level": 44,
         "hp": 1874,
@@ -1079,7 +1079,7 @@
         "id": "mob1",
         "top": 638.75,
         "left": 245.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/안드로몬/안드로몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/안드로몬/안드로몬.webp",
         "name": "안드로몬",
         "level": 21,
         "hp": 2285,
@@ -1093,7 +1093,7 @@
         "id": "mob1",
         "top": 223.125,
         "left": 363.125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/유니몬/유니몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/유니몬/유니몬.webp",
         "name": "유니몬",
         "level": 21,
         "hp": 1475,
@@ -1107,7 +1107,7 @@
         "id": "mob1",
         "top": 218.75,
         "left": 74.375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/유니몬/유니몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/유니몬/유니몬.webp",
         "name": "유니몬",
         "level": 44,
         "hp": 1874,
@@ -1127,7 +1127,7 @@
         "id": "mob1",
         "top": 630.0,
         "left": 148.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/퍼펫몬/퍼펫몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/퍼펫몬/퍼펫몬.webp",
         "name": "퍼펫몬",
         "level": 21,
         "hp": 2188,
@@ -1141,7 +1141,7 @@
         "id": "mob1",
         "top": 376.25,
         "left": 507.5,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/츄몬/츄몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/츄몬/츄몬.webp",
         "name": "츄몬",
         "level": 22,
         "hp": 689,
@@ -1155,7 +1155,7 @@
         "id": "mob1",
         "top": 367.5,
         "left": 472.5,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/츄몬/츄몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/츄몬/츄몬.webp",
         "name": "츄몬",
         "level": 30,
         "hp": 2447,
@@ -1169,7 +1169,7 @@
         "id": "mob1",
         "top": 367.5,
         "left": 420.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/톱니몬/톱니몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/톱니몬/톱니몬.webp",
         "name": "톱니몬",
         "level": 24,
         "hp": 805,
@@ -1190,7 +1190,7 @@
         "id": "mob1",
         "top": 402.5,
         "left": 437.5,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/톱니몬/톱니몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/톱니몬/톱니몬.webp",
         "name": "거대 톱니몬",
         "level": 24,
         "hp": 4300,
@@ -1211,7 +1211,7 @@
         "id": "mob1",
         "top": 389.375,
         "left": 245.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/톱니몬/톱니몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/톱니몬/톱니몬.webp",
         "name": "톱니몬",
         "level": 28,
         "hp": 1856,
@@ -1232,7 +1232,7 @@
         "id": "mob1",
         "top": 315.0,
         "left": 468.125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/메라몬/메라몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/메라몬/메라몬.webp",
         "name": "메라몬",
         "level": 26,
         "hp": 1851,
@@ -1246,7 +1246,7 @@
         "id": "mob1",
         "top": 455.0,
         "left": 78.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/말벌몬/말벌몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/말벌몬/말벌몬.webp",
         "name": "말벌몬",
         "level": 28,
         "hp": 1859,
@@ -1267,7 +1267,7 @@
         "id": "mob1",
         "top": 306.25,
         "left": 183.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/니드몬/니드몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/니드몬/니드몬.webp",
         "name": "니드몬",
         "level": 40,
         "hp": 3925,
@@ -1287,7 +1287,7 @@
         "id": "mob1",
         "top": 288.75,
         "left": 245.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/우드몬/우드몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/우드몬/우드몬.webp",
         "name": "우드몬",
         "level": 40,
         "hp": 3925,
@@ -1306,21 +1306,21 @@
     ]
   },
   "무한 산": {
-    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/image/map/무한산.webp",
+    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/map/무한산.webp",
     "portals": [
       {
         "id": "portal1",
         "tooltip": "시작의 마을<br>포탈",
         "top": 605.15,
         "left": 645.88125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal2",
         "tooltip": "기어 사바나<br>포탈",
         "top": 531.83375,
         "left": 486.44750000000005,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       }
     ],
     "warps": [
@@ -1329,35 +1329,35 @@
         "tooltip": "워프 포인트<br>무한 산 숲",
         "top": 418.95,
         "left": 581.875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp2",
         "tooltip": "워프 포인트<br>무한 산 중턱",
         "top": 261.84375,
         "left": 114.0475,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp3",
         "tooltip": "워프 포인트<br>무한 산 정상",
         "top": 492.26625,
         "left": 54.69625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp4",
         "tooltip": "워프 포인트<br>무한 산 미궁",
         "top": 282.79125,
         "left": 388.6925,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp4",
         "tooltip": "워프 포인트<br>무한 산 숲 공터",
         "top": 475,
         "left": 372,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       }
     ],
     "shops": [
@@ -1366,7 +1366,7 @@
         "tooltip": "무한 산 상인<br>판매상 워매몬",
         "top": 247.87875000000003,
         "left": 399.16625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       }
     ],
     "overflows": [
@@ -1375,7 +1375,7 @@
         "tooltip": "오버플로우 던전<br>쉬라몬",
         "top": 295,
         "left": 128,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/오버플로우.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/오버플로우.webp"
       }
     ],
     "datacube": [
@@ -1384,140 +1384,140 @@
         "tooltip": "#51",
         "top": 587.69375,
         "left": 599.3312500000001,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube52",
         "tooltip": "#52",
         "top": 541.1437500000001,
         "left": 570.2375000000001,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube53",
         "tooltip": "#53",
         "top": 459.68125000000003,
         "left": 573.72875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube54",
         "tooltip": "#54",
         "top": 349.125,
         "left": 530.6700000000001,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube55",
         "tooltip": "#55",
         "top": 442.22499999999997,
         "left": 442.22499999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube56",
         "tooltip": "#56",
         "top": 506.23124999999993,
         "left": 378.21875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube57",
         "tooltip": "#57",
         "top": 587.69375,
         "left": 343.30625000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube58",
         "tooltip": "#58",
         "top": 610.96875,
         "left": 407.3125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube59",
         "tooltip": "#59",
         "top": 389.85625,
         "left": 331.66875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube60",
         "tooltip": "#60",
         "top": 407.3125,
         "left": 302.575,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube61",
         "tooltip": "#61",
         "top": 304.9025,
         "left": 422.44125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube62",
         "tooltip": "#62",
         "top": 246.71499999999997,
         "left": 517.86875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube63",
         "tooltip": "#63",
         "top": 83.79,
         "left": 368.90875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube64",
         "tooltip": "#64",
         "top": 238.56874999999997,
         "left": 238.56874999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube65",
         "tooltip": "#65",
         "top": 331.66875,
         "left": 221.11249999999998,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube66",
         "tooltip": "#66",
         "top": 399.16625,
         "left": 84.95375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube67",
         "tooltip": "#67",
         "top": 402.6575,
         "left": 110.55624999999999,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube68",
         "tooltip": "#68",
         "top": 180.38125,
         "left": 116.375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube69",
         "tooltip": "#69",
         "top": 128.01250000000002,
         "left": 93.10000000000001,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube70",
         "tooltip": "#70",
         "top": 279.3,
         "left": 430.58750000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       }
     ],
     "mobs": [
@@ -1525,7 +1525,7 @@
         "id": "mob1",
         "top": 288.75,
         "left": 210.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/츄몬/츄몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/츄몬/츄몬.webp",
         "name": "츄몬",
         "level": 22,
         "hp": 689,
@@ -1539,7 +1539,7 @@
         "id": "mob1",
         "top": 595.0,
         "left": 367.5,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/고스몬/고스몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/고스몬/고스몬.webp",
         "name": "고스몬",
         "level": 35,
         "hp": 1778,
@@ -1560,7 +1560,7 @@
         "id": "mob1",
         "top": 437.5,
         "left": 402.5,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/고스몬/고스몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/고스몬/고스몬.webp",
         "name": "고스몬",
         "level": 37,
         "hp": 1871,
@@ -1581,7 +1581,7 @@
         "id": "mob1",
         "top": 341.25,
         "left": 481.25,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/고스몬/고스몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/고스몬/고스몬.webp",
         "name": "고스몬",
         "level": 41,
         "hp": 2065,
@@ -1602,7 +1602,7 @@
         "id": "mob1",
         "top": 490.0,
         "left": 411.25,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/고부리몬/고부리몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/고부리몬/고부리몬.webp",
         "name": "고부리몬",
         "level": 41,
         "hp": 3160,
@@ -1623,7 +1623,7 @@
         "id": "mob1",
         "top": 533.75,
         "left": 638.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/말벌몬/말벌몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/말벌몬/말벌몬.webp",
         "name": "말벌몬",
         "level": 41,
         "hp": 2657,
@@ -1644,7 +1644,7 @@
         "id": "mob1",
         "top": 525.0,
         "left": 595.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/우드몬/우드몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/우드몬/우드몬.webp",
         "name": "우드몬",
         "level": 41,
         "hp": 2829,
@@ -1665,7 +1665,7 @@
         "id": "mob1",
         "top": 455.0,
         "left": 350.0,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/소울몬/소울몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/소울몬/소울몬.webp",
         "name": "소울몬",
         "level": 47,
         "hp": 3220,
@@ -1686,7 +1686,7 @@
         "id": "mob1",
         "top": 131.25,
         "left": 135.625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/원뿔몬/원뿔몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/원뿔몬/원뿔몬.webp",
         "name": "원뿔몬",
         "level": 51,
         "hp": 3480,
@@ -1708,7 +1708,7 @@
         "id": "mob1",
         "top": 262.5,
         "left": 393.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/유니몬/유니몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/유니몬/유니몬.webp",
         "name": "유니몬",
         "level": 53,
         "hp": 3500,
@@ -1730,7 +1730,7 @@
         "id": "mob1",
         "top": 288.75,
         "left": 393.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/시드라몬/시드라몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/시드라몬/시드라몬.webp",
         "name": "시드라몬",
         "level": 55,
         "hp": 4487,
@@ -1753,7 +1753,7 @@
         "id": "mob1",
         "top": 525.0,
         "left": 218.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/고부리몬/고부리몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/고부리몬/고부리몬.webp",
         "name": "고부리몬",
         "level": 53,
         "hp": 3649,
@@ -1775,7 +1775,7 @@
         "id": "mob1",
         "top": 262.5,
         "left": 161.875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/프리지몬/프리지몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/프리지몬/프리지몬.webp",
         "name": "프리지몬",
         "level": 57,
         "hp": 5184,
@@ -1798,7 +1798,7 @@
         "id": "mob1",
         "top": 525.0,
         "left": 100.625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/켄터스몬/켄터스몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/켄터스몬/켄터스몬.webp",
         "name": "켄터스몬",
         "level": 59,
         "hp": 3236,
@@ -1820,7 +1820,7 @@
         "id": "mob1",
         "top": 472.5,
         "left": 87.5,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/digimon/다크티라노몬/다크티라노몬.webp",
+        "src": "https://media.dsrwiki.com/dsrwiki/digimon/다크티라노몬/다크티라노몬.webp",
         "name": "다크티라노몬",
         "level": 60,
         "hp": 4998,
@@ -1841,42 +1841,42 @@
     ]
   },
   "사막 지대": {
-    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/image/map/사막지대.webp",
+    "backgroundImage": "https://media.dsrwiki.com/dsrwiki/map/사막지대.webp",
     "portals": [
       {
         "id": "portal1",
         "tooltip": "용의 눈 호수<br>포탈",
         "top": 541.1437500000001,
         "left": 436.40625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal2",
         "tooltip": "어둠 성 계곡<br>포탈",
         "top": 512.0500000000001,
         "left": 133.83124999999998,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal3",
         "tooltip": "사막 지대 피라미드 내부<br>포탈",
         "top": 517.86875,
         "left": 98.91875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal4",
         "tooltip": "사막 지대 스핑크스 하단<br>포탈",
         "top": 410.80375000000004,
         "left": 119.86625000000001,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       },
       {
         "id": "portal5",
         "tooltip": "사막 지대 피라미드 입구<br>포탈",
         "top": 370.0725,
         "left": 117.53875000000001,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/포탈.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/포탈.webp"
       }
     ],
     "warps": [
@@ -1885,21 +1885,21 @@
         "tooltip": "워프 포인트<br>사막 지대 스핑크스",
         "top": 360.7625,
         "left": 148.96,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp2",
         "tooltip": "워프 포인트<br>사막 지대 중앙",
         "top": 232.75,
         "left": 424.76875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       },
       {
         "id": "warp3",
         "tooltip": "워프 포인트<br>사막 지대 코로몬 마을",
         "top": 459.68125000000003,
         "left": 384.03749999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/워프포인트.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       }
     ],
     "shops": [
@@ -1908,7 +1908,7 @@
         "tooltip": "사막 지대 상인<br>판매상 코로몬",
         "top": 482.95625000000007,
         "left": 372.40000000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/상점.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/상점.webp"
       }
     ],
     "overflows": [
@@ -1917,7 +1917,7 @@
         "tooltip": "오버플로우 던전<br>파피몬",
         "top": 342,
         "left": 315,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/오버플로우.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/오버플로우.webp"
       }
     ],
     "datacube": [
@@ -1926,77 +1926,77 @@
         "tooltip": "#71",
         "top": 570.2375000000001,
         "left": 442.22499999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube72",
         "tooltip": "#72",
         "top": 506.23124999999993,
         "left": 407.3125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube73",
         "tooltip": "#73",
         "top": 512.0500000000001,
         "left": 436.40625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube74",
         "tooltip": "#74",
         "top": 436.40625,
         "left": 494.59375,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube75",
         "tooltip": "#75",
         "top": 354.94374999999997,
         "left": 471.31874999999997,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube76",
         "tooltip": "#76",
         "top": 430.58750000000003,
         "left": 640.0625,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube77",
         "tooltip": "#77",
         "top": 343.30625000000003,
         "left": 401.49375000000003,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube78",
         "tooltip": "#78",
         "top": 238.56874999999997,
         "left": 395.675,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube79",
         "tooltip": "#79",
         "top": 261.84375,
         "left": 151.2875,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube80",
         "tooltip": "#80",
         "top": 541.1437500000001,
         "left": 282.79125,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       },
       {
         "id": "datacube81",
         "tooltip": "#81",
         "top": 494.59375,
         "left": 232.75,
-        "src": "https://media.dsrwiki.com/dsrwiki/image/map/데이터큐브.webp"
+        "src": "https://media.dsrwiki.com/dsrwiki/map/데이터큐브.webp"
       }
     ]
   }

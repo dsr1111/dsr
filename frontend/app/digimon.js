@@ -83,7 +83,7 @@
             const weaknesses = digimon.weaknesses;
             const fields = digimon.fields.join(";");
 
-            const typeImagePath = `https://media.dsrwiki.com/dsrwiki/image/${type}.webp`;
+            const typeImagePath = `https://media.dsrwiki.com/dsrwiki/${type}.webp`;
             const typeImgHtml = `<img src="${typeImagePath}" alt="${type}" 
               style="width:23px;height:23px;display:block;margin:0 auto;cursor:pointer;"
               onmouseenter="showCustomTooltip(event, '${type}')"
@@ -92,8 +92,8 @@
             >`;
 
             const strongHtml = strengths.attribute
-              ? `<img src="https://media.dsrwiki.com/dsrwiki/image/${strengths.attribute}.webp" alt="${strengths.attribute}" 
-                  style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/image/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+              ? `<img src="https://media.dsrwiki.com/dsrwiki/${strengths.attribute}.webp" alt="${strengths.attribute}" 
+                  style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
                   onmouseenter="showCustomTooltip(event, '${strengths.attribute}')"
                   onmousemove="showCustomTooltip(event, '${strengths.attribute}')"
                   onmouseleave="hideCustomTooltip()"
@@ -101,8 +101,8 @@
               : "";
 
             const weakHtml = weaknesses.attribute
-              ? `<img src="https://media.dsrwiki.com/dsrwiki/image/${weaknesses.attribute}.webp" alt="${weaknesses.attribute}" 
-                  style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/image/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+              ? `<img src="https://media.dsrwiki.com/dsrwiki/${weaknesses.attribute}.webp" alt="${weaknesses.attribute}" 
+                  style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
                   onmouseenter="showCustomTooltip(event, '${weaknesses.attribute}')"
                   onmousemove="showCustomTooltip(event, '${weaknesses.attribute}')"
                   onmouseleave="hideCustomTooltip()"
@@ -116,7 +116,7 @@
                   .filter(field => field !== "")
                   .map(
                     (field) =>
-                      `<img src="https://media.dsrwiki.com/dsrwiki/image/field/${field}.webp" alt="${field}" 
+                      `<img src="https://media.dsrwiki.com/dsrwiki/field/${field}.webp" alt="${field}" 
                         style="width:25px;height:25px;cursor:pointer;"
                         onmouseenter="showCustomTooltip(event, '${field}')"
                         onmousemove="showCustomTooltip(event, '${field}')"
@@ -167,9 +167,9 @@
                 {}
               );
               const effectDescription = effectDescriptionsLower[normalizedEffect] || "효과 설명을 찾을 수 없습니다.";
-              let effectImagePath = skill.effect ? `https://media.dsrwiki.com/dsrwiki/image/debuff/${skill.effect}.webp` : "";
+              let effectImagePath = skill.effect ? `https://media.dsrwiki.com/dsrwiki/debuff/${skill.effect}.webp` : "";
               if (normalizedEffect === "회복") {
-                effectImagePath = `https://media.dsrwiki.com/dsrwiki/image/digimon/${digimonName}/skill${skillNumber}.webp`;
+                effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/skill${skillNumber}.webp`;
               }
               const effectTooltipHtml = skill.effect && effectDescription
                   ? `<div class="tooltip">
@@ -185,8 +185,8 @@
 
               return `
                 <td style="${backgroundColor}">
-                  <img src="https://media.dsrwiki.com/dsrwiki/image/${skill.attribute}.webp" alt="${skill.attribute}" 
-                    style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/image/background.webp');background-size:120%;background-position:center;cursor:pointer;"
+                  <img src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}" 
+                    style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/background.webp');background-size:120%;background-position:center;cursor:pointer;"
                     onmouseenter="showCustomTooltip(event, '${skill.attribute}')"
                     onmousemove="showCustomTooltip(event, '${skill.attribute}')"
                     onmouseleave="hideCustomTooltip()"
@@ -198,7 +198,7 @@
             };
 
             const sanitizedName = name.replace(/[:]/g, "_");
-            const characterImagePath = `https://media.dsrwiki.com/dsrwiki/image/digimon/${sanitizedName}/${sanitizedName}.webp`;
+            const characterImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedName}/${sanitizedName}.webp`;
 
             const newRow = document.createElement("tr");
             newRow.dataset.name = name;
@@ -221,7 +221,7 @@
             newRow.innerHTML = `
               <td>
                 <div style="width:25px;height:25px;background-color:black;display:inline-block;vertical-align:middle;">
-                  <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='https://media.dsrwiki.com/dsrwiki/image/digimon/default.webp';">
+                  <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='https://media.dsrwiki.com/dsrwiki/digimon/default.webp';">
                 </div>
                 <a href="detail.html?name=${encodeURIComponent(name)}" style="text-decoration:none;color:black;">${name}</a>
               </td>

@@ -125,7 +125,7 @@ class CustomNav extends HTMLElement {
             <nav class="nav container">
               <div class="nav__data">
                 <a href="../index">
-                  <img src="https://media.dsrwiki.com/dsrwiki/image/logo2.webp" class="nav__logo" />
+                  <img src="https://media.dsrwiki.com/dsrwiki/logo2.webp" class="nav__logo" />
                 </a>
 
                 <div class="nav__toggle" id="nav-toggle">

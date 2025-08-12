@@ -153,19 +153,19 @@ body {
 }
 
 .skill-btn {
-  background-image: url("https://media.dsrwiki.com/dsrwiki/image/background.webp");
+  background-image: url("https://media.dsrwiki.com/dsrwiki/background.webp");
   background-size: cover;
   background-position: center;
 }
 
 .skillweak-btn {
-  background-image: url("https://media.dsrwiki.com/dsrwiki/image/weakbackground.webp");
+  background-image: url("https://media.dsrwiki.com/dsrwiki/weakbackground.webp");
   background-size: cover;
   background-position: center;
 }
 
 .skillstrong-btn {
-  background-image: url("https://media.dsrwiki.com/dsrwiki/image/strongbackground.webp");
+  background-image: url("https://media.dsrwiki.com/dsrwiki/strongbackground.webp");
   background-size: cover;
   background-position: center;
 }
