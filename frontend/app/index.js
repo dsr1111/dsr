@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const [itemName, itemQty, itemGrade] = item.split("x");
             let cleanItemName = itemName.trim().replace(/\s*\(\d+(일|시간)\)$/, "");
             const sanitizedName = cleanItemName.replace(/%/g, "^");
-            const imgPath = `/image/item/${sanitizedName}.webp`;
-            const backgroundPath = `/image/item/item${itemGrade.trim()}.webp`;
+            const imgPath = `https://media.dsrwiki.com/dsrwiki/item/${sanitizedName}.webp`;
+            const backgroundPath = `https://media.dsrwiki.com/dsrwiki/item/item${itemGrade.trim()}.webp`;
 
             const itemElement = document.createElement("div");
             itemElement.classList.add("tooltip-item");

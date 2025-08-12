@@ -22,9 +22,9 @@ function populateDetectorGrid() {
             button.className = 'detector-button';
             button.dataset.detector = detector;
             // 변조된 스파이럴 탐지기는 스파이럴 탐지기 이미지 사용
-            let imgSrc = `/image/item/${detector}.webp`;
+            let imgSrc = `https://media.dsrwiki.com/dsrwiki/image/item/${detector}.webp`;
             if (detector.replace(/\s/g, '') === '변조된스파이럴탐지기') {
-                imgSrc = '/image/item/스파이럴 탐지기.webp';
+                imgSrc = 'https://media.dsrwiki.com/dsrwiki/image/item/스파이럴 탐지기.webp';
             }
             const img = document.createElement('img');
             img.src = imgSrc;
@@ -66,7 +66,7 @@ function populateDigimonGrid(detector) {
             const imgBg = document.createElement('div');
             imgBg.className = 'digimon-img-bg';
             const img = document.createElement('img');
-            img.src = `/image/digimon/${digimon}/${digimon}.webp`;
+            img.src = `https://media.dsrwiki.com/dsrwiki/image/digimon/${digimon}/${digimon}.webp`;
             img.alt = digimon;
             imgBg.appendChild(img);
             const span = document.createElement('span');
@@ -133,7 +133,7 @@ function populateDigimonGrid(detector) {
                         const venomImgBg = document.createElement('div');
                         venomImgBg.className = 'digimon-img-bg';
                         const venomImg = document.createElement('img');
-                        venomImg.src = '/image/digimon/베놈묘티스몬/베놈묘티스몬.webp';
+                        venomImg.src = 'https://media.dsrwiki.com/dsrwiki/image/digimon/베놈묘티스몬/베놈묘티스몬.webp';
                         venomImg.alt = '베놈묘티스몬';
                         venomImgBg.appendChild(venomImg);
                         const venomSpan = document.createElement('span');
@@ -163,7 +163,7 @@ function populateDigimonGrid(detector) {
                         const burstImgBg = document.createElement('div');
                         burstImgBg.className = 'digimon-img-bg';
                         const burstImg = document.createElement('img');
-                        burstImg.src = '/image/digimon/로제몬_버스트모드/로제몬_버스트모드.webp';
+                        burstImg.src = 'https://media.dsrwiki.com/dsrwiki/image/digimon/로제몬_버스트모드/로제몬_버스트모드.webp';
                         burstImg.alt = '로제몬:버스트모드';
                         burstImgBg.appendChild(burstImg);
                         const burstSpan = document.createElement('span');
@@ -193,7 +193,7 @@ function populateDigimonGrid(detector) {
                         const mawangImgBg = document.createElement('div');
                         mawangImgBg.className = 'digimon-img-bg';
                         const mawangImg = document.createElement('img');
-                        mawangImg.src = '/image/digimon/마왕몬/마왕몬.webp';
+                        mawangImg.src = 'https://media.dsrwiki.com/dsrwiki/image/digimon/마왕몬/마왕몬.webp';
                         mawangImg.alt = '마왕몬';
                         mawangImgBg.appendChild(mawangImg);
                         const mawangSpan = document.createElement('span');
@@ -223,7 +223,7 @@ function populateDigimonGrid(detector) {
                         const mawangImgBg = document.createElement('div');
                         mawangImgBg.className = 'digimon-img-bg';
                         const mawangImg = document.createElement('img');
-                        mawangImg.src = '/image/digimon/레이브몬_버스트모드/레이브몬_버스트모드.webp';
+                        mawangImg.src = 'https://media.dsrwiki.com/dsrwiki/image/digimon/레이브몬_버스트모드/레이브몬_버스트모드.webp';
                         mawangImg.alt = '레이브몬:버스트모드';
                         mawangImgBg.appendChild(mawangImg);
                         const mawangSpan = document.createElement('span');
@@ -253,7 +253,7 @@ function populateDigimonGrid(detector) {
                         const mawangImgBg = document.createElement('div');
                         mawangImgBg.className = 'digimon-img-bg';
                         const mawangImg = document.createElement('img');
-                        mawangImg.src = '/image/digimon/반쵸레오몬_버스트모드/반쵸레오몬_버스트모드.webp';
+                        mawangImg.src = 'https://media.dsrwiki.com/dsrwiki/image/digimon/반쵸레오몬_버스트모드/반쵸레오몬_버스트모드.webp';
                         mawangImg.alt = '반쵸레오몬:버스트모드';
                         mawangImgBg.appendChild(mawangImg);
                         const mawangSpan = document.createElement('span');
@@ -284,7 +284,7 @@ function populateDigimonGrid(detector) {
         const venomImgBg = document.createElement('div');
         venomImgBg.className = 'digimon-img-bg';
         const venomImg = document.createElement('img');
-        venomImg.src = '/image/digimon/베놈묘티스몬/베놈묘티스몬.webp';
+        venomImg.src = 'https://media.dsrwiki.com/dsrwiki/image/digimon/베놈묘티스몬/베놈묘티스몬.webp';
         venomImg.alt = '베놈묘티스몬';
         venomImgBg.appendChild(venomImg);
         const venomSpan = document.createElement('span');
@@ -308,7 +308,7 @@ function populateDigimonGrid(detector) {
                 const vileImgBg = document.createElement('div');
                 vileImgBg.className = 'digimon-img-bg';
                 const vileImg = document.createElement('img');
-                vileImg.src = '/image/digimon/베리얼묘티스몬/베리얼묘티스몬.webp';
+                vileImg.src = 'https://media.dsrwiki.com/dsrwiki/image/digimon/베리얼묘티스몬/베리얼묘티스몬.webp';
                 vileImg.alt = '베리얼묘티스몬';
                 vileImgBg.appendChild(vileImg);
                 const vileSpan = document.createElement('span');
@@ -339,12 +339,12 @@ function showMapAndMarker(detector, digimon) {
     }
     // 맵 이미지 설정
     const mapImage = document.getElementById('mapImage');
-    mapImage.src = `/image/map/${mapName}.webp`;
+    mapImage.src = `https://media.dsrwiki.com/dsrwiki/image/map/${mapName}.webp`;
     // 디지몬 마커 설정
     const marker = document.getElementById('digimonMarker');
     const markerImg = marker.querySelector('img');
     const digimonImageName = digimon.replace(':', '_');
-    markerImg.src = `/image/digimon/${digimonImageName}/${digimonImageName}.webp`;
+    markerImg.src = `https://media.dsrwiki.com/dsrwiki/image/digimon/${digimonImageName}/${digimonImageName}.webp`;
     
     // 환경별 좌표 재계산
     const isMobile = window.innerWidth <= 768;
@@ -376,7 +376,7 @@ async function showDigimonSkills(digimon) {
     const digimonImageName = digimon.replace(':', '_');
     const skillRows = digimonInfo.skills.map((skillData, idx) => {
         return {
-            img: `/image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
+            img: `https://media.dsrwiki.com/dsrwiki/image/digimon/${digimonImageName}/skill${idx + 1}.webp`,
             name: skillData.name,
             attribute: skillData.attribute,
             detail1: skillData.range,
@@ -394,7 +394,7 @@ async function showDigimonSkills(digimon) {
                 <div class="skill-info">
                     <div class="skill-header">
                         <span class="skill-name">${skill.name}</span>
-                        <span class="skill-attribute"><img src="/image/${skill.attribute}.webp" alt="${skill.attribute}"></span>
+                        <span class="skill-attribute"><img src="https://media.dsrwiki.com/dsrwiki/image/${skill.attribute}.webp" alt="${skill.attribute}"></span>
                     </div>
                     <div class="skill-details">
                         <span style="background-color: ${skill.detail1 === '원거리' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle;">${skill.detail1 || '정보 없음'}</span>
@@ -417,14 +417,14 @@ async function showDigimonInfo(detector, digimon) {
     let typeIcon = '';
     if (data.type) {
         typeIcon = `<span style="display:flex;align-items:center;justify-content:center;">
-            <img src="/image/${data.type}.webp" alt="${data.type}" style="width:24px;height:24px;margin-left:5px;">
+            <img src="https://media.dsrwiki.com/dsrwiki/image/${data.type}.webp" alt="${data.type}" style="width:24px;height:24px;margin-left:5px;">
         </span>`;
     }
     const strongBadges = data.strong ? data.strong.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
-            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('/image/strongbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img src="/image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('https://media.dsrwiki.com/dsrwiki/image/strongbackground.webp') center/cover no-repeat;border-radius:5px;">
+                <img src="https://media.dsrwiki.com/dsrwiki/image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
             </span>`;
         } else {
             return `<span style="margin-right:8px;">${value}</span>`;
@@ -433,8 +433,8 @@ async function showDigimonInfo(detector, digimon) {
     const weakBadges = data.weak ? data.weak.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
-            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('/image/weakbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img src="/image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('https://media.dsrwiki.com/dsrwiki/image/weakbackground.webp') center/cover no-repeat;border-radius:5px;">
+                <img src="https://media.dsrwiki.com/dsrwiki/image/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
             </span>`;
         } else {
             return `<span style="margin-right:8px;">${value}</span>`;
@@ -446,7 +446,7 @@ async function showDigimonInfo(detector, digimon) {
       <div class="bg-white rounded-lg shadow p-4 w-full h-full flex flex-col">
         <div class="flex items-center gap-2 mb-2">
           <div style="width: 64px; height: 64px; background: rgb(52,52,52); border-radius: 3px; display: flex; align-items: center; justify-content: center;">
-            <img src="/image/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
+            <img src="https://media.dsrwiki.com/dsrwiki/image/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
           </div>
           <span class="font-bold text-lg">${digimon}</span>
         </div>
@@ -493,7 +493,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             imageName = name.trim();
         }
         const finalImageName = imageName.includes('균열 데이터 상자') ? '균열 데이터 상자' : imageName;
-        const imagePath = `/image/item/${finalImageName}.webp`;
+        const imagePath = `https://media.dsrwiki.com/dsrwiki/image/item/${finalImageName}.webp`;
         // 거래상태 뱃지들
         const tradeBadges = Array.from(info.tradeStatus).map(status =>
             `<span style="background-color: ${status === '거래가능' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset;">${status}</span>`
@@ -508,14 +508,14 @@ function showDigimonMechanicInfo(detector, digimon) {
         const tooltipContent = Object.entries(itemsList)
             .map(([itemName, itemData]) => {
                 const cleanName = itemName.replace(/\s*x\s*\d+$/, '').replace(/\s*x\s*\d+/g, '').trim();
-                const imagePath = `/image/item/${cleanName}.webp`;
+                const imagePath = `https://media.dsrwiki.com/dsrwiki/image/item/${cleanName}.webp`;
                 const tradeStatusText = itemData.tradeStatus === '거래가능' ? '(거래가능)' : '(거래불가)';
                 const tradeStatusColor = itemData.tradeStatus === '거래가능' ? 'green' : 'red';
                 return `
                     <div style="display: flex; align-items: center;">
                         <img src="${imagePath}" 
                             style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;"
-                            onerror="this.onerror=null; this.src='/image/item/default.webp';">
+                            onerror="this.onerror=null; this.src='https://media.dsrwiki.com/dsrwiki/image/item/default.webp';">
                         <span style="color: ${tradeStatusColor};">${tradeStatusText}</span>
                         <span>${itemName}</span>
                     </div>`;
@@ -544,7 +544,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             ${data.gimmick ? `
                 <div class="mb-4">
                     <h3 class="font-bold text-lg mb-2">
-                        <img src="/image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                        <img src="https://media.dsrwiki.com/dsrwiki/image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
                         패턴
                     </h3>
                     <div class="text-sm text-gray-700" style="font-weight: bold;">
@@ -554,7 +554,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             ` : ''}
             <div>
                 <h3 class="font-bold text-lg mb-2">
-                    <img src="/image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                    <img src="https://media.dsrwiki.com/dsrwiki/image/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
                     드롭 아이템
                 </h3>
                 <div class="overflow-x-auto md:overflow-x-visible space-y-1 whitespace-nowrap">

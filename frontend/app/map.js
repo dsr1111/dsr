@@ -63,10 +63,10 @@ const mapOptions = {
 // 이미지 업데이트 함수
 function updateImage(selectedMap) {
   let imagePath;
-  if (selectedMap === "???") {
-    imagePath = "https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/ApocalymonArea.webp";
+  if (selectedMap === "???.webp") {
+    imagePath = "https://media.dsrwiki.com/dsrwiki/image/map/ApocalymonArea.webp";
   } else {
-    imagePath = "https://cdn.jsdelivr.net/gh/dsr1111/dsr@main/image/map/${selectedMap.replace(/\s+/g,)}.webp";
+    imagePath = `https://media.dsrwiki.com/dsrwiki/image/map/${selectedMap.replace(/\s+/g,)}.webp`;
   }
 
   // 이미지 요소를 700x700 크기로 업데이트
@@ -193,7 +193,7 @@ function preloadDatacubeImages(datacubeItems) {
   datacubeItems.forEach(item => {
     const tooltipText = item.tooltip;
     const imageName = tooltipText.startsWith('#') ? tooltipText.substring(1) : tooltipText;
-    const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.webp`;
+    const datacubeImagePath = `https://media.dsrwiki.com/dsrwiki/image/map/datacube/${encodeURIComponent(imageName)}.webp`;
     const img = new Image();
     img.src = datacubeImagePath;
   });
@@ -343,7 +343,7 @@ function createCheckbox(
     let evolIcon = null;
     if (item.evol) {
       evolIcon = document.createElement("img");
-      evolIcon.src = "/image/icon.webp";
+      evolIcon.src = "https://media.dsrwiki.com/dsrwiki/image/icon.webp";
       evolIcon.style.position = "absolute";
       evolIcon.style.top = `${item.top + 20}px`;
       evolIcon.style.left = `${item.left + 5}px`;
@@ -370,7 +370,7 @@ function createCheckbox(
       imgElement.classList.add("mob-image");
 
       const typeElement = document.createElement("img");
-      typeElement.src = `/image/${item.type}.webp`;
+      typeElement.src = `https://media.dsrwiki.com/dsrwiki/image/${item.type}.webp`;
       typeElement.style.position = "absolute";
       typeElement.style.top = `${item.top - 5}px`;
       typeElement.style.left = `${item.left - 5}px`;
@@ -485,20 +485,20 @@ function showSpecialTooltipAtImage(
                 <div style="margin-bottom: 5px; margin-top: 5px; color: white;"><span>레벨 :</span> ${level}</div>
                 <div style="margin-bottom: 5px; color: white;"><span>체력 :</span> ${hp}</div>
                 <div style="color: white;"><span>강점 :</span>
-                  ${
+                  ${ 
                     강점Parts.length ? `
-                      <div style=\"background-image: url('/image/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;\">
-                        <img src=\"/image/${강점Parts[0]}.webp\" alt=\"${강점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+                      <div style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/image/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;">
+                        <img src=\"https://media.dsrwiki.com/dsrwiki/image/${강점Parts[0]}.webp\" alt=\" ${강점Parts[0]}\" style=\"width: 24px; height: 24px;\">
                       </div>
                       <span>${강점Parts[1] ? 강점Parts[1] : ''}</span>
                     ` : ''
                   }
                 </div>
                 <div style="color: white;"><span>약점 :</span>
-                  ${
+                  ${ 
                     약점Parts.length ? `
-                      <div style=\"background-image: url('/image/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;\">
-                        <img src=\"/image/${약점Parts[0]}.webp\" alt=\"${약점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+                      <div style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/image/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;">
+                        <img src=\"https://media.dsrwiki.com/dsrwiki/image/${약점Parts[0]}.webp\" alt=\" ${약점Parts[0]}\" style=\"width: 24px; height: 24px;\">
                       </div>
                       <span>${약점Parts[1] ? 약점Parts[1] : ''}</span>
                     ` : ''
@@ -511,23 +511,23 @@ function showSpecialTooltipAtImage(
                 ${드랍아이템목록
                   .map((item) => {
                     const itemImageSrc = item.includes("조합법")
-                      ? "/image/item/조합법.webp"
-                      : `/image/item/${item.trim()}.webp`;
+                      ? "https://media.dsrwiki.com/dsrwiki/image/item/조합법.webp"
+                      : `https://media.dsrwiki.com/dsrwiki/image/item/${item.trim()}.webp`;
                     return `
-                        <li style=\"display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;\">
-                            <img src=\"${itemImageSrc}\"  alt=\"${item.trim()}\" style=\"width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;\">
+                        <li style=\"display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;">
+                            <img src=\"${itemImageSrc}\"  alt=\" ${item.trim()}\" style=\"width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;\">
                             ${item.trim()}
                         </li>`;
                   })
                   .join("")}
             </ul>
         </div>
-        ${
+        ${ 
           evol
             ? `
         <div style=\"text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);\"><strong>조건 진화</strong></div>
         <div style=\"display: flex; justify-content: center; align-items: center; margin-top: 10px;\">
-        <img src=\"/image/digimon/${evol}/${evol}.webp\"  alt=\"${evol}\" style=\"width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;\">
+        <img src=\"https://media.dsrwiki.com/dsrwiki/image/digimon/${evol}/${evol}.webp\"  alt=\" ${evol}\" style=\"width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;\">
          </div>
         `
             : ""
@@ -583,7 +583,7 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
 
   // 데이터 큐브 이미지 경로 생성
   const imageName = tooltipText.startsWith('#') ? tooltipText.substring(1) : tooltipText;
-  const datacubeImagePath = `/image/map/datacube/${encodeURIComponent(imageName)}.webp`;
+  const datacubeImagePath = `https://media.dsrwiki.com/dsrwiki/image/map/datacube/${encodeURIComponent(imageName)}.webp`;
 
   // Create the image element
   const datacubeImage = document.createElement('img');
