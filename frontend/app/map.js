@@ -66,7 +66,7 @@ function updateImage(selectedMap) {
   if (selectedMap === "???.webp") {
     imagePath = "https://media.dsrwiki.com/dsrwiki/map/ApocalymonArea.webp";
   } else {
-    imagePath = `https://media.dsrwiki.com/dsrwiki/map/${selectedMap.replace(/\s+/g,)}.webp`;
+    imagePath = `https://media.dsrwiki.com/dsrwiki/map/${selectedMap.replace(/\s+/g, '')}.webp`;
   }
 
   // 이미지 요소를 700x700 크기로 업데이트
