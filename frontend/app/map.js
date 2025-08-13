@@ -92,15 +92,7 @@ conDropdown.addEventListener("change", function () {
   updateImage(options[0]);
 });
 
-// map-dropdown 선택 변경 시 이미지 업데이트
-mapSelect.addEventListener("change", function () {
-  updateImage(mapSelect.value);
-});
 
-// 페이지 로드 시 초기 이미지 설정
-window.onload = function () {
-  conDropdown.dispatchEvent(new Event("change"));
-};
 
 let maps = {};
 let digimonData = {};
