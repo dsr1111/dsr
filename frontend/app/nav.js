@@ -300,7 +300,7 @@ function createReferralPopup() {
         return;
     }
 
-    const referralCode = 'EAX6QNTUK';
+    const referralCode = 'A2USQRY';
     const popup = document.createElement('div');
     popup.id = 'referral-popup-container';
     
