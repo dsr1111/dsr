@@ -59,7 +59,7 @@ function populateDigimonGrid(detector) {
     document.getElementById('digimonMechanicCard').innerHTML = '';
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
-        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드') {
+        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬') {
             const button = document.createElement('button');
             button.className = 'digimon-button';
             button.dataset.digimon = digimon;
@@ -81,6 +81,14 @@ function populateDigimonGrid(detector) {
                 selectedDigimon = digimon;
                 showMapAndMarker(selectedDetector, selectedDigimon);
                 showDigimonInfo(selectedDetector, selectedDigimon);
+
+                // 안드로몬이 아닌 다른 디지몬 선택 시 크레니엄몬 버튼 제거
+                if (digimon !== '안드로몬' && detector === '보급형 탐지기') {
+                    const venomButton = document.querySelector('.digimon-button[data-digimon="크레니엄몬"]');
+                    if (venomButton) {
+                        venomButton.remove();
+                    }
+                }
 
                 // 묘티스몬이 아닌 다른 디지몬 선택 시 베놈묘티스몬 버튼 제거
                 if (digimon !== '묘티스몬' && detector === '현실 세계 A형 탐지기') {
@@ -121,6 +129,36 @@ function populateDigimonGrid(detector) {
                         mawangButton.remove();
                     }
                 }
+
+                // 안드로몬 선택 시 크레니엄몬 버튼 추가
+                if (digimon === '안드로몬' && detector === '보급형 탐지기') {
+                    // 이미 크레니엄몬 버튼이 있는지 확인
+                    const existingVenomButton = document.querySelector('.digimon-button[data-digimon="크레니엄몬"]');
+                    if (!existingVenomButton) {
+                        const venomButton = document.createElement('button');
+                        venomButton.className = 'digimon-button';
+                        venomButton.dataset.digimon = '크레니엄몬';
+                        const venomImgBg = document.createElement('div');
+                        venomImgBg.className = 'digimon-img-bg';
+                        const venomImg = document.createElement('img');
+                        venomImg.src = 'https://media.dsrwiki.com/dsrwiki/digimon/크레니엄몬/크레니엄몬.webp';
+                        venomImg.alt = '크레니엄몬';
+                        venomImgBg.appendChild(venomImg);
+                        const venomSpan = document.createElement('span');
+                        venomSpan.textContent = '크레니엄몬';
+                        venomButton.appendChild(venomImgBg);
+                        venomButton.appendChild(venomSpan);
+                        venomButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            venomButton.classList.add('selected');
+                            selectedDigimon = '크레니엄몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(venomButton);
+                    }
+                }                
 
                 // 묘티스몬 선택 시 베놈묘티스몬 버튼 추가
                 if (digimon === '묘티스몬' && detector === '현실 세계 A형 탐지기') {
