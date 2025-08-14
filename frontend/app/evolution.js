@@ -522,7 +522,9 @@
         alert("해당 디지몬의 진화트리를 찾을 수 없습니다.");
       }
     },
-    findAllLowerEvolutions(digimonName) {
+    findAllLowerEvolutions(digimonName, visited = new Set()) {
+      if (visited.has(digimonName)) return [];
+      visited.add(digimonName);
       const lower = [digimonName];
       const direct = DataModule.allData.filter(d =>
         [
@@ -532,7 +534,7 @@
         ].includes(digimonName)
       );
       direct.forEach(d => {
-        lower.push(...this.findAllLowerEvolutions(d.name));
+        lower.push(...this.findAllLowerEvolutions(d.name, visited));
       });
       return lower;
     },
@@ -548,7 +550,11 @@
       const candidates = DataModule.allData.filter(d => d.evolution_stage === stageFilter);
       return candidates.filter(d => this.isDigimonInTree(d, digimonName));
     },
-    isDigimonInTree(digimon, searchName) {
+    isDigimonInTree(digimon, searchName, visited = new Set()) {
+      if (!digimon || visited.has(digimon.name)) {
+        return false;
+      }
+      visited.add(digimon.name);
       if (digimon.name === searchName) return true;
       const evolutions = [
         digimon.evol1, digimon.evol2, digimon.evol3, digimon.evol4, digimon.evol5,
@@ -557,7 +563,7 @@
       ].filter(e => e);
       for (const evo of evolutions) {
         const next = DataModule.allData.find(d => d.name === evo);
-        if (next && this.isDigimonInTree(next, searchName)) return true;
+        if (next && this.isDigimonInTree(next, searchName, visited)) return true;
       }
       return false;
     },
