@@ -300,31 +300,31 @@ function createReferralPopup() {
         return;
     }
 
-    const referralCode = 'EAX6QNTUK';
+    const referralCode = 'A2USQRY';
     const popup = document.createElement('div');
     popup.id = 'referral-popup-container';
     
-    // Styling the popup
+    // Styling the popup to match site style
     Object.assign(popup.style, {
         position: 'fixed',
         bottom: '20px',
         right: '20px',
-        backgroundColor: 'white',
-        padding: '15px',
+        backgroundColor: 'var(--white-color, #ffffff)',
+        padding: '16px',
         borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        boxShadow: '0 4px 12px hsla(220, 24%, 15%, 0.2)',
         zIndex: '1001',
-        fontFamily: 'Arial, sans-serif',
-        fontSize: '14px',
-        color: '#333',
-        border: '1px solid #eee'
+        fontFamily: 'var(--body-font, "Pretendard-Regular", sans-serif)',
+        fontSize: 'var(--normal-font-size, 0.938rem)',
+        color: 'var(--black-color, #25282D)',
+        border: '1px solid hsl(220, 24%, 90%)'
     });
 
     popup.innerHTML = `
-        <div style="margin-bottom: 10px; font-weight: bold; font-size: 16px;">추천인 코드</div>
+        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 12px;">추천인 코드</div>
         <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="padding: 8px; background-color: #f0f0f0; border-radius: 4px;">${referralCode}</span>
-            <button id="copy-referral-btn" style="padding: 8px 12px; border: none; background-color: #3B82F6; color: white; border-radius: 4px; cursor: pointer;">복사</button>
+            <span style="padding: 8px 12px; background-color: hsl(220, 100%, 97%); border-radius: 6px; font-weight: 600;">${referralCode}</span>
+            <button id="copy-referral-btn">복사</button>
         </div>
     `;
 
@@ -332,6 +332,19 @@ function createReferralPopup() {
 
     const copyBtn = document.getElementById('copy-referral-btn');
     if (copyBtn) {
+        // Apply styles using JS to match site buttons
+        Object.assign(copyBtn.style, {
+            padding: '8px 12px',
+            border: 'none',
+            backgroundColor: '#3B82F6',
+            color: 'white',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontFamily: 'inherit',
+            fontSize: 'inherit'
+        });
+
         copyBtn.addEventListener('click', () => {
             navigator.clipboard.writeText(referralCode).then(() => {
                 copyBtn.textContent = '복사됨!';
