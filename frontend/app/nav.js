@@ -300,17 +300,17 @@ function createReferralPopup() {
         return;
     }
 
-    const referralCode = 'A2USQRY';
+    const referralCode = 'EAX6QNTUK';
     const popup = document.createElement('div');
     popup.id = 'referral-popup-container';
     
-    // Styling the popup to match site style
+    // Styling the popup to match site style - SIZE REDUCED
     Object.assign(popup.style, {
         position: 'fixed',
         bottom: '20px',
         right: '20px',
         backgroundColor: 'var(--white-color, #ffffff)',
-        padding: '16px',
+        padding: '12px',
         borderRadius: '8px',
         boxShadow: '0 4px 12px hsla(220, 24%, 15%, 0.2)',
         zIndex: '1001',
@@ -321,9 +321,9 @@ function createReferralPopup() {
     });
 
     popup.innerHTML = `
-        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 12px;">추천인 코드</div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="padding: 8px 12px; background-color: hsl(220, 100%, 97%); border-radius: 6px; font-weight: 600;">${referralCode}</span>
+        <div style="font-size: 1rem; margin-bottom: 10px; text-align: center;">추천인 코드</div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="padding: 6px 10px; background-color: hsl(220, 100%, 97%); border-radius: 6px;">${referralCode}</span>
             <button id="copy-referral-btn">복사</button>
         </div>
     `;
@@ -332,15 +332,14 @@ function createReferralPopup() {
 
     const copyBtn = document.getElementById('copy-referral-btn');
     if (copyBtn) {
-        // Apply styles using JS to match site buttons
+        // Apply styles using JS to match site buttons - FONT WEIGHT REMOVED
         Object.assign(copyBtn.style, {
-            padding: '8px 12px',
+            padding: '6px 10px',
             border: 'none',
             backgroundColor: '#3B82F6',
             color: 'white',
             borderRadius: '6px',
             cursor: 'pointer',
-            fontWeight: '600',
             fontFamily: 'inherit',
             fontSize: 'inherit'
         });
