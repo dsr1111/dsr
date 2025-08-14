@@ -14,6 +14,7 @@ class DataManager {
         this.hasUnsavedChanges = false;
         this.currentIndex = null; // 객체 기반이므로 인덱스 대신 이름(키)을 저장할 수 있음
         this.currentName = null; // 현재 수정 중인 디지몬의 이름
+        this.lastAddedName = null; // 마지막으로 추가된 디지몬 이름
         
         this.initializeEventListeners();
     }
@@ -122,6 +123,19 @@ class DataManager {
                 `;
                 tableBody.appendChild(row);
             });
+
+            if (this.lastAddedName) {
+                const rows = tableBody.getElementsByTagName('tr');
+                for (const row of rows) {
+                    if (row.cells[0].textContent === this.lastAddedName) {
+                        row.style.backgroundColor = '#fffde7'; // 하이라이트 색상
+                        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        break;
+                    }
+                }
+                this.lastAddedName = null; // 하이라이트 후 변수 초기화
+            }
+
             return;
         }
 
@@ -509,6 +523,12 @@ class DataManager {
             if (!name) {
                 alert('디지몬 이름을 입력해주세요.');
                 return;
+            }
+
+            if (!this.currentName) {
+                this.lastAddedName = name; // 새로 추가된 경우에만 이름 저장
+            } else {
+                this.lastAddedName = null; // 수정하는 경우에는 하이라이트 안함
             }
 
             const newDigimon = {
