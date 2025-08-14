@@ -192,7 +192,7 @@
                     onmouseleave="hideCustomTooltip()"
                   >
                   ${effectTooltipHtml}
-                  <span>${`${skill.hits}타`} / ${skill.range}</span>
+                  <span>${skill.hits === '보조' ? skill.hits : `${skill.hits}타`} / ${skill.range}</span>
                 </td>
               `;
             };
