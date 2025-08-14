@@ -292,4 +292,66 @@ class CustomNav extends HTMLElement {
   }
 }
 
+
+// Function to create the referral popup
+function createReferralPopup() {
+    // Prevent creating multiple popups
+    if (document.getElementById('referral-popup-container')) {
+        return;
+    }
+
+    const referralCode = 'EAX6QNTUK';
+    const popup = document.createElement('div');
+    popup.id = 'referral-popup-container';
+    
+    // Styling the popup
+    Object.assign(popup.style, {
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        backgroundColor: 'white',
+        padding: '15px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        zIndex: '1001',
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '14px',
+        color: '#333',
+        border: '1px solid #eee'
+    });
+
+    popup.innerHTML = `
+        <div style="margin-bottom: 10px; font-weight: bold; font-size: 16px;">추천인 코드</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="padding: 8px; background-color: #f0f0f0; border-radius: 4px;">${referralCode}</span>
+            <button id="copy-referral-btn" style="padding: 8px 12px; border: none; background-color: #3B82F6; color: white; border-radius: 4px; cursor: pointer;">복사</button>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    const copyBtn = document.getElementById('copy-referral-btn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(referralCode).then(() => {
+                copyBtn.textContent = '복사됨!';
+                copyBtn.style.backgroundColor = '#28a745';
+                setTimeout(() => {
+                    copyBtn.textContent = '복사';
+                    copyBtn.style.backgroundColor = '#3B82F6';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        });
+    }
+}
+
+// Run the function when the DOM is fully loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createReferralPopup);
+} else {
+    createReferralPopup();
+}
+
 customElements.define("custom-nav", CustomNav);
