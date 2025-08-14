@@ -15526,7 +15526,7 @@
       },
       {
         "name": "메디테이션 큐어",
-        "hits": 1,
+        "hits": "보조",
         "range": "",
         "attribute": "어둠",
         "target_count": "",
@@ -20334,7 +20334,7 @@
       },
       {
         "name": "퍼니 스마일",
-        "hits": 1,
+        "hits": "보조",
         "range": "원거리",
         "attribute": "빛",
         "target_count": "단일",
@@ -24478,7 +24478,7 @@
       },
       {
         "name": "갓 브레스",
-        "hits": 1,
+        "hits": "보조",
         "range": "자신",
         "attribute": "강철",
         "target_count": "자신",
@@ -25655,7 +25655,7 @@
       },
       {
         "name": "엠프레스 헤이즈",
-        "hits": 1,
+        "hits": "보조",
         "range": "원거리",
         "attribute": "흙",
         "target_count": "단일",
