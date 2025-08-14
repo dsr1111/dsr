@@ -107,8 +107,8 @@ let digimonData = {};
 
 // JSON 데이터 처리
 Promise.all([
-  fetch("/data/csv/map.json").then(response => response.json()),
-  fetch("/data/csv/digimon.json").then(response => response.json())
+  fetch("https://media.dsrwiki.com/data/csv/map.json").then(response => response.json()),
+  fetch("https://media.dsrwiki.com/data/csv/digimon.json").then(response => response.json())
 ])
   .then(([mapData, digimonData]) => {
     maps = mapData;

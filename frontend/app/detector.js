@@ -4,7 +4,7 @@ let selectedDetector = null;
 let selectedDigimon = null;
 
 // JSON 데이터 로드
-fetch('/data/csv/detector.json')
+fetch('https://media.dsrwiki.com/data/csv/detector.json')
     .then(response => response.json())
     .then(data => {
         detectorData = data;
@@ -403,7 +403,7 @@ function showMapAndMarker(detector, digimon) {
 // 카드 하단에 스킬 테이블 추가
 async function showDigimonSkills(digimon) {
     // digimon.json에서 스킬 정보 가져오기
-    const response = await fetch('/data/csv/digimon.json');
+    const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
     const digimonData = await response.json();
     const digimonInfo = digimonData[digimon];
     

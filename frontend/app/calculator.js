@@ -36,7 +36,7 @@ document
   .getElementById("stage-select")
   .addEventListener("change", async function () {
     const stage = this.value;
-    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     if (digimonData) {
       populateCharacterDropdown(digimonData, stage);
     }
@@ -46,7 +46,7 @@ document
   .getElementById("character-select")
   .addEventListener("change", async function () {
     const characterName = this.value;
-    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     if (digimonData) {
       displayCharacterType(digimonData, characterName);
       displayCharacterImage(characterName);
@@ -122,7 +122,7 @@ function displayCharacterLevelAndPower(digimonData, characterName) {
 
 async function displaySkillImage(characterName) {
   const skillSelect = document.getElementById("skill-select").value;
-  const digimonData = await fetchJSONData("/data/csv/digimon.json");
+  const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
   const digimon = digimonData[characterName];
 
   if (digimon && digimon.skills) {
@@ -152,7 +152,7 @@ document
   .getElementById("map1-select")
   .addEventListener("change", async function () {
     const selectedRegion = this.value;
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
 
     const filteredLocations = [
       ...new Set(
@@ -180,7 +180,7 @@ document
   .getElementById("map2-select")
   .addEventListener("change", async function () {
     const selectedLocation = this.value;
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
     await updateMobSelect(mobData, selectedLocation);
   });
 
@@ -211,7 +211,7 @@ document
   .getElementById("mob-select")
   .addEventListener("change", async function () {
     const selectedMob = this.value;
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
     await updateMobDetails(mobData, selectedMob);
   });
 
@@ -250,7 +250,7 @@ window.addEventListener("DOMContentLoaded", async function () {
     const map1Select = document.getElementById("map1-select");
     const defaultRegion = map1Select.value;
 
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
 
     if (mobData && mobData.length > 0) {
       const filteredLocations = [
@@ -275,7 +275,7 @@ window.addEventListener("DOMContentLoaded", async function () {
       }
     }
 
-    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
 
     if (digimonData) {
       await populateCharacterDropdown(digimonData, "성장기");
@@ -327,7 +327,7 @@ document.getElementById("manual-mode").addEventListener("change", async function
   } else {
     // 일반 모드로 돌아올 때 캐릭터 정보 다시 불러오기
     const characterName = document.getElementById("character-select").value;
-    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     if (digimonData) {
       displayCharacterType(digimonData, characterName);
       displayCharacterImage(characterName);
@@ -368,7 +368,7 @@ async function calculateStrengthResult() {
     myLevel = getInputValue("manual-level");
   } else {
     const characterName = document.getElementById("character-select").value;
-    const digimonData = await fetchJSONData("/data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     const digimon = digimonData[characterName];
 
     if (digimon) {
@@ -424,7 +424,7 @@ async function calculateNeedStr() {
     let mobStrong = "";
     let mobWeak = "";
 
-    const mobData = await fetchCSVData("/data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
     const mobRow = mobData.find(
       (row) => row[2] === mobName && row[1] === selectedMap
     );
@@ -462,7 +462,7 @@ async function calculateNeedStr() {
       }
     } else {
       const characterName = document.getElementById("character-select").value;
-      const digimonData = await fetchJSONData("/data/csv/digimon.json");
+      const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
       const digimon = digimonData[characterName];
 
       if (!digimon) {

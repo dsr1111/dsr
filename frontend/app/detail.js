@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
 
   // 디지몬 데이터 가져오기
-  fetch("/data/csv/digimon.json")
+  fetch("https://media.dsrwiki.com/data/csv/digimon.json")
     .then((response) => response.json())
     .then((data) => {
       const character = data[characterName];
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         addTooltipToElement(typeImg, type);
 
         // 디지코어화 정보 가져오기
-        fetch("/data/csv/digicore.json")
+        fetch("https://media.dsrwiki.com/data/csv/digicore.json")
           .then(response => response.json())
           .then(digicoreData => {
             const digicoreContainer = document.getElementById("digicore-container");
@@ -456,7 +456,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // 덱 정보 가져오기
-  fetch("/data/csv/deck.json")
+  fetch("https://media.dsrwiki.com/data/csv/deck.json")
     .then(response => response.json())
     .then(deckData => {
       const deckContainer = document.getElementById("deck-container");

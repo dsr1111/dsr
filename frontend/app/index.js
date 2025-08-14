@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   calendarEl.style.margin = "0 auto";
 
   // 캘린더 이벤트 데이터를 불러옵니다
-  fetch("/data/csv/calendar.json")
+  fetch("https://media.dsrwiki.com/data/csv/calendar.json")
     .then(response => response.json())
     .then(data => {
       var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
 
-  fetch("/data/csv/coupon.json")
+  fetch("https://media.dsrwiki.com/data/csv/coupon.json")
     .then((response) => response.json())
     .then((data) => {
       const couponContainer = document.querySelector(".coupon-container");
