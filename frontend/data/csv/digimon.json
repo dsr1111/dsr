@@ -24482,7 +24482,7 @@
         "range": "자신",
         "attribute": "강철",
         "target_count": "자신",
-        "effect": "회피",
+        "effect": "회피율 증가",
         "multipliers": [
           0,
           0,
