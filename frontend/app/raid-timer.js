@@ -52,14 +52,6 @@ const raids = [
     baseDate: '2025-06-01',
     map: '어둠성 계곡',
   },
-  {
-    name: '위그드라실_7D6',
-    image: getImagePath('위그드라실_7D6'),
-    times: ['21:00'],
-    type: 'weekly',
-    days: [1, 2, 3], // 월(1), 화(2), 수(3)
-    map: '무한 산',
-  },
 ];
 
 const RotationRaid = {
