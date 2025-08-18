@@ -24076,13 +24076,13 @@
     "type": "백신",
     "stats": {
       "level": 100,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "hp": 5916,
+      "sp": 1927,
+      "STR": 971,
+      "INT": 1008,
+      "DEF": 978,
+      "RES": 926,
+      "SPD": 481
     },
     "strengths": {
       "attribute": "물리",
