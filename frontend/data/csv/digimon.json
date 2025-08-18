@@ -24160,14 +24160,14 @@
     "evolution_stage": "궁극체",
     "type": "백신",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 5781,
+      "sp": 2001,
+      "STR": 1023,
+      "INT": 971,
+      "DEF": 926,
+      "RES": 1000,
+      "SPD": 493
     },
     "strengths": {
       "attribute": "빛",
