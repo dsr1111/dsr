@@ -23,10 +23,10 @@
       gtag('js', new Date());
       gtag('config', 'G-V5VLCXSKM7');
       
-      // 자동 광고 비활성화 (수동 광고 사용)
+      // 자동 광고 활성화 (앵커 광고 포함)
       (adsbygoogle = window.adsbygoogle || []).push({
         google_ad_client: "ca-pub-6625279423156068",
-        enable_page_level_ads: false
+        enable_page_level_ads: true
       });
     </script>
   </head>
@@ -90,37 +90,6 @@
         </div>
       </div>
     </div>
-    
-    <!-- 하단 앵커 광고 (수동 배치) -->
-    <div id="anchor-ad-container" style="position:fixed; bottom:0; left:0; width:100%; z-index:1000; background:#fff; border-top:1px solid #e0e0e0; box-shadow:0 -2px 8px rgba(0,0,0,0.1);">
-        <div style="max-width:728px; margin:0 auto; padding:8px; position:relative;">
-            <button onclick="document.getElementById('anchor-ad-container').style.display='none'" 
-                    style="position:absolute; top:2px; right:8px; background:none; border:none; font-size:18px; cursor:pointer; color:#666; line-height:1; z-index:1001;">×</button>
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-format="autorelaxed"
-                 data-ad-client="ca-pub-6625279423156068"
-                 data-ad-slot="3071797494">
-            </ins>
-        </div>
-    </div>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    
-    <!-- 하단 광고 공간 확보 -->
-    <style>
-        body { padding-bottom: 100px !important; }
-        @media (max-width: 768px) {
-            body { padding-bottom: 0 !important; }
-            #anchor-ad-container {
-                display: none !important;
-            }
-        }
-        #anchor-ad-container button:hover {
-            color: #333 !important;
-        }
-    </style>
     
     <script src="app/raid-timer.js" defer></script>
   </body>
