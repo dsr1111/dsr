@@ -119,6 +119,10 @@ function createDigimonEmbed(digimonName, digimonData) {
 // 봇이 준비되었을 때
 client.once(Events.ClientReady, () => {
   console.log(`${client.user.tag} 봇이 준비되었습니다!`);
+  
+  // 봇 상태 설정 (프로필에 표시됨)
+  client.user.setActivity('/도움말 | 디지몬 정보 봇', { type: 'PLAYING' });
+  
   loadDigimonData();
 });
 
@@ -365,18 +369,17 @@ client.on(Events.MessageCreate, async (message) => {
    // 도움말
   else if (content === '!도움말' || content === '!help') {
     const helpEmbed = new EmbedBuilder()
-      .setTitle('🦖 디지몬 봇 도움말')
+      .setTitle('🦖 DSRWIKI 봇')
       .setColor(0x0099ff)
       .setDescription('다음 명령어들을 사용할 수 있습니다:')
              .addFields(
-         { name: '!디지몬 [이름]', value: '디지몬의 전체 정보를 보여줍니다', inline: false },
-         { name: '!약점 [이름]', value: '디지몬의 약점을 보여줍니다', inline: false },
-         { name: '!강점 [이름]', value: '디지몬의 강점을 보여줍니다', inline: false },
-         { name: '!스탯 [이름]', value: '디지몬의 스탯을 보여줍니다', inline: false },
-         { name: '!필드 [이름]', value: '디지몬의 필드를 보여줍니다', inline: false },
-         { name: '!도움말', value: '이 도움말을 보여줍니다', inline: false }
+         { name: '/디지몬 [이름]', value: '디지몬의 전체 정보를 보여줍니다', inline: false },
+         { name: '/약점 [이름]', value: '디지몬의 약점을 보여줍니다', inline: false },
+         { name: '/강점 [이름]', value: '디지몬의 강점을 보여줍니다', inline: false },
+         { name: '/스탯 [이름]', value: '디지몬의 스탯을 보여줍니다', inline: false },
+         { name: '/필드 [이름]', value: '디지몬의 필드를 보여줍니다', inline: false },
        )
-      .setFooter({ text: '예시: !디지몬 가지몬, !약점 가지몬' });
+      .setFooter({ text: '예시: /디지몬 가지몬, /약점 가지몬' });
     
     message.reply({ embeds: [helpEmbed] });
   }
