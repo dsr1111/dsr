@@ -359,11 +359,33 @@ function createReferralPopup() {
     }
 }
 
-// Run the function when the DOM is fully loaded
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createReferralPopup);
-} else {
-    createReferralPopup();
+// Run the function when the DOM is fully loaded (only on desktop)
+function shouldShowReferralPopup() {
+    return window.innerWidth > 768; // 768px 이하(모바일)에서는 표시하지 않음
 }
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (shouldShowReferralPopup()) {
+            createReferralPopup();
+        }
+    });
+} else {
+    if (shouldShowReferralPopup()) {
+        createReferralPopup();
+    }
+}
+
+// 화면 크기 변경 시에도 대응
+window.addEventListener('resize', () => {
+    const existingPopup = document.getElementById('referral-popup-container');
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+    
+    if (shouldShowReferralPopup()) {
+        createReferralPopup();
+    }
+});
 
 customElements.define("custom-nav", CustomNav);
