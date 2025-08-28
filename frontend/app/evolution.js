@@ -584,7 +584,8 @@
           }
         }
       } else if (stage >= 4 && stage <= 6) {
-        stageFilters = ["4"];
+        // 성숙기~궁극체 디지몬의 경우 성장기에서 검색
+        stageFilters = ["3"];
       }
       
       if (stageFilters.length === 0) return [];
