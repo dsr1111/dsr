@@ -1120,6 +1120,73 @@
       }
     ]
   },
+  "아구몬(S):버스트모드": {
+    "evolution_stage": "성장기",
+    "type": "백신",
+    "stats": {
+      "level": 0,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "불",
+      "effect": "회피"
+    },
+    "weaknesses": {
+      "attribute": "물",
+      "effect": "효과확률"
+    },
+    "fields": [
+      "DR",
+      "NSp",
+      "VB"
+    ],
+    "skills": [
+      {
+        "name": "베이비 볼케이노",
+        "hits": 3,
+        "range": "원거리",
+        "attribute": "불",
+        "target_count": "단일",
+        "multipliers": [
+          0.1666,
+          0.1833,
+          0.2,
+          0.2166,
+          0.2333,
+          0.25,
+          0.2666,
+          0.2833,
+          0.3,
+          0.3166
+        ]
+      },
+      {
+        "name": "베이비 버너",
+        "hits": 1,
+        "range": "원거리",
+        "attribute": "불",
+        "target_count": "단일",
+        "multipliers": [
+          1,
+          1.05,
+          1.1,
+          1.15,
+          1.2,
+          1.25,
+          1.3,
+          1.35,
+          1.4,
+          1.45
+        ]
+      }
+    ]
+  },
   "아기벌몬": {
     "evolution_stage": "성장기",
     "type": "바이러스",
@@ -24067,6 +24134,92 @@
           0.324,
           0.336,
           0.348
+        ]
+      }
+    ]
+  },
+  "청룡몬": {
+    "evolution_stage": "궁극체",
+    "type": "데이터",
+    "stats": {
+      "level": 100,
+      "hp": 5826,
+      "sp": 1942,
+      "STR": 963,
+      "INT": 1075,
+      "DEF": 963,
+      "RES": 963,
+      "SPD": 481
+    },
+    "strengths": {
+      "attribute": "물",
+      "effect": "내성"
+    },
+    "weaknesses": {
+      "attribute": "흙",
+      "effect": "약점"
+    },
+    "fields": [
+      "DR",
+      "VB",
+      "WG"
+    ],
+    "skills": [
+      {
+        "name": "창뢰",
+        "hits": 2,
+        "range": "원거리",
+        "attribute": "천둥",
+        "target_count": "단일",
+        "multipliers": [
+          0.25,
+          0.275,
+          0.3,
+          0.325,
+          0.35,
+          0.375,
+          0.4,
+          0.425,
+          0.45,
+          0.475
+        ]
+      },
+      {
+        "name": "풍사화전",
+        "hits": 7,
+        "range": "원거리",
+        "attribute": "천둥",
+        "target_count": "전체",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "뇌신의 춤",
+        "hits": 3,
+        "range": "원거리",
+        "attribute": "천둥",
+        "target_count": "단일",
+        "multipliers": [
+          0.3333,
+          0.35,
+          0.3666,
+          0.3833,
+          0.4,
+          0.4166,
+          0.4333,
+          0.45,
+          0.4666,
+          0.4833
         ]
       }
     ]

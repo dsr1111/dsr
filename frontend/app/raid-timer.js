@@ -55,11 +55,11 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '데이터몬',
-  image: getImagePath('데이터몬'),
+  name: '안드로몬',
+  image: getImagePath('안드로몬'),
   baseTime: '19:00',
-  baseDate: '2025-08-14',
-  map: '오다이바 입구',
+  baseDate: '2025-08-28',
+  map: '기어 사바나',
 };
 
 // TimezoneDB API를 사용하여 서울 시간 동기화
