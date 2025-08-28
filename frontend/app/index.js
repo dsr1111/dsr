@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
 
-  fetch("https://media.dsrwiki.com/data/csv/coupon.json")
+  fetch("data/csv/coupon.json")
     .then((response) => response.json())
     .then((data) => {
       const couponContainer = document.querySelector(".coupon-container");
