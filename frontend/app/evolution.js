@@ -516,10 +516,17 @@
       this.selectedDigimonName = digimonName;
       const lowerEvolutions = this.findAllLowerEvolutions(digimonName);
       const treeData = this.filterTreeByDigimonName(digimonName);
+      
       if (treeData.length > 0) {
         this.createEvolutionTree(treeData, lowerEvolutions);
       } else {
-        alert("해당 디지몬의 진화트리를 찾을 수 없습니다.");
+        // 특수한 진화 조건을 가진 디지몬의 경우 해당 디지몬의 정보를 직접 보여줌
+        const selectedDigimon = DataModule.allData.find(d => d.name === digimonName);
+        if (selectedDigimon) {
+          this.createSpecialEvolutionTree(selectedDigimon);
+        } else {
+          alert("해당 디지몬의 진화트리를 찾을 수 없습니다.");
+        }
       }
     },
     findAllLowerEvolutions(digimonName, visited = new Set()) {
@@ -542,13 +549,54 @@
       const selected = DataModule.allData.find(d => d.name === digimonName);
       if (!selected) return [];
       const stage = parseInt(selected.evolution_stage, 10);
-      let stageFilter = null;
-      if (stage === 1) stageFilter = "1";
-      else if (stage >= 2 && stage <= 3) stageFilter = "2";
-      else if (stage >= 4 && stage <= 6) stageFilter = "3";
-      if (!stageFilter) return [];
-      const candidates = DataModule.allData.filter(d => d.evolution_stage === stageFilter);
-      return candidates.filter(d => this.isDigimonInTree(d, digimonName));
+      
+      let stageFilters = [];
+      if (stage === 1) {
+        stageFilters = ["1"];
+      } else if (stage === 2) {
+        stageFilters = ["2"];
+      } else if (stage === 3) {
+        // 성장기 디지몬의 경우 먼저 유년기2에서 검색
+        const candidatesFromStage2 = DataModule.allData.filter(d => d.evolution_stage === "2");
+        const hasEvolutionFromStage2 = candidatesFromStage2.some(d => this.isDigimonInTree(d, digimonName));
+        
+        if (hasEvolutionFromStage2) {
+          // 유년기2에서 진화할 수 있는 경우
+          stageFilters = ["2"];
+        } else {
+          // 유년기2에서 진화할 수 없는 경우, 다른 성장기에서 진화하는지 확인
+          const candidatesFromStage3 = DataModule.allData.filter(d => d.evolution_stage === "3");
+          const hasEvolutionFromStage3 = candidatesFromStage3.some(d => this.isDigimonInTree(d, digimonName));
+          
+          if (hasEvolutionFromStage3) {
+            // 다른 성장기에서 진화하는 경우, 해당 성장기들을 보여줌
+            // 아구몬(S):버스트모드 같은 경우는 아구몬(S)만 보여줘야 함
+            const parentDigimons = candidatesFromStage3.filter(d => this.isDigimonEvolvedFrom(digimonName, d.name));
+            if (parentDigimons.length > 0) {
+              // 부모 디지몬들만 보여줌
+              return parentDigimons;
+            } else {
+              stageFilters = ["3"];
+            }
+          } else {
+            // 진화 경로가 없는 경우 성장기 단계 자체를 보여줌
+            stageFilters = ["3"];
+          }
+        }
+      } else if (stage >= 4 && stage <= 6) {
+        stageFilters = ["4"];
+      }
+      
+      if (stageFilters.length === 0) return [];
+      
+      // 여러 단계에서 후보를 찾기
+      let allCandidates = [];
+      stageFilters.forEach(filter => {
+        const candidates = DataModule.allData.filter(d => d.evolution_stage === filter);
+        allCandidates.push(...candidates);
+      });
+      
+      return allCandidates.filter(d => this.isDigimonInTree(d, digimonName));
     },
     isDigimonInTree(digimon, searchName, visited = new Set()) {
       if (!digimon || visited.has(digimon.name)) {
@@ -567,6 +615,20 @@
       }
       return false;
     },
+
+    // 특정 디지몬이 다른 디지몬의 진화 결과인지 확인하는 함수
+    isDigimonEvolvedFrom(digimonName, fromDigimonName) {
+      const fromDigimon = DataModule.allData.find(d => d.name === fromDigimonName);
+      if (!fromDigimon) return false;
+      
+      const evolutions = [
+        fromDigimon.evol1, fromDigimon.evol2, fromDigimon.evol3, fromDigimon.evol4, fromDigimon.evol5,
+        fromDigimon.evol6, fromDigimon.evol7, fromDigimon.evol8, fromDigimon.evol9, fromDigimon.evol10,
+        fromDigimon.evol11, fromDigimon.조그레스, fromDigimon.암흑진화, fromDigimon.특수진화, fromDigimon.버스트진화
+      ];
+      
+      return evolutions.includes(digimonName);
+    },
     createEvolutionTree(data, lowerEvolutions) {
       const treeContainer = document.getElementById("evolution-tree");
       treeContainer.innerHTML = "";
@@ -581,6 +643,163 @@
         stageContainer.appendChild(node);
       });
       return stageContainer;
+    },
+
+    createSpecialEvolutionTree(digimon) {
+      const treeContainer = document.getElementById("evolution-tree");
+      treeContainer.innerHTML = "";
+      
+      const specialContainer = document.createElement("div");
+      specialContainer.classList.add("special-evolution-container");
+      
+      const title = document.createElement("h3");
+      title.textContent = `${digimon.name} - 특수 진화 조건`;
+      title.style.textAlign = "center";
+      title.style.marginBottom = "20px";
+      title.style.color = "#333";
+      
+      const infoContainer = document.createElement("div");
+      infoContainer.classList.add("special-info");
+      infoContainer.style.padding = "20px";
+      infoContainer.style.backgroundColor = "#f5f5f5";
+      infoContainer.style.borderRadius = "8px";
+      infoContainer.style.marginBottom = "20px";
+      
+      // 진화 단계 정보
+      const stageInfo = document.createElement("p");
+      stageInfo.innerHTML = `<strong>진화 단계:</strong> ${this.getStageName(digimon.evolution_stage)}`;
+      stageInfo.style.marginBottom = "10px";
+      
+      // 진화 가능한 디지몬들
+      const evolutions = [
+        { name: digimon.evol1, percent: digimon.percent1 },
+        { name: digimon.evol2, percent: digimon.percent2 },
+        { name: digimon.evol3, percent: digimon.percent3 },
+        { name: digimon.evol4, percent: digimon.percent4 },
+        { name: digimon.evol5, percent: digimon.percent5 },
+        { name: digimon.evol6, percent: digimon.percent6 },
+        { name: digimon.evol7, percent: digimon.percent7 },
+        { name: digimon.evol8, percent: digimon.percent8 },
+        { name: digimon.evol9, percent: digimon.percent9 },
+        { name: digimon.evol10, percent: digimon.percent10 },
+        { name: digimon.evol11, percent: digimon.percent11 },
+        { name: digimon.조그레스, percent: digimon.percent12 },
+        { name: digimon.암흑진화, percent: digimon.percent13, evoType: "dark" },
+        { name: digimon.특수진화, percent: digimon.percent14, evoType: "special" },
+        { name: digimon.버스트진화, percent: digimon.percent15, evoType: "burst" }
+      ].filter(e => e.name);
+      
+      if (evolutions.length > 0) {
+        const evoTitle = document.createElement("h4");
+        evoTitle.textContent = "진화 가능한 디지몬:";
+        evoTitle.style.marginBottom = "10px";
+        evoTitle.style.color = "#555";
+        
+        const evoList = document.createElement("div");
+        evoList.style.display = "flex";
+        evoList.style.flexWrap = "wrap";
+        evoList.style.gap = "10px";
+        
+        evolutions.forEach(evo => {
+          const evoItem = document.createElement("div");
+          evoItem.style.padding = "8px 12px";
+          evoItem.style.backgroundColor = "#fff";
+          evoItem.style.border = "1px solid #ddd";
+          evoItem.style.borderRadius = "4px";
+          evoItem.style.fontSize = "14px";
+          
+          let evoText = evo.name;
+          if (evo.evoType === "dark") evoText += " (암흑진화)";
+          else if (evo.evoType === "special") evoText += " (특수진화)";
+          else if (evo.evoType === "burst") evoText += " (버스트진화)";
+          
+          evoText += ` - ${evo.percent}%`;
+          evoItem.textContent = evoText;
+          
+          evoList.appendChild(evoItem);
+        });
+        
+        infoContainer.appendChild(evoTitle);
+        infoContainer.appendChild(evoList);
+      }
+      
+      // 특수 진화 조건 정보 (condition.csv에서 가져오기)
+      const conditionInfo = DataModule.conditionData.find(c => c.name === digimon.name);
+      if (conditionInfo) {
+        const conditionTitle = document.createElement("h4");
+        conditionTitle.textContent = "진화 조건:";
+        conditionTitle.style.marginBottom = "10px";
+        conditionTitle.style.color = "#555";
+        conditionTitle.style.marginTop = "20px";
+        
+        const conditionList = document.createElement("div");
+        conditionList.style.display = "flex";
+        conditionList.style.flexDirection = "column";
+        conditionList.style.gap = "5px";
+        
+        if (conditionInfo.레벨) {
+          const levelItem = document.createElement("div");
+          levelItem.innerHTML = `<strong>레벨:</strong> ${conditionInfo.레벨}`;
+          conditionList.appendChild(levelItem);
+        }
+        
+        if (conditionInfo.유대감) {
+          const bondItem = document.createElement("div");
+          bondItem.innerHTML = `<strong>유대감:</strong> ${conditionInfo.유대감}%`;
+          conditionList.appendChild(bondItem);
+        }
+        
+        if (conditionInfo.진화재료) {
+          const materialItem = document.createElement("div");
+          materialItem.innerHTML = `<strong>진화 재료:</strong> ${conditionInfo.진화재료}`;
+          conditionList.appendChild(materialItem);
+        }
+        
+        if (conditionInfo.버스트진화재료) {
+          const burstMaterialItem = document.createElement("div");
+          burstMaterialItem.innerHTML = `<strong>버스트진화 재료:</strong> ${conditionInfo.버스트진화재료}`;
+          conditionList.appendChild(burstMaterialItem);
+        }
+        
+        if (conditionInfo.특수진화재료) {
+          const specialMaterialItem = document.createElement("div");
+          specialMaterialItem.innerHTML = `<strong>특수진화 재료:</strong> ${conditionInfo.특수진화재료}`;
+          conditionList.appendChild(specialMaterialItem);
+        }
+        
+        if (conditionInfo.암흑진화재료) {
+          const darkMaterialItem = document.createElement("div");
+          darkMaterialItem.innerHTML = `<strong>암흑진화 재료:</strong> ${conditionInfo.암흑진화재료}`;
+          conditionList.appendChild(darkMaterialItem);
+        }
+        
+        if (conditionInfo.진화타입) {
+          const typeItem = document.createElement("div");
+          typeItem.innerHTML = `<strong>진화 타입:</strong> ${conditionInfo.진화타입}`;
+          conditionList.appendChild(typeItem);
+        }
+        
+        if (conditionList.children.length > 0) {
+          infoContainer.appendChild(conditionTitle);
+          infoContainer.appendChild(conditionList);
+        }
+      }
+      
+      specialContainer.appendChild(title);
+      specialContainer.appendChild(infoContainer);
+      treeContainer.appendChild(specialContainer);
+    },
+
+    getStageName(stage) {
+      const stageNames = {
+        "1": "유년기1",
+        "2": "유년기2", 
+        "3": "성장기",
+        "4": "성숙기",
+        "5": "완전체",
+        "6": "궁극체"
+      };
+      return stageNames[stage] || `단계 ${stage}`;
     },
     createDigimonNode(digimon, lowerEvolutions, evoType = "normal") {
       const container = document.createElement("div");
