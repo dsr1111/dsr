@@ -327,7 +327,7 @@ document.getElementById("manual-mode").addEventListener("change", async function
   } else {
     // 일반 모드로 돌아올 때 캐릭터 정보 다시 불러오기
     const characterName = document.getElementById("character-select").value;
-    const digimonData = await fetchJSONData("data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     if (digimonData) {
       displayCharacterType(digimonData, characterName);
       displayCharacterImage(characterName);

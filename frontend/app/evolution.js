@@ -11,7 +11,7 @@
 
     async loadCSVFiles() {
       await Promise.all([
-        this.loadCSV("data/csv/evolution.csv", "allData"),
+        this.loadCSV("https://media.dsrwiki.com/data/csv/evolution.csv", "allData"),
         this.loadCSV("https://media.dsrwiki.com/data/csv/condition.csv", "conditionData"),
         this.loadCSV("https://media.dsrwiki.com/data/csv/jogress.csv", "jogressData"),
       ]);
