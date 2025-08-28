@@ -152,7 +152,7 @@ document
   .getElementById("map1-select")
   .addEventListener("change", async function () {
     const selectedRegion = this.value;
-    const mobData = await fetchCSVData("data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
 
     const filteredLocations = [
       ...new Set(
@@ -180,7 +180,7 @@ document
   .getElementById("map2-select")
   .addEventListener("change", async function () {
     const selectedLocation = this.value;
-    const mobData = await fetchCSVData("data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
     await updateMobSelect(mobData, selectedLocation);
   });
 
@@ -211,7 +211,7 @@ document
   .getElementById("mob-select")
   .addEventListener("change", async function () {
     const selectedMob = this.value;
-    const mobData = await fetchCSVData("data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
     await updateMobDetails(mobData, selectedMob);
   });
 
@@ -250,7 +250,7 @@ window.addEventListener("DOMContentLoaded", async function () {
     const map1Select = document.getElementById("map1-select");
     const defaultRegion = map1Select.value;
 
-    const mobData = await fetchCSVData("data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
 
     if (mobData && mobData.length > 0) {
       const filteredLocations = [
@@ -424,7 +424,7 @@ async function calculateNeedStr() {
     let mobStrong = "";
     let mobWeak = "";
 
-    const mobData = await fetchCSVData("data/csv/mob.csv");
+    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
     const mobRow = mobData.find(
       (row) => row[2] === mobName && row[1] === selectedMap
     );

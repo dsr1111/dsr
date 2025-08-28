@@ -68,7 +68,7 @@
   const TableDataManager = {
     async fetchData() {
       try {
-                fetch('data/csv/digimon.json')
+                fetch('https://media.dsrwiki.com/data/csv/digimon.json')
         if (!digimonData) return;
 
         const tableBody = document.getElementById("characterTable");

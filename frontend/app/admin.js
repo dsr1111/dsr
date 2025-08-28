@@ -39,7 +39,7 @@ class DataManager {
 
     async loadData() {
         try {
-            const response = await fetch(`data/csv/${this.currentType}.json`);
+            const response = await fetch(`https://media.dsrwiki.com/data/csv/${this.currentType}.json`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

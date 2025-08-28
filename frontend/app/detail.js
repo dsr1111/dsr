@@ -456,7 +456,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // 덱 정보 가져오기
-  fetch("data/csv/deck.json")
+  fetch("https://media.dsrwiki.com/data/csv/deck.json")
     .then(response => response.json())
     .then(deckData => {
       const deckContainer = document.getElementById("deck-container");
