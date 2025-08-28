@@ -54,7 +54,7 @@ const stageButtons = document.querySelectorAll(".stage-btn");
 const mobContainer = document.querySelector(".mob");
 
 async function fetchCSV() {
-  const response = await fetch("https://media.dsrwiki.com/data/csv/overflow.csv");
+  const response = await fetch('data/csv/overflow.csv');
   const data = await response.text();
   return parseCSV(data);
 }

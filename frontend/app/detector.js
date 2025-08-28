@@ -4,7 +4,7 @@ let selectedDetector = null;
 let selectedDigimon = null;
 
 // JSON 데이터 로드
-fetch('https://media.dsrwiki.com/data/csv/detector.json')
+fetch('data/csv/detector.json')
     .then(response => response.json())
     .then(data => {
         detectorData = data;

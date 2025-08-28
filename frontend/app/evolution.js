@@ -11,9 +11,9 @@
 
     async loadCSVFiles() {
       await Promise.all([
-        this.loadCSV("https://media.dsrwiki.com/data/csv/evolution.csv", "allData"),
+        this.loadCSV("data/csv/evolution.csv", "allData"),
         this.loadCSV("https://media.dsrwiki.com/data/csv/condition.csv", "conditionData"),
-        this.loadCSV("https://media.dsrwiki.com/data/csv/jogress.csv", "jogressData"),
+        this.loadCSV("data/csv/jogress.csv", "jogressData"),
       ]);
       // CSV 로드 후 전체 데이터의 이미지 리스트를 생성
       UIManager.createDigimonImageList(this.allData);
