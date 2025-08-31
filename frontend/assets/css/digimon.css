@@ -20,7 +20,7 @@ body {
 
 .container1 {
   width: 100%;
-  max-width: max-content;
+  max-width: 1400px; /* 최대 너비를 늘려서 필터 버튼들이 제대로 배치되도록 */
   margin: 20px auto;
   margin-top: 130px;
   padding: 0 15px;
@@ -90,6 +90,48 @@ body {
   margin-top: 10px;
 }
 
+/* 로딩 스피너 스타일 */
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  background-color: transparent;
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.loading-spinner p {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 로딩 완료 시 스피너 숨김 */
+.loading-spinner.hidden {
+  display: none;
+}
+
 .result-table {
   table-layout: auto;
   width: 100%;
@@ -135,7 +177,8 @@ body {
 .skill-btn.active,
 .skillweak-btn.active,
 .skillstrong-btn.active,
-.field-btn.active {
+.field-btn.active,
+.effect-btn.active {
   border: 2px solid rgb(0, 0, 0);
 }
 
@@ -171,7 +214,68 @@ body {
 }
 
 .button-group-field {
-  padding-left: 30px;
+  padding-left: 27px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6.2px; /* 버튼 사이의 간격 조절 */
+}
+
+.button-group-field button {
+  margin-right: 2px; /* 추가 간격 조절 (필요시) */
+}
+
+/* Effect 버튼 스타일 */
+.effect-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  margin-right: 5px; /* 다른 필터 버튼들과 동일한 간격 */
+}
+
+/* Effect 버튼 그룹에 필드 버튼과 동일한 패딩 적용 */
+.button-group:has(.effect-btn) {
+  padding-left: 40px;
+  gap: 21px;
+}
+
+.effect-btn img {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+}
+
+/* 모든 필터 버튼의 기본 title 툴팁 비활성화 */
+.evolution-btn,
+.type-btn,
+.skill-btn,
+.skillstrong-btn,
+.skillweak-btn,
+.field-btn,
+.effect-btn {
+  pointer-events: auto;
+}
+
+.evolution-btn[title],
+.type-btn[title],
+.skill-btn[title],
+.skillstrong-btn[title],
+.skillweak-btn[title],
+.field-btn[title],
+.effect-btn[title] {
+  position: relative;
+}
+
+.evolution-btn[title]:hover::after,
+.type-btn[title]:hover::after,
+.skill-btn[title]:hover::after,
+.skillstrong-btn[title]:hover::after,
+.skillweak-btn[title]:hover::after,
+.field-btn[title]:hover::after,
+.effect-btn[title]:hover::after {
+  display: none !important;
 }
 
 th {

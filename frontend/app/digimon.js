@@ -9,6 +9,7 @@
     strong: [],
     weak: [],
     field: [],
+    effect: [],
   };
   let currentSortState = {
     column: -1,
@@ -66,8 +67,25 @@
   // 3. TableDataManager Module
   // ====================================================
   const TableDataManager = {
+    showLoading() {
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const resultTable = document.querySelector('.result-table');
+      if (loadingSpinner) loadingSpinner.classList.remove('hidden');
+      if (resultTable) resultTable.style.display = 'none';
+    },
+    
+    hideLoading() {
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const resultTable = document.querySelector('.result-table');
+      if (loadingSpinner) loadingSpinner.classList.add('hidden');
+      if (resultTable) resultTable.style.display = 'table';
+    },
+    
     async fetchData() {
       try {
+        // 로딩 표시 시작
+        this.showLoading();
+        
         const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -221,6 +239,10 @@
             newRow.dataset.약점 = weaknesses.attribute;
             newRow.dataset.약점효과 = weaknesses.effect;
             newRow.dataset.fields = fields;
+            // 스킬 효과 데이터 저장
+            newRow.dataset.skill1Effect = digimon.skills[0]?.effect || "";
+            newRow.dataset.skill2Effect = digimon.skills[1]?.effect || "";
+            newRow.dataset.skill3Effect = digimon.skills[2]?.effect || "";
 
             newRow.innerHTML = `
               <td>
@@ -256,8 +278,13 @@
         });
 
         originalRows = Array.from(tableBody.rows);
+        
+        // 로딩 완료 후 로딩 표시 숨김
+        this.hideLoading();
       } catch (error) {
         console.error('Error in fetchData:', error);
+        // 에러 발생 시에도 로딩 표시 숨김
+        this.hideLoading();
       }
     }
   };
@@ -442,9 +469,40 @@
       }
       this.filterTable();
     },
+
+    toggleEffect(effect) {
+      const effectName = effect.replace("effect_", "");
+      // HTML ID를 실제 effect 값으로 매핑
+      const effectMapping = {
+        "공격력증가": "공격력 증가",
+        "방어력감소": "방어력 감소",
+        "방어력증가": "방어력 증가",
+        "속도감소": "속도 감소",
+        "속도증가": "속도 증가",
+        "치명타율증가": "치명타율 증가",
+        "회피율증가": "회피율 증가"
+      };
+      
+      const actualEffectName = effectMapping[effectName] || effectName;
+      const index = filters.effect.indexOf(actualEffectName);
+      if (index > -1) {
+        filters.effect.splice(index, 1);
+        document.getElementById(effect).classList.remove("active");
+      } else {
+        filters.effect.push(actualEffectName);
+        document.getElementById(effect).classList.add("active");
+      }
+      this.filterTable();
+    },
     filterTable() {
       const tableBody = document.getElementById("characterTable");
       const rows = tableBody.querySelectorAll("tr");
+      
+      // 데이터가 로딩되지 않았거나 행이 없으면 필터링하지 않음
+      if (!rows || rows.length === 0) {
+        return;
+      }
+      
       const hasFilter = Object.values(filters).some((filter) => filter.length > 0);
       
       if (!hasFilter) {
@@ -489,13 +547,30 @@
           filters.skill.includes(skill2) ||
           filters.skill.includes(skill3);
 
+        // Effect 필터링 로직
+        const effectMatches = filters.effect.length === 0 || 
+          filters.effect.some(effect => {
+            // 각 스킬의 effect 속성 확인 (dataset에서 직접 가져오기)
+            const skill1Effect = row.dataset.skill1Effect === effect;
+            const skill2Effect = row.dataset.skill2Effect === effect;
+            const skill3Effect = row.dataset.skill3Effect === effect;
+            
+            // 디버깅용 로그 (필요시 제거)
+            if (filters.effect.length > 0) {
+              console.log(`Effect filter: ${effect}, Row: ${row.dataset.name}, Skill1: ${row.dataset.skill1Effect}, Skill2: ${row.dataset.skill2Effect}, Skill3: ${row.dataset.skill3Effect}`);
+            }
+            
+            return skill1Effect || skill2Effect || skill3Effect;
+          });
+
         if (
           evolutionMatches &&
           typeMatches &&
           skillsMatch &&
           fieldMatches &&
           strengthsMatch &&
-          weaknessesMatch
+          weaknessesMatch &&
+          effectMatches
         ) {
           row.style.display = "";
         } else {
@@ -510,8 +585,9 @@
       filters.strong = [];
       filters.weak = [];
       filters.field = [];
+      filters.effect = [];
       const filterButtons = document.querySelectorAll(
-        ".button-group button, .button-group-field button"
+        ".button-group button, .button-group-field button, .effect-btn"
       );
       filterButtons.forEach((button) => {
         button.classList.remove("active");
@@ -624,6 +700,12 @@
         .split(",")
         .map((term) => term.trim());
       const rows = document.querySelectorAll("#characterTable tr");
+      
+      // 데이터가 로딩되지 않았거나 행이 없으면 검색하지 않음
+      if (!rows || rows.length === 0) {
+        return;
+      }
+      
       rows.forEach((row) => {
         const name = row.dataset.name ? row.dataset.name.toLowerCase() : "";
         const hasFilter = Object.values(filters).some(
@@ -683,6 +765,12 @@
   // 8. 초기화 및 전역 함수 노출
   // ====================================================
   window.onload = () => {
+    // 페이지 로드 시 로딩 표시를 보이도록 설정
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const resultTable = document.querySelector('.result-table');
+    if (loadingSpinner) loadingSpinner.classList.remove('hidden');
+    if (resultTable) resultTable.style.display = 'none';
+    
     TableDataManager.fetchData();
     initSearchListener();
     initTooltipCloseBtns();
@@ -701,6 +789,7 @@
   window.toggleSkillWeak = FilterModule.toggleSkillWeak.bind(FilterModule);
   window.toggleAllField = FilterModule.toggleAllField.bind(FilterModule);
   window.toggleField = FilterModule.toggleField.bind(FilterModule);
+  window.toggleEffect = FilterModule.toggleEffect.bind(FilterModule);
   window.sortTable = sortTable;
   window.showTooltip = showTooltip;
   window.hideTooltip = hideTooltip;

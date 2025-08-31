@@ -68,16 +68,16 @@
           <label>
             <input type="checkbox" id="select-all-evolution" onclick="toggleAllEvolution()" />
           </label>
-          <button id="성장기" class="evolution-btn" title="성장기" onclick="toggleEvolution('성장기')">
+          <button id="성장기" class="evolution-btn" onclick="toggleEvolution('성장기')" onmouseenter="showCustomTooltip(event, '성장기')" onmousemove="showCustomTooltip(event, '성장기')" onmouseleave="hideCustomTooltip()">
             <img src="https://media.dsrwiki.com/dsrwiki/성장기.webp" alt="성장기">
           </button>
-          <button id="성숙기" class="evolution-btn" title="성숙기" onclick="toggleEvolution('성숙기')">
+          <button id="성숙기" class="evolution-btn" onclick="toggleEvolution('성숙기')" onmouseenter="showCustomTooltip(event, '성숙기')" onmousemove="showCustomTooltip(event, '성숙기')" onmouseleave="hideCustomTooltip()">
             <img src="https://media.dsrwiki.com/dsrwiki/성숙기.webp" alt="성숙기">
           </button>
-          <button id="완전체" class="evolution-btn" title="완전체" onclick="toggleEvolution('완전체')">
+          <button id="완전체" class="evolution-btn" onclick="toggleEvolution('완전체')" onmouseenter="showCustomTooltip(event, '완전체')" onmousemove="showCustomTooltip(event, '완전체')" onmouseleave="hideCustomTooltip()">
             <img src="https://media.dsrwiki.com/dsrwiki/완전체.webp" alt="완전체">
           </button>
-          <button id="궁극체" class="evolution-btn" title="궁극체" onclick="toggleEvolution('궁극체')">
+          <button id="궁극체" class="evolution-btn" onclick="toggleEvolution('궁극체')" onmouseenter="showCustomTooltip(event, '궁극체')" onmousemove="showCustomTooltip(event, '궁극체')" onmouseleave="hideCustomTooltip()">
             <img src="https://media.dsrwiki.com/dsrwiki/궁극체.webp" alt="궁극체">
           </button>
         </div>
@@ -89,22 +89,22 @@
           <label>
             <input type="checkbox" id="select-all-type" onclick="toggleAllType()" />
           </label>
-            <button id="백신" class="type-btn" title="백신" onclick="toggleType('백신')">
+            <button id="백신" class="type-btn" onclick="toggleType('백신')" onmouseenter="showCustomTooltip(event, '백신')" onmousemove="showCustomTooltip(event, '백신')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/백신.webp" alt="백신">
             </button>
-            <button id="데이터" class="type-btn" title="데이터" onclick="toggleType('데이터')">
+            <button id="데이터" class="type-btn" onclick="toggleType('데이터')" onmouseenter="showCustomTooltip(event, '데이터')" onmousemove="showCustomTooltip(event, '데이터')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/데이터.webp" alt="데이터">
             </button>
-            <button id="바이러스" class="type-btn" title="바이러스" onclick="toggleType('바이러스')">
+            <button id="바이러스" class="type-btn" onclick="toggleType('바이러스')" onmouseenter="showCustomTooltip(event, '바이러스')" onmousemove="showCustomTooltip(event, '바이러스')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/바이러스.webp" alt="바이러스">
             </button>
-            <button id="프리" class="type-btn" title="프리" onclick="toggleType('프리')">
+            <button id="프리" class="type-btn" onclick="toggleType('프리')" onmouseenter="showCustomTooltip(event, '프리')" onmousemove="showCustomTooltip(event, '프리')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/프리.webp" alt="프리">
             </button>
-            <button id="언노운" class="type-btn" title="언노운" onclick="toggleType('언노운')">
+            <button id="언노운" class="type-btn" onclick="toggleType('언노운')" onmouseenter="showCustomTooltip(event, '언노운')" onmousemove="showCustomTooltip(event, '언노운')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/언노운.webp" alt="언노운">
             </button>
-            <button id="NO DATA" class="type-btn" title="NO DATA" onclick="toggleType('NO DATA')">
+            <button id="NO DATA" class="type-btn" onclick="toggleType('NO DATA')" onmouseenter="showCustomTooltip(event, 'NO DATA')" onmousemove="showCustomTooltip(event, 'NO DATA')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/NO DATA.webp" alt="NO DATA">
             </button>
         </div>
@@ -157,38 +157,98 @@
           <label>
             <input type="checkbox" id="select-all-skill" onclick="toggleAllSkill()" />
           </label>
-            <button id="강철" class="skill-btn" title="강철" onclick="toggleSkill('강철')">
+            <button id="강철" class="skill-btn" onclick="toggleSkill('강철')" onmouseenter="showCustomTooltip(event, '강철')" onmousemove="showCustomTooltip(event, '강철')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/강철.webp" alt="강철" >
             </button>
-            <button id="나무" class="skill-btn" title="나무" onclick="toggleSkill('나무')">
+            <button id="나무" class="skill-btn" onclick="toggleSkill('나무')" onmouseenter="showCustomTooltip(event, '나무')" onmousemove="showCustomTooltip(event, '나무')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/나무.webp" alt="나무" >
             </button>
-            <button id="흙" class="skill-btn" title="흙" onclick="toggleSkill('흙')">
+            <button id="흙" class="skill-btn" onclick="toggleSkill('흙')" onmouseenter="showCustomTooltip(event, '흙')" onmousemove="showCustomTooltip(event, '흙')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/흙.webp" alt="흙" >
             </button>
-            <button id="물" class="skill-btn" title="물" onclick="toggleSkill('물')">
+            <button id="물" class="skill-btn" onclick="toggleSkill('물')" onmouseenter="showCustomTooltip(event, '물')" onmousemove="showCustomTooltip(event, '물')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/물.webp" alt="물" >
             </button>
-            <button id="물리" class="skill-btn" title="물리" onclick="toggleSkill('물리')">
+            <button id="물리" class="skill-btn" onclick="toggleSkill('물리')" onmouseenter="showCustomTooltip(event, '물리')" onmousemove="showCustomTooltip(event, '물리')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/물리.webp" alt="물리" >
             </button>
-            <button id="바람" class="skill-btn" title="바람" onclick="toggleSkill('바람')">
+            <button id="바람" class="skill-btn" onclick="toggleSkill('바람')" onmouseenter="showCustomTooltip(event, '바람')" onmousemove="showCustomTooltip(event, '바람')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/바람.webp" alt="바람" >
             </button>
-            <button id="불" class="skill-btn" title="불" onclick="toggleSkill('불')">
+            <button id="불" class="skill-btn" onclick="toggleSkill('불')" onmouseenter="showCustomTooltip(event, '불')" onmousemove="showCustomTooltip(event, '불')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/불.webp" alt="불" >
             </button>
-            <button id="빛" class="skill-btn" title="빛" onclick="toggleSkill('빛')">
+            <button id="빛" class="skill-btn" onclick="toggleSkill('빛')" onmouseenter="showCustomTooltip(event, '빛')" onmousemove="showCustomTooltip(event, '빛')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/빛.webp" alt="빛" >
             </button>
-            <button id="어둠" class="skill-btn" title="어둠" onclick="toggleSkill('어둠')">
+            <button id="어둠" class="skill-btn" onclick="toggleSkill('어둠')" onmouseenter="showCustomTooltip(event, '어둠')" onmousemove="showCustomTooltip(event, '어둠')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/어둠.webp" alt="어둠" >
             </button>
-            <button id="얼음" class="skill-btn" title="얼음" onclick="toggleSkill('얼음')">
+            <button id="얼음" class="skill-btn" onclick="toggleSkill('얼음')" onmouseenter="showCustomTooltip(event, '얼음')" onmousemove="showCustomTooltip(event, '얼음')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/얼음.webp" alt="얼음" >
             </button>
-            <button id="천둥" class="skill-btn" title="천둥" onclick="toggleSkill('천둥')">
+            <button id="천둥" class="skill-btn" onclick="toggleSkill('천둥')" onmouseenter="showCustomTooltip(event, '천둥')" onmousemove="showCustomTooltip(event, '천둥')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/천둥.webp" alt="천둥" >
+            </button>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <label class="filter-label">스킬 효과</label>
+        <div class="button-group">
+            <button id="effect_감전" class="effect-btn" onclick="toggleEffect('effect_감전')" onmouseenter="showCustomTooltip(event, '감전')" onmousemove="showCustomTooltip(event, '감전')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/감전.webp" alt="감전" >
+            </button>
+            <button id="effect_격리" class="effect-btn" onclick="toggleEffect('effect_격리')" onmouseenter="showCustomTooltip(event, '격리')" onmousemove="showCustomTooltip(event, '격리')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/격리.webp" alt="격리" >
+            </button>
+            <button id="effect_공격력증가" class="effect-btn" onclick="toggleEffect('effect_공격력증가')" onmouseenter="showCustomTooltip(event, '공격력 증가')" onmousemove="showCustomTooltip(event, '공격력 증가')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/공격력 증가.webp" alt="공격력 증가" >
+            </button>
+            <button id="effect_매료" class="effect-btn" onclick="toggleEffect('effect_매료')" onmouseenter="showCustomTooltip(event, '매료')" onmousemove="showCustomTooltip(event, '매료')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/매료.webp" alt="매료" >
+            </button>
+            <button id="effect_방어력감소" class="effect-btn" onclick="toggleEffect('effect_방어력감소')" onmouseenter="showCustomTooltip(event, '방어력 감소')" onmousemove="showCustomTooltip(event, '방어력 감소')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/방어력 감소.webp" alt="방어력 감소" >
+            </button>
+            <button id="effect_방어력증가" class="effect-btn" onclick="toggleEffect('effect_방어력증가')" onmouseenter="showCustomTooltip(event, '방어력 증가')" onmousemove="showCustomTooltip(event, '방어력 증가')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/방어력 증가.webp" alt="방어력 증가" >
+            </button>
+            <button id="effect_빙결" class="effect-btn" title="빙결" onclick="toggleEffect('effect_빙결')" onmouseenter="showCustomTooltip(event, '빙결')" onmousemove="showCustomTooltip(event, '빙결')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/빙결.webp" alt="빙결" >
+            </button>
+            <button id="effect_석화" class="effect-btn" title="석화" onclick="toggleEffect('effect_석화')" onmouseenter="showCustomTooltip(event, '석화')" onmousemove="showCustomTooltip(event, '석화')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/석화.webp" alt="석화" >
+            </button>
+            <button id="effect_속도감소" class="effect-btn" title="속도 감소" onclick="toggleEffect('effect_속도감소')" onmouseenter="showCustomTooltip(event, '속도 감소')" onmousemove="showCustomTooltip(event, '속도 감소')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/속도 감소.webp" alt="속도 감소" >
+            </button>
+            <button id="effect_속도증가" class="effect-btn" title="속도 증가" onclick="toggleEffect('effect_속도증가')" onmouseenter="showCustomTooltip(event, '속도 증가')" onmousemove="showCustomTooltip(event, '속도 증가')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/속도 증가.webp" alt="속도 증가" >
+            </button>
+            <button id="effect_스턴" class="effect-btn" title="스턴" onclick="toggleEffect('effect_스턴')" onmouseenter="showCustomTooltip(event, '스턴')" onmousemove="showCustomTooltip(event, '스턴')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/스턴.webp" alt="스턴" >
+            </button>
+            <button id="effect_연소" class="effect-btn" title="연소" onclick="toggleEffect('effect_연소')" onmouseenter="showCustomTooltip(event, '연소')" onmousemove="showCustomTooltip(event, '연소')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/연소.webp" alt="연소" >
+            </button>
+            <button id="effect_중독" class="effect-btn" title="중독" onclick="toggleEffect('effect_중독')" onmouseenter="showCustomTooltip(event, '중독')" onmousemove="showCustomTooltip(event, '중독')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/중독.webp" alt="중독" >
+            </button>
+            <button id="effect_출혈" class="effect-btn" title="출혈" onclick="toggleEffect('effect_출혈')" onmouseenter="showCustomTooltip(event, '출혈')" onmousemove="showCustomTooltip(event, '출혈')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/출혈.webp" alt="출혈" >
+            </button>
+            <button id="effect_치명타율증가" class="effect-btn" title="치명타율 증가" onclick="toggleEffect('effect_치명타율증가')" onmouseenter="showCustomTooltip(event, '치명타율 증가')" onmousemove="showCustomTooltip(event, '치명타율 증가')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/치명타율 증가.webp" alt="치명타율 증가" >
+            </button>
+            <button id="effect_혼란" class="effect-btn" title="혼란" onclick="toggleEffect('effect_혼란')" onmouseenter="showCustomTooltip(event, '혼란')" onmousemove="showCustomTooltip(event, '혼란')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/혼란.webp" alt="혼란" >
+            </button>
+            <button id="effect_화상" class="effect-btn" title="화상" onclick="toggleEffect('effect_화상')" onmouseenter="showCustomTooltip(event, '화상')" onmousemove="showCustomTooltip(event, '화상')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/화상.webp" alt="화상" >
+            </button>
+            <button id="effect_회피율증가" class="effect-btn" title="회피율 증가" onclick="toggleEffect('effect_회피율증가')" onmouseenter="showCustomTooltip(event, '회피율 증가')" onmousemove="showCustomTooltip(event, '회피율 증가')" onmouseleave="hideCustomTooltip()">
+              <img src="https://media.dsrwiki.com/dsrwiki/debuff/회피율 증가.webp" alt="회피율 증가" >
             </button>
         </div>
       </div>
@@ -199,37 +259,37 @@
           <label>
             <input type="checkbox" id="select-all-strong" onclick="toggleAllStrong()" />
           </label>
-            <button id="strong_강철" class="skillstrong-btn" title="강철" onclick="toggleSkillStrong('strong_강철')">
+            <button id="strong_강철" class="skillstrong-btn" title="강철" onclick="toggleSkillStrong('strong_강철')" onmouseenter="showCustomTooltip(event, '강철')" onmousemove="showCustomTooltip(event, '강철')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/강철.webp" alt="강철" >
             </button>
-            <button id="strong_나무" class="skillstrong-btn" title="나무" onclick="toggleSkillStrong('strong_나무')">
+            <button id="strong_나무" class="skillstrong-btn" title="나무" onclick="toggleSkillStrong('strong_나무')" onmouseenter="showCustomTooltip(event, '나무')" onmousemove="showCustomTooltip(event, '나무')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/나무.webp" alt="나무" >
             </button>
-            <button id="strong_흙" class="skillstrong-btn" title="흙" onclick="toggleSkillStrong('strong_흙')">
+            <button id="strong_흙" class="skillstrong-btn" onclick="toggleSkillStrong('strong_흙')" onmouseenter="showCustomTooltip(event, '흙')" onmousemove="showCustomTooltip(event, '흙')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/흙.webp" alt="흙" >
             </button>
-            <button id="strong_물" class="skillstrong-btn" title="물" onclick="toggleSkillStrong('strong_물')">
+            <button id="strong_물" class="skillstrong-btn" onclick="toggleSkillStrong('strong_물')" onmouseenter="showCustomTooltip(event, '물')" onmousemove="showCustomTooltip(event, '물')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/물.webp" alt="물" >
             </button>
-            <button id="strong_물리" class="skillstrong-btn" title="물리" onclick="toggleSkillStrong('strong_물리')">
+            <button id="strong_물리" class="skillstrong-btn"onclick="toggleSkillStrong('strong_물리')" onmouseenter="showCustomTooltip(event, '물리')" onmousemove="showCustomTooltip(event, '물리')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/물리.webp" alt="물리" >
             </button>
-            <button id="strong_바람" class="skillstrong-btn" title="바람" onclick="toggleSkillStrong('strong_바람')">
+            <button id="strong_바람" class="skillstrong-btn" onclick="toggleSkillStrong('strong_바람')" onmouseenter="showCustomTooltip(event, '바람')" onmousemove="showCustomTooltip(event, '바람')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/바람.webp" alt="바람" >
             </button>
-            <button id="strong_불" class="skillstrong-btn" title="불" onclick="toggleSkillStrong('strong_불')">
+            <button id="strong_불" class="skillstrong-btn" onclick="toggleSkillStrong('strong_불')" onmouseenter="showCustomTooltip(event, '불')" onmousemove="showCustomTooltip(event, '불')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/불.webp" alt="불" >
             </button>
-            <button id="strong_빛" class="skillstrong-btn" title="빛" onclick="toggleSkillStrong('strong_빛')">
+            <button id="strong_빛" class="skillstrong-btn" onclick="toggleSkillStrong('strong_빛')" onmouseenter="showCustomTooltip(event, '빛')" onmousemove="showCustomTooltip(event, '빛')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/빛.webp" alt="빛" >
             </button>
-            <button id="strong_어둠" class="skillstrong-btn" title="어둠" onclick="toggleSkillStrong('strong_어둠')">
+            <button id="strong_어둠" class="skillstrong-btn" onclick="toggleSkillStrong('strong_어둠')" onmouseenter="showCustomTooltip(event, '어둠')" onmousemove="showCustomTooltip(event, '어둠')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/어둠.webp" alt="어둠" >
             </button>
-            <button id="strong_얼음" class="skillstrong-btn" title="얼음" onclick="toggleSkillStrong('strong_얼음')">
+            <button id="strong_얼음" class="skillstrong-btn" onclick="toggleSkillStrong('strong_얼음')" onmouseenter="showCustomTooltip(event, '얼음')" onmousemove="showCustomTooltip(event, '얼음')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/얼음.webp" alt="얼음" >
             </button>
-            <button id="strong_천둥" class="skillstrong-btn" title="천둥" onclick="toggleSkillStrong('strong_천둥')">
+            <button id="strong_천둥" class="skillstrong-btn" onclick="toggleSkillStrong('strong_천둥')" onmouseenter="showCustomTooltip(event, '천둥')" onmousemove="showCustomTooltip(event, '천둥')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/천둥.webp" alt="천둥" >
             </button>
         </div>
@@ -241,37 +301,37 @@
           <label>
             <input type="checkbox" id="select-all-weak" onclick="toggleAllWeak()" />
           </label>
-            <button id="weak_강철" class="skillweak-btn" title="강철" onclick="toggleSkillWeak('weak_강철')">
+            <button id="weak_강철" class="skillweak-btn" onclick="toggleSkillWeak('weak_강철')" onmouseenter="showCustomTooltip(event, '강철')" onmousemove="showCustomTooltip(event, '강철')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/강철.webp" alt="강철" >
             </button>
-            <button id="weak_나무" class="skillweak-btn" title="나무" onclick="toggleSkillWeak('weak_나무')">
+            <button id="weak_나무" class="skillweak-btn" onclick="toggleSkillWeak('weak_나무')" onmouseenter="showCustomTooltip(event, '나무')" onmousemove="showCustomTooltip(event, '나무')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/나무.webp" alt="나무" >
             </button>
-            <button id="weak_흙" class="skillweak-btn" title="흙" onclick="toggleSkillWeak('weak_흙')">
+            <button id="weak_흙" class="skillweak-btn" onclick="toggleSkillWeak('weak_흙')" onmouseenter="showCustomTooltip(event, '흙')" onmousemove="showCustomTooltip(event, '흙')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/흙.webp" alt="흙" >
             </button>
-            <button id="weak_물" class="skillweak-btn" title="물" onclick="toggleSkillWeak('weak_물')">
+            <button id="weak_물" class="skillweak-btn" onclick="toggleSkillWeak('weak_물')" onmouseenter="showCustomTooltip(event, '물')" onmousemove="showCustomTooltip(event, '물')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/물.webp" alt="물" >
             </button>
-            <button id="weak_물리" class="skillweak-btn" title="물리" onclick="toggleSkillWeak('weak_물리')">
+            <button id="weak_물리" class="skillweak-btn" onclick="toggleSkillWeak('weak_물리')" onmouseenter="showCustomTooltip(event, '물리')" onmousemove="showCustomTooltip(event, '물리')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/물리.webp" alt="물리" >
             </button>
-            <button id="weak_바람" class="skillweak-btn" title="바람" onclick="toggleSkillWeak('weak_바람')">
+            <button id="weak_바람" class="skillweak-btn" onclick="toggleSkillWeak('weak_바람')" onmouseenter="showCustomTooltip(event, '바람')" onmousemove="showCustomTooltip(event, '바람')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/바람.webp" alt="바람" >
             </button>
-            <button id="weak_불" class="skillweak-btn" title="불" onclick="toggleSkillWeak('weak_불')">
+            <button id="weak_불" class="skillweak-btn" onclick="toggleSkillWeak('weak_불')" onmouseenter="showCustomTooltip(event, '불')" onmousemove="showCustomTooltip(event, '불')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/불.webp" alt="불" >
             </button>
-            <button id="weak_빛" class="skillweak-btn" title="빛" onclick="toggleSkillWeak('weak_빛')">
+            <button id="weak_빛" class="skillweak-btn" onclick="toggleSkillWeak('weak_빛')" onmouseenter="showCustomTooltip(event, '빛')" onmousemove="showCustomTooltip(event, '빛')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/빛.webp" alt="빛" >
             </button>
-            <button id="weak_어둠" class="skillweak-btn" title="어둠" onclick="toggleSkillWeak('weak_어둠')">
+            <button id="weak_어둠" class="skillweak-btn" onclick="toggleSkillWeak('weak_어둠')" onmouseenter="showCustomTooltip(event, '어둠')" onmousemove="showCustomTooltip(event, '어둠')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/어둠.webp" alt="어둠" >
             </button>
-            <button id="weak_얼음" class="skillweak-btn" title="얼음" onclick="toggleSkillWeak('weak_얼음')">
+            <button id="weak_얼음" class="skillweak-btn" onclick="toggleSkillWeak('weak_얼음')" onmouseenter="showCustomTooltip(event, '얼음')" onmousemove="showCustomTooltip(event, '얼음')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/얼음.webp" alt="얼음" >
             </button>
-            <button id="weak_천둥" class="skillweak-btn" title="천둥" onclick="toggleSkillWeak('weak_천둥')">
+            <button id="weak_천둥" class="skillweak-btn" onclick="toggleSkillWeak('weak_천둥')" onmouseenter="showCustomTooltip(event, '천둥')" onmousemove="showCustomTooltip(event, '천둥')" onmouseleave="hideCustomTooltip()">
               <img src="https://media.dsrwiki.com/dsrwiki/천둥.webp" alt="천둥" >
             </button>
         </div>
@@ -425,34 +485,34 @@
           </div>
         </label>
         <div class="button-group-field">
-            <button id="DA" class="field-btn" title="DA" onclick="toggleField('DA')">
+            <button id="DA" class="field-btn" onclick="toggleField('DA')" onmouseenter="showCustomTooltip(event, 'DA')" onmousemove="showCustomTooltip(event, 'DA')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/DA.webp" alt="DA" >
             </button>
-            <button id="UK" class="field-btn" title="UK" onclick="toggleField('UK')">
+            <button id="UK" class="field-btn" onclick="toggleField('UK')" onmouseenter="showCustomTooltip(event, 'UK')" onmousemove="showCustomTooltip(event, 'UK')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/UK.webp" alt="UK" >
             </button>
-            <button id="DR" class="field-btn" title="DR" onclick="toggleField('DR')">
+            <button id="DR" class="field-btn" onclick="toggleField('DR')" onmouseenter="showCustomTooltip(event, 'DR')" onmousemove="showCustomTooltip(event, 'DR')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/DR.webp" alt="DR" >
             </button>
-            <button id="DS" class="field-btn" title="DS" onclick="toggleField('DS')">
+            <button id="DS" class="field-btn" onclick="toggleField('DS')" onmouseenter="showCustomTooltip(event, 'DS')" onmousemove="showCustomTooltip(event, 'DS')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/DS.webp" alt="DS" >
             </button>            
-            <button id="JT" class="field-btn" title="JT" onclick="toggleField('JT')">
+            <button id="JT" class="field-btn" onclick="toggleField('JT')" onmouseenter="showCustomTooltip(event, 'JT')" onmousemove="showCustomTooltip(event, 'JT')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/JT.webp" alt="JT" >
             </button>
-            <button id="ME" class="field-btn" title="ME" onclick="toggleField('ME')">
+            <button id="ME" class="field-btn" onclick="toggleField('ME')" onmouseenter="showCustomTooltip(event, 'ME')" onmousemove="showCustomTooltip(event, 'ME')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/ME.webp" alt="ME" >
             </button>
-            <button id="NSo" class="field-btn" title="NSo" onclick="toggleField('NSo')">
+            <button id="NSo" class="field-btn" onclick="toggleField('NSo')" onmouseenter="showCustomTooltip(event, 'NSo')" onmousemove="showCustomTooltip(event, 'NSo')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/NSo.webp" alt="NSo" >
             </button>
-            <button id="NSp" class="field-btn" title="NSp" onclick="toggleField('NSp')">
+            <button id="NSp" class="field-btn" onclick="toggleField('NSp')" onmouseenter="showCustomTooltip(event, 'NSp')" onmousemove="showCustomTooltip(event, 'NSp')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/NSp.webp" alt="NSp" >
             </button>
-            <button id="VB" class="field-btn" title="VB" onclick="toggleField('VB')">
+            <button id="VB" class="field-btn" onclick="toggleField('VB')" onmouseenter="showCustomTooltip(event, 'VB')" onmousemove="showCustomTooltip(event, 'VB')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/VB.webp" alt="VB" >
             </button>
-            <button id="WG" class="field-btn" title="WG" onclick="toggleField('WG')">
+            <button id="WG" class="field-btn" onclick="toggleField('WG')" onmouseenter="showCustomTooltip(event, 'WG')" onmousemove="showCustomTooltip(event, 'WG')" onmouseleave="hideCustomTooltip()">
              <img src="https://media.dsrwiki.com/dsrwiki/field/WG.webp" alt="WG" >
             </button>
         </div>
@@ -474,6 +534,12 @@
       </div>
     </div>
     <div class="results">
+      <!-- 로딩 표시 -->
+      <div id="loading-spinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>데이터를 불러오는 중입니다...</p>
+      </div>
+      
       <table class="result-table" style="border: 2px solid darkgrey;">
         <thead>
           <tr style="border: 2px solid darkgrey;">
