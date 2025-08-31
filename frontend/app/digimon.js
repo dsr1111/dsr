@@ -555,10 +555,7 @@
             const skill2Effect = row.dataset.skill2Effect === effect;
             const skill3Effect = row.dataset.skill3Effect === effect;
             
-            // 디버깅용 로그 (필요시 제거)
-            if (filters.effect.length > 0) {
-              console.log(`Effect filter: ${effect}, Row: ${row.dataset.name}, Skill1: ${row.dataset.skill1Effect}, Skill2: ${row.dataset.skill2Effect}, Skill3: ${row.dataset.skill3Effect}`);
-            }
+
             
             return skill1Effect || skill2Effect || skill3Effect;
           });

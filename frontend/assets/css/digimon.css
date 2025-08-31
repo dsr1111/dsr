@@ -177,7 +177,10 @@ body {
 .skill-btn.active,
 .skillweak-btn.active,
 .skillstrong-btn.active,
-.field-btn.active,
+.field-btn.active {
+  border: 2px solid rgb(0, 0, 0);
+}
+
 .effect-btn.active {
   border: 2px solid rgb(0, 0, 0);
 }
@@ -214,7 +217,7 @@ body {
 }
 
 .button-group-field {
-  padding-left: 27px;
+  padding-left: 28px;
   display: flex;
   flex-wrap: wrap;
   gap: 6.2px; /* 버튼 사이의 간격 조절 */
@@ -226,56 +229,27 @@ body {
 
 /* Effect 버튼 스타일 */
 .effect-btn {
-  background: none;
-  border: none;
+  border: 2px solid transparent;
+  background-color: transparent;
   cursor: pointer;
-  padding: 2px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  margin-right: 5px; /* 다른 필터 버튼들과 동일한 간격 */
+  padding: 5px;
+  margin: 0 8.2px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 /* Effect 버튼 그룹에 필드 버튼과 동일한 패딩 적용 */
 .button-group:has(.effect-btn) {
-  padding-left: 40px;
-  gap: 21.3px;
+  padding-left: 28px;
 }
 
 .effect-btn img {
+  display: block;
   width: 33px;
   height: 33px;
+  margin: 0;
+  padding: 0;
   border-radius: 50%;
-}
-
-/* 모든 필터 버튼의 기본 title 툴팁 비활성화 */
-.evolution-btn,
-.type-btn,
-.skill-btn,
-.skillstrong-btn,
-.skillweak-btn,
-.field-btn,
-.effect-btn {
-  pointer-events: auto;
-}
-
-.evolution-btn[title],
-.type-btn[title],
-.skill-btn[title],
-.skillstrong-btn[title],
-.skillweak-btn[title],
-.field-btn[title],
-.effect-btn[title] {
-  position: relative;
-}
-
-.evolution-btn[title]:hover::after,
-.type-btn[title]:hover::after,
-.skill-btn[title]:hover::after,
-.skillstrong-btn[title]:hover::after,
-.skillweak-btn[title]:hover::after,
-.field-btn[title]:hover::after,
-.effect-btn[title]:hover::after {
-  display: none !important;
 }
 
 th {
