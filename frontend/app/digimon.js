@@ -69,15 +69,17 @@
   
   // 페이지 로드 시 필터 상태 복원
   function restoreFilterState() {
-    const savedState = localStorage.getItem('digimonFiltersCollapsed');
-    if (savedState === 'true') {
-      const filtersContent = document.getElementById('filters-content');
-      const toggleBtn = document.getElementById('toggle-filters-btn');
-      const icon = toggleBtn.querySelector('i');
-      
-      filtersContent.classList.add('collapsed');
-      icon.className = 'ri-arrow-down-s-line';
-    }
+    // 필터를 항상 펼친 상태로 유지 (기본값)
+    const filtersContent = document.getElementById('filters-content');
+    const toggleBtn = document.getElementById('toggle-filters-btn');
+    const icon = toggleBtn.querySelector('i');
+    
+    // collapsed 클래스 제거하여 펼친 상태로 설정
+    filtersContent.classList.remove('collapsed');
+    icon.className = 'ri-arrow-up-s-line';
+    
+    // localStorage에서 기존 값 제거
+    localStorage.removeItem('digimonFiltersCollapsed');
   }
   
   // 필터 상태 저장

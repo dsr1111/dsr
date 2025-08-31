@@ -43,6 +43,11 @@ body {
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.filters-header:hover {
+  background-color: #f8f9fa;
 }
 
 .filters-header h3 {

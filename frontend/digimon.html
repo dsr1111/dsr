@@ -61,9 +61,9 @@
     <div class="container1">
       
     <div class="filters">
-        <div class="filters-header">
+        <div class="filters-header" onclick="toggleFilters()" style="cursor: pointer;">
           <h3>필터</h3>
-          <button id="toggle-filters-btn" class="toggle-filters-btn" onclick="toggleFilters()">
+          <button id="toggle-filters-btn" class="toggle-filters-btn" onclick="event.stopPropagation(); toggleFilters();">
             <i class="ri-arrow-up-s-line"></i>
           </button>
         </div>
