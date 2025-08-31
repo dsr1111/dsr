@@ -460,6 +460,7 @@ tbody {
   width: 450px;
   left: 190%;
   transform: translateX(-53%);
+  top: -300px; /* qm 이미지 위에 표시 */
 }
 
 .tooltip-skill {
