@@ -238,7 +238,7 @@ body {
 /* Effect 버튼 그룹에 필드 버튼과 동일한 패딩 적용 */
 .button-group:has(.effect-btn) {
   padding-left: 40px;
-  gap: 21px;
+  gap: 21.3px;
 }
 
 .effect-btn img {
