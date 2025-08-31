@@ -33,6 +33,74 @@ body {
   border-radius: 10px;
   margin-bottom: 20px;
   position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.filters-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.toggle-filters-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #666;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.toggle-filters-btn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.filters-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  max-height: 2500px; /* 검색창과 리셋 버튼을 포함한 충분한 높이 */
+}
+
+.filters-content.collapsed {
+  max-height: 0;
+}
+
+/* 모바일 환경에서의 반응형 스타일 */
+@media (max-width: 768px) {
+  .filters-header h3 {
+    font-size: 16px;
+  }
+  
+  .toggle-filters-btn {
+    font-size: 18px;
+    padding: 8px;
+  }
+  
+  .search-box {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .reset-btn {
+    width: 100%;
+    padding: 12px;
+  }
 }
 
 .filter-row {
@@ -71,17 +139,39 @@ body {
 }
 
 .search-box {
+  margin-top: 20px;
   margin-bottom: 20px;
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
 }
 
 .search-input {
-  width: 100%;
+  flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 14px;
+}
+
+.reset-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.reset-btn:hover {
+  background-color: #5a6268;
 }
 
 .results {
@@ -590,9 +680,6 @@ tbody {
 }
 
 .reset-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
   padding: 8px 15px;
   background-color: #f44336;
   color: white;

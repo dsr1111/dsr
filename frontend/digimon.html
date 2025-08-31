@@ -61,7 +61,13 @@
     <div class="container1">
       
     <div class="filters">
-        <button id="reset-filters-btn" class="reset-btn" onclick="resetFilters()">필터 초기화</button>
+        <div class="filters-header">
+          <h3>필터</h3>
+          <button id="toggle-filters-btn" class="toggle-filters-btn" onclick="toggleFilters()">
+            <i class="ri-arrow-up-s-line"></i>
+          </button>
+        </div>
+        <div id="filters-content" class="filters-content">
       <div class="filter-row">
         <label class="filter-label">진화 단계</label>
         <div class="button-group">
@@ -516,10 +522,13 @@
              <img src="https://media.dsrwiki.com/dsrwiki/field/WG.webp" alt="WG" >
             </button>
         </div>
-    </div>
-    
-    <div class="search-box">
-      <input id="search" type="text" class="search-input" placeholder="디지몬 이름을 입력하세요">
+        
+
+      </div>
+      <div class="search-box">
+        <input id="search" type="text" class="search-input" placeholder="디지몬 이름을 입력하세요">
+        <button id="reset-filters-btn" class="reset-btn" onclick="resetFilters()">필터 초기화</button>
+      </div>
     </div>
   </div>
 

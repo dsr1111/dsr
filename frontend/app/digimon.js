@@ -17,6 +17,24 @@
   };
   let originalRows = []; // 원래 순서를 저장할 배열
 
+  // 필터 접기/펴기 토글 함수
+  function toggleFilters() {
+    const filtersContent = document.getElementById('filters-content');
+    const toggleBtn = document.getElementById('toggle-filters-btn');
+    const icon = toggleBtn.querySelector('i');
+    
+    if (filtersContent.classList.contains('collapsed')) {
+      filtersContent.classList.remove('collapsed');
+      icon.className = 'ri-arrow-up-s-line';
+    } else {
+      filtersContent.classList.add('collapsed');
+      icon.className = 'ri-arrow-down-s-line';
+    }
+    
+    // 상태 저장
+    saveFilterState();
+  }
+
   // 커스텀 툴팁 표시 함수
   function showCustomTooltip(e, text) {
     const tooltip = document.getElementById('custom-tooltip');
@@ -46,7 +64,31 @@
   }
 
   // ====================================================
-  // 2. JSON Loader Module
+  // 2. 필터 상태 관리 및 초기화
+  // ====================================================
+  
+  // 페이지 로드 시 필터 상태 복원
+  function restoreFilterState() {
+    const savedState = localStorage.getItem('digimonFiltersCollapsed');
+    if (savedState === 'true') {
+      const filtersContent = document.getElementById('filters-content');
+      const toggleBtn = document.getElementById('toggle-filters-btn');
+      const icon = toggleBtn.querySelector('i');
+      
+      filtersContent.classList.add('collapsed');
+      icon.className = 'ri-arrow-down-s-line';
+    }
+  }
+  
+  // 필터 상태 저장
+  function saveFilterState() {
+    const filtersContent = document.getElementById('filters-content');
+    const isCollapsed = filtersContent.classList.contains('collapsed');
+    localStorage.setItem('digimonFiltersCollapsed', isCollapsed);
+  }
+  
+  // ====================================================
+  // 3. JSON Loader Module
   // ====================================================
   const JSONLoader = {
     async loadJSON(url) {
@@ -598,10 +640,10 @@
       const tableBody = document.getElementById("characterTable");
       const rows = tableBody.querySelectorAll("tr");
       rows.forEach(row => {
-        row.style.display = "";
+        row.style.display = "none"; // 모든 행을 숨김
       });
       
-      console.log('Filters reset, showing all rows:', rows.length);
+      console.log('Filters reset, hiding all rows:', rows.length);
     }
   };
 
@@ -768,6 +810,9 @@
     if (loadingSpinner) loadingSpinner.classList.remove('hidden');
     if (resultTable) resultTable.style.display = 'none';
     
+    // 필터 상태 복원
+    restoreFilterState();
+    
     TableDataManager.fetchData();
     initSearchListener();
     initTooltipCloseBtns();
@@ -792,4 +837,5 @@
   window.hideTooltip = hideTooltip;
   window.showCustomTooltip = showCustomTooltip;
   window.hideCustomTooltip = hideCustomTooltip;
+  window.toggleFilters = toggleFilters;
 })();
