@@ -323,6 +323,9 @@
         
         // 로딩 완료 후 로딩 표시 숨김
         this.hideLoading();
+        
+        // 데이터 로딩 완료 후 필터 상태 복원
+        restoreFilterState();
       } catch (error) {
         console.error('Error in fetchData:', error);
         // 에러 발생 시에도 로딩 표시 숨김
@@ -810,8 +813,8 @@
     if (loadingSpinner) loadingSpinner.classList.remove('hidden');
     if (resultTable) resultTable.style.display = 'none';
     
-    // 필터 상태 복원
-    restoreFilterState();
+    // 필터 상태 복원을 데이터 로딩 완료 후로 이동
+    // restoreFilterState();
     
     TableDataManager.fetchData();
     initSearchListener();
