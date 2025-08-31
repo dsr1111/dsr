@@ -830,6 +830,7 @@ tbody {
     transform: translateX(-50%);
     top: 100%;
     margin-top: 10px;
+    z-index: 9999; /* 모바일에서 더 높은 z-index */
   }
 
   .tooltip-table-header,
