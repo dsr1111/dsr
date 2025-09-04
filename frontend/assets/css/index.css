@@ -1,3 +1,6 @@
+/* Google Fonts에서 NanumSquareNeo 로드 */
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Square+Neo:wght@300;400;700;800;900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -6,78 +9,51 @@
 
 @font-face {
     font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot);
+    src: url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff2') format('woff2'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff') format('woff'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.ttf') format('truetype');
     font-weight: 300;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot);
-    font-weight: 400;
-    font-display: swap;
-}
-@font-face {
-    font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot);
-    font-weight: 400;
-    font-display: swap;
-}
-@font-face {
-    font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot);
-    font-weight: 400;
-    font-display: swap;
-}
-@font-face {
-    font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot);
-    font-weight: 400;
-    font-display: swap;
-}
-@font-face {
-    font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.eot);
-    font-weight: 400;
-    font-display: swap;
-}
-@font-face {
-    font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.eot);
+    src: url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff2') format('woff2'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff') format('woff'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.ttf') format('truetype');
     font-weight: 400;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot);
-    font-weight: 400;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot);
+    src: url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff2') format('woff2'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff') format('woff'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.ttf') format('truetype');
     font-weight: 700;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot);
+    src: url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff2') format('woff2'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff') format('woff'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.ttf') format('truetype');
     font-weight: 800;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.eot);
+    src: url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff2') format('woff2'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff') format('woff'),
+         url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.ttf') format('truetype');
     font-weight: 900;
     font-display: swap;
 }
 body {
-  font-family: 'NanumSquareNeo', sans-serif;
-  font-weight: normal;
+  font-family: 'Nanum Square Neo', 'NanumSquareNeo', sans-serif;
+  font-weight: 400;
   background-color: #f4f4f9;
 }
 
