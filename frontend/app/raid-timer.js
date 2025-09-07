@@ -75,9 +75,23 @@ async function initializeTime() {
     }
     const data = await response.json();
     if (data.status === 'OK') {
-      // formatted 값을 직접 파싱하여 Date 객체 생성
-      serverKST = new Date(data.formatted + ' GMT+0900'); // KST는 GMT+9
-      lastFetchTime = Date.now();
+      // 모바일 호환성을 위해 더 안전한 Date 객체 생성 방식 사용
+      try {
+        // ISO 형식으로 변환하여 Date 객체 생성
+        const isoString = data.formatted.replace(' ', 'T') + '+09:00';
+        serverKST = new Date(isoString);
+        
+        // Date 객체가 유효한지 확인
+        if (isNaN(serverKST.getTime())) {
+          throw new Error('Invalid date created from API response');
+        }
+        
+        lastFetchTime = Date.now();
+        console.log('서버 시간 설정 성공:', serverKST);
+      } catch (dateError) {
+        console.error('Date 객체 생성 실패:', dateError);
+        throw new Error('Failed to create valid date from API response');
+      }
     } else {
       throw new Error(`TimezoneDB API Error: ${data.message}`);
     }
@@ -93,6 +107,11 @@ async function initializeTime() {
 function getCurrentKST() {
   if (!serverKST || !lastFetchTime) {
     // 아직 시간이 초기화되지 않았거나 API 호출에 실패한 경우 로컬 시간 반환
+    return new Date();
+  }
+  // serverKST가 유효한 Date 객체인지 확인
+  if (isNaN(serverKST.getTime())) {
+    console.error('serverKST is invalid, using local time');
     return new Date();
   }
   const elapsed = Date.now() - lastFetchTime;
