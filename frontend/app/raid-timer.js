@@ -92,7 +92,16 @@ let lastFetchTime = null; // serverKST를 가져온 로컬 시간
 
 async function initializeTime() {
   try {
-    const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=Asia/Seoul`);
+    // 모바일에서 네트워크 타임아웃 설정
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10초 타임아웃
+    
+    const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=Asia/Seoul`, {
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
@@ -106,7 +115,7 @@ async function initializeTime() {
     }
   } catch (error) {
     console.error('Failed to initialize time from TimezoneDB:', error);
-    alert('정확한 시간 정보를 가져오는데 실패했습니다. 브라우저의 기본 시간을 사용합니다.');
+    
     // API 실패 시, 로컬 시간을 사용하도록 대체
     serverKST = new Date();
     lastFetchTime = Date.now();
@@ -418,6 +427,7 @@ async function updateTimers() {
     await renderRaids();
   }
 }
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
