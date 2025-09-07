@@ -4,6 +4,29 @@ function getImagePath(name) {
   return `https://media.dsrwiki.com/dsrwiki/digimon/${safeName}/${safeName}.webp`;
 }
 
+// 이미지 로딩 실패 시 대체 이미지 처리
+function handleImageError(img, name) {
+  console.warn(`이미지 로딩 실패: ${name}`);
+  img.src = 'https://media.dsrwiki.com/dsrwiki/NO DATA.webp';
+  img.alt = `${name} (이미지 없음)`;
+}
+
+// 모바일 브라우저 감지
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+         (window.innerWidth <= 768);
+}
+
+// 모바일에서 이미지 로딩 최적화
+function preloadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(`이미지 로딩 실패: ${src}`));
+    img.src = src;
+  });
+}
+
 // 레이드 정보 배열
 const raids = [
   {
@@ -226,11 +249,17 @@ function getMasterTyrannoNextTime() {
 
 let sortedRaids = [];
 
-function renderRaids() {
+async function renderRaids() {
   const container = document.getElementById('raid-timers');
+  if (!container) {
+    console.error('레이드 타이머 컨테이너를 찾을 수 없습니다');
+    return;
+  }
+  
   container.innerHTML = '';
   container.style.maxHeight = '200px';
   container.style.overflowY = 'auto';
+  
   let allRaids = [];
   raids.forEach(raid => {
     raid.times.forEach(timeStr => {
@@ -272,16 +301,46 @@ function renderRaids() {
     div.style.alignItems = 'center';
     div.style.marginBottom = '8px';
     div.style.fontSize = '0.85em';
-    div.innerHTML = `
-      <div style="background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px;">
-        <img src="${raid.image}" alt="${raid.name}" width="46" height="46" style="object-fit:contain; display:block;">
-      </div>
-      <div style="display:flex; flex-direction:column; text-align:left;">
-        <span><strong>${raid.name}</strong></span>
-        <span style="font-size:0.8em; color:#666;">${raid.timeStr}, ${raid.map}</span>
-        <span class="remain">${getTimeDiffString(raid.nextTime)}</span>
-      </div>
-    `;
+    
+    // 이미지 컨테이너 생성
+    const imgContainer = document.createElement('div');
+    imgContainer.style.cssText = 'background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px; flex-shrink:0;';
+    
+    // 이미지 생성 및 오류 처리
+    const img = document.createElement('img');
+    img.alt = raid.name;
+    img.width = 46;
+    img.height = 46;
+    img.style.cssText = 'object-fit:contain; display:block; max-width:100%; max-height:100%;';
+    
+    img.onerror = () => handleImageError(img, raid.name);
+    
+    // 이미지 소스 설정 (onload/onerror 설정 후)
+    img.src = raid.image;
+    
+    imgContainer.appendChild(img);
+    
+    // 텍스트 컨테이너 생성
+    const textContainer = document.createElement('div');
+    textContainer.style.cssText = 'display:flex; flex-direction:column; text-align:left; flex:1; min-width:0;';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.innerHTML = `<strong>${raid.name}</strong>`;
+    
+    const infoSpan = document.createElement('span');
+    infoSpan.style.cssText = 'font-size:0.8em; color:#666;';
+    infoSpan.textContent = `${raid.timeStr}, ${raid.map}`;
+    
+    const remainSpan = document.createElement('span');
+    remainSpan.className = 'remain';
+    remainSpan.textContent = getTimeDiffString(raid.nextTime);
+    
+    textContainer.appendChild(nameSpan);
+    textContainer.appendChild(infoSpan);
+    textContainer.appendChild(remainSpan);
+    
+    div.appendChild(imgContainer);
+    div.appendChild(textContainer);
     div.dataset.nextTime = raid.nextTime;
     container.appendChild(div);
   });
@@ -291,7 +350,7 @@ const alarmAudio = new Audio('assets/sound/alarm.mp3');
 let notified = {};
 let notificationTime = 5; // 기본값 5분
 
-function updateTimers() {
+async function updateTimers() {
   const items = document.querySelectorAll('.raid-timer-item');
   const now = getCurrentKST();
   let needsRerender = false;
@@ -356,16 +415,28 @@ function updateTimers() {
   
   // 시간이 업데이트된 경우 전체 목록을 다시 렌더링
   if (needsRerender) {
-    renderRaids();
+    await renderRaids();
   }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 페이지 로드 시 먼저 시간 동기화를 수행
-  await initializeTime();
+  try {
+    console.log('레이드 타이머 초기화 시작');
+    
+    // 페이지 로드 시 먼저 시간 동기화를 수행
+    await initializeTime();
+    console.log('시간 동기화 완료');
 
-  const alarmToggle = document.getElementById('raid-alarm-toggle');
-  const notificationTimeSpan = document.getElementById('notification-time');
+    const alarmToggle = document.getElementById('raid-alarm-toggle');
+    const notificationTimeSpan = document.getElementById('notification-time');
+    
+    // 레이드 타이머 컨테이너 확인
+    const raidTimersContainer = document.getElementById('raid-timers');
+    if (!raidTimersContainer) {
+      console.error('레이드 타이머 컨테이너를 찾을 수 없습니다');
+      return;
+    }
+    console.log('레이드 타이머 컨테이너 확인됨');
   
   // 알림 시간 입력 제한
   notificationTimeSpan.addEventListener('input', function() {
@@ -411,6 +482,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
   
-  renderRaids();
-  setInterval(updateTimers, 1000);
+    await renderRaids();
+    console.log('레이드 타이머 렌더링 완료');
+    setInterval(() => {
+      updateTimers().catch(error => {
+        console.error('타이머 업데이트 중 오류:', error);
+      });
+    }, 1000);
+    console.log('레이드 타이머 업데이트 인터벌 시작');
+    
+  } catch (error) {
+    console.error('레이드 타이머 초기화 중 오류 발생:', error);
+    
+    // 오류 발생 시 기본 메시지 표시
+    const raidTimersContainer = document.getElementById('raid-timers');
+    if (raidTimersContainer) {
+      raidTimersContainer.innerHTML = '<div style="color: #e74c3c; text-align: center; padding: 20px;">레이드 타이머를 불러오는 중 오류가 발생했습니다.<br>페이지를 새로고침해주세요.</div>';
+    }
+  }
 });
