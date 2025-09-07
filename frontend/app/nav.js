@@ -303,6 +303,8 @@ function createReferralPopup() {
     if (document.getElementById('referral-popup-container')) {
         return;
     }
+    
+    // No persistent storage - popup will show on every page load
 
     const referralCode = 'A2USQRY';
     const popup = document.createElement('div');
@@ -325,14 +327,27 @@ function createReferralPopup() {
     });
 
     popup.innerHTML = `
-        <div style="font-size: 1rem; margin-bottom: 10px; text-align: center;">추천인 코드</div>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <div style="font-size: 1rem;">추천인 코드</div>
+            <button id="close-referral-btn" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #666;">×</button>
+        </div>
+        <div id="referral-content" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
             <span style="padding: 6px 10px; background-color: hsl(220, 100%, 97%); border-radius: 6px;">${referralCode}</span>
             <button id="copy-referral-btn">복사</button>
         </div>
     `;
 
     document.body.appendChild(popup);
+
+    // 닫기 기능 추가
+    const closeBtn = document.getElementById('close-referral-btn');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            // 팝업만 제거 (저장하지 않음)
+            popup.remove();
+        });
+    }
 
     const copyBtn = document.getElementById('copy-referral-btn');
     if (copyBtn) {
