@@ -357,7 +357,7 @@ async function updateTimers() {
   
   // 알림 시간 설정값 가져오기
   const notificationTimeSpan = document.getElementById('notification-time');
-  if (notificationTimeSpan) {
+  if (notificationTimeSpan && notificationTimeSpan.textContent) {
     const time = parseInt(notificationTimeSpan.textContent);
     if (!isNaN(time) && time > 0 && time <= 60) {
       notificationTime = time;
@@ -438,8 +438,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     console.log('레이드 타이머 컨테이너 확인됨');
   
-  // 알림 시간 입력 제한
-  notificationTimeSpan.addEventListener('input', function() {
+  // 알림 시간 입력 제한 (요소가 존재할 때만)
+  if (notificationTimeSpan) {
+    notificationTimeSpan.addEventListener('input', function() {
     // 빈 문자열이면 그대로 두기
     if (this.textContent === '') return;
     
@@ -449,10 +450,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else if (value > 60) {
       this.textContent = '60';
     }
-  });
-  
-  // 알림 시간 입력 완료 시 유효성 검사
-  notificationTimeSpan.addEventListener('blur', function() {
+    });
+    
+    // 알림 시간 입력 완료 시 유효성 검사
+    notificationTimeSpan.addEventListener('blur', function() {
     let value = parseInt(this.textContent);
     if (isNaN(value) || value < 1) {
       this.textContent = '5';
@@ -463,11 +464,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       notificationTime = value;
     }
-    // 알림 시간이 변경되면 notified 객체 초기화
-    notified = {};
-  });
+      // 알림 시간이 변경되면 notified 객체 초기화
+      notified = {};
+    });
+  }
   
-  alarmToggle.addEventListener('change', async function() {
+  // 알림 토글 이벤트 (요소가 존재할 때만)
+  if (alarmToggle) {
+    alarmToggle.addEventListener('change', async function() {
     if (this.checked) {
       if (Notification.permission === "default") {
         const permission = await Notification.requestPermission();
@@ -480,7 +484,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert("알림 권한이 거부되었습니다. 브라우저 설정에서 권한을 허용해주세요.");
       }
     }
-  });
+    });
+  }
   
     await renderRaids();
     console.log('레이드 타이머 렌더링 완료');
