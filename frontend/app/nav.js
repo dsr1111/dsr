@@ -19,6 +19,8 @@ class CustomNav extends HTMLElement {
               margin-left: 10px;
               display: flex;
               align-items: center;
+              height: 32px;
+              box-sizing: border-box;
             }
             
             .feedback-btn:hover {
@@ -107,6 +109,8 @@ class CustomNav extends HTMLElement {
               margin-left: 10px;
               display: flex;
               align-items: center;
+              height: 32px;
+              box-sizing: border-box;
             }
             .expcarry-btn:hover {
               background-color: #219150;
@@ -116,7 +120,7 @@ class CustomNav extends HTMLElement {
               .feedback-btn-wrapper {
                 justify-content: center;
               }
-              .feedback-btn {
+              .feedback-btn, .expcarry-btn {
                 margin-bottom: 20px;
               }
             }
@@ -389,3 +393,6 @@ window.addEventListener('resize', () => {
 });
 
 customElements.define("custom-nav", CustomNav);
+
+
+
