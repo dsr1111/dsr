@@ -62,26 +62,27 @@ const RotationRaid = {
   map: '기어 사바나',
 };
 
-// Netlify 서버리스 함수를 사용하여 서울 시간 동기화
-let serverKST = null; // Netlify 함수에서 가져온 서울 시간
+// TimezoneDB API를 사용하여 서울 시간 동기화
+const apiKey = '7YDXWZM4S9QK';
+let serverKST = null; // TimezoneDB에서 가져온 서울 시간
 let lastFetchTime = null; // serverKST를 가져온 로컬 시간
 
 async function initializeTime() {
   try {
-    const response = await fetch('/.netlify/functions/time');
+    const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=Asia/Seoul`);
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
     const data = await response.json();
     if (data.status === 'OK') {
       // formatted 값을 직접 파싱하여 Date 객체 생성
-      serverKST = new Date(data.formatted);
+      serverKST = new Date(data.formatted + ' GMT+0900'); // KST는 GMT+9
       lastFetchTime = Date.now();
     } else {
-      throw new Error(`Netlify Function Error: ${data.message}`);
+      throw new Error(`TimezoneDB API Error: ${data.message}`);
     }
   } catch (error) {
-    console.error('Failed to initialize time from Netlify function:', error);
+    console.error('Failed to initialize time from TimezoneDB:', error);
     alert('정확한 시간 정보를 가져오는데 실패했습니다. 브라우저의 기본 시간을 사용합니다.');
     // API 실패 시, 로컬 시간을 사용하도록 대체
     serverKST = new Date();
