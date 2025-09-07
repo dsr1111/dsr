@@ -4,29 +4,6 @@ function getImagePath(name) {
   return `https://media.dsrwiki.com/dsrwiki/digimon/${safeName}/${safeName}.webp`;
 }
 
-// 이미지 로딩 실패 시 대체 이미지 처리
-function handleImageError(img, name) {
-  console.warn(`이미지 로딩 실패: ${name}`);
-  img.src = 'https://media.dsrwiki.com/dsrwiki/NO DATA.webp';
-  img.alt = `${name} (이미지 없음)`;
-}
-
-// 모바일 브라우저 감지
-function isMobileDevice() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-         (window.innerWidth <= 768);
-}
-
-// 모바일에서 이미지 로딩 최적화
-function preloadImage(src) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`이미지 로딩 실패: ${src}`));
-    img.src = src;
-  });
-}
-
 // 레이드 정보 배열
 const raids = [
   {
@@ -85,37 +62,27 @@ const RotationRaid = {
   map: '기어 사바나',
 };
 
-// TimezoneDB API를 사용하여 서울 시간 동기화
-const apiKey = '7YDXWZM4S9QK';
-let serverKST = null; // TimezoneDB에서 가져온 서울 시간
+// Netlify 서버리스 함수를 사용하여 서울 시간 동기화
+let serverKST = null; // Netlify 함수에서 가져온 서울 시간
 let lastFetchTime = null; // serverKST를 가져온 로컬 시간
 
 async function initializeTime() {
   try {
-    // 모바일에서 네트워크 타임아웃 설정
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10초 타임아웃
-    
-    const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=Asia/Seoul`, {
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    
+    const response = await fetch('/.netlify/functions/time');
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
     const data = await response.json();
     if (data.status === 'OK') {
       // formatted 값을 직접 파싱하여 Date 객체 생성
-      serverKST = new Date(data.formatted + ' GMT+0900'); // KST는 GMT+9
+      serverKST = new Date(data.formatted);
       lastFetchTime = Date.now();
     } else {
-      throw new Error(`TimezoneDB API Error: ${data.message}`);
+      throw new Error(`Netlify Function Error: ${data.message}`);
     }
   } catch (error) {
-    console.error('Failed to initialize time from TimezoneDB:', error);
-    
+    console.error('Failed to initialize time from Netlify function:', error);
+    alert('정확한 시간 정보를 가져오는데 실패했습니다. 브라우저의 기본 시간을 사용합니다.');
     // API 실패 시, 로컬 시간을 사용하도록 대체
     serverKST = new Date();
     lastFetchTime = Date.now();
@@ -258,17 +225,11 @@ function getMasterTyrannoNextTime() {
 
 let sortedRaids = [];
 
-async function renderRaids() {
+function renderRaids() {
   const container = document.getElementById('raid-timers');
-  if (!container) {
-    console.error('레이드 타이머 컨테이너를 찾을 수 없습니다');
-    return;
-  }
-  
   container.innerHTML = '';
   container.style.maxHeight = '200px';
   container.style.overflowY = 'auto';
-  
   let allRaids = [];
   raids.forEach(raid => {
     raid.times.forEach(timeStr => {
@@ -310,46 +271,16 @@ async function renderRaids() {
     div.style.alignItems = 'center';
     div.style.marginBottom = '8px';
     div.style.fontSize = '0.85em';
-    
-    // 이미지 컨테이너 생성
-    const imgContainer = document.createElement('div');
-    imgContainer.style.cssText = 'background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px; flex-shrink:0;';
-    
-    // 이미지 생성 및 오류 처리
-    const img = document.createElement('img');
-    img.alt = raid.name;
-    img.width = 46;
-    img.height = 46;
-    img.style.cssText = 'object-fit:contain; display:block; max-width:100%; max-height:100%;';
-    
-    img.onerror = () => handleImageError(img, raid.name);
-    
-    // 이미지 소스 설정 (onload/onerror 설정 후)
-    img.src = raid.image;
-    
-    imgContainer.appendChild(img);
-    
-    // 텍스트 컨테이너 생성
-    const textContainer = document.createElement('div');
-    textContainer.style.cssText = 'display:flex; flex-direction:column; text-align:left; flex:1; min-width:0;';
-    
-    const nameSpan = document.createElement('span');
-    nameSpan.innerHTML = `<strong>${raid.name}</strong>`;
-    
-    const infoSpan = document.createElement('span');
-    infoSpan.style.cssText = 'font-size:0.8em; color:#666;';
-    infoSpan.textContent = `${raid.timeStr}, ${raid.map}`;
-    
-    const remainSpan = document.createElement('span');
-    remainSpan.className = 'remain';
-    remainSpan.textContent = getTimeDiffString(raid.nextTime);
-    
-    textContainer.appendChild(nameSpan);
-    textContainer.appendChild(infoSpan);
-    textContainer.appendChild(remainSpan);
-    
-    div.appendChild(imgContainer);
-    div.appendChild(textContainer);
+    div.innerHTML = `
+      <div style="background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px;">
+        <img src="${raid.image}" alt="${raid.name}" width="46" height="46" style="object-fit:contain; display:block;">
+      </div>
+      <div style="display:flex; flex-direction:column; text-align:left;">
+        <span><strong>${raid.name}</strong></span>
+        <span style="font-size:0.8em; color:#666;">${raid.timeStr}, ${raid.map}</span>
+        <span class="remain">${getTimeDiffString(raid.nextTime)}</span>
+      </div>
+    `;
     div.dataset.nextTime = raid.nextTime;
     container.appendChild(div);
   });
@@ -359,14 +290,14 @@ const alarmAudio = new Audio('assets/sound/alarm.mp3');
 let notified = {};
 let notificationTime = 5; // 기본값 5분
 
-async function updateTimers() {
+function updateTimers() {
   const items = document.querySelectorAll('.raid-timer-item');
   const now = getCurrentKST();
   let needsRerender = false;
   
   // 알림 시간 설정값 가져오기
   const notificationTimeSpan = document.getElementById('notification-time');
-  if (notificationTimeSpan && notificationTimeSpan.textContent) {
+  if (notificationTimeSpan) {
     const time = parseInt(notificationTimeSpan.textContent);
     if (!isNaN(time) && time > 0 && time <= 60) {
       notificationTime = time;
@@ -424,33 +355,19 @@ async function updateTimers() {
   
   // 시간이 업데이트된 경우 전체 목록을 다시 렌더링
   if (needsRerender) {
-    await renderRaids();
+    renderRaids();
   }
 }
 
-
 document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    console.log('레이드 타이머 초기화 시작');
-    
-    // 페이지 로드 시 먼저 시간 동기화를 수행
-    await initializeTime();
-    console.log('시간 동기화 완료');
+  // 페이지 로드 시 먼저 시간 동기화를 수행
+  await initializeTime();
 
-    const alarmToggle = document.getElementById('raid-alarm-toggle');
-    const notificationTimeSpan = document.getElementById('notification-time');
-    
-    // 레이드 타이머 컨테이너 확인
-    const raidTimersContainer = document.getElementById('raid-timers');
-    if (!raidTimersContainer) {
-      console.error('레이드 타이머 컨테이너를 찾을 수 없습니다');
-      return;
-    }
-    console.log('레이드 타이머 컨테이너 확인됨');
+  const alarmToggle = document.getElementById('raid-alarm-toggle');
+  const notificationTimeSpan = document.getElementById('notification-time');
   
-  // 알림 시간 입력 제한 (요소가 존재할 때만)
-  if (notificationTimeSpan) {
-    notificationTimeSpan.addEventListener('input', function() {
+  // 알림 시간 입력 제한
+  notificationTimeSpan.addEventListener('input', function() {
     // 빈 문자열이면 그대로 두기
     if (this.textContent === '') return;
     
@@ -460,10 +377,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else if (value > 60) {
       this.textContent = '60';
     }
-    });
-    
-    // 알림 시간 입력 완료 시 유효성 검사
-    notificationTimeSpan.addEventListener('blur', function() {
+  });
+  
+  // 알림 시간 입력 완료 시 유효성 검사
+  notificationTimeSpan.addEventListener('blur', function() {
     let value = parseInt(this.textContent);
     if (isNaN(value) || value < 1) {
       this.textContent = '5';
@@ -474,14 +391,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       notificationTime = value;
     }
-      // 알림 시간이 변경되면 notified 객체 초기화
-      notified = {};
-    });
-  }
+    // 알림 시간이 변경되면 notified 객체 초기화
+    notified = {};
+  });
   
-  // 알림 토글 이벤트 (요소가 존재할 때만)
-  if (alarmToggle) {
-    alarmToggle.addEventListener('change', async function() {
+  alarmToggle.addEventListener('change', async function() {
     if (this.checked) {
       if (Notification.permission === "default") {
         const permission = await Notification.requestPermission();
@@ -494,25 +408,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert("알림 권한이 거부되었습니다. 브라우저 설정에서 권한을 허용해주세요.");
       }
     }
-    });
-  }
+  });
   
-    await renderRaids();
-    console.log('레이드 타이머 렌더링 완료');
-    setInterval(() => {
-      updateTimers().catch(error => {
-        console.error('타이머 업데이트 중 오류:', error);
-      });
-    }, 1000);
-    console.log('레이드 타이머 업데이트 인터벌 시작');
-    
-  } catch (error) {
-    console.error('레이드 타이머 초기화 중 오류 발생:', error);
-    
-    // 오류 발생 시 기본 메시지 표시
-    const raidTimersContainer = document.getElementById('raid-timers');
-    if (raidTimersContainer) {
-      raidTimersContainer.innerHTML = '<div style="color: #e74c3c; text-align: center; padding: 20px;">레이드 타이머를 불러오는 중 오류가 발생했습니다.<br>페이지를 새로고침해주세요.</div>';
-    }
-  }
+  renderRaids();
+  setInterval(updateTimers, 1000);
 });
+
