@@ -10,10 +10,17 @@
     charactersData: [],
 
     async loadCSVFiles() {
+      // 각 CSV 파일별 버전 관리
+      const versions = {
+        evolution: "1.1.0",    // evolution.csv 버전
+        condition: "1.1.0",    // condition.csv 버전  
+        jogress: "1.0.0"       // jogress.csv 버전
+      };
+      
       await Promise.all([
-        this.loadCSV("https://media.dsrwiki.com/data/csv/evolution.csv", "allData"),
-        this.loadCSV("https://media.dsrwiki.com/data/csv/condition.csv", "conditionData"),
-        this.loadCSV("https://media.dsrwiki.com/data/csv/jogress.csv", "jogressData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/evolution.csv?v=${versions.evolution}`, "allData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv?v=${versions.condition}`, "conditionData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv?v=${versions.jogress}`, "jogressData"),
       ]);
       // CSV 로드 후 전체 데이터의 이미지 리스트를 생성
       UIManager.createDigimonImageList(this.allData);
