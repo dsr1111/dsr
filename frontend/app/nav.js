@@ -320,7 +320,7 @@ function createReferralPopup() {
         borderRadius: '8px',
         boxShadow: '0 4px 12px hsla(220, 24%, 15%, 0.2)',
         zIndex: '1001',
-        fontFamily: 'var(--body-font, "Pretendard-Regular", sans-serif)',
+        fontFamily: 'var(--body-font, "Pretendard", sans-serif)',
         fontSize: 'var(--normal-font-size, 0.938rem)',
         color: 'var(--black-color, #25282D)',
         border: '1px solid hsl(220, 24%, 90%)'
