@@ -12,9 +12,9 @@
     async loadCSVFiles() {
       // 각 CSV 파일별 버전 관리
       const versions = {
-        evolution: "1.1.0",    // evolution.csv 버전
-        condition: "1.1.0",    // condition.csv 버전  
-        jogress: "1.0.0"       // jogress.csv 버전
+        evolution: "1.1.1",    // 0925
+        condition: "1.1.1",    // 0925
+        jogress: "1.0.1"       // 0925
       };
       
       await Promise.all([

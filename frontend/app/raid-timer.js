@@ -55,11 +55,11 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '슈퍼스타몬',
-  image: getImagePath('슈퍼스타몬'),
+  name: '래피드몬',
+  image: getImagePath('래피드몬'),
   baseTime: '19:00',
-  baseDate: '2025-09-11',
-  map: '무한 산',
+  baseDate: '2025-09-25',
+  map: '어둠성 계곡',
 };
 
 // TimezoneDB API를 사용하여 서울 시간 동기화

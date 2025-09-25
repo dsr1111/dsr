@@ -368,6 +368,16 @@
           ]
         }
       ]
+    },
+    "워그레이몬": {
+      "items": [
+        {
+          "name": "조각난 불굴의 용기",
+          "probability": "확률",
+          "tradeable": false,
+          "count": 1
+        }
+      ]
     }
   }
 } 

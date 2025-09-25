@@ -12539,6 +12539,91 @@
       }
     ]
   },
+  "로더레오몬": {
+    "evolution_stage": "완전체",
+    "type": "백신",
+    "stats": {
+      "level": 90,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "물리",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "불",
+      "effect": "약점"
+    },
+    "fields": [
+      "ME"
+    ],
+    "skills": [
+      {
+        "name": "할퀴기",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95
+        ]
+      },
+      {
+        "name": "보링 스톰",
+        "hits": 4,
+        "range": "원거리",
+        "attribute": "바람",
+        "target_count": "단일",
+        "multipliers": [
+          0.225,
+          0.2356,
+          0.2462,
+          0.2569,
+          0.2675,
+          0.2781,
+          0.2887,
+          0.2993,
+          0.31,
+          0.3206
+        ],
+        "effect": "출혈"
+      },
+      {
+        "name": "로더 모닝스타",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          1,
+          1.05,
+          1.1,
+          1.15,
+          1.2,
+          1.25,
+          1.3,
+          1.35,
+          1.4,
+          1.45
+        ]
+      }
+    ]
+  },
   "리벨리몬": {
     "evolution_stage": "완전체",
     "type": "바이러스",
@@ -23271,6 +23356,83 @@
           1.35,
           1.4,
           1.45
+        ]
+      }
+    ]
+  },
+  "아구몬-용기의유대-": {
+    "evolution_stage": "궁극체",
+    "type": "언노운",
+    "stats": {
+      "level": 100,
+      "hp": 6229,
+      "sp": 1777,
+      "STR": 1127,
+      "INT": 1060,
+      "DEF": 978,
+      "RES": 888,
+      "SPD": 519
+    },
+    "strengths": {
+      "attribute": "불",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "물",
+      "effect": "효과확률"
+    },
+    "fields": [
+      "VB",
+      "NSp",
+      "NSo"
+    ],
+    "skills": [
+            {
+        "name": "스트래시 샐러맨더",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95
+        ]
+      },
+      {
+        "name": "레드 리머",
+        "hits": 4,
+        "range": "원거리",
+        "attribute": "불",
+        "target_count": "단일",
+        "multipliers": [
+        ],
+        "additionalTurn": 1.5
+      },
+      {
+        "name": "가이아 브레이브",
+        "hits": 6,
+        "range": "원거리",
+        "attribute": "불",
+        "target_count": "전체",
+        "multipliers": [
+          0.16,
+          0.168,
+          0.176,
+          0.184,
+          0.192,
+          0.2,
+          0.208,
+          0.216,
+          0.224,
+          0.232
         ]
       }
     ]
