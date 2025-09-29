@@ -309,6 +309,9 @@ function renderRaids() {
 const alarmAudio = new Audio('assets/sound/alarm.mp3');
 let notified = {};
 let notificationTime = 5; // 기본값 5분
+// 경계 기반 트리거 및 스누즈 관리를 위한 상태
+let previousDiffSeconds = {}; // 키: name+timeStr -> 직전 남은 초
+let cooldownUntil = {}; // 키: name+timeStr -> 스누즈 종료 타임스탬프(ms)
 
 function updateTimers() {
   const items = document.querySelectorAll('.raid-timer-item');
@@ -332,6 +335,7 @@ function updateTimers() {
       
       // 남은 시간이 0이 되면 다음 시간으로 업데이트
       if (diff <= 0) {
+        const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
         if (sortedRaids[i].name === RotationRaid.name) {
           sortedRaids[i].nextTime = getMasterTyrannoNextTime();
         } else {
@@ -346,25 +350,43 @@ function updateTimers() {
             }
           }
         }
+        // 다음 회차로 넘어갔으므로 재알림을 위해 상태 재무장
+        delete notified[notifyKey];
+        delete previousDiffSeconds[notifyKey];
+        delete cooldownUntil[notifyKey];
         needsRerender = true;
       }
       
-      // 알림 시간을 초 단위로 변환하여 비교
-      if (diff > 0 && diff <= notificationTime * 60) {
-        const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
+      // 경계 기반 1회 트리거 + 스누즈(쿨다운)
+      const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
+      const nowTs = Date.now();
+      const prev = previousDiffSeconds[notifyKey];
+
+      // 경계 진입: 직전에는 > 임계값, 현재는 ≤ 임계값인 순간에만 1회 트리거
+      const thresholdSec = notificationTime * 60;
+      const enteredThreshold = (typeof prev === 'number' ? prev > thresholdSec : true) && diff > 0 && diff <= thresholdSec;
+
+      // 스누즈 중이면 무시
+      const underCooldown = cooldownUntil[notifyKey] && cooldownUntil[notifyKey] > nowTs;
+
+      if (enteredThreshold && !underCooldown) {
         if (!notified[notifyKey]) {
           const alarmToggle = document.getElementById('raid-alarm-toggle');
           if (alarmToggle && alarmToggle.checked) {
             alarmAudio.currentTime = 0;
             alarmAudio.play();
-            
             setTimeout(() => {
               alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
+              // 확인 이후 60초 스누즈 부여
+              cooldownUntil[notifyKey] = Date.now() + 60 * 1000;
             }, 500);
           }
           notified[notifyKey] = true;
         }
       }
+
+      // 직전 diff 업데이트
+      previousDiffSeconds[notifyKey] = diff;
       if (diff > 0 && diff < notificationTime * 60) {
         remainSpan.style.color = '#e74c3c'; // 빨간색
       } else {
