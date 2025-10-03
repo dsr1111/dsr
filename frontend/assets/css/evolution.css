@@ -33,13 +33,38 @@ body {
   max-width: 1300px;
   overflow-y: visible;
 }
+.tree-container.materials-mode {
+  flex-direction: column;
+}
 .stage-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-right: 20px;
   position: relative;
+  width: 100%;
 }
+.tree-container.materials-mode .stage-container {
+  margin-right: 0;
+}
+
+/* 각 stage 내 여러 루트 노드 간 구분선 */
+.stage-container > .digimon-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 12px; 
+  margin-bottom: 12px;
+}
+.stage-container > .digimon-container:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px dashed #000; /* 점선 */
+  pointer-events: none;
+}
+.stage-container > .digimon-container:last-child { margin-bottom: 0; padding-bottom: 0; }
 .digimon-container {
   display: inline-flex;
   flex-direction: row;
@@ -330,6 +355,8 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   background-color: #e9ecef;
 }
+
+/* 재료 전용 하이라이트 제거: 기존 .highlighted만 사용 */
 .evolution-tooltip {
   display: none;
   position: absolute;
@@ -438,6 +465,15 @@ body {
   gap: 10px;
 }
 
+.menu-separator {
+  display: inline-block;
+  width: 1px;
+  height: 28px;
+  background-color: #e5e7eb;
+  margin: 0 4px;
+  align-self: center;
+}
+
 .menu-item {
   display: flex;
   align-items: center;
@@ -467,6 +503,12 @@ body {
   background-color: #1f2937;
   border-color: #1f2937;
   color: white;
+}
+
+/* 재료 보기 토글 시 시각적 구분 */
+#material-toggle.menu-item.active {
+  background-color: #065f46;
+  border-color: #065f46;
 }
 
 .menu-item.active:hover {

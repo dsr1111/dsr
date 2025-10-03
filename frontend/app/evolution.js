@@ -8,6 +8,7 @@
     conditionData: [],
     jogressData: [],
     charactersData: [],
+    materialIndex: new Map(),
 
     async loadCSVFiles() {
       // 각 CSV 파일별 버전 관리
@@ -22,7 +23,8 @@
         this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv?v=${versions.condition}`, "conditionData"),
         this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv?v=${versions.jogress}`, "jogressData"),
       ]);
-      // CSV 로드 후 전체 데이터의 이미지 리스트를 생성
+      // 재료 인덱스 빌드 후 기본 디지몬 이미지 리스트 생성
+      this.buildMaterialIndex();
       UIManager.createDigimonImageList(this.allData);
     },
 
@@ -36,6 +38,79 @@
         console.error(error);
       }
     }
+  };
+
+  // 문자열에서 재료 배열 추출: "이름*5, 재료B" -> [{name: "이름"}, {name:"재료B"}]
+  function parseMaterials(materialStr) {
+    if (!materialStr) return [];
+    return materialStr
+      .split("/") // 일부 데이터 구분자 예방
+      .join(",")
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(token => {
+        const name = token.split("*")[0].trim();
+        return { name };
+      });
+  }
+
+  // 재료 인덱스 생성: materialName -> [{ type, parent, child, parents (for jogress) }]
+  DataModule.buildMaterialIndex = function() {
+    this.materialIndex = new Map();
+
+    // parent -> evolution row 맵
+    const nameToEvo = new Map();
+    this.allData.forEach(row => nameToEvo.set(row.name, row));
+
+    // condition.csv: 일반/암흑/특수/버스트
+    const typeMap = [
+      { key: "진화재료", type: "normal" },
+      { key: "암흑진화재료", type: "dark" },
+      { key: "특수진화재료", type: "special" },
+      { key: "버스트진화재료", type: "burst" },
+    ];
+
+    this.conditionData.forEach(cond => {
+      const parent = cond.name;
+      const evoRow = nameToEvo.get(parent);
+      if (!evoRow) return;
+      typeMap.forEach(({ key, type }) => {
+        const mats = parseMaterials(cond[key]);
+        if (!mats.length) return;
+        let children = [];
+        if (type === "normal") {
+          children = [
+            evoRow.evol1, evoRow.evol2, evoRow.evol3, evoRow.evol4, evoRow.evol5,
+            evoRow.evol6, evoRow.evol7, evoRow.evol8, evoRow.evol9, evoRow.evol10,
+            evoRow.evol11
+          ].filter(Boolean);
+        } else if (type === "dark") {
+          if (evoRow.암흑진화) children = [evoRow.암흑진화];
+        } else if (type === "special") {
+          if (evoRow.특수진화) children = [evoRow.특수진화];
+        } else if (type === "burst") {
+          if (evoRow.버스트진화) children = [evoRow.버스트진화];
+        }
+        if (!children.length) return;
+        mats.forEach(m => {
+          const arr = this.materialIndex.get(m.name) || [];
+          children.forEach(child => arr.push({ type, parent, child }));
+          this.materialIndex.set(m.name, arr);
+        });
+      });
+    });
+
+    // jogress.csv: ingredient1/ingredient2 -> child = name, parents = [digimon1,digimon2]
+    this.jogressData.forEach(j => {
+      [j.ingredient1, j.ingredient2].filter(Boolean).forEach(raw => {
+        parseMaterials(raw).forEach(m => {
+          const arr = this.materialIndex.get(m.name) || [];
+          arr.push({ type: "jogress", parent: j.digimon1, child: j.name, parents: [j.digimon1, j.digimon2] });
+          this.materialIndex.set(m.name, arr);
+        });
+      });
+    });
   };
 
   // CSV 파싱 유틸리티 함수
@@ -56,6 +131,8 @@
   // ===============================
   const UIManager = {
     selectedDigimon: null,
+    mode: "digimon", // 'digimon' | 'materials'
+    selectedMaterial: null,
 
     init() {
       console.log("UIManager init 호출됨");
@@ -70,7 +147,12 @@
           item.classList.add('active');
           // 해당 단계의 디지몬 필터링
           const stage = item.dataset.stage;
-          this.filterDigimonByStage(stage);
+          if (item.id === 'material-toggle') {
+            this.toggleMaterialMode();
+          } else {
+            this.mode = 'digimon';
+            this.filterDigimonByStage(stage);
+          }
         });
       });
 
@@ -138,6 +220,53 @@
         imgContainer.appendChild(img);
         container.appendChild(imgContainer);
       });
+    },
+
+    createMaterialImageList() {
+      const container = document.getElementById("digimon-image-list");
+      container.innerHTML = "";
+      const materialNames = Array.from(DataModule.materialIndex.keys()).sort((a,b)=>a.localeCompare(b));
+      materialNames.forEach(name => {
+        const safeName = name.replace(":", "_");
+        const imgContainer = document.createElement("div");
+        imgContainer.classList.add("digimon-image-container");
+        const img = document.createElement("img");
+        img.src = `https://media.dsrwiki.com/dsrwiki/item/${safeName}.webp`;
+        img.alt = name;
+        img.width = 100;
+        img.height = 100;
+        img.addEventListener("mouseover", (event) => {
+          TooltipManager.showNameTooltip(event, name);
+        });
+        img.addEventListener("mousemove", (event) => {
+          TooltipManager.showNameTooltip(event, name);
+        });
+        img.addEventListener("mouseout", () => {
+          TooltipManager.hideNameTooltip();
+        });
+        img.addEventListener("click", () => {
+          this.selectedMaterial = name;
+          EvolutionTreeManager.showTreesForMaterial(name);
+        });
+        imgContainer.appendChild(img);
+        container.appendChild(imgContainer);
+      });
+    },
+
+    toggleMaterialMode() {
+      if (this.mode === 'materials') {
+        this.mode = 'digimon';
+        this.createDigimonImageList(DataModule.allData);
+        const treeContainer = document.getElementById("evolution-tree");
+        treeContainer.innerHTML = "";
+        treeContainer.classList.remove('materials-mode');
+      } else {
+        this.mode = 'materials';
+        this.createMaterialImageList();
+        const treeContainer = document.getElementById("evolution-tree");
+        treeContainer.innerHTML = "";
+        treeContainer.classList.add('materials-mode');
+      }
     },
 
     // 인라인 이벤트로 호출될 전역 함수로 노출할 함수
@@ -519,6 +648,65 @@
   // ===============================
   const EvolutionTreeManager = {
     selectedDigimonName: null,
+    // name 기준으로 하위 자손 디지몬 이름 전체 집합을 반환
+    getAllDescendants(startName, visited = new Set()) {
+      if (visited.has(startName)) return [];
+      visited.add(startName);
+      const start = DataModule.allData.find(d => d.name === startName);
+      if (!start) return [];
+      const nextNames = [
+        start.evol1, start.evol2, start.evol3, start.evol4, start.evol5,
+        start.evol6, start.evol7, start.evol8, start.evol9, start.evol10,
+        start.evol11, start.조그레스, start.암흑진화, start.특수진화, start.버스트진화
+      ].filter(Boolean);
+      let results = [];
+      nextNames.forEach(n => {
+        results.push(n);
+        results.push(...this.getAllDescendants(n, visited));
+      });
+      return Array.from(new Set(results));
+    },
+    showTreesForMaterial(materialName) {
+      const entries = DataModule.materialIndex.get(materialName) || [];
+      const parents = Array.from(new Set(entries.map(e => e.parent).filter(Boolean)));
+      const treeContainer = document.getElementById("evolution-tree");
+      treeContainer.innerHTML = "";
+      parents.forEach(parentName => {
+        const lowerEvolutions = this.findAllLowerEvolutions(parentName);
+        const treeData = this.filterTreeByDigimonName(parentName);
+        if (treeData.length > 0) {
+          const stageContainer = this.createStageContainer(treeData, lowerEvolutions);
+          treeContainer.appendChild(stageContainer);
+          // 자동 펼치기: 각 부모 노드의 + 버튼 클릭
+          const plusButtons = stageContainer.querySelectorAll('.plus-btn');
+          plusButtons.forEach(btn => btn.click());
+          // 하이라이트: 해당 재료 사용으로 이어지는 모든 자손까지 표시
+          const directTargets = entries
+            .filter(e => e.parent === parentName)
+            .map(e => e.child)
+            .filter(Boolean);
+          const highlightSet = new Set(directTargets);
+          directTargets.forEach(child => {
+            this.getAllDescendants(child).forEach(n => highlightSet.add(n));
+          });
+          // 부모 노드 하이라이트 (연결선은 하이라이트하지 않음)
+          const parentImg = stageContainer.querySelector(`img[alt="${CSS.escape(parentName)}"]:not(.type-image)`);
+          if (parentImg) {
+            const parentNode = parentImg.closest('.digimon');
+            if (parentNode) parentNode.classList.add('highlighted');
+          }
+          // 노드 및 커넥터 하이라이트 적용
+          const nodes = stageContainer.querySelectorAll('.digimon-container .digimon');
+          nodes.forEach(node => {
+            const img = Array.from(node.querySelectorAll('img')).find(i => !i.classList.contains('type-image'));
+            if (!img) return;
+            if (highlightSet.has(img.alt)) {
+              node.classList.add('highlighted');
+            }
+          });
+        }
+      });
+    },
     showEvolutionTreeForDigimon(digimonName) {
       this.selectedDigimonName = digimonName;
       const lowerEvolutions = this.findAllLowerEvolutions(digimonName);
@@ -526,6 +714,30 @@
       
       if (treeData.length > 0) {
         this.createEvolutionTree(treeData, lowerEvolutions);
+        // 선택한 디지몬으로 이어지는 경로에 한해 자동으로 펼치기
+        const treeContainer = document.getElementById("evolution-tree");
+        const expandToSelectedOnly = () => {
+          const digimonNodes = treeContainer.querySelectorAll('.digimon');
+          let clicked = 0;
+          digimonNodes.forEach(node => {
+            const img = Array.from(node.querySelectorAll('img')).find(i => !i.classList.contains('type-image'));
+            if (!img) return;
+            const name = img.alt;
+            const plus = node.querySelector('.plus-btn');
+            if (!plus || plus.textContent !== '+') return;
+            const data = DataModule.allData.find(d => d.name === name);
+            if (data && EvolutionTreeManager.isDigimonInTree(data, digimonName)) {
+              plus.click();
+              clicked++;
+            }
+          });
+          if (clicked > 0) {
+            setTimeout(expandToSelectedOnly, 0);
+          } else {
+            UIManager.updateAllVerticalLinesAndHorizontalConnectors();
+          }
+        };
+        setTimeout(expandToSelectedOnly, 0);
       } else {
         // 특수한 진화 조건을 가진 디지몬의 경우 해당 디지몬의 정보를 직접 보여줌
         const selectedDigimon = DataModule.allData.find(d => d.name === digimonName);
