@@ -726,7 +726,7 @@
             const plus = node.querySelector('.plus-btn');
             if (!plus || plus.textContent !== '+') return;
             const data = DataModule.allData.find(d => d.name === name);
-            if (data && EvolutionTreeManager.isDigimonInTree(data, digimonName)) {
+            if (data && name !== digimonName && EvolutionTreeManager.isDigimonInTree(data, digimonName)) {
               plus.click();
               clicked++;
             }

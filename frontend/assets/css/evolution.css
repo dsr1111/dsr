@@ -52,19 +52,27 @@ body {
 .stage-container > .digimon-container {
   position: relative;
   width: 100%;
-  padding-bottom: 12px; 
-  margin-bottom: 12px;
+  padding-bottom: 12px; /* 선 위 공간 */
+  margin-bottom: 12px;  /* 선 아래 공간 */
 }
-.stage-container > .digimon-container:not(:last-child)::after {
+.stage-container > .digimon-container:not(:last-child)::after,
+.tree-container.materials-mode > .stage-container:not(:last-child)::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  border-bottom: 1px dashed #000; /* 점선 */
+  border-bottom: 1px dotted black;
   pointer-events: none;
 }
 .stage-container > .digimon-container:last-child { margin-bottom: 0; padding-bottom: 0; }
+
+/* 재료 보기 모드에서 각 트리(stage-container) 간 구분선 */
+.tree-container.materials-mode > .stage-container:not(:last-child) {
+  position: relative;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
 .digimon-container {
   display: inline-flex;
   flex-direction: row;
