@@ -248,7 +248,7 @@ let sortedRaids = [];
 function renderRaids() {
   const container = document.getElementById('raid-timers');
   container.innerHTML = '';
-  container.style.maxHeight = '200px';
+  container.style.maxHeight = '170px';
   container.style.overflowY = 'auto';
   let allRaids = [];
   raids.forEach(raid => {

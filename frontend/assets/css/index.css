@@ -34,7 +34,7 @@ body {
 
 .calendar-container {
   width: 100%;
-  margin: 130px auto 0;
+  margin: 110px auto 0;
   padding: 0 10%;
   display: flex;
   align-items: flex-start;
@@ -81,7 +81,7 @@ body {
   padding: 10px;
   border-radius: 5px;
   border: #c0c0c0 1px solid;
-  margin-top: 50px;
+  margin-top: 35px;
 }
 
 .index-title {
@@ -266,6 +266,7 @@ input[type="number"] {
   border-radius: 5px;
   margin: 0 5px 5px 5px;
   border: none;
+  font-size: 12px;
 }
 
 .fc-currentMonth-button,
@@ -414,7 +415,6 @@ input[type="number"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
 }
 
 .settings-button {
