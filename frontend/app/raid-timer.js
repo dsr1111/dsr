@@ -289,8 +289,8 @@ function renderRaids() {
     div.className = 'raid-timer-item';
     div.style.display = 'flex';
     div.style.alignItems = 'center';
-    div.style.marginBottom = '8px';
-    div.style.fontSize = '0.85em';
+    div.style.marginBottom = '4px';
+    div.style.fontSize = '0.8em';
     div.innerHTML = `
       <div style="background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px;">
         <img src="${raid.image}" alt="${raid.name}" width="46" height="46" style="object-fit:contain; display:block;">
@@ -373,13 +373,36 @@ function updateTimers() {
         if (!notified[notifyKey]) {
           const alarmToggle = document.getElementById('raid-alarm-toggle');
           if (alarmToggle && alarmToggle.checked) {
+            const volumeSlider = document.getElementById('alarm-volume');
+            const durationInput = document.getElementById('alarm-duration');
+            
+            alarmAudio.volume = volumeSlider ? parseFloat(volumeSlider.value) : 0.5;
+            const alarmDuration = durationInput ? parseInt(durationInput.value, 10) * 1000 : 3000;
+
             alarmAudio.currentTime = 0;
             alarmAudio.play();
+            
             setTimeout(() => {
-              alert(`${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`);
-              // 확인 이후 60초 스누즈 부여
-              cooldownUntil[notifyKey] = Date.now() + 60 * 1000;
-            }, 500);
+              alarmAudio.pause();
+              alarmAudio.currentTime = 0;
+            }, alarmDuration);
+
+            // Custom alert logic
+            const customAlert = document.getElementById('custom-raid-alert');
+            const customAlertMessage = document.getElementById('custom-alert-message');
+            if (customAlert && customAlertMessage) {
+              customAlertMessage.textContent = `${sortedRaids[i].name} 레이드가 ${formatTimeToKR(getTimeDiffString(sortedRaids[i].nextTime))} 남았습니다!`;
+              customAlert.style.display = 'flex';
+
+              // Attach snooze logic to the close button
+              const closeButton = document.getElementById('custom-alert-close');
+              const closeButtonClickHandler = () => {
+                customAlert.style.display = 'none';
+                cooldownUntil[notifyKey] = Date.now() + 60 * 1000; // 60초 스누즈
+                closeButton.removeEventListener('click', closeButtonClickHandler); // 이벤트 리스너 정리
+              };
+              closeButton.addEventListener('click', closeButtonClickHandler);
+            }
           }
           notified[notifyKey] = true;
         }
@@ -407,6 +430,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const alarmToggle = document.getElementById('raid-alarm-toggle');
   const notificationTimeSpan = document.getElementById('notification-time');
+  const volumeSlider = document.getElementById('alarm-volume');
+  const durationInput = document.getElementById('alarm-duration');
+  const durationValueSpan = document.getElementById('alarm-duration-value');
+  const settingsToggle = document.getElementById('raid-settings-toggle');
+  const settingsPanel = document.getElementById('raid-settings-panel');
+  const settingsClose = document.getElementById('raid-settings-close');
+
+  // 설정 패널 토글
+  if (settingsToggle && settingsPanel) {
+    settingsToggle.addEventListener('click', () => {
+      const isVisible = settingsPanel.style.display === 'block';
+      settingsPanel.style.display = isVisible ? 'none' : 'block';
+    });
+  }
+
+  // 설정 패널 닫기
+  if (settingsClose && settingsPanel) {
+    settingsClose.addEventListener('click', () => {
+      settingsPanel.style.display = 'none';
+    });
+  }
+
+  // 초기 볼륨 설정
+  if (volumeSlider) {
+    alarmAudio.volume = parseFloat(volumeSlider.value);
+    volumeSlider.addEventListener('input', function() {
+      alarmAudio.volume = parseFloat(this.value);
+    });
+  }
+
+  // 재생 시간 슬라이더 이벤트 리스너
+  if (durationInput && durationValueSpan) {
+    durationInput.addEventListener('input', function() {
+      durationValueSpan.textContent = `${this.value}초`;
+    });
+  }
+  
   
   // 알림 시간 입력 제한
   notificationTimeSpan.addEventListener('input', function() {
