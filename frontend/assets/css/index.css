@@ -1,4 +1,5 @@
 * {
+  font-family: "Pretendard-Regular", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -20,7 +21,6 @@
 }
 
 body {
-  font-family: "Pretendard-Regular", sans-serif;
   font-weight: normal;
   background-color: #f4f4f9;
 }
@@ -436,9 +436,10 @@ input[type="number"] {
 
 .settings-panel {
   position: absolute;
-  right: 0;
-  top: 30px; /* Position below the settings button */
-  z-index: 10;
+  left: 100%; /* Position to the right of the parent */
+  top: 0;
+  margin-left: 5px; /* Add some space */
+  z-index: 1001; /* Ensure it's above other elements like ads */
   background-color: #fff; /* Change background to stand out */
   border: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
