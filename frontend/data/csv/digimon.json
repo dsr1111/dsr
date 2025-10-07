@@ -18558,14 +18558,14 @@
     "evolution_stage": "완전체",
     "type": "데이터",
     "stats": {
-      "level": 90,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 4668,
+      "sp": 1456,
+      "STR": 747,
+      "INT": 547,
+      "DEF": 709,
+      "RES": 722,
+      "SPD": 388
     },
     "strengths": {
       "attribute": "바람",

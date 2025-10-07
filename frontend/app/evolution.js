@@ -14,7 +14,7 @@
       // 각 CSV 파일별 버전 관리
       const versions = {
         evolution: "1.1.2",    // 0928
-        condition: "1.1.2",    // 0928
+        condition: "1.1.3",    // 1007
         jogress: "1.0.1"       // 0925
       };
       
