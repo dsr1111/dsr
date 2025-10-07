@@ -59,7 +59,7 @@ function populateDigimonGrid(detector) {
     document.getElementById('digimonMechanicCard').innerHTML = '';
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
-        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬') {
+        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬' && digimon !== '주작몬' && digimon !== '청룡몬') {
             const button = document.createElement('button');
             button.className = 'digimon-button';
             button.dataset.digimon = digimon;
@@ -129,6 +129,22 @@ function populateDigimonGrid(detector) {
                         mawangButton.remove();
                     }
                 }
+
+                // 트리케라몬 아닌 다른 디지몬 선택 시 청룡몬 버튼 제거
+                if (digimon !== '트리케라몬' && detector === '계곡 탐지기') {
+                    const mawangButton = document.querySelector('.digimon-button[data-digimon="청룡몬"]');
+                    if (mawangButton) {
+                        mawangButton.remove();
+                    }
+                }                 
+
+                // 히포그리포몬 아닌 다른 디지몬 선택 시 주작몬 버튼 제거
+                if (digimon !== '히포그리포몬' && detector === '현실 세계 B형 탐지기') {
+                    const mawangButton = document.querySelector('.digimon-button[data-digimon="주작몬"]');
+                    if (mawangButton) {
+                        mawangButton.remove();
+                    }
+                }                
 
                 // 안드로몬 선택 시 크레니엄몬 버튼 추가
                 if (digimon === '안드로몬' && detector === '보급형 탐지기') {
@@ -309,6 +325,66 @@ function populateDigimonGrid(detector) {
                         digimonGrid.appendChild(mawangButton);
                     }
                 }
+
+                // 트리케라몬 선택 시 청룡몬 버튼 추가
+                if (digimon === '트리케라몬' && detector === '계곡 탐지기') {
+                    // 이미 청룡몬 버튼이 있는지 확인
+                    const existingMawangButton = document.querySelector('.digimon-button[data-digimon="청룡몬"]');
+                    if (!existingMawangButton) {
+                        const mawangButton = document.createElement('button');
+                        mawangButton.className = 'digimon-button';
+                        mawangButton.dataset.digimon = '청룡몬';
+                        const mawangImgBg = document.createElement('div');
+                        mawangImgBg.className = 'digimon-img-bg';
+                        const mawangImg = document.createElement('img');
+                        mawangImg.src = 'https://media.dsrwiki.com/dsrwiki/digimon/청룡몬/청룡몬.webp';
+                        mawangImg.alt = '청룡몬';
+                        mawangImgBg.appendChild(mawangImg);
+                        const mawangSpan = document.createElement('span');
+                        mawangSpan.textContent = '청룡몬';
+                        mawangButton.appendChild(mawangImgBg);
+                        mawangButton.appendChild(mawangSpan);
+                        mawangButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            mawangButton.classList.add('selected');
+                            selectedDigimon = '청룡몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(mawangButton);
+                    }
+                }  
+
+                // 히포그리포몬 선택 시 주작몬 버튼 추가
+                if (digimon === '히포그리포몬' && detector === '현실 세계 B형 탐지기') {
+                    // 이미 주작몬 버튼이 있는지 확인
+                    const existingMawangButton = document.querySelector('.digimon-button[data-digimon="주작몬"]');
+                    if (!existingMawangButton) {
+                        const mawangButton = document.createElement('button');
+                        mawangButton.className = 'digimon-button';
+                        mawangButton.dataset.digimon = '주작몬';
+                        const mawangImgBg = document.createElement('div');
+                        mawangImgBg.className = 'digimon-img-bg';
+                        const mawangImg = document.createElement('img');
+                        mawangImg.src = 'https://media.dsrwiki.com/dsrwiki/digimon/주작몬/주작몬.webp';
+                        mawangImg.alt = '주작몬';
+                        mawangImgBg.appendChild(mawangImg);
+                        const mawangSpan = document.createElement('span');
+                        mawangSpan.textContent = '주작몬';
+                        mawangButton.appendChild(mawangImgBg);
+                        mawangButton.appendChild(mawangSpan);
+                        mawangButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            mawangButton.classList.add('selected');
+                            selectedDigimon = '주작몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(mawangButton);
+                    }
+                }                
             });
             digimonGrid.appendChild(button);
         }

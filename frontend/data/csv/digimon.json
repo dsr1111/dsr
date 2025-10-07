@@ -10141,14 +10141,14 @@
     "evolution_stage": "성숙기",
     "type": "데이터",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 2748,
+      "sp": 986,
+      "STR": 552,
+      "INT": 473,
+      "DEF": 473,
+      "RES": 468,
+      "SPD": 283
     },
     "strengths": {
       "attribute": "강철",
@@ -15807,14 +15807,14 @@
     "evolution_stage": "완전체",
     "type": "데이터",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 4743,
+      "sp": 1481,
+      "STR": 753,
+      "INT": 703,
+      "DEF": 628,
+      "RES": 622,
+      "SPD": 370
     },
     "strengths": {
       "attribute": "강철",
