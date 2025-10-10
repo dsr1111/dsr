@@ -297,7 +297,7 @@ function renderRaids() {
       </div>
       <div style="display:flex; flex-direction:column; text-align:left;">
         <span><strong>${raid.name}</strong></span>
-        <span style="font-size:0.7rem; color:#666;">${raid.timeStr}, ${raid.map}</span>
+        <span style="font-size:0.7rem; color:#666;">${raid.timeStr}, <span class="raid-location" data-name="${raid.name}" data-time="${raid.timeStr}" style="cursor:pointer; text-decoration:underline; color:#007bff; font-weight:bold;">${raid.map} <i class="ri-map-pin-line"></i></span></span>
         <span class="remain">${getTimeDiffString(raid.nextTime)}</span>
       </div>
     `;
@@ -511,8 +511,51 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   });
+
+  const timersContainer = document.getElementById('raid-timers');
+  const modal = document.getElementById('map-modal');
+  const modalImage = document.getElementById('map-modal-image');
+  const closeModal = document.getElementById('map-modal-close');
+
+  if (timersContainer && modal && modalImage && closeModal) {
+    timersContainer.addEventListener('click', (e) => {
+      // Use closest to handle clicks on the icon inside the span
+      const locationSpan = e.target.closest('.raid-location');
+      if (locationSpan) {
+        const raidName = locationSpan.dataset.name;
+        const raidTime = locationSpan.dataset.time;
+        let imageName = null;
+
+        if (raidName === '펌프몬') {
+          if (raidTime === '19:30') imageName = '1930';
+          if (raidTime === '21:30') imageName = '2130';
+        } else if (raidName === '울퉁몬') {
+          if (raidTime === '23:00') imageName = '2300';
+          if (raidTime === '01:00') imageName = '0100';
+        } else if (raidName === '오메가몬') {
+          imageName = 'omega';
+        } else if (raidName === RotationRaid.name) {
+          imageName = 'rotation';
+        }
+
+        if (imageName) {
+          modalImage.src = `https://media.dsrwiki.com/dsrwiki/map/${imageName}.png`;
+          modal.style.display = 'flex';
+        }
+      }
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  }
   
   renderRaids();
   setInterval(updateTimers, 1000);
 });
-
