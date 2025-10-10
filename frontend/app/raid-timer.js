@@ -290,14 +290,14 @@ function renderRaids() {
     div.style.display = 'flex';
     div.style.alignItems = 'center';
     div.style.marginBottom = '4px';
-    div.style.fontSize = '0.8em';
+    div.style.fontSize = '0.8rem';
     div.innerHTML = `
       <div style="background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px;">
         <img src="${raid.image}" alt="${raid.name}" width="46" height="46" style="object-fit:contain; display:block;">
       </div>
       <div style="display:flex; flex-direction:column; text-align:left;">
         <span><strong>${raid.name}</strong></span>
-        <span style="font-size:0.8em; color:#666;">${raid.timeStr}, ${raid.map}</span>
+        <span style="font-size:0.7rem; color:#666;">${raid.timeStr}, ${raid.map}</span>
         <span class="remain">${getTimeDiffString(raid.nextTime)}</span>
       </div>
     `;
