@@ -36,7 +36,7 @@ document
   .getElementById("stage-select")
   .addEventListener("change", async function () {
     const stage = this.value;
-    const digimonData = await fetchJSONData("data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     if (digimonData) {
       populateCharacterDropdown(digimonData, stage);
     }
@@ -46,7 +46,7 @@ document
   .getElementById("character-select")
   .addEventListener("change", async function () {
     const characterName = this.value;
-    const digimonData = await fetchJSONData("data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     if (digimonData) {
       displayCharacterType(digimonData, characterName);
       displayCharacterImage(characterName);
@@ -122,7 +122,7 @@ function displayCharacterLevelAndPower(digimonData, characterName) {
 
 async function displaySkillImage(characterName) {
   const skillSelect = document.getElementById("skill-select").value;
-  const digimonData = await fetchJSONData("data/csv/digimon.json");
+  const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
   const digimon = digimonData[characterName];
 
   if (digimon && digimon.skills) {
@@ -275,7 +275,7 @@ window.addEventListener("DOMContentLoaded", async function () {
       }
     }
 
-    const digimonData = await fetchJSONData("data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
 
     if (digimonData) {
       await populateCharacterDropdown(digimonData, "성장기");
@@ -368,7 +368,7 @@ async function calculateStrengthResult() {
     myLevel = getInputValue("manual-level");
   } else {
     const characterName = document.getElementById("character-select").value;
-    const digimonData = await fetchJSONData("data/csv/digimon.json");
+    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
     const digimon = digimonData[characterName];
 
     if (digimon) {
@@ -462,7 +462,7 @@ async function calculateNeedStr() {
       }
     } else {
       const characterName = document.getElementById("character-select").value;
-      const digimonData = await fetchJSONData("data/csv/digimon.json");
+      const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
       const digimon = digimonData[characterName];
 
       if (!digimon) {
