@@ -13,8 +13,8 @@
     async loadCSVFiles() {
       // 각 CSV 파일별 버전 관리
       const versions = {
-        evolution: "1.1.3",    // 1023
-        condition: "1.1.5",    // 1023
+        evolution: "1.1.6",    // 1023
+        condition: "1.1.6",    // 1023
         jogress: "1.0.1"       // 0925
       };
       
