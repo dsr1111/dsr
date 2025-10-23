@@ -89,6 +89,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 코테몬,3,무사몬,95
 코쿠와몬,3
 쿠네몬,3,캅테리몬,32.5,스파이더몬,32.5,쿠가몬,10,두리몬,10,플라이몬,10
+쿠다몬,3
 크랩몬,3,쉘몬,37.5,옥토몬,37.5,씨라몬,10,에비드라몬,10
 테리어몬,3,가르고몬,95
 테이파몬,3,토토몬,95
@@ -214,7 +215,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 라일라몬,5
 래피드몬,5,세인트가르고몬,95
 레이디데블몬,5,,,,,,,,,,,,,,,,,,,,,,,마스테몬,25,엔젤우몬
-로더레오몬,5
+로더레오몬,5,백호몬,95
 리벨리몬,5
 릴리몬,5,로제몬,95
 마구라몬,5
@@ -322,6 +323,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 반쵸콩알몬,6
 발두르몬,6
 발키리몬,6
+백호몬,6
 베놈묘티스몬,6,베리얼묘티스몬,100
 베르제브몬,6,베르제브몬:블래스트모드,100
 베르제브몬(C),6
