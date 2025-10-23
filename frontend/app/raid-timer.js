@@ -535,7 +535,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (raidName === '오메가몬') {
           imageName = 'omega';
         } else if (raidName === RotationRaid.name) {
-          imageName = 'rotation';
+          imageName = 'rotation1023';
         }
 
         if (imageName) {
