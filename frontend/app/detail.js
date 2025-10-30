@@ -111,19 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 defaultDigicore = [
                   {
                     name: "성장기 디지코어 꾸러미",
-                    probability: "확정",
+                    probability: "100%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "유년기1 디지타마",
-                    probability: "확률",
+                    probability: "100%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "포텐셜 조각",
-                    probability: "확률",
+                    probability: "10%",
                     tradeable: true,
                     count: 1
                   }
@@ -133,25 +133,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 defaultDigicore = [
                   {
                     name: "성숙기 디지코어 꾸러미",
-                    probability: "확정",
-                    tradeable: true,
-                    count: 1
-                  },
-                  {
-                    name: "유년기1 디지타마",
-                    probability: "확률",
+                    probability: "100%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "포텐셜 조각",
-                    probability: "확률",
+                    probability: "10%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "돌연변이 치료제",
-                    probability: "확률",
+                    probability: "2.5%",
                     tradeable: true,
                     count: 1
                   }
@@ -161,25 +155,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 defaultDigicore = [
                   {
                     name: "완전체 디지코어 꾸러미",
-                    probability: "확정",
-                    tradeable: true,
-                    count: 1
-                  },
-                  {
-                    name: "유년기1 디지타마",
-                    probability: "확률",
+                    probability: "100%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "포텐셜 조각",
-                    probability: "확률",
+                    probability: "10%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "돌연변이 치료제",
-                    probability: "확률",
+                    probability: "2.5%",
                     tradeable: true,
                     count: 1
                   }
@@ -189,25 +177,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 defaultDigicore = [
                   {
                     name: "궁극체 디지코어 꾸러미",
-                    probability: "확정",
-                    tradeable: true,
-                    count: 1
-                  },
-                  {
-                    name: "유년기1 디지타마",
-                    probability: "확률",
+                    probability: "100%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "포텐셜 조각",
-                    probability: "확률",
+                    probability: "10%",
                     tradeable: true,
                     count: 1
                   },
                   {
                     name: "돌연변이 치료제",
-                    probability: "확률",
+                    probability: "2.5%",
                     tradeable: true,
                     count: 1
                   }

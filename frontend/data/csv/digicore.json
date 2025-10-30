@@ -4,7 +4,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": true,
           "count": 1
         }
@@ -14,7 +14,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": true,
           "count": 1
         }
@@ -24,13 +24,13 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": true,
           "count": 2
         },
         {
           "name": "사랑의 기운",
-          "probability": "확률",
+          "probability": "6%",
           "tradeable": false,
           "count": 1
         }
@@ -40,7 +40,7 @@
       "items": [
         {
           "name": "희망의 기운",
-          "probability": "확률",
+          "probability": "11.3%",
           "tradeable": false,
           "count": 1
         }
@@ -50,7 +50,7 @@
       "items": [
         {
           "name": "지식의 기운",
-          "probability": "확률",
+          "probability": "6%",
           "tradeable": false,
           "count": 1
         }
@@ -60,7 +60,7 @@
       "items": [
         {
           "name": "순수의 기운",
-          "probability": "확률",
+          "probability": "7.5%",
           "tradeable": false,
           "count": 1
         }
@@ -70,7 +70,7 @@
       "items": [
         {
           "name": "성실의 기운",
-          "probability": "확률",
+          "probability": "9%",
           "tradeable": false,
           "count": 1
         }
@@ -80,7 +80,7 @@
       "items": [
         {
           "name": "빛의 기운",
-          "probability": "확률",
+          "probability": "9%",
           "tradeable": false,
           "count": 1
         }
@@ -90,7 +90,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": true,
           "count": 1
         }
@@ -100,7 +100,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확률",
+          "probability": "60%",
           "tradeable": true,
           "count": 1
         }
@@ -110,7 +110,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확률",
+          "probability": "20%",
           "tradeable": true,
           "count": 2
         }
@@ -120,17 +120,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확률",
-          "tradeable": true,
-          "count": 1
-        }
-      ]
-    },
-    "에이프몬":{
-      "items": [
-        {
-          "name": "홀리 링",
-          "probability": "확률",
+          "probability": "60%",
           "tradeable": true,
           "count": 1
         }
@@ -140,7 +130,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확률",
+          "probability": "20%",
           "tradeable": true,
           "count": 1
         }
@@ -150,7 +140,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확률",
+          "probability": "20%",
           "tradeable": true,
           "count": 1
         }
@@ -160,7 +150,7 @@
       "items": [
         {
           "name": "홀리 링",
-          "probability": "확률",
+          "probability": "40%",
           "tradeable": true,
           "count": 1
         }
@@ -170,7 +160,7 @@
       "items": [
         {
           "name": "강인한 그랜쿠가몬의 디지코어",
-          "probability": "확률",
+          "probability": "40%",
           "tradeable": true,
           "count": 1
         }
@@ -180,7 +170,7 @@
       "items": [
         {
           "name": "메가 핸드",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": true,
           "count": 1
         }
@@ -190,7 +180,7 @@
       "items": [
         {
           "name": "타임몬의 시계바늘(1시간)",
-          "probability": "확률",
+          "probability": "50%",
           "tradeable": true,
           "count": 1
         }
@@ -200,7 +190,7 @@
       "items": [
         {
           "name": "메탈그레이몬의 파츠 데이터",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": false,
           "count": 1,
           "description": "사용 시 다음 아이템 중 하나를 획득할 수 있습니다.",
@@ -225,13 +215,7 @@
       "items": [
         {
           "name": "엔젤몬의 날개",
-          "probability": "확률",
-          "tradeable": true,
-          "count": 1
-        },
-        {
-          "name": "홀리 링",
-          "probability": "확률",
+          "probability": "50%",
           "tradeable": true,
           "count": 1
         }
@@ -241,7 +225,7 @@
       "items": [
         {
           "name": "가루몬의 다리",
-          "probability": "확률",
+          "probability": "50%",
           "tradeable": true,
           "count": 1
         }
@@ -251,9 +235,15 @@
       "items": [
         {
           "name": "로프몬의 의지",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": true,
-          "count": "?"
+          "count": 1
+        },
+        {
+          "name": "로프몬의 의지",
+          "probability": "50%",
+          "tradeable": true,
+          "count": 2
         }
       ]
     },
@@ -261,7 +251,7 @@
       "items": [
         {
           "name": "사이코 블래스터",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": true,
           "count": 1
         }
@@ -271,7 +261,7 @@
       "items": [
         {
           "name": "발두르몬의 깃털",
-          "probability": "확률",
+          "probability": "10%",
           "tradeable": true,
           "count": 1
         }
@@ -281,7 +271,7 @@
       "items": [
         {
           "name": "오메가몬의 성스러운 데이터",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": false,
           "count": 1,
           "description": "구성품 중 하나를 랜덤하게 획득 가능",
@@ -306,7 +296,7 @@
       "items": [
         {
           "name": "밀레니엄몬의 데이터 덩어리",
-          "probability": "확정",
+          "probability": "100%",
           "tradeable": false,
           "count": 1,
           "description": "구성품 중 하나를 랜덤하게 획득 가능",
@@ -373,8 +363,48 @@
       "items": [
         {
           "name": "조각난 불굴의 용기",
-          "probability": "확률",
+          "probability": "5.6%",
           "tradeable": false,
+          "count": 1
+        }
+      ]
+    },
+    "듀크몬": {
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "슬래쉬엔젤몬": {
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "크로스몬": {
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "쿠다몬": {
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "20%",
+          "tradeable": true,
           "count": 1
         }
       ]
