@@ -109,11 +109,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const endDateWithTime = `${datePart} ${timePart}`;
         const endDate = new Date(endDateWithTime);
+        const isUnknownEnd = /\?\?/.test(endDateStr);
+        const isValidEnd = !isNaN(endDate.getTime());
         
         // 오늘 날짜의 시간 부분을 제거하고 비교
         const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-        if (today <= endDate) {
+        if (isUnknownEnd || (isValidEnd && today <= endDate)) {
           availableCoupons++;
           const couponEl = document.createElement("div");
           couponEl.classList.add("coupon-list");
