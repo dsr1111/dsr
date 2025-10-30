@@ -59,7 +59,7 @@ function populateDigimonGrid(detector) {
     document.getElementById('digimonMechanicCard').innerHTML = '';
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
-        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬' && digimon !== '주작몬' && digimon !== '청룡몬') {
+        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬' && digimon !== '주작몬' && digimon !== '청룡몬' && digimon !== '백호몬' && (digimon !== '로더레오몬' || detector === '로더레오몬 탐지기')) {
             const button = document.createElement('button');
             button.className = 'digimon-button';
             button.dataset.digimon = digimon;
@@ -144,7 +144,23 @@ function populateDigimonGrid(detector) {
                     if (mawangButton) {
                         mawangButton.remove();
                     }
-                }                
+                }  
+                
+                // 매드레오몬 아닌 다른 디지몬 선택 시 로더레오몬 버튼 제거
+                if (digimon !== '매드레오몬' && detector === '특수 탐지기') {
+                    const mawangButton = document.querySelector('.digimon-button[data-digimon="로더레오몬"]');
+                    if (mawangButton) {
+                        mawangButton.remove();
+                    }
+                } 
+
+                // 로더레오몬 아닌 다른 디지몬 선택 시 백호몬 버튼 제거 (로더레오몬 탐지기)
+                if (digimon !== '로더레오몬' && detector === '로더레오몬 탐지기') {
+                    const baekhoButton = document.querySelector('.digimon-button[data-digimon="백호몬"]');
+                    if (baekhoButton) {
+                        baekhoButton.remove();
+                    }
+                }
 
                 // 안드로몬 선택 시 크레니엄몬 버튼 추가
                 if (digimon === '안드로몬' && detector === '보급형 탐지기') {
@@ -384,7 +400,66 @@ function populateDigimonGrid(detector) {
                         });
                         digimonGrid.appendChild(mawangButton);
                     }
-                }                
+                }   
+                
+                // 매드레오몬 선택 시 로더레오몬 버튼 추가
+                if (digimon === '매드레오몬' && detector === '특수 탐지기') {
+                    // 이미 로더레오몬 버튼이 있는지 확인
+                    const existingLoaderButton = document.querySelector('.digimon-button[data-digimon="로더레오몬"]');
+                    if (!existingLoaderButton) {
+                        const loaderButton = document.createElement('button');
+                        loaderButton.className = 'digimon-button';
+                        loaderButton.dataset.digimon = '로더레오몬';
+                        const loaderImgBg = document.createElement('div');
+                        loaderImgBg.className = 'digimon-img-bg';
+                        const loaderImg = document.createElement('img');
+                        loaderImg.src = 'https://media.dsrwiki.com/dsrwiki/digimon/로더레오몬/로더레오몬.webp';
+                        loaderImg.alt = '로더레오몬';
+                        loaderImgBg.appendChild(loaderImg);
+                        const loaderSpan = document.createElement('span');
+                        loaderSpan.textContent = '로더레오몬';
+                        loaderButton.appendChild(loaderImgBg);
+                        loaderButton.appendChild(loaderSpan);
+                        loaderButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            loaderButton.classList.add('selected');
+                            selectedDigimon = '로더레오몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(loaderButton);
+                    }
+                }                 
+
+                // 로더레오몬 선택 시 백호몬 버튼 추가 (로더레오몬 탐지기)
+                if (digimon === '로더레오몬' && detector === '로더레오몬 탐지기') {
+                    const existingBaekhoButton = document.querySelector('.digimon-button[data-digimon="백호몬"]');
+                    if (!existingBaekhoButton) {
+                        const baekhoButton = document.createElement('button');
+                        baekhoButton.className = 'digimon-button';
+                        baekhoButton.dataset.digimon = '백호몬';
+                        const baekhoImgBg = document.createElement('div');
+                        baekhoImgBg.className = 'digimon-img-bg';
+                        const baekhoImg = document.createElement('img');
+                        baekhoImg.src = 'https://media.dsrwiki.com/dsrwiki/digimon/백호몬/백호몬.webp';
+                        baekhoImg.alt = '백호몬';
+                        baekhoImgBg.appendChild(baekhoImg);
+                        const baekhoSpan = document.createElement('span');
+                        baekhoSpan.textContent = '백호몬';
+                        baekhoButton.appendChild(baekhoImgBg);
+                        baekhoButton.appendChild(baekhoSpan);
+                        baekhoButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            baekhoButton.classList.add('selected');
+                            selectedDigimon = '백호몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(baekhoButton);
+                    }
+                }
             });
             digimonGrid.appendChild(button);
         }
