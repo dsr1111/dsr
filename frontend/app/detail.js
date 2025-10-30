@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="digicore-item-info">
                           <div class="digicore-item-name">${item.name}${item.count ? ` <span class=\"item-count\">x${item.count}</span>` : ''}</div>
                           <div class="digicore-item-badges">
-                            <div class="digicore-item-probability ${item.probability === '확정' ? 'guaranteed' : 'probability'}">${item.probability}</div>
+                            <div class="digicore-item-probability ${(item.probability === '확정' || item.probability === '100%') ? 'guaranteed' : 'probability'}">${item.probability}</div>
                             ${item.tradeable !== undefined ? `
                               <div class="digicore-item-tradeable ${item.tradeable ? 'tradeable' : 'untradeable'}">${item.tradeable ? '거래가능' : '거래불가'}</div>
                             ` : ''}
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                   <div class="possible-item-info">
                                     <div class="possible-item-name">${possibleItem.name}${possibleItem.count ? ` <span class=\"item-count\">x${possibleItem.count}</span>` : ''}</div>
                                     <div class="digicore-item-badges">
-                                      <div class="possible-item-probability ${possibleItem.probability === '확정' ? 'guaranteed' : 'probability'}">${possibleItem.probability}</div>
+                                      <div class="possible-item-probability ${(possibleItem.probability === '확정' || possibleItem.probability === '100%') ? 'guaranteed' : 'probability'}">${possibleItem.probability}</div>
                                       ${possibleItem.tradeable !== undefined ? `
                                         <div class="digicore-item-tradeable ${possibleItem.tradeable ? 'tradeable' : 'untradeable'}">${possibleItem.tradeable ? '거래가능' : '거래불가'}</div>
                                       ` : ''}
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                             <div class="possible-item-info">
                                               <div class="possible-item-name">${subItem.name}${subItem.count ? ` <span class=\"item-count\">x${subItem.count}</span>` : ''}</div>
                                               <div class="digicore-item-badges">
-                                                <div class="possible-item-probability ${subItem.probability === '확정' ? 'guaranteed' : 'probability'}">${subItem.probability}</div>
+                                                <div class="possible-item-probability ${(subItem.probability === '확정' || subItem.probability === '100%') ? 'guaranteed' : 'probability'}">${subItem.probability}</div>
                                                 ${subItem.tradeable !== undefined ? `
                                                   <div class="digicore-item-tradeable ${subItem.tradeable ? 'tradeable' : 'untradeable'}">${subItem.tradeable ? '거래가능' : '거래불가'}</div>
                                                 ` : ''}
