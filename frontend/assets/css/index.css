@@ -287,8 +287,7 @@ input[type="number"] {
     padding-bottom: 120px; /* 하단 여백 추가 */
   }
 
-  #calendar,
-  #tooltip {
+  #calendar-placeholder {
     display: none !important;
   }
 
@@ -524,4 +523,26 @@ input[type="number"] {
   display: block;
   margin: 0 auto;
   margin-top: 30px;
+}
+
+/* Calendar Placeholder Styles */
+.calendar-placeholder {
+  width: 65%;
+  margin: 0 auto;
+  aspect-ratio: 2.5;
+  background-color: #f0f0f0;
+  border: #c0c0c0 1px solid;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.calendar-placeholder p {
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  margin: 0;
 }

@@ -9,14 +9,14 @@ const raids = [
   {
     name: '펌프몬',
     image: getImagePath('펌프몬'),
-    times: ['19:30', '21:30'],
+    times: ['19:30'],
     type: 'daily',
     map: '시부야',
   },
   {
     name: '울퉁몬',
     image: getImagePath('울퉁몬'),
-    times: ['23:00', '01:00'],
+    times: ['21:30'],
     type: 'daily',
     map: '시부야',
   },
@@ -52,14 +52,46 @@ const raids = [
     baseDate: '2025-06-01',
     map: '어둠성 계곡',
   },
+  {
+    name: '주작몬',
+    image: getImagePath('주작몬'),
+    times: ['22:00'],
+    type: 'weekly',
+    days: [2], // 화요일
+    map: '기어 사바나',
+  },
+  {
+    name: '청룡몬',
+    image: getImagePath('청룡몬'),
+    times: ['22:00'],
+    type: 'weekly',
+    days: [4], // 목요일
+    map: '어둠성 계곡',
+  },
+  {
+    name: '백호몬',
+    image: getImagePath('백호몬'),
+    times: ['22:00'],
+    type: 'weekly',
+    days: [5], // 금요일
+    map: '사막 지대',
+  },
+  {
+    name: '위그드라실_7D6',
+    image: getImagePath('위그드라실_7D6'),
+    times: ['21:00'],
+    type: 'weekly',
+    days: [5, 6, 0], // 금요일, 토요일, 일요일
+    map: '무한 산',
+  },
 ];
 
 const RotationRaid = {
-  name: '아트라캅테리몬',
-  image: getImagePath('아트라캅테리몬'),
+  name: '토우몬',
+  image: getImagePath('토우몬'),
   baseTime: '19:00',
-  baseDate: '2025-10-23',
-  map: '용의 눈 호수',
+  baseDate: '2025-11-06',
+  map: '어둠성 계곡',
 };
 
 // TimezoneDB API를 사용하여 서울 시간 동기화
@@ -528,10 +560,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (raidName === '펌프몬') {
           if (raidTime === '19:30') imageName = '1930';
-          if (raidTime === '21:30') imageName = '2130';
         } else if (raidName === '울퉁몬') {
-          if (raidTime === '23:00') imageName = '2300';
-          if (raidTime === '01:00') imageName = '0100';
+          if (raidTime === '21:30') imageName = '2130';
         } else if (raidName === '오메가몬') {
           imageName = 'omega';
         } else if (raidName === RotationRaid.name) {

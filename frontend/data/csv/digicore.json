@@ -408,6 +408,16 @@
           "count": 1
         }
       ]
+    },
+    "케루비몬(선)": {
+      "items": [
+        {
+          "name": "홀리 링",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 2
+        }
+      ]
     }
   }
 } 
