@@ -11,17 +11,10 @@
     materialIndex: new Map(),
 
     async loadCSVFiles() {
-      // 각 CSV 파일별 버전 관리
-      const versions = {
-        evolution: "1.1.7",    // 1023
-        condition: "1.1.7",    // 1023
-        jogress: "1.0.1"       // 0925
-      };
-      
       await Promise.all([
-        this.loadCSV(`https://media.dsrwiki.com/data/csv/evolution.csv?v=${versions.evolution}`, "allData"),
-        this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv?v=${versions.condition}`, "conditionData"),
-        this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv?v=${versions.jogress}`, "jogressData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/evolution.csv`, "allData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv`, "conditionData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv`, "jogressData"),
       ]);
       // 재료 인덱스 빌드 후 기본 디지몬 이미지 리스트 생성
       this.buildMaterialIndex();
