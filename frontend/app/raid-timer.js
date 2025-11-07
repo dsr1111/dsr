@@ -564,8 +564,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (raidTime === '21:30') imageName = '2130';
         } else if (raidName === '오메가몬') {
           imageName = 'omega';
+        } else if (raidName === '위그드라실_7D6') {
+          imageName = '위그드라실';
         } else if (raidName === RotationRaid.name) {
-          imageName = 'rotation1023';
+          imageName = 'rotation1106';
         }
 
         if (imageName) {
