@@ -70,7 +70,7 @@ function updateImage(selectedMap) {
   }
 
   // 이미지 요소를 700x700 크기로 업데이트
-  imageContainer.innerHTML = `<img src="${imagePath}"  alt="${selectedMap}" width="700" height="700">`;
+  imageContainer.innerHTML = `<img loading="lazy" src="${imagePath}"  alt="${selectedMap}" width="700" height="700">`;
 }
 
 // 지역 선택 시 map-dropdown 옵션 업데이트 및 첫 번째 값으로 이미지 설정
@@ -480,7 +480,7 @@ function showSpecialTooltipAtImage(
   tooltip.innerHTML = `
         <div style="text-align: center; font-size: 20px; color: rgb(0,183,255); font-weight: bold;">${name}</div>
         <div style="display: flex; align-items: center;">
-            <img src="${src}" alt="${name}" style="width: 100px; height: 100px; margin-top: 5px; background-color: #000000; border-radius: 5px; border: 1px solid white;">
+            <img loading="lazy" src="${src}" alt="${name}" style="width: 100px; height: 100px; margin-top: 5px; background-color: #000000; border-radius: 5px; border: 1px solid white;">
             <div style="margin-left: 5px;">
                 <div style="margin-bottom: 5px; margin-top: 5px; color: white;"><span>레벨 :</span> ${level}</div>
                 <div style="margin-bottom: 5px; color: white;"><span>체력 :</span> ${hp}</div>
@@ -488,7 +488,7 @@ function showSpecialTooltipAtImage(
                   ${ 
                     강점Parts.length ? `
                       <div style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;">
-                        <img src=\"https://media.dsrwiki.com/dsrwiki/${강점Parts[0]}.webp\" alt=\" ${강점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+                        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/${강점Parts[0]}.webp\" alt=\" ${강점Parts[0]}\" style=\"width: 24px; height: 24px;\">
                       </div>
                       <span>${강점Parts[1] ? 강점Parts[1] : ''}</span>
                     ` : ''
@@ -498,7 +498,7 @@ function showSpecialTooltipAtImage(
                   ${ 
                     약점Parts.length ? `
                       <div style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;">
-                        <img src=\"https://media.dsrwiki.com/dsrwiki/${약점Parts[0]}.webp\" alt=\" ${약점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+                        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/${약점Parts[0]}.webp\" alt=\" ${약점Parts[0]}\" style=\"width: 24px; height: 24px;\">
                       </div>
                       <span>${약점Parts[1] ? 약점Parts[1] : ''}</span>
                     ` : ''
@@ -515,7 +515,7 @@ function showSpecialTooltipAtImage(
                       : `https://media.dsrwiki.com/dsrwiki/item/${item.trim()}.webp`;
                     return `
                         <li style=\"display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;">
-                            <img src=\"${itemImageSrc}\"  alt=\" ${item.trim()}\" style=\"width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;\">
+                            <img loading="lazy" src=\"${itemImageSrc}\"  alt=\" ${item.trim()}\" style=\"width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;\">
                             ${item.trim()}
                         </li>`;
                   })
@@ -527,7 +527,7 @@ function showSpecialTooltipAtImage(
             ? `
         <div style=\"text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);\"><strong>조건 진화</strong></div>
         <div style=\"display: flex; justify-content: center; align-items: center; margin-top: 10px;\">
-        <img src=\"https://media.dsrwiki.com/dsrwiki/digimon/${evol}/${evol}.webp\"  alt=\" ${evol}\" style=\"width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;\">
+        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/digimon/${evol}/${evol}.webp\"  alt=\" ${evol}\" style=\"width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;\">
          </div>
         `
             : ""

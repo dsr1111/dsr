@@ -579,11 +579,11 @@ async function showDigimonSkills(digimon) {
     if (skillRows.length > 0) {
         const skillsHtml = skillRows.map(skill => `
             <div class="skill-row">
-                <img src="${skill.img}" class="skill-image" alt="${skill.name}">
+                <img loading="lazy" src="${skill.img}" class="skill-image" alt="${skill.name}">
                 <div class="skill-info">
                     <div class="skill-header">
                         <span class="skill-name">${skill.name}</span>
-                        <span class="skill-attribute"><img src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}"></span>
+                        <span class="skill-attribute"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}"></span>
                     </div>
                     <div class="skill-details">
                         <span style="background-color: ${skill.detail1 === '원거리' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle;">${skill.detail1 || '정보 없음'}</span>
@@ -606,14 +606,14 @@ async function showDigimonInfo(detector, digimon) {
     let typeIcon = '';
     if (data.type) {
         typeIcon = `<span style="display:flex;align-items:center;justify-content:center;">
-            <img src="https://media.dsrwiki.com/dsrwiki/${data.type}.webp" alt="${data.type}" style="width:24px;height:24px;margin-left:5px;">
+            <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${data.type}.webp" alt="${data.type}" style="width:24px;height:24px;margin-left:5px;">
         </span>`;
     }
     const strongBadges = data.strong ? data.strong.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
             return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
             </span>`;
         } else {
             return `<span style="margin-right:8px;">${value}</span>`;
@@ -623,7 +623,7 @@ async function showDigimonInfo(detector, digimon) {
         const value = s.trim();
         if (i === 0) {
             return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
             </span>`;
         } else {
             return `<span style="margin-right:8px;">${value}</span>`;
@@ -635,7 +635,7 @@ async function showDigimonInfo(detector, digimon) {
       <div class="bg-white rounded-lg shadow p-4 w-full h-full flex flex-col">
         <div class="flex items-center gap-2 mb-2">
           <div style="width: 64px; height: 64px; background: rgb(52,52,52); border-radius: 3px; display: flex; align-items: center; justify-content: center;">
-            <img src="https://media.dsrwiki.com/dsrwiki/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
+            <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
           </div>
           <span class="font-bold text-lg">${digimon}</span>
         </div>
@@ -702,7 +702,7 @@ function showDigimonMechanicInfo(detector, digimon) {
                 const tradeStatusColor = itemData.tradeStatus === '거래가능' ? 'green' : 'red';
                 return `
                     <div style="display: flex; align-items: center;">
-                        <img src="${imagePath}" 
+                        <img loading="lazy" src="${imagePath}" 
                             style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;"
                             onerror="this.onerror=null; this.src='https://media.dsrwiki.com/dsrwiki/item/default.webp';">
                         <span style="color: ${tradeStatusColor};">${tradeStatusText}</span>
@@ -720,7 +720,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             : '';
         return `
             <div style="color: black; font-size: 14px; display: flex; align-items: center;">
-                <img src="${imagePath}" alt="${name.trim()}" style="width: 30px; height: 30px; margin-right: 5px; margin-top: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
+                <img loading="lazy" src="${imagePath}" alt="${name.trim()}" style="width: 30px; height: 30px; margin-right: 5px; margin-top: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
                 <span style="font-weight: bold;">${name.trim()}</span>
                 ${tradeBadges}
                 ${dropBadges}
@@ -733,7 +733,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             ${data.gimmick ? `
                 <div class="mb-4">
                     <h3 class="font-bold text-lg mb-2">
-                        <img src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                        <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
                         패턴
                     </h3>
                     <div class="text-sm text-gray-700" style="font-weight: bold;">
@@ -743,7 +743,7 @@ function showDigimonMechanicInfo(detector, digimon) {
             ` : ''}
             <div>
                 <h3 class="font-bold text-lg mb-2">
-                    <img src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
                     드롭 아이템
                 </h3>
                 <div class="overflow-x-auto md:overflow-x-visible space-y-1 whitespace-nowrap">

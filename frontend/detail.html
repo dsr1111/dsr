@@ -8,6 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/detailstyles.css">
   <link rel="stylesheet" href="assets/css/styles1.css" />
+  <script src="app/lazyload.js" defer></script>
   <script src="app/detail.js" defer></script>
   <script src="app/nav.js" defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
@@ -65,7 +66,7 @@
         <div class="character-header">
           <div class="character-main-info">
             <div class="character-image-container">
-              <img id="character-img" src="" alt="캐릭터 이미지">
+              <img loading="lazy" id="character-img" src="" alt="캐릭터 이미지">
               <div class="character-name-label" id="character-name">캐릭터 이름</div>
             </div>
             
@@ -75,23 +76,23 @@
                 <div class="metadata-group">
                   <div class="metadata-label" id="evoution-name">진화 단계</div>
                   <div class="metadata-image evolution-image">
-                    <img id="evolution-img" src="" alt="진화등급 이미지">
+                    <img loading="lazy" id="evolution-img" src="" alt="진화등급 이미지">
                   </div>
                 </div>
                 
                 <div class="metadata-group">
                   <div class="metadata-label" id="type-name">타입</div>
                   <div class="metadata-image">
-                    <img id="type-img" src="" alt="타입 이미지">
+                    <img loading="lazy" id="type-img" src="" alt="타입 이미지">
                   </div>
                 </div>
                 
                 <div class="metadata-group field-group">
                   <div class="metadata-label" id="field-name">필드</div>
                   <div class="metadata-image field-images">
-                    <img id="field-img1" src="" alt="필드 이미지 1">
-                    <img id="field-img2" src="" alt="필드 이미지 2">
-                    <img id="field-img3" src="" alt="필드 이미지 3">
+                    <img loading="lazy" id="field-img1" src="" alt="필드 이미지 1">
+                    <img loading="lazy" id="field-img2" src="" alt="필드 이미지 2">
+                    <img loading="lazy" id="field-img3" src="" alt="필드 이미지 3">
                   </div>
                 </div>
               </div>
@@ -128,7 +129,7 @@
         </div>
         
         <!-- 강약점 섹션 -->
-        <h2 class="section-title"><img src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 강약점</h2>
+        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 강약점</h2>
         <div class="sw-container">
           <table id="sw" class="sw">
             <tbody></tbody>
@@ -136,7 +137,7 @@
         </div>
 
         <!-- 스킬 섹션 -->
-        <h3 class="section-title"><img src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 스킬</h3>
+        <h3 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 스킬</h3>
         <div class="skill-container">
           <table id="skill-details" class="skill-table">
             <tbody></tbody>
@@ -144,13 +145,13 @@
         </div>
 
         <!-- 덱 섹션 -->
-        <h2 class="section-title"><img src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 덱</h2>
+        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 덱</h2>
         <div id="deck-container" class="deck-container">
           <!-- 덱 카드들이 여기에 동적으로 추가됩니다 -->
         </div>
 
         <!-- 디지코어 화 섹션 -->
-        <h2 class="section-title"><img src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 디지코어화</h2>
+        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 디지코어화</h2>
         <div id="digicore-container" class="digicore-container">
           <!-- 디지코어 화 정보가 여기에 동적으로 추가됩니다 -->
         </div>

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/css/styles1.css">
     <link rel="stylesheet" href="assets/css/detector.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="app/lazyload.js" defer></script>
     <script src="app/nav.js" defer></script>
     <script src="app/detector.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
@@ -73,9 +74,9 @@
                 </div>
                 <div class="flex flex-col md:flex-row items-start gap-0 mt-12">
                     <div id="mapContainer" class="relative map-img-wrap hidden">
-                        <img id="mapImage" class="rounded-lg shadow-lg" src="" alt="맵 이미지">
+                        <img loading="lazy" id="mapImage" class="rounded-lg shadow-lg" src="" alt="맵 이미지">
                         <div id="digimonMarker" class="absolute w-7 h-7 -translate-x-1/2 -translate-y-1/2 cursor-pointer hidden blink-shadow" style="background: rgb(52,52,52); border-radius: 3px;">
-                            <img class="w-7 h-7 object-contain" src="" alt="디지몬">
+                            <img loading="lazy" class="w-7 h-7 object-contain" src="" alt="디지몬">
                         </div>
                     </div>
                     <div class="flex flex-col md:flex-row gap-0 md:ml-4 w-full md:w-auto mt-4 md:mt-0">

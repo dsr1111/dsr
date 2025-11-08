@@ -13,6 +13,7 @@
     />
     <link rel="stylesheet" href="assets/css/index.css" />
     <link rel="stylesheet" href="assets/css/styles1.css" />
+    <script src="app/lazyload.js" defer></script>
     <script src="app/index.js" defer></script>
     <script src="app/nav.js" defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
@@ -147,7 +148,7 @@
     <div id="map-modal" class="map-modal-overlay" style="display: none;">
       <div class="map-modal-content">
         <span id="map-modal-close" class="map-modal-close">&times;</span>
-        <img id="map-modal-image" src="" alt="Raid Location Map">
+        <img loading="lazy" id="map-modal-image" src="" alt="Raid Location Map">
       </div>
     </div>
 

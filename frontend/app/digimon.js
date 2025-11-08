@@ -150,7 +150,7 @@
             const fields = digimon.fields.join(";");
 
             const typeImagePath = `https://media.dsrwiki.com/dsrwiki/${type}.webp`;
-            const typeImgHtml = `<img src="${typeImagePath}" alt="${type}" 
+            const typeImgHtml = `<img loading="lazy" src="${typeImagePath}" alt="${type}" 
               style="width:23px;height:23px;display:block;margin:0 auto;cursor:pointer;"
               onmouseenter="showCustomTooltip(event, '${type}')"
               onmousemove="showCustomTooltip(event, '${type}')"
@@ -158,7 +158,7 @@
             >`;
 
             const strongHtml = strengths.attribute
-              ? `<img src="https://media.dsrwiki.com/dsrwiki/${strengths.attribute}.webp" alt="${strengths.attribute}" 
+              ? `<img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${strengths.attribute}.webp" alt="${strengths.attribute}" 
                   style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
                   onmouseenter="showCustomTooltip(event, '${strengths.attribute}')"
                   onmousemove="showCustomTooltip(event, '${strengths.attribute}')"
@@ -167,7 +167,7 @@
               : "";
 
             const weakHtml = weaknesses.attribute
-              ? `<img src="https://media.dsrwiki.com/dsrwiki/${weaknesses.attribute}.webp" alt="${weaknesses.attribute}" 
+              ? `<img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${weaknesses.attribute}.webp" alt="${weaknesses.attribute}" 
                   style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
                   onmouseenter="showCustomTooltip(event, '${weaknesses.attribute}')"
                   onmousemove="showCustomTooltip(event, '${weaknesses.attribute}')"
@@ -182,7 +182,7 @@
                   .filter(field => field !== "")
                   .map(
                     (field) =>
-                      `<img src="https://media.dsrwiki.com/dsrwiki/field/${field}.webp" alt="${field}" 
+                      `<img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/field/${field}.webp" alt="${field}" 
                         style="width:25px;height:25px;cursor:pointer;"
                         onmouseenter="showCustomTooltip(event, '${field}')"
                         onmousemove="showCustomTooltip(event, '${field}')"
@@ -240,10 +240,10 @@
               }
               const effectTooltipHtml = skill.effect && effectDescription
                   ? `<div class="tooltip">
-                               <img src="${effectImagePath}" alt="${skill.effect}" style="width:23px;height:23px;vertical-align:middle;border-radius:50%;">
+                               <img loading="lazy" src="${effectImagePath}" alt="${skill.effect}" style="width:23px;height:23px;vertical-align:middle;border-radius:50%;">
                        <div class="tooltiptext">
                          <div class="tooltip-content">
-                                   <img src="${effectImagePath}" alt="${skill.effect} 이미지" style="width:30px;height:30px;border-radius:50%;">
+                                   <img loading="lazy" src="${effectImagePath}" alt="${skill.effect} 이미지" style="width:30px;height:30px;border-radius:50%;">
                            <div class="tooltip-description">${effectDescription}</div>
                          </div>
                        </div>
@@ -252,7 +252,7 @@
 
               return `
                 <td style="${backgroundColor}">
-                  <img src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}" 
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}" 
                     style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/background.webp');background-size:120%;background-position:center;cursor:pointer;"
                     onmouseenter="showCustomTooltip(event, '${skill.attribute}')"
                     onmousemove="showCustomTooltip(event, '${skill.attribute}')"
@@ -292,7 +292,7 @@
             newRow.innerHTML = `
               <td>
                 <div style="width:25px;height:25px;background-color:black;display:inline-block;vertical-align:middle;">
-                  <img src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='https://media.dsrwiki.com/dsrwiki/digimon/default.webp';">
+                  <img loading="lazy" src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='https://media.dsrwiki.com/dsrwiki/digimon/default.webp';">
                 </div>
                 <a href="detail.html?name=${encodeURIComponent(name)}" style="text-decoration:none;color:black;">${name}</a>
               </td>

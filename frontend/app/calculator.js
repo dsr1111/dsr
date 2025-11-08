@@ -95,7 +95,7 @@ function displayCharacterType(digimonData, characterName) {
     const type = digimon.type;
     const imagePath = `https://media.dsrwiki.com/dsrwiki/${type}.webp`;
     const typeImageCell = document.getElementById("type-image-cell");
-    typeImageCell.innerHTML = `<img src="${imagePath}" alt="${type}" style="width: 25px; height: 25px;">`;
+    typeImageCell.innerHTML = `<img loading="lazy" src="${imagePath}" alt="${type}" style="width: 25px; height: 25px;">`;
   }
 }
 
@@ -103,7 +103,7 @@ function displayCharacterImage(characterName) {
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
   const characterImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedCharacterName}/${sanitizedCharacterName}.webp`;
   const characterImageCell = document.getElementById("character-image-cell");
-  characterImageCell.innerHTML = `<img src="${characterImagePath}" alt="${sanitizedCharacterName}" class="character-image">`;
+  characterImageCell.innerHTML = `<img loading="lazy" src="${characterImagePath}" alt="${sanitizedCharacterName}" class="character-image">`;
 }
 
 function displayCharacterLevelAndPower(digimonData, characterName) {
@@ -137,7 +137,7 @@ async function displaySkillImage(characterName) {
 
       skillImageCell.innerHTML = `
         <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-          <img 
+          <img loading="lazy" 
             src="${skillImagePath}" 
             alt="${skillImageName}" 
             style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/background.webp'); background-size: 120%; background-position: center;">
@@ -225,7 +225,7 @@ async function updateMobDetails(mobData, selectedMob) {
     document.getElementById("mob-level").textContent = mobRow[3];
     const mobTypeImage = mobRow[4] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[4]}.webp` : "-";
     document.getElementById("mob-type").innerHTML = mobRow[4]
-      ? `<img src="${mobTypeImage}"  alt="${mobRow[4]}" style="width: 25px; height: 25px;">`
+      ? `<img loading="lazy" src="${mobTypeImage}"  alt="${mobRow[4]}" style="width: 25px; height: 25px;">`
       : "-";
     document.getElementById("mob-hp").textContent = mobRow[5];
     document.getElementById("mob-def").textContent = parseFloat(
@@ -233,15 +233,15 @@ async function updateMobDetails(mobData, selectedMob) {
     ).toFixed(2);
     const mobWeaknessImage = mobRow[7] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[7]}.webp` : "-";
     document.getElementById("mob-weak").innerHTML = mobRow[7]
-      ? `<img src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img loading="lazy" src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
     const mobStrengthImage = mobRow[8] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[8]}.webp` : "-";
     document.getElementById("mob-strong").innerHTML = mobRow[8]
-      ? `<img src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img loading="lazy" src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp'); background-size: 120%; background-position: center;">`
       : "-";
     const mobImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${selectedMob}/${selectedMob}.webp`;
     const mobImageCell = document.getElementById("mob-image-cell");
-    mobImageCell.innerHTML = `<img src="${mobImagePath}"  alt="${selectedMob}" class="mob-image">`;
+    mobImageCell.innerHTML = `<img loading="lazy" src="${mobImagePath}"  alt="${selectedMob}" class="mob-image">`;
   }
 }
 
