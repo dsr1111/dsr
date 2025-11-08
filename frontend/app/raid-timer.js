@@ -550,6 +550,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const closeModal = document.getElementById('map-modal-close');
 
   if (timersContainer && modal && modalImage && closeModal) {
+    const raidMapImages = {
+      '펌프몬': { '19:30': '1930' },
+      '울퉁몬': { '21:30': '2130' },
+      '오메가몬': 'omega',
+      '위그드라실_7D6': '위그드라실',
+      [RotationRaid.name]: 'rotation1106',
+      '청룡몬': '청룡몬',
+      '백호몬': '백호몬',
+      '주작몬': '주작몬',
+    };
+
     timersContainer.addEventListener('click', (e) => {
       // Use closest to handle clicks on the icon inside the span
       const locationSpan = e.target.closest('.raid-location');
@@ -558,16 +569,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const raidTime = locationSpan.dataset.time;
         let imageName = null;
 
-        if (raidName === '펌프몬') {
-          if (raidTime === '19:30') imageName = '1930';
-        } else if (raidName === '울퉁몬') {
-          if (raidTime === '21:30') imageName = '2130';
-        } else if (raidName === '오메가몬') {
-          imageName = 'omega';
-        } else if (raidName === '위그드라실_7D6') {
-          imageName = '위그드라실';
-        } else if (raidName === RotationRaid.name) {
-          imageName = 'rotation1106';
+        const mapEntry = raidMapImages[raidName];
+        if (typeof mapEntry === 'string') {
+          imageName = mapEntry;
+        } else if (mapEntry && typeof mapEntry === 'object') {
+          imageName = mapEntry[raidTime] || null;
         }
 
         if (imageName) {
