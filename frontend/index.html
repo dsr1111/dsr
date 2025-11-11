@@ -11,11 +11,20 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css"
+    />
     <link rel="stylesheet" href="assets/css/index.css" />
     <link rel="stylesheet" href="assets/css/styles1.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"
+      defer
+    ></script>
     <script src="app/lazyload.js" defer></script>
     <script src="app/index.js" defer></script>
     <script src="app/nav.js" defer></script>
+    <script src="app/calendar.js" defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -123,7 +132,10 @@
 
       </div>
       <div id="calendar-placeholder" class="calendar-placeholder">
-        <p>이 자리에 넣을 것 추천 받습니다.</p>
+        <div class="calendar-content">
+          <div id="event-calendar" aria-live="polite"></div>
+          <p id="calendar-empty-message" class="calendar-empty-message" hidden></p>
+        </div>
       </div>
 
       <div class="coupon-kakaopay-container">
