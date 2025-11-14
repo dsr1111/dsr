@@ -350,6 +350,198 @@
         color: #9cdcfe;
         margin-right: 6px;
       }
+      .stats-btn {
+        background-color: #3e3e3e;
+        color: #d4d4d4;
+        border: 1px solid #555;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 0;
+        transition: background-color 0.2s;
+        font-weight: normal;
+      }
+      .stats-btn:hover {
+        background-color: #4e4e4e;
+      }
+      /* 통계 모달 스타일 */
+      .stats-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .stats-modal-content {
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+      .stats-modal-header {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #3e3e3e;
+      }
+      .stats-modal-header h2 {
+        color: #d4d4d4;
+        margin: 0;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .stats-modal-close {
+        background: none;
+        border: none;
+        color: #d4d4d4;
+        font-size: 28px;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+      }
+      .stats-modal-close:hover {
+        color: #fff;
+      }
+      .stats-modal-body {
+        padding: 20px;
+        overflow-y: auto;
+        flex: 1;
+        scrollbar-width: thin;
+        scrollbar-color: #3e3e3e #1e1e1e;
+      }
+      .stats-modal-body::-webkit-scrollbar {
+        width: 8px;
+      }
+      .stats-modal-body::-webkit-scrollbar-track {
+        background: #1e1e1e;
+        border-radius: 4px;
+      }
+      .stats-modal-body::-webkit-scrollbar-thumb {
+        background: #3e3e3e;
+        border-radius: 4px;
+      }
+      .stats-modal-body::-webkit-scrollbar-thumb:hover {
+        background: #4e4e4e;
+      }
+      .stats-section {
+        margin-bottom: 25px;
+      }
+      .stats-section-title {
+        color: #4ec9b0;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #3e3e3e;
+      }
+      .stats-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      .stats-summary-item {
+        background-color: #2e2e2e;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #3e3e3e;
+      }
+      .stats-summary-label {
+        color: #9cdcfe;
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+      .stats-summary-value {
+        color: #d4d4d4;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .stats-item-list {
+        max-height: 400px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #3e3e3e #1e1e1e;
+      }
+      .stats-item-list::-webkit-scrollbar {
+        width: 6px;
+      }
+      .stats-item-list::-webkit-scrollbar-track {
+        background: #1e1e1e;
+      }
+      .stats-item-list::-webkit-scrollbar-thumb {
+        background: #3e3e3e;
+        border-radius: 3px;
+      }
+      .stats-item-row {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #2e2e2e;
+        gap: 15px;
+      }
+      .stats-item-row:last-child {
+        border-bottom: none;
+      }
+      .stats-item-name {
+        flex: 1;
+        font-size: 14px;
+      }
+      .stats-item-count {
+        color: #d4d4d4;
+        font-weight: bold;
+        min-width: 60px;
+        text-align: right;
+      }
+      .stats-item-percentage {
+        color: #9cdcfe;
+        font-size: 12px;
+        min-width: 80px;
+        text-align: right;
+      }
+      @media (max-width: 768px) {
+        .stats-modal-content {
+          max-width: 100%;
+          max-height: 95vh;
+        }
+        .stats-modal-header {
+          padding: 15px;
+        }
+        .stats-modal-body {
+          padding: 15px;
+        }
+        .stats-summary {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+        .stats-item-row {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .stats-item-name {
+          width: 100%;
+        }
+        .stats-item-count,
+        .stats-item-percentage {
+          min-width: auto;
+        }
+      }
       .box-selector {
         margin-bottom: 20px;
         display: flex;
@@ -439,6 +631,7 @@
             </div>
             <div class="console-footer">
               <button class="clear-btn" id="clear-btn">로그 지우기</button>
+              <button class="stats-btn" id="stats-btn">통계 보기</button>
               <div class="counter-display">
                 <span class="counter-label">총 개봉 횟수:</span>
                 <span id="total-count">0</span>
@@ -449,12 +642,44 @@
       </div>
     </div>
 
+    <!-- 통계 모달 -->
+    <div id="stats-modal" class="stats-modal-overlay" style="display: none;">
+      <div class="stats-modal-content">
+        <div class="stats-modal-header">
+          <button class="stats-modal-close" id="stats-modal-close">&times;</button>
+        </div>
+        <div class="stats-modal-body" id="stats-modal-body">
+          <!-- 통계 내용이 여기에 동적으로 추가됩니다 -->
+        </div>
+      </div>
+    </div>
+
 
     <script>
       // 가챠 데이터
       let gachaData = null;
       let currentBox = null;
       let gachaItems = [];
+
+      // 로그 통계 데이터
+      let logStats = {
+        totalOpens: 0,
+        items: {}, // { "아이템명": { count: 횟수, grade: 등급, probability: 확률 } }
+        grades: { 1: 0, 2: 0, 3: 0, 4: 0 },
+        tradeable: { available: 0, unavailable: 0 },
+        rareItems: 0 // 확률 0.5% 미만 아이템 획득 횟수
+      };
+
+      // 통계 초기화 함수
+      function resetStats() {
+        logStats = {
+          totalOpens: 0,
+          items: {},
+          grades: { 1: 0, 2: 0, 3: 0, 4: 0 },
+          tradeable: { available: 0, unavailable: 0 },
+          rareItems: 0
+        };
+      }
 
       // 타임스탬프 생성 함수
       function getTimestamp() {
@@ -537,6 +762,7 @@
           consoleContent.innerHTML = '';
           totalOpenCount = 0;
           updateCounter();
+          resetStats();
         }
         
         currentBox = box;
@@ -622,7 +848,80 @@
         const message = `<span style="color: #9cdcfe;">[${currentBox.name}]</span> <span class="${gradeClass}">[${tradeInfo.displayName}]</span> <span class="item-count">${selectedItem.count}개</span>를 획득했습니다.${tradeStatusHtml}`;
         addConsoleLine(message, false, isRare, currentLogNumber);
         
+        // 통계 업데이트
+        updateStats(selectedItem, tradeInfo, isRare);
+        
         return selectedItem;
+      }
+
+      // 통계 업데이트 함수
+      function updateStats(item, tradeInfo, isRare) {
+        logStats.totalOpens++;
+        
+        // 아이템별 획득 횟수
+        const itemKey = item.name;
+        if (!logStats.items[itemKey]) {
+          logStats.items[itemKey] = {
+            count: 0,
+            grade: item.grade || 1,
+            probability: item.probability || 0,
+            displayName: tradeInfo.displayName
+          };
+        }
+        logStats.items[itemKey].count += item.count;
+        
+        // 등급별 획득 횟수
+        const grade = item.grade || 1;
+        if (logStats.grades[grade] !== undefined) {
+          logStats.grades[grade] += item.count;
+        }
+        
+        // 거래 가능/불가 통계
+        if (tradeInfo.tradeStatus === 'available') {
+          logStats.tradeable.available += item.count;
+        } else if (tradeInfo.tradeStatus === 'unavailable') {
+          logStats.tradeable.unavailable += item.count;
+        }
+        
+        // 희귀 아이템 통계
+        if (isRare) {
+          logStats.rareItems += item.count;
+        }
+      }
+
+      // 통계 모달 내용 업데이트
+      function updateStatsModal() {
+        const modalBody = document.getElementById('stats-modal-body');
+        
+        if (logStats.totalOpens === 0) {
+          modalBody.innerHTML = '<div style="text-align: center; color: #9cdcfe; padding: 40px;">아직 개봉한 상자가 없습니다.</div>';
+          return;
+        }
+        
+        let html = '';
+        
+        // 아이템별 상세 통계
+        html += '<div class="stats-section">';
+        html += '<div class="stats-section-title">아이템별 획득 통계</div>';
+        html += '<div class="stats-item-list">';
+        
+        // 획득 횟수 순으로 정렬
+        const sortedItems = Object.entries(logStats.items)
+          .sort((a, b) => b[1].count - a[1].count);
+        
+        sortedItems.forEach(([itemName, itemData]) => {
+          const percentage = logStats.totalOpens > 0 ? ((itemData.count / logStats.totalOpens) * 100).toFixed(2) : 0;
+          const gradeClass = `item-grade-${itemData.grade}`;
+          html += `<div class="stats-item-row">
+            <span class="stats-item-name ${gradeClass}">${itemData.displayName}</span>
+            <span class="stats-item-count">${itemData.count.toLocaleString()}개</span>
+            <span class="stats-item-percentage">${percentage}%</span>
+          </div>`;
+        });
+        
+        html += '</div></div>';
+        
+        modalBody.innerHTML = html;
       }
 
       // 가챠 일괄 실행 함수
@@ -724,6 +1023,24 @@
           const consoleContent = document.getElementById('console-content');
           consoleContent.innerHTML = '';
           // 카운터는 유지
+        });
+
+        // 통계 보기 버튼
+        document.getElementById('stats-btn').addEventListener('click', function() {
+          updateStatsModal();
+          document.getElementById('stats-modal').style.display = 'flex';
+        });
+
+        // 통계 모달 닫기 버튼
+        document.getElementById('stats-modal-close').addEventListener('click', function() {
+          document.getElementById('stats-modal').style.display = 'none';
+        });
+
+        // 모달 배경 클릭 시 닫기
+        document.getElementById('stats-modal').addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.style.display = 'none';
+          }
         });
 
         // 초기 카운터 표시
