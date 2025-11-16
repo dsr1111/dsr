@@ -830,8 +830,8 @@
         const gradeClass = getGradeColorClass(selectedItem.grade);
         const tradeInfo = extractTradeInfo(selectedItem.name);
         
-        // 희귀 아이템 판단 (확률 0.5% 미만, 단 궁극체 디지코어 꾸러미는 제외)
-        const isRare = currentBox.id !== 'gunggeukche' && selectedItem.probability < 0.5;
+        // 희귀 아이템 판단 (확률 0.61% 미만, 단 궁극체 디지코어 꾸러미는 제외)
+        const isRare = currentBox.id !== 'gunggeukche' && selectedItem.probability < 0.61;
         
         let tradeStatusHtml = '';
         if (tradeInfo.tradeStatus === 'available') {
