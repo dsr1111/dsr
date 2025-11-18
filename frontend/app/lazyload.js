@@ -34,9 +34,3 @@ document.addEventListener('DOMContentLoaded', () => {
     subtree: true,
   });
 });
-
-
-
-
-
-

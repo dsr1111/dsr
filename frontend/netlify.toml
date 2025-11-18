@@ -1,0 +1,29 @@
+# Netlify 설정 파일
+# 기존 netlify.toml이 있다면 이 내용을 추가하세요
+
+[build]
+  # 빌드 명령 (필요시)
+  # command = "npm run build"
+  # 퍼블리시 디렉토리
+  publish = "."
+
+# Functions 설정
+[functions]
+  # Functions 디렉토리
+  directory = "netlify/functions"
+
+# URL Rewrite 설정 (선택사항)
+# /.netlify/functions/time 대신 /api/time으로 접근 가능하게 함
+[[redirects]]
+  from = "/api/time"
+  to = "/.netlify/functions/time"
+  status = 200
+  force = false
+
+# 또는 /api/kst-time도 지원
+[[redirects]]
+  from = "/api/kst-time"
+  to = "/.netlify/functions/time"
+  status = 200
+  force = false
+
