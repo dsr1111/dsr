@@ -94,123 +94,46 @@ const RotationRaid = {
   map: '어둠성 계곡',
 };
 
-// 서버 시간을 사용하여 서울 시간 동기화 (시스템 시간 무관)
-// 자체 백엔드 API가 있다면 여기에 설정하세요 (예: 'https://your-server.com/api/time')
-const CUSTOM_TIME_API = null; // null이면 자동으로 여러 API를 시도합니다
-
-let serverKST = null; // 서울 시간 기준 Date 객체
+// TimezoneDB API를 사용하여 서울 시간 동기화
+const apiKey = '7YDXWZM4S9QK';
+let serverKST = null; // TimezoneDB에서 가져온 서울 시간
 let lastFetchTime = null; // serverKST를 가져온 로컬 시간
 
 async function initializeTime() {
-  // 여러 서버 시간 API를 시도 (시스템 시간과 무관)
-  const timeAPIs = [];
-  
-  // 자체 백엔드 API가 설정되어 있으면 우선 사용
-  if (CUSTOM_TIME_API) {
-    timeAPIs.push(CUSTOM_TIME_API);
-  } else {
-    // 자동으로 여러 API 시도
-    timeAPIs.push(
-      '/api/time',
-      '/api/kst-time',
-      'https://timeapi.io/api/Time/current/zone?timeZone=Asia/Seoul'
-    );
-  }
-  
-  for (const apiUrl of timeAPIs) {
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        cache: 'no-cache',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        continue; // 다음 API 시도
-      }
-      
-      const data = await response.json();
-      let serverTime = null;
-      
-      // 다양한 응답 형식 처리
-      if (data.datetime) {
-        // WorldTimeAPI 형식: { datetime: "2025-01-01T12:00:00+09:00" }
-        serverTime = new Date(data.datetime);
-      } else if (data.dateTime) {
-        // timeapi.io 형식: { dateTime: "2025-01-01T12:00:00" }
-        serverTime = new Date(data.dateTime);
-      } else if (data.time) {
-        // 커스텀 API 형식: { time: "2025-01-01T12:00:00+09:00" }
-        serverTime = new Date(data.time);
-      } else if (data.timestamp) {
-        // 타임스탬프 형식: { timestamp: 1704067200000 }
-        serverTime = new Date(data.timestamp);
-      } else if (data.utc_datetime) {
-        // UTC datetime 형식: { utc_datetime: "2025-01-01T03:00:00+00:00" }
-        serverTime = new Date(data.utc_datetime);
-      } else if (data.kst_time) {
-        // KST 시간 직접: { kst_time: "2025-01-01T12:00:00+09:00" }
-        serverTime = new Date(data.kst_time);
-      } else if (data.utcTime) {
-        // UTC 시간: { utcTime: "2025-01-01T03:00:00Z" }
-        serverTime = new Date(data.utcTime);
-      } else if (typeof data === 'string') {
-        // 문자열 직접 파싱: "2025-01-01T12:00:00+09:00"
-        serverTime = new Date(data);
-      } else if (data.epochSecond) {
-        // Unix 타임스탬프 (초 단위): { epochSecond: 1704067200 }
-        serverTime = new Date(data.epochSecond * 1000);
-      }
-      
-      if (serverTime && !isNaN(serverTime.getTime())) {
-        serverKST = serverTime;
-        lastFetchTime = Date.now();
-        console.log(`서버 시간 설정 성공 (${apiUrl}):`, serverKST);
-        return; // 성공하면 종료
-      }
-    } catch (error) {
-      // 다음 API 시도
-      continue;
-    }
-  }
-  
-  // 모든 서버 API 실패 시, Intl API 사용 (시스템 시간 기반이지만 최선의 대안)
   try {
-    const now = new Date();
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'Asia/Seoul',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    }).formatToParts(now);
-    
-    const kstParts = {};
-    parts.forEach(part => {
-      kstParts[part.type] = part.value;
-    });
-    
-    const kstString = `${kstParts.year}-${kstParts.month}-${kstParts.day}T${kstParts.hour}:${kstParts.minute}:${kstParts.second}+09:00`;
-    serverKST = new Date(kstString);
-    
-    if (!isNaN(serverKST.getTime())) {
-      lastFetchTime = Date.now();
-      console.warn('서버 API 실패, Intl API 사용 (시스템 시간 의존):', serverKST);
-      return;
+    const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=Asia/Seoul`);
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+    const data = await response.json();
+    if (data.status === 'OK') {
+      // 모바일 호환성을 위해 더 안전한 Date 객체 생성 방식 사용
+      try {
+        // ISO 형식으로 변환하여 Date 객체 생성
+        const isoString = data.formatted.replace(' ', 'T') + '+09:00';
+        serverKST = new Date(isoString);
+        
+        // Date 객체가 유효한지 확인
+        if (isNaN(serverKST.getTime())) {
+          throw new Error('Invalid date created from API response');
+        }
+        
+        lastFetchTime = Date.now();
+        console.log('서버 시간 설정 성공:', serverKST);
+      } catch (dateError) {
+        console.error('Date 객체 생성 실패:', dateError);
+        throw new Error('Failed to create valid date from API response');
+      }
+    } else {
+      throw new Error(`TimezoneDB API Error: ${data.message}`);
     }
   } catch (error) {
-    console.error('Intl API도 실패:', error);
+    console.error('Failed to initialize time from TimezoneDB:', error);
+    alert('정확한 시간 정보를 가져오는데 실패했습니다. 브라우저의 기본 시간을 사용합니다.');
+    // API 실패 시, 로컬 시간을 사용하도록 대체
+    serverKST = new Date();
+    lastFetchTime = Date.now();
   }
-  
-  // 최종 폴백: 시스템 시간 사용 (경고)
-  serverKST = new Date();
-  lastFetchTime = Date.now();
-  console.error('모든 시간 동기화 방법 실패, 시스템 시간 사용 (부정확할 수 있음)');
 }
 
 function getCurrentKST() {
@@ -227,70 +150,12 @@ function getCurrentKST() {
   return new Date(serverKST.getTime() + elapsed);
 }
 
-// KST 유틸리티 함수들: Date 객체의 타임스탬프를 KST 기준으로 변환
-// Date 객체는 내부적으로 UTC 타임스탬프를 저장하므로, KST 오프셋(+9시간)을 더한 후 UTC 메서드 사용
-function getKSTYear(date) {
-  const ts = date.getTime();
-  const kstTs = ts + (9 * 60 * 60 * 1000);
-  return new Date(kstTs).getUTCFullYear();
-}
-
-function getKSTMonth(date) {
-  const ts = date.getTime();
-  const kstTs = ts + (9 * 60 * 60 * 1000);
-  return new Date(kstTs).getUTCMonth() + 1; // 0-based to 1-based
-}
-
-function getKSTDate(date) {
-  const ts = date.getTime();
-  const kstTs = ts + (9 * 60 * 60 * 1000);
-  return new Date(kstTs).getUTCDate();
-}
-
-function getKSTHours(date) {
-  const ts = date.getTime();
-  const kstTs = ts + (9 * 60 * 60 * 1000);
-  return new Date(kstTs).getUTCHours();
-}
-
-function getKSTMinutes(date) {
-  const ts = date.getTime();
-  const kstTs = ts + (9 * 60 * 60 * 1000);
-  return new Date(kstTs).getUTCMinutes();
-}
-
-function getKSTDay(date) {
-  const ts = date.getTime();
-  const kstTs = ts + (9 * 60 * 60 * 1000);
-  return new Date(kstTs).getUTCDay();
-}
-
-// KST 날짜 문자열 생성 (YYYY-MM-DD)
-function getKSTDateString(date) {
-  const year = getKSTYear(date);
-  const month = getKSTMonth(date);
-  const day = getKSTDate(date);
-  return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-}
-
-// KST 자정의 타임스탬프 계산 (해당 날짜의 KST 00:00:00)
-function getKSTMidnightTimestamp(date) {
-  const year = getKSTYear(date);
-  const month = getKSTMonth(date) - 1; // Date.UTC는 0-based month
-  const day = getKSTDate(date);
-  // KST 자정 = UTC 15:00 전날
-  // 예: KST 2025-01-01 00:00:00 = UTC 2024-12-31 15:00:00
-  // 따라서 전날의 UTC 15:00을 구함
-  return Date.UTC(year, month, day - 1, 15, 0, 0, 0);
-}
-
 function getNextDailyTime(timeStr) {
     const now = getCurrentKST();
-    
-    // 현재 KST 날짜 문자열 구하기
-    const kstDateString = getKSTDateString(now);
-    
-    // 오늘 해당 시간의 KST 타임스탬프 계산 (+09:00 오프셋 명시)
+    // KST는 UTC+9. toISOString()은 항상 UTC 기준이므로 9시간을 더해 KST 날짜를 구함
+    const kstDate = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+    const kstDateString = kstDate.toISOString().slice(0, 10); // YYYY-MM-DD
+
     let next = new Date(`${kstDateString}T${timeStr}:00+09:00`);
 
     if (next <= now) {
@@ -301,20 +166,22 @@ function getNextDailyTime(timeStr) {
 }
 
 function getNextBiweeklyTime(timeStr, baseDateStr) {
+    const [hour, min] = timeStr.split(':').map(Number);
     const now = getCurrentKST();
     const base = new Date(baseDateStr + 'T00:00:00+09:00');
 
     // now와 base의 시간을 00:00:00 (KST)로 맞춰서 날짜 차이만 계산
-    const nowAtMidnightKST = getKSTMidnightTimestamp(now);
-    const baseAtMidnightKST = getKSTMidnightTimestamp(base);
+    const nowAtMidnightKST = new Date(new Date(now).setUTCHours(15, 0, 0, 0)); // KST 자정은 UTC 15시
+    const baseAtMidnightKST = new Date(new Date(base).setUTCHours(15, 0, 0, 0));
     
     const diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
     
     const cycles = Math.floor(diffDays / 14);
-    let nextDate = new Date(baseAtMidnightKST + cycles * 14 * 24 * 60 * 60 * 1000);
+    let nextDate = new Date(base.getTime() + cycles * 14 * 24 * 60 * 60 * 1000);
     
     // 다음 레이드 시간을 KST로 설정
-    const kstDateString = getKSTDateString(nextDate);
+    const kstDate = new Date(nextDate.getTime() + (9 * 60 * 60 * 1000));
+    const kstDateString = kstDate.toISOString().slice(0, 10);
     let nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
 
     if (nextRaidTime <= now) {
@@ -325,18 +192,20 @@ function getNextBiweeklyTime(timeStr, baseDateStr) {
 }
 
 function getNextWeeklyTime(timeStr, days) {
+    const [hour, min] = timeStr.split(':').map(Number);
     const now = getCurrentKST();
     
     for (let i = 0; i < 14; i++) { // 최대 2주까지만 탐색
         const futureDate = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
         
         // KST 날짜 문자열 생성
-        const kstDateString = getKSTDateString(futureDate);
+        const kstDate = new Date(futureDate.getTime() + (9 * 60 * 60 * 1000));
+        const kstDateString = kstDate.toISOString().slice(0, 10);
         
         const nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
         
-        // KST 기준 요일 구하기
-        const kstDay = getKSTDay(nextRaidTime);
+        // getDay()는 현지 시간 기준이므로, KST 기준 요일을 구해야 함
+        const kstDay = new Date(nextRaidTime.toLocaleString('en-US', { timeZone: 'Asia/Seoul' })).getDay();
 
         if (days.includes(kstDay) && nextRaidTime > now) {
             return nextRaidTime;
@@ -344,7 +213,8 @@ function getNextWeeklyTime(timeStr, days) {
     }
     // 만약 지난 2주간 해당 요일이 없다면, 기본 로직으로 다음 시간을 반환 (오류 방지)
     const fallbackDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const kstDateString = getKSTDateString(fallbackDate);
+    const kstDate = new Date(fallbackDate.getTime() + (9 * 60 * 60 * 1000));
+    const kstDateString = kstDate.toISOString().slice(0, 10);
     return new Date(`${kstDateString}T${timeStr}:00+09:00`);
 }
 
@@ -375,37 +245,31 @@ function getMasterTyrannoNextTime() {
     const baseDate = new Date(RotationRaid.baseDate + 'T00:00:00+09:00');
     const [baseHour, baseMin] = RotationRaid.baseTime.split(':').map(Number);
 
-    // KST 자정 기준으로 날짜 차이 계산
-    const nowAtMidnightKST = getKSTMidnightTimestamp(now);
-    const baseAtMidnightKST = getKSTMidnightTimestamp(baseDate);
+    const nowInKST = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    const baseInKST = new Date(baseDate.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
 
-    let diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
+    nowInKST.setHours(0, 0, 0, 0);
+    baseInKST.setHours(0, 0, 0, 0);
 
-    // 레이드 날짜 계산 (baseDate에서 diffDays만큼 더함)
-    const raidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
-    
-    // 레이드 시간 계산: baseTime + (diffDays * 25분)
-    const totalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
-    const raidHour = Math.floor(totalMinutes / 60) % 24;
-    const raidMin = totalMinutes % 60;
-    
-    // 날짜가 넘어간 경우 처리
-    const extraDays = Math.floor(totalMinutes / (60 * 24));
-    let finalDate = new Date(baseAtMidnightKST + (diffDays + extraDays) * 24 * 60 * 60 * 1000);
-    const finalDateString = getKSTDateString(finalDate);
-    
-    let nextTime = new Date(`${finalDateString}T${raidHour.toString().padStart(2, '0')}:${raidMin.toString().padStart(2, '0')}:00+09:00`);
+    let diffDays = Math.floor((nowInKST - baseInKST) / (1000 * 60 * 60 * 24));
+
+    // Get the date for the raid
+    let raidDate = new Date(baseDate.getTime());
+    raidDate.setDate(raidDate.getDate() + diffDays);
+
+    // Get the time for the raid
+    raidDate.setHours(baseHour, baseMin);
+    raidDate.setMinutes(raidDate.getMinutes() + diffDays * 25);
+
+    let nextTime = raidDate;
 
     if (nextTime <= now) {
         diffDays++;
-        const nextRaidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
-        const nextTotalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
-        const nextRaidHour = Math.floor(nextTotalMinutes / 60) % 24;
-        const nextRaidMin = nextTotalMinutes % 60;
-        const nextExtraDays = Math.floor(nextTotalMinutes / (60 * 24));
-        const nextFinalDate = new Date(baseAtMidnightKST + (diffDays + nextExtraDays) * 24 * 60 * 60 * 1000);
-        const nextFinalDateString = getKSTDateString(nextFinalDate);
-        nextTime = new Date(`${nextFinalDateString}T${nextRaidHour.toString().padStart(2, '0')}:${nextRaidMin.toString().padStart(2, '0')}:00+09:00`);
+        raidDate = new Date(baseDate.getTime());
+        raidDate.setDate(raidDate.getDate() + diffDays);
+        raidDate.setHours(baseHour, baseMin);
+        raidDate.setMinutes(raidDate.getMinutes() + diffDays * 25);
+        nextTime = raidDate;
     }
 
     return nextTime;
@@ -443,7 +307,7 @@ function renderRaids() {
   allRaids.push({
     name: RotationRaid.name,
     image: RotationRaid.image,
-    timeStr: getKSTHours(tyrannoTime).toString().padStart(2,'0') + ':' + getKSTMinutes(tyrannoTime).toString().padStart(2,'0'),
+    timeStr: tyrannoTime.getHours().toString().padStart(2,'0') + ':' + tyrannoTime.getMinutes().toString().padStart(2,'0'),
     map: RotationRaid.map,
     nextTime: tyrannoTime,
   });
