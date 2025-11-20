@@ -16,16 +16,8 @@
         this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv`, "conditionData"),
         this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv`, "jogressData"),
       ]);
-      
-      console.log('CSV 로드 완료. allData 개수:', this.allData.length);
-      const papimon = this.allData.find(d => d.name === '파피몬-우정의유대-');
-      const chirin = this.allData.find(d => d.name === '치린몬');
-      console.log('파피몬-우정의유대-:', papimon);
-      console.log('치린몬:', chirin);
-      
       // 재료 인덱스 빌드 후 기본 디지몬 이미지 리스트 생성
       this.buildMaterialIndex();
-      console.log('createDigimonImageList 호출 전, 데이터 개수:', this.allData.length);
       UIManager.createDigimonImageList(this.allData);
     },
 
@@ -40,40 +32,8 @@
         });
         if (!response.ok) throw new Error(`Failed to load ${url}`);
         const data = await response.text();
-        
-        // 디버깅: 실제 CSV 내용 확인
-        if (targetProperty === 'allData') {
-          const lines = data.split(/\r?\n/);
-          console.log(`[${targetProperty}] CSV 총 줄 수:`, lines.length);
-          console.log(`[${targetProperty}] CSV 마지막 5줄:`, lines.slice(-5));
-          
-          // 파피몬-우정의유대-가 CSV에 있는지 확인
-          const hasPapimon = data.includes('파피몬-우정의유대-');
-          const hasChirin = data.includes('치린몬');
-          console.log(`[${targetProperty}] CSV에 파피몬-우정의유대- 포함:`, hasPapimon);
-          console.log(`[${targetProperty}] CSV에 치린몬 포함:`, hasChirin);
-        }
-        
         const parsed = parseCSV(data);
         this[targetProperty] = parsed;
-        
-        // 디버깅: 파싱된 데이터 확인
-        if (targetProperty === 'allData') {
-          console.log(`[${targetProperty}] Loaded ${parsed.length} items`);
-          // 정확한 이름으로 찾기
-          const papimon = parsed.find(d => d.name === '파피몬-우정의유대-');
-          const chirin = parsed.find(d => d.name === '치린몬');
-          console.log(`[${targetProperty}] 파피몬-우정의유대- found:`, papimon);
-          console.log(`[${targetProperty}] 치린몬 found:`, chirin);
-          
-          // 이름에 파피몬이 포함된 모든 항목 찾기
-          const papimonAll = parsed.filter(d => d.name && d.name.includes('파피몬'));
-          console.log(`[${targetProperty}] 파피몬 포함 항목들:`, papimonAll.map(d => d.name));
-          
-          // 처음 5개와 마지막 5개 확인
-          console.log(`[${targetProperty}] 처음 5개:`, parsed.slice(0, 5).map(d => d.name));
-          console.log(`[${targetProperty}] 마지막 5개:`, parsed.slice(-5).map(d => d.name));
-        }
       } catch (error) {
         console.error(`Error loading ${url}:`, error);
       }
@@ -182,13 +142,8 @@
       // name 필드가 있어야만 추가
       if (obj.name) {
         result.push(obj);
-      } else {
-        console.warn('name 필드가 없는 행:', line, 'values:', values);
       }
     }
-    
-    console.log('CSV 파싱 완료. 총', result.length, '개 항목');
-    console.log('파싱된 마지막 5개:', result.slice(-5).map(d => d.name));
     
     return result;
   }
@@ -235,8 +190,6 @@
     selectedMaterial: null,
 
     init() {
-      console.log("UIManager init 호출됨");
-
       // 메뉴 버튼 이벤트 등록
       const menuItems = document.querySelectorAll('.menu-item');
       menuItems.forEach(item => {
@@ -267,18 +220,8 @@
 
     createDigimonImageList(data) {
       const container = document.getElementById("digimon-image-list");
-      if (!container) {
-        console.error('digimon-image-list 컨테이너를 찾을 수 없습니다!');
-        return;
-      }
+      if (!container) return;
       container.innerHTML = "";
-      console.log('createDigimonImageList: 표시할 디지몬 개수:', data.length);
-      
-      const papimon = data.find(d => d.name === '파피몬-우정의유대-');
-      const chirin = data.find(d => d.name === '치린몬');
-      console.log('createDigimonImageList 내부 - 파피몬-우정의유대-:', papimon);
-      console.log('createDigimonImageList 내부 - 치린몬:', chirin);
-      
       data.forEach(digimon => {
         const safeName = digimon.name.replace(":", "_");
         const imgContainer = document.createElement("div");
