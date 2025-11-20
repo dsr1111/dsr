@@ -31,16 +31,12 @@
 
     async loadCSV(url, targetProperty) {
       try {
-        // 캐시 방지를 위해 타임스탬프 추가 및 캐시 옵션 설정
+        // 캐시 방지를 위해 타임스탬프만 추가 (헤더는 CORS 문제 발생)
         const timestamp = Date.now();
         const urlWithCache = `${url}${url.includes('?') ? '&' : '?'}_t=${timestamp}`;
         
         const response = await fetch(urlWithCache, {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
+          cache: 'no-cache'
         });
         if (!response.ok) throw new Error(`Failed to load ${url}`);
         const data = await response.text();
