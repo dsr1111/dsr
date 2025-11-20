@@ -14,7 +14,7 @@ body {
 
 .container1 {
   width: 100%;
-  max-width: 1510px; /* 최대 너비를 늘려서 필터 버튼들이 제대로 배치되도록 */
+  max-width: 1540px; /* 최대 너비를 늘려서 필터 버튼들이 제대로 배치되도록 */
   margin: 20px auto;
   margin-top: 130px;
   padding: 0 15px;
