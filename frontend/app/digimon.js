@@ -529,7 +529,8 @@
         "속도감소": "속도 감소",
         "속도증가": "속도 증가",
         "치명타율증가": "치명타율 증가",
-        "회피율증가": "회피율 증가"
+        "회피율증가": "회피율 증가",
+        "잔류에너지": "잔류 에너지"
       };
       
       const actualEffectName = effectMapping[effectName] || effectName;
