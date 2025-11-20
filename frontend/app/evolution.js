@@ -31,13 +31,37 @@
 
     async loadCSV(url, targetProperty) {
       try {
-        const response = await fetch(url);
+        // 캐시 방지를 위해 타임스탬프 추가 및 캐시 옵션 설정
+        const timestamp = Date.now();
+        const urlWithCache = `${url}${url.includes('?') ? '&' : '?'}_t=${timestamp}`;
+        
+        const response = await fetch(urlWithCache, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
         if (!response.ok) throw new Error(`Failed to load ${url}`);
         const data = await response.text();
+        
+        // 디버깅: 실제 CSV 내용 확인
+        if (targetProperty === 'allData') {
+          const lines = data.split(/\r?\n/);
+          console.log(`[${targetProperty}] CSV 총 줄 수:`, lines.length);
+          console.log(`[${targetProperty}] CSV 마지막 5줄:`, lines.slice(-5));
+          
+          // 파피몬-우정의유대-가 CSV에 있는지 확인
+          const hasPapimon = data.includes('파피몬-우정의유대-');
+          const hasChirin = data.includes('치린몬');
+          console.log(`[${targetProperty}] CSV에 파피몬-우정의유대- 포함:`, hasPapimon);
+          console.log(`[${targetProperty}] CSV에 치린몬 포함:`, hasChirin);
+        }
+        
         const parsed = parseCSV(data);
         this[targetProperty] = parsed;
         
-        // 디버깅: 파피몬-우정의유대- 확인
+        // 디버깅: 파싱된 데이터 확인
         if (targetProperty === 'allData') {
           console.log(`[${targetProperty}] Loaded ${parsed.length} items`);
           // 정확한 이름으로 찾기
@@ -135,7 +159,8 @@
 
   // CSV 파싱 유틸리티 함수
   function parseCSV(csv) {
-    const lines = csv.split("\n").filter(line => line.trim() !== "");
+    // Windows와 Unix 줄바꿈 모두 처리
+    const lines = csv.split(/\r?\n/).filter(line => line.trim() !== "");
     if (lines.length === 0) return [];
     
     const headers = lines[0].split(",").map(h => h.trim());
@@ -162,9 +187,12 @@
       if (obj.name) {
         result.push(obj);
       } else {
-        console.warn('name 필드가 없는 행:', line);
+        console.warn('name 필드가 없는 행:', line, 'values:', values);
       }
     }
+    
+    console.log('CSV 파싱 완료. 총', result.length, '개 항목');
+    console.log('파싱된 마지막 5개:', result.slice(-5).map(d => d.name));
     
     return result;
   }
