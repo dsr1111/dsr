@@ -39,9 +39,20 @@
         
         // 디버깅: 파피몬-우정의유대- 확인
         if (targetProperty === 'allData') {
-          const papimon = parsed.find(d => d.name && d.name.includes('파피몬-우정의유대'));
           console.log(`[${targetProperty}] Loaded ${parsed.length} items`);
+          // 정확한 이름으로 찾기
+          const papimon = parsed.find(d => d.name === '파피몬-우정의유대-');
+          const chirin = parsed.find(d => d.name === '치린몬');
           console.log(`[${targetProperty}] 파피몬-우정의유대- found:`, papimon);
+          console.log(`[${targetProperty}] 치린몬 found:`, chirin);
+          
+          // 이름에 파피몬이 포함된 모든 항목 찾기
+          const papimonAll = parsed.filter(d => d.name && d.name.includes('파피몬'));
+          console.log(`[${targetProperty}] 파피몬 포함 항목들:`, papimonAll.map(d => d.name));
+          
+          // 처음 5개와 마지막 5개 확인
+          console.log(`[${targetProperty}] 처음 5개:`, parsed.slice(0, 5).map(d => d.name));
+          console.log(`[${targetProperty}] 마지막 5개:`, parsed.slice(-5).map(d => d.name));
         }
       } catch (error) {
         console.error(`Error loading ${url}:`, error);
@@ -139,12 +150,19 @@
       
       headers.forEach((header, idx) => {
         const value = values[idx];
-        obj[header] = (value === undefined || value === null || value.trim() === "") ? null : value.trim();
+        if (value === undefined || value === null) {
+          obj[header] = null;
+        } else {
+          const trimmed = String(value).trim();
+          obj[header] = trimmed === "" ? null : trimmed;
+        }
       });
       
       // name 필드가 있어야만 추가
       if (obj.name) {
         result.push(obj);
+      } else {
+        console.warn('name 필드가 없는 행:', line);
       }
     }
     
