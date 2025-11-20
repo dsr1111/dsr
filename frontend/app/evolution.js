@@ -16,8 +16,16 @@
         this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv`, "conditionData"),
         this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv`, "jogressData"),
       ]);
+      
+      console.log('CSV 로드 완료. allData 개수:', this.allData.length);
+      const papimon = this.allData.find(d => d.name === '파피몬-우정의유대-');
+      const chirin = this.allData.find(d => d.name === '치린몬');
+      console.log('파피몬-우정의유대-:', papimon);
+      console.log('치린몬:', chirin);
+      
       // 재료 인덱스 빌드 후 기본 디지몬 이미지 리스트 생성
       this.buildMaterialIndex();
+      console.log('createDigimonImageList 호출 전, 데이터 개수:', this.allData.length);
       UIManager.createDigimonImageList(this.allData);
     },
 
@@ -26,9 +34,17 @@
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to load ${url}`);
         const data = await response.text();
-        this[targetProperty] = parseCSV(data);
+        const parsed = parseCSV(data);
+        this[targetProperty] = parsed;
+        
+        // 디버깅: 파피몬-우정의유대- 확인
+        if (targetProperty === 'allData') {
+          const papimon = parsed.find(d => d.name && d.name.includes('파피몬-우정의유대'));
+          console.log(`[${targetProperty}] Loaded ${parsed.length} items`);
+          console.log(`[${targetProperty}] 파피몬-우정의유대- found:`, papimon);
+        }
       } catch (error) {
-        console.error(error);
+        console.error(`Error loading ${url}:`, error);
       }
     }
   };
@@ -109,14 +125,63 @@
   // CSV 파싱 유틸리티 함수
   function parseCSV(csv) {
     const lines = csv.split("\n").filter(line => line.trim() !== "");
+    if (lines.length === 0) return [];
+    
     const headers = lines[0].split(",").map(h => h.trim());
-    return lines.slice(1).map(line => {
-      const values = line.split(",").map(val => (val.trim() === "" ? null : val.trim()));
-      return headers.reduce((obj, header, idx) => {
-        obj[header] = values[idx] || null;
-        return obj;
-      }, {});
-    });
+    const result = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      
+      const values = parseCSVLine(line);
+      const obj = {};
+      
+      headers.forEach((header, idx) => {
+        const value = values[idx];
+        obj[header] = (value === undefined || value === null || value.trim() === "") ? null : value.trim();
+      });
+      
+      // name 필드가 있어야만 추가
+      if (obj.name) {
+        result.push(obj);
+      }
+    }
+    
+    return result;
+  }
+  
+  // CSV 라인 파싱 (따옴표 처리 포함)
+  function parseCSVLine(line) {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      
+      if (char === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          // 이스케이프된 따옴표
+          current += '"';
+          i++;
+        } else {
+          // 따옴표 시작/끝
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        // 쉼표로 값 구분
+        values.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    
+    // 마지막 값 추가
+    values.push(current);
+    
+    return values;
   }
 
   // ===============================
@@ -160,7 +225,18 @@
 
     createDigimonImageList(data) {
       const container = document.getElementById("digimon-image-list");
+      if (!container) {
+        console.error('digimon-image-list 컨테이너를 찾을 수 없습니다!');
+        return;
+      }
       container.innerHTML = "";
+      console.log('createDigimonImageList: 표시할 디지몬 개수:', data.length);
+      
+      const papimon = data.find(d => d.name === '파피몬-우정의유대-');
+      const chirin = data.find(d => d.name === '치린몬');
+      console.log('createDigimonImageList 내부 - 파피몬-우정의유대-:', papimon);
+      console.log('createDigimonImageList 내부 - 치린몬:', chirin);
+      
       data.forEach(digimon => {
         const safeName = digimon.name.replace(":", "_");
         const imgContainer = document.createElement("div");
