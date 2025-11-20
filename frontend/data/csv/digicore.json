@@ -418,6 +418,16 @@
           "count": 2
         }
       ]
+    },
+    "메탈가루몬": {
+      "items": [
+        {
+          "name": "조각난 불멸의 우정",
+          "probability": "5.6%",
+          "tradeable": false,
+          "count": 1
+        }
+      ]
     }
   }
 } 
