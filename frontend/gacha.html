@@ -830,8 +830,18 @@
         const gradeClass = getGradeColorClass(selectedItem.grade);
         const tradeInfo = extractTradeInfo(selectedItem.name);
         
-        // 희귀 아이템 판단 (확률 0.61% 미만, 단 궁극체 디지코어 꾸러미는 제외)
-        const isRare = currentBox.id !== 'gunggeukche' && selectedItem.probability < 0.61;
+        // 희귀 아이템 판단
+        let isRare = false;
+        if (currentBox.id === 'gunggeukche') {
+          // 궁극체 디지코어 꾸러미는 희귀 효과 없음
+          isRare = false;
+        } else if (currentBox.id === 'bulmyeol') {
+          // 불멸의 우정 상자는 0.7% 이하일 때 희귀 효과
+          isRare = selectedItem.probability <= 0.7;
+        } else {
+          // 나머지 상자는 0.61% 미만일 때 희귀 효과
+          isRare = selectedItem.probability < 0.61;
+        }
         
         let tradeStatusHtml = '';
         if (tradeInfo.tradeStatus === 'available') {
