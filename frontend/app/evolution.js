@@ -11,10 +11,11 @@
     materialIndex: new Map(),
 
     async loadCSVFiles() {
+      const timestamp = new Date().getTime();
       await Promise.all([
-        this.loadCSV(`https://media.dsrwiki.com/data/csv/evolution.csv`, "allData"),
-        this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv`, "conditionData"),
-        this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv`, "jogressData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/evolution.csv?t=${timestamp}`, "allData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/condition.csv?t=${timestamp}`, "conditionData"),
+        this.loadCSV(`https://media.dsrwiki.com/data/csv/jogress.csv?t=${timestamp}`, "jogressData"),
       ]);
       // 재료 인덱스 빌드 후 기본 디지몬 이미지 리스트 생성
       this.buildMaterialIndex();
@@ -23,7 +24,12 @@
 
     async loadCSV(url, targetProperty) {
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
         if (!response.ok) throw new Error(`Failed to load ${url}`);
         const data = await response.text();
         this[targetProperty] = parseCSV(data);
