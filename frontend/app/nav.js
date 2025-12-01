@@ -9,6 +9,98 @@ class CustomNav extends HTMLElement {
           <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet"/>
           <link rel="stylesheet" href="assets/css/styles1.css">
           <style>
+            .referral-floating {
+              position: fixed;
+              right: 18px;
+              bottom: 18px;
+              z-index: 1200;
+              max-width: 320px;
+              box-sizing: border-box;
+              background-color: #ffffff;
+              color: #333333;
+              padding: 8px 10px;
+              border-radius: 8px;
+              border: 1px solid #c0c0c0;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              font-size: 14px;
+              font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+              white-space: nowrap;
+            }
+
+            .referral-floating__content {
+              display: flex;
+              flex-direction: column;
+              gap: 2px;
+            }
+
+            .referral-floating__highlight {
+              font-weight: 600;
+              color: #2c3e50;
+            }
+
+            .referral-floating__code {
+              font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+              background-color: #f4f4f9;
+              padding: 1px 5px;
+              border-radius: 4px;
+              border: 1px solid #d0d0d0;
+              font-size: 14px;
+              display: inline-block;
+              cursor: pointer;
+            }
+
+            .referral-floating__subtext {
+              opacity: 0.9;
+            }
+
+            .referral-floating__toggle {
+              border: none;
+              background: none;
+              cursor: pointer;
+              padding: 2px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              color: #888;
+              font-size: 14px;
+            }
+
+            .referral-floating__collapsed-label {
+              display: none;
+              font-size: 14px;
+              color: #555;
+              white-space: nowrap;
+              font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            }
+
+            .referral-floating--collapsed {
+              padding: 4px;
+              max-width: none;
+              border-radius: 999px;
+            }
+
+            .referral-floating--collapsed .referral-floating__content,
+            .referral-floating--collapsed .referral-floating__collapsed-label {
+              display: none;
+            }
+
+            @media (max-width: 768px) {
+              .referral-floating {
+                right: 10px;
+                bottom: 10px;
+                max-width: 260px;
+                padding: 7px 9px;
+                font-size: 14px;
+              }
+
+              .referral-floating--collapsed {
+                padding: 5px 7px;
+              }
+            }
+
             .feedback-btn {
               background-color: #3B82F6;
               color: white;
@@ -187,6 +279,16 @@ class CustomNav extends HTMLElement {
               </div>
             </nav>
           </header>
+          <div class="referral-floating" id="referralFloating">
+            <button class="referral-floating__toggle" id="toggleReferralBtn" aria-label="추천 코드 박스 접기/펴기">
+              <i class="ri-arrow-down-s-line"></i>
+            </button>
+            <div class="referral-floating__content">
+              <span class="referral-floating__highlight">DSR WIKI가 도움이 되셨나요?</span>
+              <span class="referral-floating__subtext">추천인 코드 <span class="referral-floating__code" id="referralCode">VY9YJ8</span> 입력 부탁드립니다!</span>
+            </div>
+            <span class="referral-floating__collapsed-label">추천인 코드 VY9YJ8</span>
+          </div>
       `;
 
       this.addEventListeners();
@@ -201,6 +303,9 @@ class CustomNav extends HTMLElement {
       const closeBtn = this.shadowRoot.querySelector(".close");
       const feedbackForm = this.shadowRoot.getElementById("feedbackForm");
       const expcarryBtn = this.shadowRoot.getElementById("expcarryBtn");
+      const referralCode = this.shadowRoot.getElementById("referralCode");
+      const referralFloating = this.shadowRoot.getElementById("referralFloating");
+      const toggleReferralBtn = this.shadowRoot.getElementById("toggleReferralBtn");
 
       // 기존 이벤트 리스너
       if (navToggle && navMenu) {
@@ -267,6 +372,79 @@ class CustomNav extends HTMLElement {
       if (expcarryBtn) {
         expcarryBtn.addEventListener("click", () => {
           window.open("https://open.kakao.com/o/gUkDeqpg", "_blank");
+        });
+      }
+
+      if (referralCode) {
+        referralCode.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const code = "VY9YJ8";
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(code);
+            } else {
+              // clipboard API 미지원 브라우저 대응
+              const tempInput = document.createElement("input");
+              tempInput.value = code;
+              document.body.appendChild(tempInput);
+              tempInput.select();
+              document.execCommand("copy");
+              document.body.removeChild(tempInput);
+            }
+            alert("추천인 코드가 복사되었습니다: " + code);
+          } catch (e) {
+            alert("복사에 실패했습니다. 직접 입력해 주세요: " + code);
+          }
+        });
+      }
+
+      if (referralFloating && toggleReferralBtn) {
+        const STORAGE_KEY = "dsrReferralCollapsed";
+
+        const applyInitialState = () => {
+          try {
+            const saved = window.localStorage ? localStorage.getItem(STORAGE_KEY) : null;
+            const collapsed = saved === "1";
+            if (collapsed) {
+              referralFloating.classList.add("referral-floating--collapsed");
+              toggleReferralBtn.innerHTML = '<i class="ri-arrow-up-s-line"></i>';
+            }
+          } catch (e) {
+            // localStorage 사용 불가 시 무시
+          }
+        };
+
+        const toggleState = () => {
+          const willCollapse = !referralFloating.classList.contains("referral-floating--collapsed");
+          if (willCollapse) {
+            referralFloating.classList.add("referral-floating--collapsed");
+            toggleReferralBtn.innerHTML = '<i class="ri-arrow-up-s-line"></i>';
+          } else {
+            referralFloating.classList.remove("referral-floating--collapsed");
+            toggleReferralBtn.innerHTML = '<i class="ri-arrow-down-s-line"></i>';
+          }
+
+          try {
+            if (window.localStorage) {
+              localStorage.setItem(STORAGE_KEY, willCollapse ? "1" : "0");
+            }
+          } catch (e) {
+            // localStorage 사용 불가 시 무시
+          }
+        };
+
+        applyInitialState();
+
+        toggleReferralBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleState();
+        });
+
+        // 접힌 상태에서도 전체 박스를 클릭하면 펼쳐지도록
+        referralFloating.addEventListener("click", () => {
+          if (referralFloating.classList.contains("referral-floating--collapsed")) {
+            toggleState();
+          }
         });
       }
 
