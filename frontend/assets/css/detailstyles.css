@@ -1220,3 +1220,24 @@ body {
   font-size: 12px;
   margin-left: 2px;
 }
+
+.side-ad-wrapper {
+  position: absolute;
+  top: 0;
+  width: 160px;
+  height: 600px;
+  z-index: 999;
+}
+
+.side-ad-wrapper.left {
+  left: 10px;
+}
+
+.side-ad-wrapper.right {
+  right: 10px;
+}
+
+.side-ad {
+  width: 160px;
+  height: 600px;
+}

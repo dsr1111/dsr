@@ -27,28 +27,32 @@
   <body>
     <custom-nav></custom-nav>
     
-    <!-- 우측 사이드 레일 광고 -->
-    <ins class="adsbygoogle"
-         style="display:block; position:fixed; top:50%; right:10px; width:160px; height:600px; transform:translateY(-50%); z-index:1000;"
-         data-ad-client="ca-pub-6625279423156068"
-         data-ad-slot="1851169108"
-         data-ad-format="auto"
-         data-full-width-responsive="false">
-    </ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <div class="side-ad-wrapper left">
+      <ins class="adsbygoogle side-ad"
+           data-ad-client="ca-pub-6625279423156068"
+           data-ad-slot="1428393398"></ins>
+    </div>
     
-    <!-- 좌측 사이드 레일 광고 -->
-    <ins class="adsbygoogle"
-         style="display:block; position:fixed; top:50%; left:10px; width:160px; height:600px; transform:translateY(-50%); z-index:1000;"
-         data-ad-client="ca-pub-6625279423156068"
-         data-ad-slot="1428393398"
-         data-ad-format="auto"
-         data-full-width-responsive="false">
-    </ins>
+    <div class="side-ad-wrapper right">
+      <ins class="adsbygoogle side-ad"
+           data-ad-client="ca-pub-6625279423156068"
+           data-ad-slot="1851169108"></ins>
+    </div>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
     <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
+      function updateSideAds() {
+        const ads = document.querySelectorAll('.side-ad-wrapper');
+        const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
+      
+        ads.forEach(ad => {
+          ad.style.top = top + 'px';
+        });
+      }
+      
+      window.addEventListener('scroll', updateSideAds);
+      window.addEventListener('resize', updateSideAds);
+      updateSideAds();
     </script>
     
     <!-- 모바일에서 사이드 광고 숨김 -->
