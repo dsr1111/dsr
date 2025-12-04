@@ -301,3 +301,11 @@ input[type="text"]::placeholder {
         min-width: 190%;
     }
 }
+
+.side-ad {
+    position: sticky;
+    top: 80px;        /* 스크롤 시 상단 기준으로 붙음 */
+    width: 160px;
+    height: 600px;
+    margin-top: 40px; /* 적절히 여백 */
+  }
