@@ -67,5 +67,21 @@
     <!-- 덱 카드들이 여기에 동적으로 추가됩니다 -->
 </div>
 </div>
+
+<script>
+  function updateSideAds() {
+    const ads = document.querySelectorAll('.side-ad-wrapper');
+    const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
+  
+    ads.forEach(ad => {
+      ad.style.top = top + 'px';
+    });
+  }
+  
+  window.addEventListener('scroll', updateSideAds);
+  window.addEventListener('resize', updateSideAds);
+  updateSideAds();
+  </script>
+
 </body>
 </html>
