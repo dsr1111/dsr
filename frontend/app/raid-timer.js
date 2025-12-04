@@ -87,11 +87,11 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '메탈팬텀몬',
-  image: getImagePath('메탈팬텀몬'),
+  name: '배드퍼펫몬',
+  image: getImagePath('배드퍼펫몬'),
   baseTime: '19:00',
-  baseDate: '2025-11-20',
-  map: '어둠의 권역',
+  baseDate: '2025-12-04',
+  map: '강철 도시',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
@@ -691,7 +691,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       '울퉁몬': { '21:30': '2130' },
       '오메가몬': 'omega',
       '위그드라실_7D6': '위그드라실',
-      [RotationRaid.name]: 'rotation1120',
+      [RotationRaid.name]: 'rotation1204',
       '청룡몬': '청룡몬',
       '백호몬': '백호몬',
       '주작몬': '주작몬',

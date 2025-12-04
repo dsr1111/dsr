@@ -272,7 +272,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 쥬드몬,5,바이킹몬,47.5,프레시오몬,47.5
 쥬레이몬,5,피노키몬,95
 초핫카이몬,5
-치린몬,5
+치린몬,5,슬레이프몬,95
 캐논벌몬,5,타이거베스파몬,95
 콩알몬,5,반쵸콩알몬,95
 크로우몬,5
@@ -346,6 +346,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 세인트가르고몬,6
 스컬맘몬,6
 슬래쉬엔젤몬,6
+슬레이프몬,6
 아구몬-용기의유대-,6
 아마게몬,6
 아포카리몬,6

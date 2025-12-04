@@ -23835,6 +23835,92 @@
         ]
       }
     ]
+  },  
+  "슬레이프몬": {
+    "evolution_stage": "궁극체",
+    "type": "백신",
+    "stats": {
+      "level": 100,
+      "hp": 5602,
+      "sp": 1837,
+      "STR": 978,
+      "INT": 1015,
+      "DEF": 1045,
+      "RES": 881,
+      "SPD": 549
+    },
+    "strengths": {
+      "attribute": "어둠",
+      "effect": "회피"
+    },
+    "weaknesses": {
+      "attribute": "물리",
+      "effect": "약점"
+    },
+    "fields": [
+      "VB",
+      "WG"
+    ],
+    "skills": [
+      {
+        "name": "택틱스 스미어",
+        "hits": 2,
+        "range": "근거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          0.25,
+          0.275,
+          0.3,
+          0.325,
+          0.35,
+          0.375,
+          0.4,
+          0.425,
+          0.45,
+          0.475
+        ]
+      },
+      {
+        "name": "비프로스트",
+        "hits": 1,
+        "range": "원거리",
+        "attribute": "빛",
+        "target_count": "단일",
+        "multipliers": [
+          1,
+          1.05,
+          1.1,
+          1.15,
+          1.2,
+          1.25,
+          1.3,
+          1.35,
+          1.4,
+          1.45
+        ]
+      },
+      {
+        "name": "오딘즈 브레스",
+        "hits": 7,
+        "range": "근거리",
+        "attribute": "얼음",
+        "target_count": "단일",
+        "multipliers": [
+          0.1285,
+          0.1346,
+          0.1407,
+          0.1468,
+          0.1529,
+          0.159,
+          0.165,
+          0.1711,
+          0.1772,
+          0.1832
+        ],
+        "effect": "빙결"
+      }
+    ]
   },
   "아구몬-용기의유대-": {
     "evolution_stage": "궁극체",
