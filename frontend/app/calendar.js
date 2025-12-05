@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   try {
-    const response = await fetch("data/csv/calendar.json", {
+    const response = await fetch("https://media.dsrwiki.com/data/csv/calendar.json", {
       cache: "no-cache",
     });
 
