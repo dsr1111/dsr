@@ -76,14 +76,6 @@ const raids = [
     days: [5], // 금요일
     map: '사막 지대',
   },
-  {
-    name: '위그드라실_7D6',
-    image: getImagePath('위그드라실_7D6'),
-    times: ['21:00'],
-    type: 'weekly',
-    days: [5, 6, 0], // 금요일, 토요일, 일요일
-    map: '무한 산',
-  },
 ];
 
 const RotationRaid = {
