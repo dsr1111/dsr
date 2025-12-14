@@ -699,7 +699,7 @@ function showDigimonMechanicInfo(detector, digimon) {
                 const cleanName = itemName.replace(/\s*x\s*\d+$/, '').replace(/\s*x\s*\d+/g, '').trim();
                 const imagePath = `https://media.dsrwiki.com/dsrwiki/item/${cleanName}.webp`;
                 const tradeStatusText = itemData.tradeStatus === '거래가능' ? '(거래가능)' : '(거래불가)';
-                const tradeStatusColor = itemData.tradeStatus === '거래가능' ? 'green' : 'red';
+                const tradeStatusColor = itemData.tradeStatus === '거래가능' ? 'text-green' : 'text-red';
                 return `
                     <div class="item-list-row">
                         <img loading="lazy" src="${imagePath}" 

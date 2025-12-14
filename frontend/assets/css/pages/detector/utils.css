@@ -73,7 +73,8 @@
 
 /* Trade & Drop Info */
 .trade-status-badge,
-.drop-type-badge {
+.drop-type-badge,
+.extra-info-badge {
     color: white;
     border-radius: 5px;
     padding: 2px 2px;
