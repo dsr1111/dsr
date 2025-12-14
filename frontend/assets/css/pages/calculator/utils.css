@@ -1,0 +1,43 @@
+/* Common Icon Styles */
+.calc-icon-25 {
+    width: 25px;
+    height: 25px;
+}
+
+/* Skill Image Display */
+.skill-display-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.skill-display-img {
+    width: 25px;
+    height: 25px;
+    background-image: url('https://media.dsrwiki.com/dsrwiki/background.webp');
+    background-size: 120%;
+    background-position: center;
+}
+
+/* Mob Details Icons */
+.mob-attr-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.mob-weak-icon {
+    width: 25px;
+    height: 25px;
+    background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');
+    background-size: 120%;
+    background-position: center;
+}
+
+.mob-strong-icon {
+    width: 25px;
+    height: 25px;
+    background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');
+    background-size: 120%;
+    background-position: center;
+}

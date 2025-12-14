@@ -300,7 +300,7 @@ function createCheckbox(
   input.id = checkboxId;
 
   // 기본 체크 상태 설정
-  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId  === "toggle-overflows" || checkboxId  === "toggle-mob") {
+  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId === "toggle-overflows" || checkboxId === "toggle-mob") {
     input.checked = true; // 워프포인트는 체크된 상태로 로드
   } else {
     input.checked = false; // 나머지는 체크 해제된 상태로 로드
@@ -335,21 +335,19 @@ function createCheckbox(
     imgElement.style.top = `${item.top}px`;
     imgElement.style.left = `${item.left}px`;
     imgElement.style.display = input.checked ? "block" : "none";
+    imgElement.classList.add("map-marker");
 
     if (item.isAggressive) {
-      imgElement.style.border = "2px solid red";
+      imgElement.classList.add("map-marker-aggressive");
     }
 
     let evolIcon = null;
     if (item.evol) {
       evolIcon = document.createElement("img");
       evolIcon.src = "https://media.dsrwiki.com/dsrwiki/icon.webp";
-      evolIcon.style.position = "absolute";
       evolIcon.style.top = `${item.top + 20}px`;
       evolIcon.style.left = `${item.left + 5}px`;
-      evolIcon.style.width = "20px";
-      evolIcon.style.height = "20px";
-      evolIcon.style.zIndex = "1001";
+      evolIcon.classList.add("evol-marker");
       evolIcon.style.display = input.checked ? "block" : "none";
       imageContainer.appendChild(evolIcon);
     }
@@ -371,12 +369,9 @@ function createCheckbox(
 
       const typeElement = document.createElement("img");
       typeElement.src = `https://media.dsrwiki.com/dsrwiki/${item.type}.webp`;
-      typeElement.style.position = "absolute";
       typeElement.style.top = `${item.top - 5}px`;
       typeElement.style.left = `${item.left - 5}px`;
-      typeElement.style.width = `18px`;
-      typeElement.style.height = `19px`;
-      typeElement.style.zIndex = `1000`;
+      typeElement.classList.add("type-marker");
       typeElement.style.display = input.checked ? "block" : "none";
 
       addSpecialTooltipToMobs(
@@ -466,7 +461,7 @@ function showSpecialTooltipAtImage(
   const selectedMap = maps[mapDropdown.value];
   // src를 포함하여 정확한 몹 정보 찾기
   const mobData = selectedMap.mobs.find(m => m.name === name && m.src === src);
-  
+
   // 강점과 약점 정보 가져오기 (콤마 앞은 이미지, 뒤는 텍스트)
   const 강점Parts = typeof mobData?.강점 === "string"
     ? mobData.강점.split(',').map(s => s.trim()).filter(Boolean)
@@ -478,60 +473,57 @@ function showSpecialTooltipAtImage(
   const 드랍아이템목록 = Array.isArray(items) ? items : [];
 
   tooltip.innerHTML = `
-        <div style="text-align: center; font-size: 20px; color: rgb(0,183,255); font-weight: bold;">${name}</div>
-        <div style="display: flex; align-items: center;">
-            <img loading="lazy" src="${src}" alt="${name}" style="width: 100px; height: 100px; margin-top: 5px; background-color: #000000; border-radius: 5px; border: 1px solid white;">
-            <div style="margin-left: 5px;">
-                <div style="margin-bottom: 5px; margin-top: 5px; color: white;"><span>레벨 :</span> ${level}</div>
-                <div style="margin-bottom: 5px; color: white;"><span>체력 :</span> ${hp}</div>
-                <div style="color: white;"><span>강점 :</span>
-                  ${ 
-                    강점Parts.length ? `
-                      <div style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;">
-                        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/${강점Parts[0]}.webp\" alt=\" ${강점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+        <div class="tooltip-title">${name}</div>
+        <div class="tooltip-content">
+            <img loading="lazy" src="${src}" alt="${name}" class="tooltip-main-img">
+            <div class="tooltip-stats">
+                <div class="stat-row first"><span>레벨 :</span> ${level}</div>
+                <div class="stat-row"><span>체력 :</span> ${hp}</div>
+                <div class="stat-row"><span>강점 :</span>
+                  ${강점Parts.length ? `
+                      <div class="bg-icon-container bg-strong">
+                        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/${강점Parts[0]}.webp\" alt=\" ${강점Parts[0]}\" class="small-icon">
                       </div>
                       <span>${강점Parts[1] ? 강점Parts[1] : ''}</span>
                     ` : ''
-                  }
+    }
                 </div>
-                <div style="color: white;"><span>약점 :</span>
-                  ${ 
-                    약점Parts.length ? `
-                      <div style=\"background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp'); background-size: cover; width: 25px; height: 25px; display: inline-block; vertical-align: middle; margin-right: 5px;">
-                        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/${약점Parts[0]}.webp\" alt=\" ${약점Parts[0]}\" style=\"width: 24px; height: 24px;\">
+                <div class="stat-row"><span>약점 :</span>
+                  ${약점Parts.length ? `
+                      <div class="bg-icon-container bg-weak">
+                        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/${약점Parts[0]}.webp\" alt=\" ${약점Parts[0]}\" class="small-icon">
                       </div>
                       <span>${약점Parts[1] ? 약점Parts[1] : ''}</span>
                     ` : ''
-                  }
+    }
                 </div>
             </div>
         </div>
-        <div style="text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);"><strong>드랍 아이템</strong> 
-            <ul style="margin-top: 5px; list-style-type: none; padding-left: 0; font-size: 14px; text-align: left; color: white;">
+        <div class="drop-items-title"><strong>드랍 아이템</strong> 
+            <ul class="drop-items-list">
                 ${드랍아이템목록
-                  .map((item) => {
-                    const itemImageSrc = item.includes("조합법")
-                      ? "https://media.dsrwiki.com/dsrwiki/item/조합법.webp"
-                      : `https://media.dsrwiki.com/dsrwiki/item/${item.trim()}.webp`;
-                    return `
-                        <li style=\"display: flex; align-items: center; justify-content: flex-start; margin-bottom: 5px; margin-left: 5px;">
-                            <img loading="lazy" src=\"${itemImageSrc}\"  alt=\" ${item.trim()}\" style=\"width: 25px; height: 25px; margin-right: 5px; background-color: black; border-radius: 5px; border: 1px solid grey; vertical-align: middle;\">
+      .map((item) => {
+        const itemImageSrc = item.includes("조합법")
+          ? "https://media.dsrwiki.com/dsrwiki/item/조합법.webp"
+          : `https://media.dsrwiki.com/dsrwiki/item/${item.trim()}.webp`;
+        return `
+                        <li class="drop-item">
+                            <img loading="lazy" src=\"${itemImageSrc}\"  alt=\" ${item.trim()}\" class="drop-item-img">
                             ${item.trim()}
                         </li>`;
-                  })
-                  .join("")}
+      })
+      .join("")}
             </ul>
         </div>
-        ${ 
-          evol
-            ? `
-        <div style=\"text-align: center; font-size: 20px; margin-top: 10px; color: rgb(0,183,255);\"><strong>조건 진화</strong></div>
-        <div style=\"display: flex; justify-content: center; align-items: center; margin-top: 10px;\">
-        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/digimon/${evol}/${evol}.webp\"  alt=\" ${evol}\" style=\"width: 50px; height: 50px; background-color: black; border-radius: 5px; border: 1px solid white;\">
+        ${evol
+      ? `
+        <div class="condition-evol-title"><strong>조건 진화</strong></div>
+        <div class="condition-evol-wrapper">
+        <img loading="lazy" src=\"https://media.dsrwiki.com/dsrwiki/digimon/${evol}/${evol}.webp\"  alt=\" ${evol}\" class="condition-evol-img">
          </div>
         `
-            : ""
-        }
+      : ""
+    }
     `;
 
   document.body.appendChild(tooltip);
@@ -562,20 +554,13 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
   // 툴팁 생성
   let tooltip = document.createElement("div");
   tooltip.className = "tooltip";
-  tooltip.innerHTML = `<div style="color: white;">${tooltipText}</div>`;
+  tooltip.innerHTML = `<div class="datacube-tooltip-text">${tooltipText}</div>`;
   tooltip.style.pointerEvents = "none";
 
   // 데이터 큐브 이미지를 위한 별도의 컨테이너 생성
   let imageContainer = document.createElement("div");
   imageContainer.className = "datacube-image-container";
-  imageContainer.style.position = "absolute";
-  imageContainer.style.zIndex = "1000";
-  imageContainer.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-  imageContainer.style.padding = "10px";
-  imageContainer.style.borderRadius = "5px";
-  imageContainer.style.border = "1px solid white";
-  imageContainer.style.pointerEvents = "none";
-  
+
   // 초기에 화면 밖에 위치시켜 로딩 중 보이지 않게 함
   imageContainer.style.left = "-9999px";
   imageContainer.style.top = "-9999px";
@@ -589,9 +574,7 @@ function showDatacubeTooltip(event, imageElement, tooltipText) {
   const datacubeImage = document.createElement('img');
   datacubeImage.src = datacubeImagePath;
   datacubeImage.alt = tooltipText;
-  datacubeImage.style.maxWidth = '540px';
-  datacubeImage.style.maxHeight = '400px';
-  datacubeImage.style.objectFit = 'contain';
+  datacubeImage.className = "datacube-main-img";
 
   // Append the image to the image container
   imageContainer.appendChild(datacubeImage);

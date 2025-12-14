@@ -4,7 +4,99 @@
   box-sizing: border-box;
 }
 
-@import url("../../web/static/pretendard.css");
+@import url("../../../../web/static/pretendard.css");
+
+/* Inlined styles from utils.css for better reliability */
+/* Table and Cell Styles */
+table.result-table td.digimon-table-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table.result-table td.digimon-cell-border-left {
+  border-left: 2px solid darkgrey;
+}
+
+table.result-table td.digimon-cell-border-right {
+  border-right: 2px solid darkgrey;
+}
+
+/* Image Styles */
+table.result-table .digimon-type-img {
+  width: 23px;
+  height: 23px;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+table.result-table .digimon-attr-img {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  background-size: 120%;
+  background-position: center;
+  cursor: pointer;
+}
+
+table.result-table .digimon-field-img {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+table.result-table .digimon-effect-img {
+  width: 23px;
+  height: 23px;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.tooltip-inner-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+table.result-table .digimon-icon-container {
+  width: 25px;
+  height: 25px;
+  background-color: black;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+table.result-table .digimon-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.digimon-link {
+  text-decoration: none;
+  color: black;
+}
+
+/* Backgrounds for attributes */
+.bg-strong {
+  background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');
+}
+
+.bg-weak {
+  background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');
+}
+
+.bg-skill {
+  background-image: url('https://media.dsrwiki.com/dsrwiki/background.webp');
+}
+
+/* Skill Row Backgrounds */
+.skill-bg-red {
+  background-color: rgb(255, 234, 234);
+}
+
+.skill-bg-blue {
+  background-color: rgb(220, 248, 248);
+}
 
 body {
   font-family: "Pretendard", sans-serif;
@@ -14,7 +106,8 @@ body {
 
 .container1 {
   width: 100%;
-  max-width: 1540px; /* 최대 너비를 늘려서 필터 버튼들이 제대로 배치되도록 */
+  max-width: 1540px;
+  /* 최대 너비를 늘려서 필터 버튼들이 제대로 배치되도록 */
   margin: 20px auto;
   margin-top: 130px;
   padding: 0 15px;
@@ -27,7 +120,7 @@ body {
   border-radius: 10px;
   margin-bottom: 20px;
   position: relative;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .filters-header {
@@ -69,7 +162,8 @@ body {
 .filters-content {
   overflow: hidden;
   transition: max-height 0.3s ease;
-  max-height: 2500px; /* 검색창과 리셋 버튼을 포함한 충분한 높이 */
+  max-height: 2500px;
+  /* 검색창과 리셋 버튼을 포함한 충분한 높이 */
 }
 
 .filters-content.collapsed {
@@ -81,21 +175,21 @@ body {
   .filters-header h3 {
     font-size: 16px;
   }
-  
+
   .toggle-filters-btn {
     font-size: 18px;
     padding: 8px;
   }
-  
+
   .search-box {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .search-input {
     width: 100%;
   }
-  
+
   .reset-btn {
     width: 100%;
     padding: 12px;
@@ -212,8 +306,13 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 로딩 완료 시 스피너 숨김 */
@@ -309,11 +408,13 @@ body {
   padding-left: 28px;
   display: flex;
   flex-wrap: wrap;
-  gap: 6.2px; /* 버튼 사이의 간격 조절 */
+  gap: 6.2px;
+  /* 버튼 사이의 간격 조절 */
 }
 
 .button-group-field button {
-  margin-right: 2px; /* 추가 간격 조절 (필요시) */
+  margin-right: 2px;
+  /* 추가 간격 조절 (필요시) */
 }
 
 /* Effect 버튼 스타일 */
@@ -388,14 +489,14 @@ tbody {
   visibility: hidden;
   position: absolute;
   z-index: 9999;
-  background: rgba(40,40,40,0.95);
+  background: rgba(40, 40, 40, 0.95);
   color: #fff;
   border-radius: 6px;
   padding: 6px 12px;
   font-size: 12px;
   font-weight: normal;
   pointer-events: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   margin-top: 8px;
   left: 50%;
   transform: translateX(-50%);
@@ -412,7 +513,7 @@ tbody {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid rgba(40,40,40,0.95);
+  border-bottom: 8px solid rgba(40, 40, 40, 0.95);
 }
 
 .tooltip:hover .tooltiptext {
@@ -459,7 +560,8 @@ tbody {
   width: 450px;
   left: 190%;
   transform: translateX(-53%);
-  top: -300px; /* qm 이미지 위에 표시 */
+  top: -300px;
+  /* qm 이미지 위에 표시 */
 }
 
 .tooltip-skill {
@@ -569,8 +671,8 @@ tbody {
   color: #ccc;
 }
 
-.field-qm:hover + .tooltip-field,
-.skill-qm:hover + .tooltip-skill {
+.field-qm:hover+.tooltip-field,
+.skill-qm:hover+.tooltip-skill {
   visibility: visible;
   opacity: 1;
 }
@@ -699,13 +801,13 @@ tbody {
   position: fixed;
   z-index: 9999;
   padding: 6px 12px;
-  background: rgba(40,40,40,0.95);
+  background: rgba(40, 40, 40, 0.95);
   color: #fff;
   border-radius: 6px;
   font-size: 12px;
   font-weight: normal;
   pointer-events: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   margin-top: 8px;
 }
 
@@ -718,11 +820,13 @@ tbody {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid rgba(40,40,40,0.95);
+  border-bottom: 8px solid rgba(40, 40, 40, 0.95);
 }
 
 /* 모바일 드롭다운 기본 숨김 */
-.mobile-filter-dropdown { display: none; }
+.mobile-filter-dropdown {
+  display: none;
+}
 
 /* 모바일 전용: ≤768px */
 @media (max-width: 768px) {
@@ -798,7 +902,7 @@ tbody {
     border-radius: 0 !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
+
   .result-table {
     margin: 0 auto;
     min-width: 100%;
@@ -815,8 +919,8 @@ tbody {
     text-align: left !important;
   }
 
-  .button-group > button,
-  .button-group > label {
+  .button-group>button,
+  .button-group>label {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
@@ -829,7 +933,8 @@ tbody {
     transform: translateX(-50%);
     top: 100%;
     margin-top: 10px;
-    z-index: 9999; /* 모바일에서 더 높은 z-index */
+    z-index: 9999;
+    /* 모바일에서 더 높은 z-index */
   }
 
   .tooltip-table-header,

@@ -1,47 +1,58 @@
-@import url("../../web/static/pretendard.css");
+@import url("../../../../web/static/pretendard.css");
+@import url("./utils.css");
+
 .map-container {
     position: relative;
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
 }
+
 .map-image {
     width: 100%;
     height: auto;
 }
+
 .digimon-marker {
     position: absolute;
     transform: translate(-50%, -50%);
     cursor: pointer;
 }
+
 .digimon-marker img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
+
 @media (max-width: 768px) {
     .digimon-marker {
         width: 30px;
         height: 30px;
     }
 }
+
 .detector-option {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
+
 .detector-option img {
     width: 24px;
     height: 24px;
     object-fit: contain;
 }
+
 .select-container {
     position: relative;
 }
+
 .select-container select {
     appearance: none;
     padding-right: 2rem;
 }
+
 .select-container::after {
     content: '';
     position: absolute;
@@ -55,16 +66,19 @@
     border-top: 5px solid #4B5563;
     pointer-events: none;
 }
+
 .detector-select {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
+
 .detector-select img {
     width: 24px;
     height: 24px;
     object-fit: contain;
 }
+
 .detector-button {
     display: flex;
     flex-direction: row;
@@ -80,25 +94,30 @@
     height: 38px;
     justify-content: flex-start;
 }
+
 .detector-button:hover {
     border-color: #3b82f6;
     transform: translateY(-2px);
 }
+
 .detector-button.selected {
     border-color: #3b82f6;
     background-color: #eff6ff;
 }
+
 .detector-button img {
     width: 24px;
     height: 24px;
     object-fit: contain;
 }
+
 .detector-button span {
     font-size: 0.75rem;
     color: #374151;
     text-align: left;
     white-space: nowrap;
 }
+
 .digimon-button {
     display: flex;
     flex-direction: row;
@@ -114,14 +133,17 @@
     height: 38px;
     justify-content: flex-start;
 }
+
 .digimon-button:hover {
     border-color: #f59e42;
     transform: translateY(-2px);
 }
+
 .digimon-button.selected {
     border-color: #f59e42;
     background-color: #fff7ed;
 }
+
 .digimon-button .digimon-img-bg {
     width: 24px;
     height: 24px;
@@ -131,22 +153,27 @@
     align-items: center;
     justify-content: center;
 }
+
 .digimon-button img {
     width: 24px;
     height: 24px;
     object-fit: contain;
 }
+
 .digimon-button span {
     font-size: 0.75rem;
     color: #374151;
     text-align: left;
     white-space: nowrap;
 }
-.detector-flex, .digimon-flex {
+
+.detector-flex,
+.digimon-flex {
     display: flex;
     flex-wrap: wrap;
     gap: 0.2rem;
 }
+
 .section-title {
     font-size: 1rem;
     font-weight: 600;
@@ -154,11 +181,13 @@
     margin-bottom: 0.5rem;
     margin-top: 1.5rem;
 }
+
 .section-divider {
     border: none;
     border-top: 1.5px solid #e5e7eb;
     margin: 1rem 0 1.5rem 0;
 }
+
 .map-img-wrap {
     width: 500px;
     height: 500px;
@@ -167,44 +196,54 @@
     align-items: center;
     justify-content: center;
 }
+
 #mapImage {
     width: 500px;
     height: 500px;
     object-fit: contain;
 }
+
 @media (max-width: 768px) {
     .map-img-wrap {
         width: 350px;
         height: 350px;
     }
+
     #mapImage {
         width: 350px;
         height: 350px;
     }
 }
+
 @keyframes blink-shadow {
-  0% {
-    box-shadow: 0 0 2px 2px red;
-  }
-  50% {
-    box-shadow: 0 0 2px 2px transparent;
-  }
-  100% {
-    box-shadow: 0 0 2px 2px red;
-  }
+    0% {
+        box-shadow: 0 0 2px 2px red;
+    }
+
+    50% {
+        box-shadow: 0 0 2px 2px transparent;
+    }
+
+    100% {
+        box-shadow: 0 0 2px 2px red;
+    }
 }
+
 .blink-shadow {
-  animation: blink-shadow 1s infinite;
+    animation: blink-shadow 1s infinite;
 }
+
 .skill-container {
     margin-top: 1rem;
 }
+
 .skill-row {
     display: flex;
     align-items: flex-start;
     margin-bottom: 0.75rem;
     gap: 0.5rem;
 }
+
 .skill-image {
     width: 45px;
     height: 45px;
@@ -212,18 +251,22 @@
     object-fit: cover;
     margin-top: 0.15rem;
 }
+
 .skill-info {
     flex: 1;
 }
+
 .skill-header {
     display: flex;
     align-items: center;
     margin-bottom: 0.25rem;
 }
+
 .skill-name {
     font-weight: bold;
     font-size: 0.9rem;
 }
+
 .skill-attribute {
     display: inline-block;
     width: 24px;
@@ -235,6 +278,7 @@
     position: relative;
     overflow: hidden;
 }
+
 .skill-attribute img {
     position: absolute;
     left: 50%;
@@ -244,17 +288,20 @@
     transform: translate(-50%, -50%);
     display: block;
 }
+
 .skill-details {
     display: flex;
     gap: 0.4rem;
     font-size: 0.8rem;
     color: #4B5563;
 }
+
 .skill-detail-item {
     display: flex;
     align-items: center;
     gap: 0.18rem;
 }
+
 .skill-badge {
     display: inline-block;
     border-radius: 5px;
@@ -262,6 +309,7 @@
     font-size: 13px;
     color: #fff;
 }
+
 .skill-details span {
     padding: 2px 2px !important;
     font-size: 13px !important;
@@ -272,7 +320,7 @@
     height: auto !important;
     min-height: unset !important;
     vertical-align: middle !important;
-} 
+}
 
 .side-ad-wrapper {
     position: absolute;

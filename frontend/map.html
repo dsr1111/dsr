@@ -1,98 +1,88 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
-    <title>맵 | DSR WIKI</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="assets/css/mapstyles.css" />
-    <link rel="stylesheet" href="assets/css/styles1.css" />
-    <script src="app/lazyload.js" defer></script>
-    <script src="app/map.js" defer></script>
-    <script src="app/nav.js" defer></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068"
-     crossorigin="anonymous"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-V5VLCXSKM7');
-    </script>
-  </head>
-  <body>
-    <custom-nav></custom-nav>
-    
-    <div class="side-ad-wrapper left">
-      <ins class="adsbygoogle side-ad"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1428393398"></ins>
-    </div>
-    
-    <div class="side-ad-wrapper right">
-      <ins class="adsbygoogle side-ad"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1851169108"></ins>
-    </div>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-    <script>
-      function updateSideAds() {
-        const ads = document.querySelectorAll('.side-ad-wrapper');
-        const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
-      
-        ads.forEach(ad => {
-          ad.style.top = top + 'px';
-        });
-      }
-      
-      window.addEventListener('scroll', updateSideAds);
-      window.addEventListener('resize', updateSideAds);
-      updateSideAds();
-    </script>
-    <!-- 모바일에서 사이드 광고 숨김 -->
-    <style>
-      @media (max-width: 1200px) {
-        .adsbygoogle[data-ad-slot="1428393398"],
-        .adsbygoogle[data-ad-slot="1851169108"] {
-          display: none !important;
-        }
-      }
-    </style>
-    
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
+  <title>맵 | DSR WIKI</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/pages/map/main.css" />
+  <link rel="stylesheet" href="assets/css/styles1.css" />
+  <script src="app/lazyload.js" defer></script>
+  <script src="app/map.js" defer></script>
+  <script src="app/nav.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      var adScript = document.createElement('script');
+      adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+      adScript.async = true;
+      adScript.crossOrigin = 'anonymous';
+      document.head.appendChild(adScript);
+    }
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-V5VLCXSKM7');
+  </script>
+</head>
 
-    <div class="container1" style="position: relative" ;>
-      <div class="main">
-        <p>지도</p>
-        <div class="dropdown">
-          <div class="dropdown-con">
-            <select id="con-dropdown">
-              <option value="파일섬" selected>파일섬</option>
-              <option value="서버대륙">서버대륙</option>
-              <option value="현실 세계">현실 세계</option>
-              <option value="스파이럴 마운틴">스파이럴 마운틴</option>
-              <option value="데이터 세계">데이터 세계</option>
-            </select>
-          </div>
-          <div class="dropdown-map">
-            <select id="map-dropdown">
-              
-            </select>
-          </div>
-          <button class="dropdown-icon">
-            아이콘 필터 <span class="arrow">▼</span>
-          </button>
-          <div class="dropdown-content" id="dropdown-content"></div>
+<body>
+  <custom-nav></custom-nav>
+
+  <div class="side-ad-wrapper left">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1428393398"></ins>
+  </div>
+
+  <div class="side-ad-wrapper right">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1851169108"></ins>
+  </div>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+  <!-- 모바일에서 사이드 광고 숨김 -->
+  <style>
+    @media (max-width: 1200px) {
+
+      .adsbygoogle[data-ad-slot="1428393398"],
+      .adsbygoogle[data-ad-slot="1851169108"] {
+        display: none !important;
+      }
+    }
+  </style>
+
+
+  <div class="container1" style="position: relative" ;>
+    <div class="main">
+      <p>지도</p>
+      <div class="dropdown">
+        <div class="dropdown-con">
+          <select id="con-dropdown">
+            <option value="파일섬" selected>파일섬</option>
+            <option value="서버대륙">서버대륙</option>
+            <option value="현실 세계">현실 세계</option>
+            <option value="스파이럴 마운틴">스파이럴 마운틴</option>
+            <option value="데이터 세계">데이터 세계</option>
+          </select>
         </div>
-      </div>
+        <div class="dropdown-map">
+          <select id="map-dropdown">
 
-      <div id="image-container">    
+          </select>
+        </div>
+        <button class="dropdown-icon">
+          아이콘 필터 <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-content" id="dropdown-content"></div>
       </div>
     </div>
+
+    <div id="image-container">
     </div>
-  </body>
+  </div>
+  </div>
+</body>
+
 </html>

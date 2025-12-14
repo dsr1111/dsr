@@ -1,0 +1,90 @@
+@import url("../../../../web/static/pretendard.css");
+
+.potion-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.potion-img {
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+    object-fit: contain;
+}
+
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.result-table th,
+.result-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.result-table td {
+    vertical-align: middle;
+}
+
+.result-table th {
+    background-color: hsl(220, 24%, 18%);
+    color: white;
+}
+
+.potion-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.counter-btn {
+    width: 28px;
+    height: 28px;
+    background-color: hsl(220, 24%, 18%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter-btn:hover {
+    opacity: 0.9;
+}
+
+.counter-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.counter-value {
+    width: 40px;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 2px 0;
+    background-color: white;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.counter-value::-webkit-outer-spin-button,
+.counter-value::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

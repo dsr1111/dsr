@@ -1,3 +1,4 @@
+@import url("./utils.css");
 
 :root {
     --primary-color: #4f90ff;
@@ -202,11 +203,13 @@ input[type="text"]::placeholder {
     border-color: transparent transparent rgba(0, 0, 0, 0.8);
 }
 
-.digimon-list, .effects-list {
+.digimon-list,
+.effects-list {
     margin-top: 15px;
 }
 
-.digimon-list h3, .effects-list h3 {
+.digimon-list h3,
+.effects-list h3 {
     margin-bottom: 10px;
     color: #333333;
 }
@@ -247,8 +250,8 @@ input[type="text"]::placeholder {
     color: #ffa500;
     padding: 2px;
     border-radius: 2px;
-  }
-  
+}
+
 
 .no-results {
     text-align: center;
@@ -277,18 +280,20 @@ input[type="text"]::placeholder {
 }
 
 @media (max-width: 768px) {
-    .digimon-images, .effects-container {
+
+    .digimon-images,
+    .effects-container {
         justify-content: flex-start;
     }
-    
+
     .digimon-avatar {
         min-width: 60px;
     }
-    
+
     .effect-item {
         min-width: fit-content;
     }
-    
+
     body {
         padding: 10px;
     }
@@ -296,7 +301,7 @@ input[type="text"]::placeholder {
     .container {
         margin-top: 50px;
     }
-    
+
     .deck-card {
         min-width: 190%;
     }

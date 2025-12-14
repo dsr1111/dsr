@@ -1,3 +1,5 @@
+@import url("./utils.css");
+
 * {
   margin: 0;
   padding: 0;
@@ -55,7 +57,7 @@ body {
   width: 740px;
 }
 
-.main > p {
+.main>p {
   color: #12aaf7;
   font-size: 29px;
   position: absolute;
@@ -152,6 +154,7 @@ body {
   width: 14px;
   height: 14px;
 }
+
 .mob-image {
   width: 30px;
   height: 30px;

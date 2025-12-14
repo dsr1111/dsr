@@ -22,7 +22,7 @@
     const filtersContent = document.getElementById('filters-content');
     const toggleBtn = document.getElementById('toggle-filters-btn');
     const icon = toggleBtn.querySelector('i');
-    
+
     if (filtersContent.classList.contains('collapsed')) {
       filtersContent.classList.remove('collapsed');
       icon.className = 'ri-arrow-up-s-line';
@@ -30,7 +30,7 @@
       filtersContent.classList.add('collapsed');
       icon.className = 'ri-arrow-down-s-line';
     }
-    
+
     // 상태 저장
     saveFilterState();
   }
@@ -41,18 +41,18 @@
     const tooltipSpan = tooltip.querySelector('span');
     tooltipSpan.textContent = text;
     tooltip.style.display = 'block';
-    
+
     const rect = e.target.getBoundingClientRect();
     const tooltipRect = tooltip.getBoundingClientRect();
-    
+
     const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
     tooltip.style.left = `${left}px`;
     tooltip.style.top = `${rect.bottom + 5}px`;
-    
+
     if (left + tooltipRect.width > window.innerWidth) {
       tooltip.style.left = `${window.innerWidth - tooltipRect.width - 10}px`;
     }
-    
+
     if (left < 0) {
       tooltip.style.left = '10px';
     }
@@ -66,29 +66,29 @@
   // ====================================================
   // 2. 필터 상태 관리 및 초기화
   // ====================================================
-  
+
   // 페이지 로드 시 필터 상태 복원
   function restoreFilterState() {
     // 필터를 항상 펼친 상태로 유지 (기본값)
     const filtersContent = document.getElementById('filters-content');
     const toggleBtn = document.getElementById('toggle-filters-btn');
     const icon = toggleBtn.querySelector('i');
-    
+
     // collapsed 클래스 제거하여 펼친 상태로 설정
     filtersContent.classList.remove('collapsed');
     icon.className = 'ri-arrow-up-s-line';
-    
+
     // localStorage에서 기존 값 제거
     localStorage.removeItem('digimonFiltersCollapsed');
   }
-  
+
   // 필터 상태 저장
   function saveFilterState() {
     const filtersContent = document.getElementById('filters-content');
     const isCollapsed = filtersContent.classList.contains('collapsed');
     localStorage.setItem('digimonFiltersCollapsed', isCollapsed);
   }
-  
+
   // ====================================================
   // 3. JSON Loader Module
   // ====================================================
@@ -117,19 +117,19 @@
       if (loadingSpinner) loadingSpinner.classList.remove('hidden');
       if (resultTable) resultTable.style.display = 'none';
     },
-    
+
     hideLoading() {
       const loadingSpinner = document.getElementById('loading-spinner');
       const resultTable = document.querySelector('.result-table');
       if (loadingSpinner) loadingSpinner.classList.add('hidden');
       if (resultTable) resultTable.style.display = 'table';
     },
-    
+
     async fetchData() {
       try {
         // 로딩 표시 시작
         this.showLoading();
-        
+
         const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -151,7 +151,7 @@
 
             const typeImagePath = `https://media.dsrwiki.com/dsrwiki/${type}.webp`;
             const typeImgHtml = `<img loading="lazy" src="${typeImagePath}" alt="${type}" 
-              style="width:23px;height:23px;display:block;margin:0 auto;cursor:pointer;"
+              class="digimon-type-img"
               onmouseenter="showCustomTooltip(event, '${type}')"
               onmousemove="showCustomTooltip(event, '${type}')"
               onmouseleave="hideCustomTooltip()"
@@ -159,7 +159,7 @@
 
             const strongHtml = strengths.attribute
               ? `<img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${strengths.attribute}.webp" alt="${strengths.attribute}" 
-                  style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+                  class="digimon-attr-img bg-strong"
                   onmouseenter="showCustomTooltip(event, '${strengths.attribute}')"
                   onmousemove="showCustomTooltip(event, '${strengths.attribute}')"
                   onmouseleave="hideCustomTooltip()"
@@ -168,7 +168,7 @@
 
             const weakHtml = weaknesses.attribute
               ? `<img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${weaknesses.attribute}.webp" alt="${weaknesses.attribute}" 
-                  style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');background-size:120%;background-position:center;cursor:pointer;"
+                  class="digimon-attr-img bg-weak"
                   onmouseenter="showCustomTooltip(event, '${weaknesses.attribute}')"
                   onmousemove="showCustomTooltip(event, '${weaknesses.attribute}')"
                   onmouseleave="hideCustomTooltip()"
@@ -177,29 +177,29 @@
 
             const fieldsHtml = fields
               ? fields
-                  .split(";")
-                  .map(field => field.trim())
-                  .filter(field => field !== "")
-                  .map(
-                    (field) =>
-                      `<img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/field/${field}.webp" alt="${field}" 
-                        style="width:25px;height:25px;cursor:pointer;"
+                .split(";")
+                .map(field => field.trim())
+                .filter(field => field !== "")
+                .map(
+                  (field) =>
+                    `<img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/field/${field}.webp" alt="${field}" 
+                        class="digimon-field-img"
                         onmouseenter="showCustomTooltip(event, '${field}')"
                         onmousemove="showCustomTooltip(event, '${field}')"
                         onmouseleave="hideCustomTooltip()"
                       >`
-                  )
-                  .join("")
+                )
+                .join("")
               : "";
 
             const createSkillHtml = (skill, skillNumber, digimonName) => {
               if (!skill) return "<td></td>";
-              let backgroundColor = "";
+              let skillClass = "";
               if (skill.additionalTurn) {
-                backgroundColor = "background-color: rgb(255,234,234);";
+                skillClass = "skill-bg-red";
               }
               if (skill.target_count === "전체") {
-                backgroundColor = "background-color: rgb(220,248,248);";
+                skillClass = "skill-bg-blue";
               }
 
               const effectDescriptions = {
@@ -240,21 +240,21 @@
                 effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/skill${skillNumber}.webp`;
               }
               const effectTooltipHtml = skill.effect && effectDescription
-                  ? `<div class="tooltip">
-                               <img loading="lazy" src="${effectImagePath}" alt="${skill.effect}" style="width:23px;height:23px;vertical-align:middle;border-radius:50%;">
+                ? `<div class="tooltip">
+                               <img loading="lazy" src="${effectImagePath}" alt="${skill.effect}" class="digimon-effect-img">
                        <div class="tooltiptext">
                          <div class="tooltip-content">
-                                   <img loading="lazy" src="${effectImagePath}" alt="${skill.effect} 이미지" style="width:30px;height:30px;border-radius:50%;">
+                                   <img loading="lazy" src="${effectImagePath}" alt="${skill.effect} 이미지" class="tooltip-inner-img">
                            <div class="tooltip-description">${effectDescription}</div>
                          </div>
                        </div>
                      </div>`
-                  : "";
+                : "";
 
               return `
-                <td style="${backgroundColor}">
+                <td class="${skillClass}">
                   <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}" 
-                    style="width:25px;height:25px;vertical-align:middle;background-image:url('https://media.dsrwiki.com/dsrwiki/background.webp');background-size:120%;background-position:center;cursor:pointer;"
+                    class="digimon-attr-img bg-skill"
                     onmouseenter="showCustomTooltip(event, '${skill.attribute}')"
                     onmousemove="showCustomTooltip(event, '${skill.attribute}')"
                     onmouseleave="hideCustomTooltip()"
@@ -292,29 +292,29 @@
 
             newRow.innerHTML = `
               <td>
-                <div style="width:25px;height:25px;background-color:black;display:inline-block;vertical-align:middle;">
-                  <img loading="lazy" src="${characterImagePath}" alt="${name}" style="width:100%;height:100%;" onerror="this.src='https://media.dsrwiki.com/dsrwiki/digimon/default.webp';">
+                <div class="digimon-icon-container">
+                  <img loading="lazy" src="${characterImagePath}" alt="${name}" class="digimon-icon" onerror="this.src='https://media.dsrwiki.com/dsrwiki/digimon/default.webp';">
                 </div>
-                <a href="detail.html?name=${encodeURIComponent(name)}" style="text-decoration:none;color:black;">${name}</a>
+                <a href="detail.html?name=${encodeURIComponent(name)}" class="digimon-link">${name}</a>
               </td>
-              <td style="text-align:center;vertical-align:middle;">${stats.level}</td>
-              <td style="text-align:center;vertical-align:middle;">${evolution}</td>
-              <td style="text-align:center;vertical-align:middle;">
+              <td class="digimon-table-cell">${stats.level}</td>
+              <td class="digimon-table-cell">${evolution}</td>
+              <td class="digimon-table-cell">
                 ${typeImgHtml}
               </td>
-              <td style="text-align:center;vertical-align:middle;border-left:2px solid darkgrey;">${stats.hp}</td>
-              <td style="text-align:center;vertical-align:middle;">${stats.sp}</td>
-              <td style="text-align:center;vertical-align:middle;">${stats.STR}</td>
-              <td style="text-align:center;vertical-align:middle;">${stats.INT}</td>
-              <td style="text-align:center;vertical-align:middle;">${stats.DEF}</td>
-              <td style="text-align:center;vertical-align:middle;">${stats.RES}</td>
-              <td style="text-align:center;vertical-align:middle;">${stats.SPD}</td>
-              <td style="border-left:2px solid darkgrey;">${strongHtml}</td>
-              <td style="border-right:2px solid darkgrey;">${weakHtml}</td>
+              <td class="digimon-table-cell digimon-cell-border-left">${stats.hp}</td>
+              <td class="digimon-table-cell">${stats.sp}</td>
+              <td class="digimon-table-cell">${stats.STR}</td>
+              <td class="digimon-table-cell">${stats.INT}</td>
+              <td class="digimon-table-cell">${stats.DEF}</td>
+              <td class="digimon-table-cell">${stats.RES}</td>
+              <td class="digimon-table-cell">${stats.SPD}</td>
+              <td class="digimon-cell-border-left">${strongHtml}</td>
+              <td class="digimon-cell-border-right">${weakHtml}</td>
               ${createSkillHtml(digimon.skills[0], 1, name)}
               ${createSkillHtml(digimon.skills[1], 2, name)}
               ${createSkillHtml(digimon.skills[2], 3, name)}
-              <td style="border-left:2px solid darkgrey;">${fieldsHtml}</td>
+              <td class="digimon-cell-border-left">${fieldsHtml}</td>
             `;
             newRow.style.display = "none";
             tableBody.appendChild(newRow);
@@ -324,10 +324,10 @@
         });
 
         originalRows = Array.from(tableBody.rows);
-        
+
         // 로딩 완료 후 로딩 표시 숨김
         this.hideLoading();
-        
+
         // 데이터 로딩 완료 후 필터 상태 복원
         restoreFilterState();
       } catch (error) {
@@ -532,7 +532,7 @@
         "회피율증가": "회피율 증가",
         "잔류에너지": "잔류 에너지"
       };
-      
+
       const actualEffectName = effectMapping[effectName] || effectName;
       const index = filters.effect.indexOf(actualEffectName);
       if (index > -1) {
@@ -547,14 +547,14 @@
     filterTable() {
       const tableBody = document.getElementById("characterTable");
       const rows = tableBody.querySelectorAll("tr");
-      
+
       // 데이터가 로딩되지 않았거나 행이 없으면 필터링하지 않음
       if (!rows || rows.length === 0) {
         return;
       }
-      
+
       const hasFilter = Object.values(filters).some((filter) => filter.length > 0);
-      
+
       if (!hasFilter) {
         rows.forEach(row => {
           row.style.display = "none";
@@ -570,9 +570,9 @@
           filters.type.length === 0 || filters.type.includes(row.dataset.type);
         const fieldData = row.dataset.fields
           ? row.dataset.fields
-              .split(";")
-              .map((field) => field.trim())
-              .filter(Boolean)
+            .split(";")
+            .map((field) => field.trim())
+            .filter(Boolean)
           : [];
         const fieldMatches =
           filters.field.length === 0 ||
@@ -598,15 +598,15 @@
           filters.skill.includes(skill3);
 
         // Effect 필터링 로직
-        const effectMatches = filters.effect.length === 0 || 
+        const effectMatches = filters.effect.length === 0 ||
           filters.effect.some(effect => {
             // 각 스킬의 effect 속성 확인 (dataset에서 직접 가져오기)
             const skill1Effect = row.dataset.skill1Effect === effect;
             const skill2Effect = row.dataset.skill2Effect === effect;
             const skill3Effect = row.dataset.skill3Effect === effect;
-            
 
-            
+
+
             return skill1Effect || skill2Effect || skill3Effect;
           });
 
@@ -644,13 +644,13 @@
       document.getElementById("select-all-skill").checked = false;
       document.getElementById("select-all-strong").checked = false;
       document.getElementById("select-all-weak").checked = false;
-      
+
       const tableBody = document.getElementById("characterTable");
       const rows = tableBody.querySelectorAll("tr");
       rows.forEach(row => {
         row.style.display = "none"; // 모든 행을 숨김
       });
-      
+
       console.log('Filters reset, hiding all rows:', rows.length);
     }
   };
@@ -680,12 +680,12 @@
       rows.sort((a, b) => {
         let cellA = a.cells[column].innerText.trim();
         let cellB = b.cells[column].innerText.trim();
-        
+
         if (column === 0) {
           cellA = a.cells[column].querySelector("a")?.innerText.trim() || cellA;
           cellB = b.cells[column].querySelector("a")?.innerText.trim() || cellB;
-          return currentSortState.direction === 'asc' ? 
-            cellA.localeCompare(cellB) : 
+          return currentSortState.direction === 'asc' ?
+            cellA.localeCompare(cellB) :
             cellB.localeCompare(cellA);
         } else if (column === 3) {
           cellA = a.cells[column].querySelector("img").alt.trim();
@@ -694,8 +694,8 @@
           const indexB = typeOrder.indexOf(cellB);
           const orderA = indexA === -1 ? typeOrder.length : indexA;
           const orderB = indexB === -1 ? typeOrder.length : indexB;
-          return currentSortState.direction === 'asc' ? 
-            orderA - orderB : 
+          return currentSortState.direction === 'asc' ?
+            orderA - orderB :
             orderB - orderA;
         } else {
           const aValue = isNaN(parseFloat(cellA)) ? cellA : parseFloat(cellA);
@@ -730,7 +730,7 @@
 
   function getColumnId(column) {
     const columnIds = [
-      'name', 'level', 'evolution', 'type', 'hp', 'sp', 
+      'name', 'level', 'evolution', 'type', 'hp', 'sp',
       'STR', 'INT', 'DEF', 'RES', 'SPD'
     ];
     return columnIds[column] || '';
@@ -747,12 +747,12 @@
         .split(",")
         .map((term) => term.trim());
       const rows = document.querySelectorAll("#characterTable tr");
-      
+
       // 데이터가 로딩되지 않았거나 행이 없으면 검색하지 않음
       if (!rows || rows.length === 0) {
         return;
       }
-      
+
       rows.forEach((row) => {
         const name = row.dataset.name ? row.dataset.name.toLowerCase() : "";
         const hasFilter = Object.values(filters).some(
@@ -817,10 +817,10 @@
     const resultTable = document.querySelector('.result-table');
     if (loadingSpinner) loadingSpinner.classList.remove('hidden');
     if (resultTable) resultTable.style.display = 'none';
-    
+
     // 필터 상태 복원을 데이터 로딩 완료 후로 이동
     // restoreFilterState();
-    
+
     TableDataManager.fetchData();
     initSearchListener();
     initTooltipCloseBtns();

@@ -1,0 +1,199 @@
+/* Skill Details Badges */
+.skill-detail-badge {
+    color: white;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 13px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.badge-green {
+    background-color: green;
+}
+
+.badge-red {
+    background-color: #D32F2F;
+}
+
+.badge-grey {
+    background-color: grey;
+}
+
+.badge-yellow {
+    background-color: #FFC107;
+}
+
+/* Type Icons */
+.type-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.type-icon-img {
+    width: 24px;
+    height: 24px;
+    margin-left: 5px;
+}
+
+/* Attribute Badges (Strong/Weak) */
+.attr-badge-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    margin-left: 5px;
+    border-radius: 5px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bg-strong {
+    background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');
+}
+
+.bg-weak {
+    background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');
+}
+
+.attr-badge-inner-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.attr-text-span {
+    margin-right: 8px;
+}
+
+/* Trade & Drop Info */
+.trade-status-badge,
+.drop-type-badge {
+    color: white;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 13px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 5px;
+    line-height: 1;
+    height: auto;
+    min-height: unset;
+}
+
+/* Item List in Tooltip */
+.item-list-row {
+    display: flex;
+    align-items: center;
+}
+
+.item-list-img {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    background-color: #343434;
+    border-radius: 3px;
+    border: 1px solid grey;
+    vertical-align: middle;
+}
+
+.text-green {
+    color: green;
+}
+
+.text-red {
+    color: red;
+}
+
+/* Extra Info (Package Contents) */
+.extra-info-badge {
+    cursor: pointer;
+    position: relative;
+}
+
+.custom-tooltip-popup {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    z-index: 9999;
+    width: max-content;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Digimon Info Card Text */
+.digimon-info-text {
+    color: #000;
+    font-weight: bold;
+}
+
+.digimon-info-flex {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Mechanic Card Item Row */
+.mechanic-item-row {
+    color: black;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.mechanic-item-img {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    margin-top: 5px;
+    background-color: #343434;
+    border-radius: 3px;
+    border: 1px solid grey;
+    vertical-align: middle;
+}
+
+.mechanic-item-name {
+    font-weight: bold;
+}
+
+.mechanic-section-title {
+    font-weight: bold;
+    font-size: 1.125rem;
+    /* text-lg */
+    margin-bottom: 0.5rem;
+}
+
+.title-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.digimon-card-image-box {
+    width: 64px;
+    height: 64px;
+    background: rgb(52, 52, 52);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

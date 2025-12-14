@@ -1,0 +1,82 @@
+/* Calendar Placeholder */
+.calendar-placeholder {
+    width: 65%;
+    margin: 0 auto;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.calendar-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+#event-calendar {
+    flex: 1 1 auto;
+}
+
+.calendar-empty-message {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+/* FullCalendar Overrides */
+.fc-col-header-cell {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.fc-daygrid-day {
+    background-color: #fff;
+}
+
+.fc-col-header-cell.fc-day-sun,
+.fc-day-sun {
+    color: red;
+}
+
+.fc-col-header-cell.fc-day-sat,
+.fc-day-sat {
+    color: blue;
+}
+
+.fc-event {
+    border-radius: 5px;
+    margin: 0 5px 5px 5px;
+    border: none;
+    font-size: 12px;
+}
+
+.fc-currentMonth-button,
+.fc-customText-button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: default;
+    pointer-events: none;
+}
+
+.fc-currentMonth-button:hover,
+.fc-customText-button:hover {
+    background: none;
+}
+
+/* Mobile Adjustments */
+@media only screen and (max-width: 768px) {
+    #calendar-placeholder {
+        width: 100%;
+        margin: 0;
+    }
+
+    .calendar-placeholder {
+        width: 100%;
+        padding: 0;
+    }
+}

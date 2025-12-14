@@ -1,97 +1,109 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon">
-    <title>탐지기 | DSR WIKI</title>
-    <link rel="stylesheet" href="assets/css/styles1.css">
-    <link rel="stylesheet" href="assets/css/detector.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="app/lazyload.js" defer></script>
-    <script src="app/nav.js" defer></script>
-    <script src="app/detector.js"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068"
-     crossorigin="anonymous"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-V5VLCXSKM7');
-    </script>
-</head>
-<body class="bg-gray-100" style="font-family: 'Pretendard', sans-serif;">
-    <custom-nav></custom-nav>
-    
-    <div class="side-ad-wrapper left">
-        <ins class="adsbygoogle side-ad"
-             data-ad-client="ca-pub-6625279423156068"
-             data-ad-slot="1428393398"></ins>
-      </div>
-      
-      <div class="side-ad-wrapper right">
-        <ins class="adsbygoogle side-ad"
-             data-ad-client="ca-pub-6625279423156068"
-             data-ad-slot="1851169108"></ins>
-      </div>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  
-      <script>
-        function updateSideAds() {
-          const ads = document.querySelectorAll('.side-ad-wrapper');
-          const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
-        
-          ads.forEach(ad => {
-            ad.style.top = top + 'px';
-          });
-        }
-        
-        window.addEventListener('scroll', updateSideAds);
-        window.addEventListener('resize', updateSideAds);
-        updateSideAds();
-      </script>
-    
-    <!-- 모바일에서 사이드 광고 숨김 -->
-    <style>
-      @media (max-width: 1855px) {
-        .adsbygoogle[data-ad-slot="1428393398"],
-        .adsbygoogle[data-ad-slot="1851169108"] {
-          display: none !important;
-        }
-      }
-    </style>
 
-   
-    <div class="mt-20 md:mt-28">
-        <div class="container mx-auto px-4">
-            
-            <div class="mb-8">
-                <div class="section-title">탐지기</div>
-                <div id="detectorGrid" class="detector-flex mb-4">
-                    <!-- 탐지기 버튼들이 여기에 동적으로 추가됩니다 -->
-                </div>
-                <hr class="section-divider">
-                <div class="section-title">악역 디지몬</div>
-                <div id="digimonGrid" class="digimon-flex mb-4 hidden">
-                    <!-- 디지몬 버튼들이 여기에 동적으로 추가됩니다 -->
-                </div>
-                <div class="flex flex-col md:flex-row items-start gap-0 mt-12">
-                    <div id="mapContainer" class="relative map-img-wrap hidden">
-                        <img loading="lazy" id="mapImage" class="rounded-lg shadow-lg" src="" alt="맵 이미지">
-                        <div id="digimonMarker" class="absolute w-7 h-7 -translate-x-1/2 -translate-y-1/2 cursor-pointer hidden blink-shadow" style="background: rgb(52,52,52); border-radius: 3px;">
-                            <img loading="lazy" class="w-7 h-7 object-contain" src="" alt="디지몬">
-                        </div>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-0 md:ml-4 w-full md:w-auto mt-4 md:mt-0">
-                        <div id="digimonInfoCard" class="hidden flex flex-col justify-center w-full md:w-auto md:min-w-[400px] md:h-[500px]"></div>
-                        <div id="digimonMechanicCard" class="hidden flex flex-col justify-center w-full md:w-auto md:min-w-[400px] md:h-[500px] md:ml-4 mt-4 md:mt-0"></div>
-                    </div>
-                </div>
-            </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon">
+  <title>탐지기 | DSR WIKI</title>
+  <link rel="stylesheet" href="assets/css/styles1.css">
+  <link rel="stylesheet" href="assets/css/pages/detector/main.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="app/lazyload.js" defer></script>
+  <script src="app/nav.js" defer></script>
+  <script src="app/detector.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      var adScript = document.createElement('script');
+      adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+      adScript.async = true;
+      adScript.crossOrigin = 'anonymous';
+      document.head.appendChild(adScript);
+    }
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-V5VLCXSKM7');
+  </script>
+</head>
+
+<body class="bg-gray-100" style="font-family: 'Pretendard', sans-serif;">
+  <custom-nav></custom-nav>
+
+  <div class="side-ad-wrapper left">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1428393398"></ins>
+  </div>
+
+  <div class="side-ad-wrapper right">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1851169108"></ins>
+  </div>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+  <script>
+    function updateSideAds() {
+      const ads = document.querySelectorAll('.side-ad-wrapper');
+      const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
+
+      ads.forEach(ad => {
+        ad.style.top = top + 'px';
+      });
+    }
+
+    window.addEventListener('scroll', updateSideAds);
+    window.addEventListener('resize', updateSideAds);
+    updateSideAds();
+  </script>
+
+  <!-- 모바일에서 사이드 광고 숨김 -->
+  <style>
+    @media (max-width: 1855px) {
+
+      .adsbygoogle[data-ad-slot="1428393398"],
+      .adsbygoogle[data-ad-slot="1851169108"] {
+        display: none !important;
+      }
+    }
+  </style>
+
+
+  <div class="mt-20 md:mt-28">
+    <div class="container mx-auto px-4">
+
+      <div class="mb-8">
+        <div class="section-title">탐지기</div>
+        <div id="detectorGrid" class="detector-flex mb-4">
+          <!-- 탐지기 버튼들이 여기에 동적으로 추가됩니다 -->
         </div>
+        <hr class="section-divider">
+        <div class="section-title">악역 디지몬</div>
+        <div id="digimonGrid" class="digimon-flex mb-4 hidden">
+          <!-- 디지몬 버튼들이 여기에 동적으로 추가됩니다 -->
+        </div>
+        <div class="flex flex-col md:flex-row items-start gap-0 mt-12">
+          <div id="mapContainer" class="relative map-img-wrap hidden">
+            <img loading="lazy" id="mapImage" class="rounded-lg shadow-lg" src="" alt="맵 이미지">
+            <div id="digimonMarker"
+              class="absolute w-7 h-7 -translate-x-1/2 -translate-y-1/2 cursor-pointer hidden blink-shadow"
+              style="background: rgb(52,52,52); border-radius: 3px;">
+              <img loading="lazy" class="w-7 h-7 object-contain" src="" alt="디지몬">
+            </div>
+          </div>
+          <div class="flex flex-col md:flex-row gap-0 md:ml-4 w-full md:w-auto mt-4 md:mt-0">
+            <div id="digimonInfoCard"
+              class="hidden flex flex-col justify-center w-full md:w-auto md:min-w-[400px] md:h-[500px]"></div>
+            <div id="digimonMechanicCard"
+              class="hidden flex flex-col justify-center w-full md:w-auto md:min-w-[400px] md:h-[500px] md:ml-4 mt-4 md:mt-0">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+  </div>
+
 </body>
-</html> 
+
+</html>

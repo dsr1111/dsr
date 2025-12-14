@@ -1,0 +1,54 @@
+/* Custom Navigation Button Styles */
+.feedback-btn {
+    background-color: #3B82F6;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.feedback-btn:hover {
+    background-color: #2563EB;
+}
+
+.expcarry-btn {
+    background-color: #27ae60;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.expcarry-btn:hover {
+    background-color: #219150;
+}
+
+.feedback-expcarry-wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.feedback-expcarry-wrapper .feedback-btn {
+    margin-right: 4px;
+}
+
+@media screen and (max-width: 768px) {
+
+    .feedback-btn,
+    .expcarry-btn {
+        margin-bottom: 20px;
+    }
+}

@@ -130,12 +130,13 @@ function updateMobImages(map, stage) {
           const img = document.createElement("img");
           img.src = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedFileName}/${sanitizedFileName}.webp`;
           img.alt = mob.name;
+          img.classList.add("mob-image");
 
           const transformedAttribute =
             attributeMapping[mob.attribute] || mob.attribute;
 
           const tooltip = document.createElement("div");
-          tooltip.classList.add("tooltip");
+          tooltip.classList.add("mob-tooltip");
           tooltip.innerHTML = `
             레벨 : ${mob.level}<br><br>
             이름 : ${mob.name}<br><br>
@@ -144,11 +145,15 @@ function updateMobImages(map, stage) {
           `;
 
           const overlay = document.createElement("div");
-          overlay.classList.add("overlay");
-          overlay.textContent = `${mob.level}`;
+          overlay.classList.add("mob-overlay");
+
+          const levelOverlay = document.createElement("div");
+          levelOverlay.classList.add("mob-level-overlay");
+          levelOverlay.textContent = `${mob.level}`;
 
           container.appendChild(img);
           container.appendChild(overlay);
+          container.appendChild(levelOverlay);
           container.appendChild(tooltip);
           mobContainer.appendChild(container);
         }
@@ -187,11 +192,11 @@ function updateRepeatRewards(matchingRow) {
       img.classList.add("item-image");
 
       const tooltip = document.createElement("div");
-      tooltip.classList.add("custom-tooltip");
+      tooltip.classList.add("item-tooltip");
       tooltip.textContent = reward.name;
 
       const count = document.createElement("span");
-      count.classList.add("item-count");
+      count.classList.add("item-count-badge");
       count.textContent = `x ${reward.count}`;
 
       itemContainer.appendChild(img);
@@ -232,11 +237,11 @@ function updateFirstClearRewards(matchingRow) {
       img.classList.add("item-image");
 
       const tooltip = document.createElement("div");
-      tooltip.classList.add("custom-tooltip");
+      tooltip.classList.add("item-tooltip");
       tooltip.textContent = reward.name;
 
       const count = document.createElement("span");
-      count.classList.add("item-count");
+      count.classList.add("item-count-badge");
       count.textContent = `x ${reward.count}`;
 
       itemContainer.appendChild(img);

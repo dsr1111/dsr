@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068"
-     crossorigin="anonymous"></script>
+    <script>
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            var adScript = document.createElement('script');
+            adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+            adScript.async = true;
+            adScript.crossOrigin = 'anonymous';
+            document.head.appendChild(adScript);
+        }
+    </script>
     <script src="app/lazyload.js" defer></script>
     <title>디지몬 데이터 관리</title>
     <style>
@@ -13,37 +21,46 @@
             margin: 0;
             padding: 20px;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
             font-size: 11px;
         }
-        .data-table th, .data-table td {
+
+        .data-table th,
+        .data-table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
             white-space: nowrap;
         }
+
         .data-table th {
             background-color: #f4f4f4;
             position: sticky;
             top: 0;
         }
+
         .data-table tbody tr {
             transition: 0.15s;
             border-bottom: 2px solid #dbeafe;
         }
+
         .data-table tbody tr:nth-child(even) {
             background: #f3f8fc;
         }
+
         .data-table tbody tr:last-child {
             border-bottom: none;
         }
+
         .edit-form {
             display: none;
             position: fixed;
@@ -53,37 +70,47 @@
             background: white;
             padding: 20px;
             border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-height: 90vh;
             overflow-y: auto;
             min-width: 500px;
             width: 600px;
             z-index: 1001;
         }
+
         .form-group {
             margin-bottom: 10px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
         }
-        .form-group input, .form-group select, .form-group textarea {
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 5px;
             box-sizing: border-box;
         }
+
         .button-group {
             margin-top: 10px;
         }
+
         .button-group button {
             margin-right: 10px;
         }
+
         .table-container {
             overflow-x: auto;
             max-height: 80vh;
             overflow-y: auto;
-            width: 100%; /* Changed from 120% to 100% */
+            width: 100%;
+            /* Changed from 120% to 100% */
         }
+
         .edit-overlay {
             display: none;
             position: fixed;
@@ -91,11 +118,12 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.15);
+            background: rgba(0, 0, 0, 0.15);
             z-index: 1000;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>디지몬 데이터 관리</h1>
@@ -105,10 +133,11 @@
                 <option value="digimon">digimon.json</option>
             </select>
         </div>
-        
+
         <div class="controls">
             <button onclick="showAddForm()">새 디지몬 추가</button>
-            <button id="saveToGitHub" onclick="dataManager.saveToGitHub()" style="display: none; margin-left: 10px; background-color: #ff4444; color: white;">JSON 파일 다운로드</button>
+            <button id="saveToGitHub" onclick="dataManager.saveToGitHub()"
+                style="display: none; margin-left: 10px; background-color: #ff4444; color: white;">JSON 파일 다운로드</button>
         </div>
 
         <div class="table-container">
@@ -154,4 +183,5 @@
 
     <script src="app/admin.js"></script>
 </body>
+
 </html>

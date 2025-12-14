@@ -136,7 +136,7 @@ function populateDigimonGrid(detector) {
                     if (mawangButton) {
                         mawangButton.remove();
                     }
-                }                 
+                }
 
                 // 히포그리포몬 아닌 다른 디지몬 선택 시 주작몬 버튼 제거
                 if (digimon !== '히포그리포몬' && detector === '현실 세계 B형 탐지기') {
@@ -144,15 +144,15 @@ function populateDigimonGrid(detector) {
                     if (mawangButton) {
                         mawangButton.remove();
                     }
-                }  
-                
+                }
+
                 // 매드레오몬 아닌 다른 디지몬 선택 시 로더레오몬 버튼 제거
                 if (digimon !== '매드레오몬' && detector === '특수 탐지기') {
                     const mawangButton = document.querySelector('.digimon-button[data-digimon="로더레오몬"]');
                     if (mawangButton) {
                         mawangButton.remove();
                     }
-                } 
+                }
 
                 // 로더레오몬 아닌 다른 디지몬 선택 시 백호몬 버튼 제거 (로더레오몬 탐지기)
                 if (digimon !== '로더레오몬' && detector === '로더레오몬 탐지기') {
@@ -190,7 +190,7 @@ function populateDigimonGrid(detector) {
                         });
                         digimonGrid.appendChild(venomButton);
                     }
-                }                
+                }
 
                 // 묘티스몬 선택 시 베놈묘티스몬 버튼 추가
                 if (digimon === '묘티스몬' && detector === '현실 세계 A형 탐지기') {
@@ -311,7 +311,7 @@ function populateDigimonGrid(detector) {
                         digimonGrid.appendChild(mawangButton);
                     }
                 }
-                
+
                 // 반쵸레오몬 선택 시 반쵸레오몬:버스트모드 버튼 추가
                 if (digimon === '반쵸레오몬' && detector === '반쵸레오몬 탐지기') {
                     // 이미 반쵸레오몬:버스트모드 버튼이 있는지 확인
@@ -370,7 +370,7 @@ function populateDigimonGrid(detector) {
                         });
                         digimonGrid.appendChild(mawangButton);
                     }
-                }  
+                }
 
                 // 히포그리포몬 선택 시 주작몬 버튼 추가
                 if (digimon === '히포그리포몬' && detector === '현실 세계 B형 탐지기') {
@@ -400,8 +400,8 @@ function populateDigimonGrid(detector) {
                         });
                         digimonGrid.appendChild(mawangButton);
                     }
-                }   
-                
+                }
+
                 // 매드레오몬 선택 시 로더레오몬 버튼 추가
                 if (digimon === '매드레오몬' && detector === '특수 탐지기') {
                     // 이미 로더레오몬 버튼이 있는지 확인
@@ -430,7 +430,7 @@ function populateDigimonGrid(detector) {
                         });
                         digimonGrid.appendChild(loaderButton);
                     }
-                }                 
+                }
 
                 // 로더레오몬 선택 시 백호몬 버튼 추가 (로더레오몬 탐지기)
                 if (digimon === '로더레오몬' && detector === '로더레오몬 탐지기') {
@@ -534,7 +534,7 @@ function showMapAndMarker(detector, digimon) {
     const markerImg = marker.querySelector('img');
     const digimonImageName = digimon.replace(':', '_');
     markerImg.src = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonImageName}/${digimonImageName}.webp`;
-    
+
     // 환경별 좌표 재계산
     const isMobile = window.innerWidth <= 768;
     const desktopSize = 500;
@@ -557,7 +557,7 @@ async function showDigimonSkills(digimon) {
     const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
     const digimonData = await response.json();
     const digimonInfo = digimonData[digimon];
-    
+
     if (!digimonInfo || !digimonInfo.skills) {
         return '';
     }
@@ -586,11 +586,11 @@ async function showDigimonSkills(digimon) {
                         <span class="skill-attribute"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}"></span>
                     </div>
                     <div class="skill-details">
-                        <span style="background-color: ${skill.detail1 === '원거리' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle;">${skill.detail1 || '정보 없음'}</span>
-                        <span style="background-color: #D32F2F; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle;">${skill.detail2 || '정보 없음'}</span>
-                        <span style="background-color: green; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle;">${isNaN(skill.hit) ? (skill.hit || '정보 없음') : `${skill.hit}타`}</span>
-                        ${skill.detail3 ? `<span style="background-color: #D32F2F; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle;">${skill.detail3}</span>` : ''}
-                        ${skill.cooldown ? `<span style="background-color: grey; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center;">추가 시전 턴 : ${skill.cooldown}턴</span>` : ''}
+                        <span class="skill-detail-badge ${skill.detail1 === '원거리' ? 'badge-green' : 'badge-red'}">${skill.detail1 || '정보 없음'}</span>
+                        <span class="skill-detail-badge badge-red">${skill.detail2 || '정보 없음'}</span>
+                        <span class="skill-detail-badge badge-green">${isNaN(skill.hit) ? (skill.hit || '정보 없음') : `${skill.hit}타`}</span>
+                        ${skill.detail3 ? `<span class="skill-detail-badge badge-red">${skill.detail3}</span>` : ''}
+                        ${skill.cooldown ? `<span class="skill-detail-badge badge-grey">추가 시전 턴 : ${skill.cooldown}턴</span>` : ''}
                     </div>
                 </div>
             </div>
@@ -605,28 +605,28 @@ async function showDigimonInfo(detector, digimon) {
     const data = detectorData[detector]['악역 디지몬'][digimon];
     let typeIcon = '';
     if (data.type) {
-        typeIcon = `<span style="display:flex;align-items:center;justify-content:center;">
-            <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${data.type}.webp" alt="${data.type}" style="width:24px;height:24px;margin-left:5px;">
+        typeIcon = `<span class="type-icon-wrapper">
+            <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${data.type}.webp" alt="${data.type}" class="type-icon-img">
         </span>`;
     }
     const strongBadges = data.strong ? data.strong.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
-            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+            return `<span class="attr-badge-icon bg-strong">
+                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" class="attr-badge-inner-img">
             </span>`;
         } else {
-            return `<span style="margin-right:8px;">${value}</span>`;
+            return `<span class="attr-text-span">${value}</span>`;
         }
     }).join('') : '';
     const weakBadges = data.weak ? data.weak.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
-            return `<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:8px;margin-left:5px;background:url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp') center/cover no-repeat;border-radius:5px;">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" style="width:24px;height:24px;object-fit:contain;">
+            return `<span class="attr-badge-icon bg-weak">
+                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${value}.webp" alt="${value}" class="attr-badge-inner-img">
             </span>`;
         } else {
-            return `<span style="margin-right:8px;">${value}</span>`;
+            return `<span class="attr-text-span">${value}</span>`;
         }
     }).join('') : '';
     const skillTable = await showDigimonSkills(digimon);
@@ -634,17 +634,17 @@ async function showDigimonInfo(detector, digimon) {
     document.getElementById('digimonInfoCard').innerHTML = `
       <div class="bg-white rounded-lg shadow p-4 w-full h-full flex flex-col">
         <div class="flex items-center gap-2 mb-2">
-          <div style="width: 64px; height: 64px; background: rgb(52,52,52); border-radius: 3px; display: flex; align-items: center; justify-content: center;">
+          <div class="digimon-card-image-box">
             <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/digimon/${digimonImageName}/${digimonImageName}.webp" alt="${digimon}" class="w-16 h-16 object-contain">
           </div>
           <span class="font-bold text-lg">${digimon}</span>
         </div>
         <div class="text-sm text-gray-700 space-y-3 mb-4">
-          ${data.level ? `<div style="color: #000; font-weight: bold;"><b>레벨 :</b> ${data.level}</div>` : ''}
-          ${data.HP ? `<div style="color: #000; font-weight: bold;"><b>HP :</b> ${data.HP}</div>` : ''}
-          ${data.type ? `<div style="display:flex;align-items:center;flex-wrap:wrap;color: #000; font-weight: bold;"><b>타입 :</b> ${typeIcon}</div>` : ''}
-          ${data.strong ? `<div style="display:flex;align-items:center;flex-wrap:wrap;color: #000; font-weight: bold;">강점 : ${strongBadges}</div>` : ''}
-          ${data.weak ? `<div style="display:flex;align-items:center;flex-wrap:wrap;color: #000; font-weight: bold;">약점 : ${weakBadges}</div>` : ''}
+          ${data.level ? `<div class="digimon-info-text"><b>레벨 :</b> ${data.level}</div>` : ''}
+          ${data.HP ? `<div class="digimon-info-text"><b>HP :</b> ${data.HP}</div>` : ''}
+          ${data.type ? `<div class="digimon-info-flex"><b>타입 :</b> ${typeIcon}</div>` : ''}
+          ${data.strong ? `<div class="digimon-info-flex">강점 : ${strongBadges}</div>` : ''}
+          ${data.weak ? `<div class="digimon-info-flex">약점 : ${weakBadges}</div>` : ''}
         </div>
         <div class="flex-1 overflow-y-auto">
           ${skillTable}
@@ -660,7 +660,7 @@ async function showDigimonInfo(detector, digimon) {
 // 기믹과 아이템 정보 카드 표시
 function showDigimonMechanicInfo(detector, digimon) {
     const data = detectorData[detector]['악역 디지몬'][digimon];
-    
+
     // 아이템 정보 HTML 생성 (이름별로 거래상태/드롭타입 병합)
     const itemMap = {};
     if (data.item) {
@@ -685,11 +685,11 @@ function showDigimonMechanicInfo(detector, digimon) {
         const imagePath = `https://media.dsrwiki.com/dsrwiki/item/${finalImageName}.webp`;
         // 거래상태 뱃지들
         const tradeBadges = Array.from(info.tradeStatus).map(status =>
-            `<span style="background-color: ${status === '거래가능' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset;">${status}</span>`
+            `<span class="trade-status-badge ${status === '거래가능' ? 'badge-green' : 'badge-red'}">${status}</span>`
         ).join('');
         // 드롭타입 뱃지들
         const dropBadges = Array.from(info.dropType).map(type =>
-            `<span style="background-color: ${type === '확률' ? 'green' : '#D32F2F'}; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset;">${type}</span>`
+            `<span class="drop-type-badge ${type === '확률' ? 'badge-green' : 'badge-red'}">${type}</span>`
         ).join('');
 
         // 구성품 툴팁 처리
@@ -701,27 +701,27 @@ function showDigimonMechanicInfo(detector, digimon) {
                 const tradeStatusText = itemData.tradeStatus === '거래가능' ? '(거래가능)' : '(거래불가)';
                 const tradeStatusColor = itemData.tradeStatus === '거래가능' ? 'green' : 'red';
                 return `
-                    <div style="display: flex; align-items: center;">
+                    <div class="item-list-row">
                         <img loading="lazy" src="${imagePath}" 
-                            style="width: 30px; height: 30px; margin: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;"
+                            class="item-list-img"
                             onerror="this.onerror=null; this.src='https://media.dsrwiki.com/dsrwiki/item/default.webp';">
-                        <span style="color: ${tradeStatusColor};">${tradeStatusText}</span>
+                        <span class="${tradeStatusColor}">${tradeStatusText}</span>
                         <span>${itemName}</span>
                     </div>`;
             })
             .join('');
-        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미' || name === '분노에 잠식된 꾸러미' || name === '검은 날개의 꾸러미'  || name === '정의의 상자')
-            ? `<span style="background-color: #FFC107; color: white; border-radius: 5px; padding: 2px 2px; font-size: 13px; display: inline-block; text-align: center; vertical-align: middle; margin-left: 5px; line-height: 1; height: auto; min-height: unset; cursor: pointer; position: relative;" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
+        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미' || name === '분노에 잠식된 꾸러미' || name === '검은 날개의 꾸러미' || name === '정의의 상자')
+            ? `<span class="extra-info-badge badge-yellow" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
                 구성품 확인
-                <div class="custom-tooltip" style="display: none; position: absolute; top: 50%; left: 100%; transform: translateY(-50%); margin-left: 10px; background-color: rgba(0, 0, 0, 0.9); border: 1px solid #ccc; border-radius: 5px; padding: 5px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1); white-space: nowrap; z-index: 9999; width: max-content; max-height: 80vh; overflow-y: auto;">
+                <div class="custom-tooltip custom-tooltip-popup">
                     ${tooltipContent}
                 </div>
             </span>`
             : '';
         return `
-            <div style="color: black; font-size: 14px; display: flex; align-items: center;">
-                <img loading="lazy" src="${imagePath}" alt="${name.trim()}" style="width: 30px; height: 30px; margin-right: 5px; margin-top: 5px; background-color: #343434; border-radius: 3px; border: 1px solid grey; vertical-align: middle;">
-                <span style="font-weight: bold;">${name.trim()}</span>
+            <div class="mechanic-item-row">
+                <img loading="lazy" src="${imagePath}" alt="${name.trim()}" class="mechanic-item-img">
+                <span class="mechanic-item-name">${name.trim()}</span>
                 ${tradeBadges}
                 ${dropBadges}
                 ${extraInfo}
@@ -732,8 +732,8 @@ function showDigimonMechanicInfo(detector, digimon) {
         <div class="bg-white rounded-lg shadow p-4 w-full h-full flex flex-col">
             ${data.gimmick ? `
                 <div class="mb-4">
-                    <h3 class="font-bold text-lg mb-2">
-                        <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                    <h3 class="mechanic-section-title">
+                        <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" class="title-icon">
                         패턴
                     </h3>
                     <div class="text-sm text-gray-700" style="font-weight: bold;">
@@ -742,8 +742,8 @@ function showDigimonMechanicInfo(detector, digimon) {
                 </div>
             ` : ''}
             <div>
-                <h3 class="font-bold text-lg mb-2">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 6px;">
+                <h3 class="mechanic-section-title">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" class="title-icon">
                     드롭 아이템
                 </h3>
                 <div class="overflow-x-auto md:overflow-x-visible space-y-1 whitespace-nowrap">

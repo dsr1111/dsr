@@ -26,7 +26,7 @@
         // 캐시 방지를 위해 타임스탬프만 추가 (헤더는 CORS 문제 발생)
         const timestamp = Date.now();
         const urlWithCache = `${url}${url.includes('?') ? '&' : '?'}_t=${timestamp}`;
-        
+
         const response = await fetch(urlWithCache, {
           cache: 'no-cache'
         });
@@ -56,7 +56,7 @@
   }
 
   // 재료 인덱스 생성: materialName -> [{ type, parent, child, parents (for jogress) }]
-  DataModule.buildMaterialIndex = function() {
+  DataModule.buildMaterialIndex = function () {
     this.materialIndex = new Map();
 
     // parent -> evolution row 맵
@@ -118,17 +118,17 @@
     // Windows와 Unix 줄바꿈 모두 처리
     const lines = csv.split(/\r?\n/).filter(line => line.trim() !== "");
     if (lines.length === 0) return [];
-    
+
     const headers = lines[0].split(",").map(h => h.trim());
     const result = [];
-    
+
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) continue;
-      
+
       const values = parseCSVLine(line);
       const obj = {};
-      
+
       headers.forEach((header, idx) => {
         const value = values[idx];
         if (value === undefined || value === null) {
@@ -138,25 +138,25 @@
           obj[header] = trimmed === "" ? null : trimmed;
         }
       });
-      
+
       // name 필드가 있어야만 추가
       if (obj.name) {
         result.push(obj);
       }
     }
-    
+
     return result;
   }
-  
+
   // CSV 라인 파싱 (따옴표 처리 포함)
   function parseCSVLine(line) {
     const values = [];
     let current = '';
     let inQuotes = false;
-    
+
     for (let i = 0; i < line.length; i++) {
       const char = line[i];
-      
+
       if (char === '"') {
         if (inQuotes && line[i + 1] === '"') {
           // 이스케이프된 따옴표
@@ -174,10 +174,10 @@
         current += char;
       }
     }
-    
+
     // 마지막 값 추가
     values.push(current);
-    
+
     return values;
   }
 
@@ -231,8 +231,7 @@
         img.src = `https://media.dsrwiki.com/dsrwiki/digimon/${safeName}/${safeName}.webp`;
         img.alt = digimon.name;
         img.dataset.evoType = "normal";
-        img.width = 100;
-        img.height = 100;
+        img.classList.add("digimon-img-responsive");
 
         // 이름 툴팁 표시
         img.addEventListener("mouseover", (event) => {
@@ -279,7 +278,7 @@
     createMaterialImageList() {
       const container = document.getElementById("digimon-image-list");
       container.innerHTML = "";
-      const materialNames = Array.from(DataModule.materialIndex.keys()).sort((a,b)=>a.localeCompare(b));
+      const materialNames = Array.from(DataModule.materialIndex.keys()).sort((a, b) => a.localeCompare(b));
       materialNames.forEach(name => {
         const safeName = name.replace(":", "_");
         const imgContainer = document.createElement("div");
@@ -287,8 +286,7 @@
         const img = document.createElement("img");
         img.src = `https://media.dsrwiki.com/dsrwiki/item/${safeName}.webp`;
         img.alt = name;
-        img.width = 100;
-        img.height = 100;
+        img.classList.add("digimon-img-responsive");
         img.addEventListener("mouseover", (event) => {
           TooltipManager.showNameTooltip(event, name);
         });
@@ -329,10 +327,10 @@
       const filtered = stage === "all"
         ? DataModule.allData
         : DataModule.allData.filter(d => d.evolution_stage == stage);
-      
+
       // 필터링된 데이터로 이미지 리스트 업데이트
       this.createDigimonImageList(filtered);
-      
+
       // 선택된 디지몬이 있다면 해당 디지몬의 진화 트리도 업데이트
       if (this.selectedDigimon) {
         const digimonName = this.selectedDigimon.querySelector('img').alt;
@@ -476,7 +474,7 @@
       const currentDigimon = DataModule.allData.find(d => d.name === digimonName);
       if (!currentDigimon) return;
       const parentNode = event.target.closest(".digimon-container")?.parentElement
-                        ?.closest(".digimon-container");
+        ?.closest(".digimon-container");
       let parentName = parentNode ? parentNode.querySelector("img:not(.type-image)")?.alt : null;
       const parentData = DataModule.allData.find(d => d.name === parentName);
       if (!parentData) return;
@@ -491,7 +489,7 @@
       // 진화 조건 데이터 찾기
       let digimonInfo = null;
       const allConditions = DataModule.conditionData.filter(d => d.name === parentData.name);
-      
+
       // 진화타입 컬럼만으로 분기 (진화재료 유무와 무관)
       if (evoType === "dark") {
         digimonInfo = allConditions.find(d => (d["진화타입"] || "").trim() === "암흑진화");
@@ -765,7 +763,7 @@
       this.selectedDigimonName = digimonName;
       const lowerEvolutions = this.findAllLowerEvolutions(digimonName);
       const treeData = this.filterTreeByDigimonName(digimonName);
-      
+
       if (treeData.length > 0) {
         this.createEvolutionTree(treeData, lowerEvolutions);
         // 선택한 디지몬으로 이어지는 경로에 한해 자동으로 펼치기
@@ -822,7 +820,7 @@
       const selected = DataModule.allData.find(d => d.name === digimonName);
       if (!selected) return [];
       const stage = parseInt(selected.evolution_stage, 10);
-      
+
       let stageFilters = [];
       if (stage === 1) {
         stageFilters = ["1"];
@@ -832,7 +830,7 @@
         // 성장기 디지몬의 경우 먼저 유년기2에서 검색
         const candidatesFromStage2 = DataModule.allData.filter(d => d.evolution_stage === "2");
         const hasEvolutionFromStage2 = candidatesFromStage2.some(d => this.isDigimonInTree(d, digimonName));
-        
+
         if (hasEvolutionFromStage2) {
           // 유년기2에서 진화할 수 있는 경우
           stageFilters = ["2"];
@@ -840,7 +838,7 @@
           // 유년기2에서 진화할 수 없는 경우, 다른 성장기에서 진화하는지 확인
           const candidatesFromStage3 = DataModule.allData.filter(d => d.evolution_stage === "3");
           const hasEvolutionFromStage3 = candidatesFromStage3.some(d => this.isDigimonInTree(d, digimonName));
-          
+
           if (hasEvolutionFromStage3) {
             // 다른 성장기에서 진화하는 경우, 해당 성장기들을 보여줌
             // 아구몬(S):버스트모드 같은 경우는 아구몬(S)만 보여줘야 함
@@ -860,16 +858,16 @@
         // 성숙기~궁극체 디지몬의 경우 성장기에서 검색
         stageFilters = ["3"];
       }
-      
+
       if (stageFilters.length === 0) return [];
-      
+
       // 여러 단계에서 후보를 찾기
       let allCandidates = [];
       stageFilters.forEach(filter => {
         const candidates = DataModule.allData.filter(d => d.evolution_stage === filter);
         allCandidates.push(...candidates);
       });
-      
+
       return allCandidates.filter(d => this.isDigimonInTree(d, digimonName));
     },
     isDigimonInTree(digimon, searchName, visited = new Set()) {
@@ -894,13 +892,13 @@
     isDigimonEvolvedFrom(digimonName, fromDigimonName) {
       const fromDigimon = DataModule.allData.find(d => d.name === fromDigimonName);
       if (!fromDigimon) return false;
-      
+
       const evolutions = [
         fromDigimon.evol1, fromDigimon.evol2, fromDigimon.evol3, fromDigimon.evol4, fromDigimon.evol5,
         fromDigimon.evol6, fromDigimon.evol7, fromDigimon.evol8, fromDigimon.evol9, fromDigimon.evol10,
         fromDigimon.evol11, fromDigimon.조그레스, fromDigimon.암흑진화, fromDigimon.특수진화, fromDigimon.버스트진화
       ];
-      
+
       return evolutions.includes(digimonName);
     },
     createEvolutionTree(data, lowerEvolutions) {
@@ -922,28 +920,23 @@
     createSpecialEvolutionTree(digimon) {
       const treeContainer = document.getElementById("evolution-tree");
       treeContainer.innerHTML = "";
-      
+
       const specialContainer = document.createElement("div");
       specialContainer.classList.add("special-evolution-container");
-      
+
       const title = document.createElement("h3");
       title.textContent = `${digimon.name} - 특수 진화 조건`;
-      title.style.textAlign = "center";
-      title.style.marginBottom = "20px";
-      title.style.color = "#333";
-      
+      title.classList.add("special-evolution-title");
+
       const infoContainer = document.createElement("div");
       infoContainer.classList.add("special-info");
-      infoContainer.style.padding = "20px";
-      infoContainer.style.backgroundColor = "#f5f5f5";
-      infoContainer.style.borderRadius = "8px";
-      infoContainer.style.marginBottom = "20px";
-      
+      infoContainer.classList.add("special-info-container");
+
       // 진화 단계 정보
       const stageInfo = document.createElement("p");
       stageInfo.innerHTML = `<strong>진화 단계:</strong> ${this.getStageName(digimon.evolution_stage)}`;
-      stageInfo.style.marginBottom = "10px";
-      
+      stageInfo.classList.add("special-stage-info");
+
       // 진화 가능한 디지몬들
       const evolutions = [
         { name: digimon.evol1, percent: digimon.percent1 },
@@ -962,103 +955,93 @@
         { name: digimon.특수진화, percent: digimon.percent14, evoType: "special" },
         { name: digimon.버스트진화, percent: digimon.percent15, evoType: "burst" }
       ].filter(e => e.name);
-      
+
       if (evolutions.length > 0) {
         const evoTitle = document.createElement("h4");
         evoTitle.textContent = "진화 가능한 디지몬:";
-        evoTitle.style.marginBottom = "10px";
-        evoTitle.style.color = "#555";
-        
+        evoTitle.classList.add("special-evo-title");
+
         const evoList = document.createElement("div");
-        evoList.style.display = "flex";
-        evoList.style.flexWrap = "wrap";
-        evoList.style.gap = "10px";
-        
+        evoList.classList.add("special-evo-list");
+
         evolutions.forEach(evo => {
           const evoItem = document.createElement("div");
-          evoItem.style.padding = "8px 12px";
-          evoItem.style.backgroundColor = "#fff";
-          evoItem.style.border = "1px solid #ddd";
-          evoItem.style.borderRadius = "4px";
-          evoItem.style.fontSize = "14px";
-          
+          evoItem.classList.add("special-evo-item");
+
+
           let evoText = evo.name;
           if (evo.evoType === "dark") evoText += " (암흑진화)";
           else if (evo.evoType === "special") evoText += " (특수진화)";
           else if (evo.evoType === "burst") evoText += " (버스트진화)";
-          
+
           evoText += ` - ${evo.percent}%`;
           evoItem.textContent = evoText;
-          
+
           evoList.appendChild(evoItem);
         });
-        
+
         infoContainer.appendChild(evoTitle);
         infoContainer.appendChild(evoList);
       }
-      
+
       // 특수 진화 조건 정보 (condition.csv에서 가져오기)
       const conditionInfo = DataModule.conditionData.find(c => c.name === digimon.name);
       if (conditionInfo) {
         const conditionTitle = document.createElement("h4");
         conditionTitle.textContent = "진화 조건:";
-        conditionTitle.style.marginBottom = "10px";
-        conditionTitle.style.color = "#555";
-        conditionTitle.style.marginTop = "20px";
-        
+        conditionTitle.classList.add("special-condition-title");
+
         const conditionList = document.createElement("div");
-        conditionList.style.display = "flex";
-        conditionList.style.flexDirection = "column";
-        conditionList.style.gap = "5px";
-        
+        conditionList.classList.add("special-condition-list");
+
         if (conditionInfo.레벨) {
           const levelItem = document.createElement("div");
           levelItem.innerHTML = `<strong>레벨:</strong> ${conditionInfo.레벨}`;
           conditionList.appendChild(levelItem);
         }
-        
+
         if (conditionInfo.유대감) {
           const bondItem = document.createElement("div");
           bondItem.innerHTML = `<strong>유대감:</strong> ${conditionInfo.유대감}%`;
           conditionList.appendChild(bondItem);
         }
-        
+
         if (conditionInfo.진화재료) {
           const materialItem = document.createElement("div");
           materialItem.innerHTML = `<strong>진화 재료:</strong> ${conditionInfo.진화재료}`;
           conditionList.appendChild(materialItem);
         }
-        
+
         if (conditionInfo.버스트진화재료) {
           const burstMaterialItem = document.createElement("div");
           burstMaterialItem.innerHTML = `<strong>버스트진화 재료:</strong> ${conditionInfo.버스트진화재료}`;
           conditionList.appendChild(burstMaterialItem);
         }
-        
+
         if (conditionInfo.특수진화재료) {
           const specialMaterialItem = document.createElement("div");
           specialMaterialItem.innerHTML = `<strong>특수진화 재료:</strong> ${conditionInfo.특수진화재료}`;
           conditionList.appendChild(specialMaterialItem);
         }
-        
+
         if (conditionInfo.암흑진화재료) {
           const darkMaterialItem = document.createElement("div");
           darkMaterialItem.innerHTML = `<strong>암흑진화 재료:</strong> ${conditionInfo.암흑진화재료}`;
           conditionList.appendChild(darkMaterialItem);
         }
-        
+
         if (conditionInfo.진화타입) {
           const typeItem = document.createElement("div");
           typeItem.innerHTML = `<strong>진화 타입:</strong> ${conditionInfo.진화타입}`;
           conditionList.appendChild(typeItem);
         }
-        
+
         if (conditionList.children.length > 0) {
           infoContainer.appendChild(conditionTitle);
           infoContainer.appendChild(conditionList);
         }
       }
-      
+
       specialContainer.appendChild(title);
       specialContainer.appendChild(infoContainer);
       treeContainer.appendChild(specialContainer);
@@ -1067,7 +1050,7 @@
     getStageName(stage) {
       const stageNames = {
         "1": "유년기1",
-        "2": "유년기2", 
+        "2": "유년기2",
         "3": "성장기",
         "4": "성숙기",
         "5": "완전체",
@@ -1243,46 +1226,46 @@
 
     // 쿠키 가져오기 함수
     function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
     // 쿠키 설정 함수 (만료 시간을 하루로 설정)
     function setCookie(name, value, days) {
-        let expires = "";
-        if (days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+      let expires = "";
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
 
     // 페이지 로드 시 팝업 표시 여부 결정
     if (!getCookie(FEEDBACK_POPUP_HIDDEN_COOKIE)) {
-        if (feedbackPopup) {
-            feedbackPopup.style.display = 'block';
-        }
+      if (feedbackPopup) {
+        feedbackPopup.style.display = 'block';
+      }
     }
 
     // 닫기 버튼 이벤트 리스너
     if (closeButton) {
-        closeButton.addEventListener('click', () => {
-            if (feedbackPopup) {
-                feedbackPopup.style.display = 'none';
-            }
-        });
+      closeButton.addEventListener('click', () => {
+        if (feedbackPopup) {
+          feedbackPopup.style.display = 'none';
+        }
+      });
     }
 
     // 하루 동안 보지 않기 버튼 이벤트 리스너
     if (hideTodayButton) {
-        hideTodayButton.addEventListener('click', () => {
-            setCookie(FEEDBACK_POPUP_HIDDEN_COOKIE, 'true', 1);
-            if (feedbackPopup) {
-                feedbackPopup.style.display = 'none';
-            }
-        });
+      hideTodayButton.addEventListener('click', () => {
+        setCookie(FEEDBACK_POPUP_HIDDEN_COOKIE, 'true', 1);
+        if (feedbackPopup) {
+          feedbackPopup.style.display = 'none';
+        }
+      });
     }
   });
 

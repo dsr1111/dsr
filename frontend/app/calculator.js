@@ -14,13 +14,13 @@ async function fetchJSONData(fileName) {
 
 async function fetchCSVData(fileName) {
   try {
-  const response = await fetch(fileName);
+    const response = await fetch(fileName);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-  const data = await response.text();
-  const rows = data.split("\n").map((row) => row.split(","));
-  return rows;
+    const data = await response.text();
+    const rows = data.split("\n").map((row) => row.split(","));
+    return rows;
   } catch (error) {
     console.error(`Error loading ${fileName}:`, error);
     return [];
@@ -95,7 +95,7 @@ function displayCharacterType(digimonData, characterName) {
     const type = digimon.type;
     const imagePath = `https://media.dsrwiki.com/dsrwiki/${type}.webp`;
     const typeImageCell = document.getElementById("type-image-cell");
-    typeImageCell.innerHTML = `<img loading="lazy" src="${imagePath}" alt="${type}" style="width: 25px; height: 25px;">`;
+    typeImageCell.innerHTML = `<img loading="lazy" src="${imagePath}" alt="${type}" class="calc-icon-25">`;
   }
 }
 
@@ -136,11 +136,11 @@ async function displaySkillImage(characterName) {
       const skillImageCell = document.getElementById("skill-cell");
 
       skillImageCell.innerHTML = `
-        <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+        <div class="skill-display-container">
           <img loading="lazy" 
             src="${skillImagePath}" 
             alt="${skillImageName}" 
-            style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/background.webp'); background-size: 120%; background-position: center;">
+            class="skill-display-img">
           <span>/ ${skillText}</span>
         </div>
       `;
@@ -225,7 +225,7 @@ async function updateMobDetails(mobData, selectedMob) {
     document.getElementById("mob-level").textContent = mobRow[3];
     const mobTypeImage = mobRow[4] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[4]}.webp` : "-";
     document.getElementById("mob-type").innerHTML = mobRow[4]
-      ? `<img loading="lazy" src="${mobTypeImage}"  alt="${mobRow[4]}" style="width: 25px; height: 25px;">`
+      ? `<img loading="lazy" src="${mobTypeImage}" alt="${mobRow[4]}" class="mob-attr-icon">`
       : "-";
     document.getElementById("mob-hp").textContent = mobRow[5];
     document.getElementById("mob-def").textContent = parseFloat(
@@ -233,11 +233,11 @@ async function updateMobDetails(mobData, selectedMob) {
     ).toFixed(2);
     const mobWeaknessImage = mobRow[7] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[7]}.webp` : "-";
     document.getElementById("mob-weak").innerHTML = mobRow[7]
-      ? `<img loading="lazy" src="${mobWeaknessImage}"  alt="${mobRow[7]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img loading="lazy" src="${mobWeaknessImage}" alt="${mobRow[7]}" class="mob-weak-icon">`
       : "-";
     const mobStrengthImage = mobRow[8] ? `https://media.dsrwiki.com/dsrwiki/${mobRow[8]}.webp` : "-";
     document.getElementById("mob-strong").innerHTML = mobRow[8]
-      ? `<img loading="lazy" src="${mobStrengthImage}"  alt="${mobRow[8]}" style="width: 25px; height: 25px; background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp'); background-size: 120%; background-position: center;">`
+      ? `<img loading="lazy" src="${mobStrengthImage}" alt="${mobRow[8]}" class="mob-strong-icon">`
       : "-";
     const mobImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${selectedMob}/${selectedMob}.webp`;
     const mobImageCell = document.getElementById("mob-image-cell");
@@ -290,7 +290,7 @@ window.addEventListener("DOMContentLoaded", async function () {
       skillLevelSelect.dispatchEvent(new Event("change"));
 
       const firstCharacterName = Object.keys(digimonData).find(name => digimonData[name].evolution_stage === "성장기");
-      
+
       if (firstCharacterName) {
         await displaySkillImage(firstCharacterName);
       }
@@ -303,12 +303,12 @@ window.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
-document.getElementById("manual-mode").addEventListener("change", async function() {
+document.getElementById("manual-mode").addEventListener("change", async function () {
   const isManualMode = this.checked;
   document.getElementById("manual-input-row").style.display = isManualMode ? "table-row" : "none";
   document.getElementById("normal-mode-row").style.display = isManualMode ? "none" : "table-row";
   document.getElementById("character-image-cell").style.display = isManualMode ? "none" : "table-cell";
-  
+
   // 수동 입력 모드일 때 숨길 요소들
   document.getElementById("character-select-row").style.display = isManualMode ? "none" : "table-row";
   document.getElementById("type-row").style.display = isManualMode ? "none" : "table-row";
@@ -334,7 +334,7 @@ document.getElementById("manual-mode").addEventListener("change", async function
       displayCharacterLevelAndPower(digimonData, characterName);
       displaySkillImage(characterName);
     }
-    
+
     // 계산 함수 호출
     calculateStrengthResult();
     calculateNeedStr();
@@ -513,26 +513,26 @@ async function calculateNeedStr() {
     if (myType === "백신" && mobType === "바이러스") compatibility = 1.25;
     else if (myType === "바이러스" && mobType === "데이터") compatibility = 1.25;
     else if (myType === "데이터" && mobType === "백신") compatibility = 1.25;
-    
+
     else if (myType === "바이러스" && mobType === "백신") compatibility = 0.75;
     else if (myType === "데이터" && mobType === "바이러스") compatibility = 0.75;
     else if (myType === "백신" && mobType === "데이터") compatibility = 0.75;
-    
+
     else if (
       myType === "프리" &&
       ["백신", "데이터", "바이러스"].includes(mobType)
     )
       compatibility = 1.0;
     else if (myType === "프리" && mobType === "언노운") compatibility = 1.25;
-    
+
     else if (
       myType === "언노운" &&
       ["백신", "데이터", "바이러스"].includes(mobType)
     )
       compatibility = 1.125;
     else if (myType === "언노운" && mobType === "프리") compatibility = 0.75;
-    
-    else if (myType === mobType) compatibility = 1.0;  
+
+    else if (myType === mobType) compatibility = 1.0;
 
     let elementalFactor = 1.0;
 

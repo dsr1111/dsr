@@ -1,0 +1,156 @@
+/* Map Marker Styles */
+.map-marker {
+    position: absolute;
+}
+
+.map-marker-aggressive {
+    border: 2px solid red;
+}
+
+.type-marker {
+    position: absolute;
+    width: 18px;
+    height: 19px;
+    z-index: 1000;
+}
+
+.evol-marker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    z-index: 1001;
+}
+
+/* Special Tooltip Styles */
+.tooltip-title {
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 183, 255);
+    font-weight: bold;
+}
+
+.tooltip-content {
+    display: flex;
+    align-items: center;
+}
+
+.tooltip-main-img {
+    width: 100px;
+    height: 100px;
+    margin-top: 5px;
+    background-color: #000000;
+    border-radius: 5px;
+    border: 1px solid white;
+}
+
+.tooltip-stats {
+    margin-left: 5px;
+}
+
+.stat-row {
+    margin-bottom: 5px;
+    color: white;
+}
+
+.stat-row.first {
+    margin-top: 5px;
+}
+
+.bg-icon-container {
+    background-size: cover;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.bg-strong {
+    background-image: url('https://media.dsrwiki.com/dsrwiki/strongbackground.webp');
+}
+
+.bg-weak {
+    background-image: url('https://media.dsrwiki.com/dsrwiki/weakbackground.webp');
+}
+
+.small-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.drop-items-title {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+    color: rgb(0, 183, 255);
+}
+
+.drop-items-list {
+    margin-top: 5px;
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 14px;
+    text-align: left;
+    color: white;
+}
+
+.drop-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.drop-item-img {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    background-color: black;
+    border-radius: 5px;
+    border: 1px solid grey;
+    vertical-align: middle;
+}
+
+.condition-evol-title {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+    color: rgb(0, 183, 255);
+}
+
+.condition-evol-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.condition-evol-img {
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    border-radius: 5px;
+    border: 1px solid white;
+}
+
+/* Datacube Tooltip Styles */
+.datacube-tooltip-text {
+    color: white;
+}
+
+.datacube-image-container {
+    position: absolute;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid white;
+    pointer-events: none;
+}
+
+.datacube-main-img {
+    max-width: 540px;
+    max-height: 400px;
+    object-fit: contain;
+}

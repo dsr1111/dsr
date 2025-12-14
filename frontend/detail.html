@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +13,18 @@
   <script src="app/detail.js" defer></script>
   <script src="app/nav.js" defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068"
-     crossorigin="anonymous"></script>
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      var adScript = document.createElement('script');
+      adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+      adScript.async = true;
+      adScript.crossOrigin = 'anonymous';
+      document.head.appendChild(adScript);
+    }
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-V5VLCXSKM7');
   </script>
@@ -24,38 +32,20 @@
 
 <body>
   <custom-nav></custom-nav>
-  
+
   <div class="side-ad-wrapper left">
-    <ins class="adsbygoogle side-ad"
-         data-ad-client="ca-pub-6625279423156068"
-         data-ad-slot="1428393398"></ins>
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1428393398"></ins>
   </div>
-  
+
   <div class="side-ad-wrapper right">
-    <ins class="adsbygoogle side-ad"
-         data-ad-client="ca-pub-6625279423156068"
-         data-ad-slot="1851169108"></ins>
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1851169108"></ins>
   </div>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-  <script>
-    function updateSideAds() {
-      const ads = document.querySelectorAll('.side-ad-wrapper');
-      const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
-    
-      ads.forEach(ad => {
-        ad.style.top = top + 'px';
-      });
-    }
-    
-    window.addEventListener('scroll', updateSideAds);
-    window.addEventListener('resize', updateSideAds);
-    updateSideAds();
-  </script>
-  
   <!-- 모바일에서 사이드 광고 숨김 -->
   <style>
     @media (max-width: 1425px) {
+
       .adsbygoogle[data-ad-slot="1428393398"],
       .adsbygoogle[data-ad-slot="1851169108"] {
         display: none !important;
@@ -74,7 +64,7 @@
               <img loading="lazy" id="character-img" src="" alt="캐릭터 이미지">
               <div class="character-name-label" id="character-name">캐릭터 이름</div>
             </div>
-            
+
             <div class="character-stats-container">
               <!-- 캐릭터 메타데이터 -->
               <div class="character-metadata">
@@ -84,14 +74,14 @@
                     <img loading="lazy" id="evolution-img" src="" alt="진화등급 이미지">
                   </div>
                 </div>
-                
+
                 <div class="metadata-group">
                   <div class="metadata-label" id="type-name">타입</div>
                   <div class="metadata-image">
                     <img loading="lazy" id="type-img" src="" alt="타입 이미지">
                   </div>
                 </div>
-                
+
                 <div class="metadata-group field-group">
                   <div class="metadata-label" id="field-name">필드</div>
                   <div class="metadata-image field-images">
@@ -101,7 +91,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- 스탯 테이블 -->
               <table id="stat-table" class="stat-table">
                 <thead>
@@ -132,9 +122,10 @@
             </div>
           </div>
         </div>
-        
+
         <!-- 강약점 섹션 -->
-        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 강약점</h2>
+        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp"
+            class="section-title-icon" alt="타이틀 아이콘"> 강약점</h2>
         <div class="sw-container">
           <table id="sw" class="sw">
             <tbody></tbody>
@@ -142,7 +133,8 @@
         </div>
 
         <!-- 스킬 섹션 -->
-        <h3 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 스킬</h3>
+        <h3 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp"
+            class="section-title-icon" alt="타이틀 아이콘"> 스킬</h3>
         <div class="skill-container">
           <table id="skill-details" class="skill-table">
             <tbody></tbody>
@@ -150,13 +142,15 @@
         </div>
 
         <!-- 덱 섹션 -->
-        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 덱</h2>
+        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp"
+            class="section-title-icon" alt="타이틀 아이콘"> 덱</h2>
         <div id="deck-container" class="deck-container">
           <!-- 덱 카드들이 여기에 동적으로 추가됩니다 -->
         </div>
 
         <!-- 디지코어 화 섹션 -->
-        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" class="section-title-icon" alt="타이틀 아이콘"> 디지코어화</h2>
+        <h2 class="section-title"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp"
+            class="section-title-icon" alt="타이틀 아이콘"> 디지코어화</h2>
         <div id="digicore-container" class="digicore-container">
           <!-- 디지코어 화 정보가 여기에 동적으로 추가됩니다 -->
         </div>
@@ -164,4 +158,5 @@
     </div>
   </div>
 </body>
+
 </html>

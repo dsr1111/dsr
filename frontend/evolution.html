@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon">
   <title>진화트리 | DSR WIKI</title>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/evolution.css">
+  <link rel="stylesheet" href="assets/css/pages/evolution/main.css">
   <link rel="stylesheet" href="assets/css/styles1.css">
   <script src="app/evolution.js" defer></script>
   <script src="app/nav.js" defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068"
-     crossorigin="anonymous"></script>
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      var adScript = document.createElement('script');
+      adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+      adScript.async = true;
+      adScript.crossOrigin = 'anonymous';
+      document.head.appendChild(adScript);
+    }
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-V5VLCXSKM7');
   </script>
 </head>
+
 <body>
-   <custom-nav></custom-nav>
-   
-   <div class="side-ad-wrapper left">
-    <ins class="adsbygoogle side-ad"
-         data-ad-client="ca-pub-6625279423156068"
-         data-ad-slot="1428393398"></ins>
+  <custom-nav></custom-nav>
+
+  <div class="side-ad-wrapper left">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1428393398"></ins>
   </div>
-  
+
   <div class="side-ad-wrapper right">
-    <ins class="adsbygoogle side-ad"
-         data-ad-client="ca-pub-6625279423156068"
-         data-ad-slot="1851169108"></ins>
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1851169108"></ins>
   </div>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
@@ -40,64 +45,66 @@
     function updateSideAds() {
       const ads = document.querySelectorAll('.side-ad-wrapper');
       const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
-    
+
       ads.forEach(ad => {
         ad.style.top = top + 'px';
       });
     }
-    
+
     window.addEventListener('scroll', updateSideAds);
     window.addEventListener('resize', updateSideAds);
     updateSideAds();
   </script>
-   
-   <!-- 모바일에서 사이드 광고 숨김 -->
-   <style>
-     @media (max-width: 1420px) {
-       .adsbygoogle[data-ad-slot="1428393398"],
-       .adsbygoogle[data-ad-slot="1851169108"] {
-         display: none !important;
-       }
-     }
-   </style>
-   
-   
-    <div id="feedback-popup" class="feedback-popup">
-        <div class="feedback-popup-content">
-            <p>진화 조건 %가 미기입된 디지몬의 수치 피드백으로 제보받습니다.</p>
-            <button id="close-feedback-popup">닫기</button>
-            <button id="hide-feedback-popup-today">하루 동안 보지 않기</button>
-        </div>
+
+  <!-- 모바일에서 사이드 광고 숨김 -->
+  <style>
+    @media (max-width: 1420px) {
+
+      .adsbygoogle[data-ad-slot="1428393398"],
+      .adsbygoogle[data-ad-slot="1851169108"] {
+        display: none !important;
+      }
+    }
+  </style>
+
+
+  <div id="feedback-popup" class="feedback-popup">
+    <div class="feedback-popup-content">
+      <p>진화 조건 %가 미기입된 디지몬의 수치 피드백으로 제보받습니다.</p>
+      <button id="close-feedback-popup">닫기</button>
+      <button id="hide-feedback-popup-today">하루 동안 보지 않기</button>
+    </div>
+  </div>
+
+  <div class="container1">
+    <div class="evolution-menu">
+      <div class="menu-items">
+        <button class="menu-item active" data-stage="all">전체</button>
+        <button class="menu-item" data-stage="1">유년기1</button>
+        <button class="menu-item" data-stage="2">유년기2</button>
+        <button class="menu-item" data-stage="3">성장기</button>
+        <button class="menu-item" data-stage="4">성숙기</button>
+        <button class="menu-item" data-stage="5">완전체</button>
+        <button class="menu-item" data-stage="6">궁극체</button>
+        <span class="menu-separator" aria-hidden="true"></span>
+        <button id="material-toggle" class="menu-item" data-mode="materials">진화 재료 보기</button>
+      </div>
     </div>
 
-    <div class="container1">
-      <div class="evolution-menu">
-        <div class="menu-items">
-          <button class="menu-item active" data-stage="all">전체</button>
-          <button class="menu-item" data-stage="1">유년기1</button>
-          <button class="menu-item" data-stage="2">유년기2</button>
-          <button class="menu-item" data-stage="3">성장기</button>
-          <button class="menu-item" data-stage="4">성숙기</button>
-          <button class="menu-item" data-stage="5">완전체</button>
-          <button class="menu-item" data-stage="6">궁극체</button>
-          <span class="menu-separator" aria-hidden="true"></span>
-          <button id="material-toggle" class="menu-item" data-mode="materials">진화 재료 보기</button>
-        </div>
-      </div>
-
-      <div class="search-container">
-        <input type="text" id="search-input" placeholder="찾을 디지몬 검색" oninput="searchDigimonByName()">
-      </div>
-
-      <div class="scroll-container" id="digimon-image-list">
-      </div>
-
-      <div id="name-tooltip" class="name-tooltip"></div>
-      <div id="evolution-tree" class="tree-container">
-      </div>
-      <div id="tooltip" class="tooltip"></div>
-      <div id="jogress-tooltip" class="jogress-tooltip"></div>
-      <div id="evolution-tooltip" class="evolution-tooltip"></div>
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="찾을 디지몬 검색" oninput="searchDigimonByName()">
     </div>
+
+    <div class="scroll-container" id="digimon-image-list">
+    </div>
+
+    <div id="name-tooltip" class="name-tooltip"></div>
+    <div id="evolution-tree" class="tree-container">
+    </div>
+    <div id="tooltip" class="tooltip"></div>
+    <div id="jogress-tooltip" class="jogress-tooltip"></div>
+    <div id="evolution-tooltip" class="evolution-tooltip"></div>
+  </div>
 </body>
+
 </html>

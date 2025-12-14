@@ -1,748 +1,247 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
-    <title>경험치 물약 시뮬레이터 | DSR WIKI</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="assets/css/styles1.css" />
-    <script src="app/lazyload.js" defer></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="app/nav.js" defer></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068"
-     crossorigin="anonymous"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-V5VLCXSKM7');
-    </script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              header: 'hsl(220, 24%, 18%)',
-            }
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
+  <title>경험치 물약 시뮬레이터 | DSR WIKI</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles1.css" />
+  <script src="app/lazyload.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="app/nav.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      var adScript = document.createElement('script');
+      adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+      adScript.async = true;
+      adScript.crossOrigin = 'anonymous';
+      document.head.appendChild(adScript);
+    }
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-V5VLCXSKM7');
+  </script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            header: 'hsl(220, 24%, 18%)',
           }
         }
       }
-    </script>
-    <link rel="stylesheet" href="web/static/pretendard.css">
-    <style>
-      .potion-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 12px;
-      }
-      .potion-img {
-        width: 24px;
-        height: 24px;
-        margin-right: 6px;
-        object-fit: contain;
-      }
-      .result-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 16px;
-      }
-      .result-table th, .result-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-      }
-      .result-table td {
-        vertical-align: middle;
-      }
-      .result-table th {
-        background-color: hsl(220, 24%, 18%);
-        color: white;
-      }
-      .potion-name {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .counter-container {
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-      }
-      .counter-btn {
-        width: 28px;
-        height: 28px;
-        background-color: hsl(220, 24%, 18%);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .counter-btn:hover {
-        opacity: 0.9;
-      }
-      .counter-btn:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
-      .counter-value {
-        width: 40px;
-        text-align: center;
-        font-weight: bold;
-        margin: 0 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 2px 0;
-        background-color: white;
-        -moz-appearance: textfield;
-        appearance: textfield;
-      }
-      .counter-value::-webkit-outer-spin-button,
-      .counter-value::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body class="bg-[#f4f4f9] font-['Pretendard']">
-    <custom-nav></custom-nav>
-    
-    <div class="side-ad-wrapper left">
-      <ins class="adsbygoogle side-ad"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1428393398"></ins>
-    </div>
-    
-    <div class="side-ad-wrapper right">
-      <ins class="adsbygoogle side-ad"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1851169108"></ins>
-    </div>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    }
+  </script>
+  <link rel="stylesheet" href="web/static/pretendard.css">
+  <link rel="stylesheet" href="assets/css/pages/exp/main.css">
+</head>
 
-    <script>
-      function updateSideAds() {
-        const ads = document.querySelectorAll('.side-ad-wrapper');
-        const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
-      
-        ads.forEach(ad => {
-          ad.style.top = top + 'px';
-        });
+<body class="bg-[#f4f4f9] font-['Pretendard']">
+  <custom-nav></custom-nav>
+
+  <div class="side-ad-wrapper left">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1428393398"></ins>
+  </div>
+
+  <div class="side-ad-wrapper right">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1851169108"></ins>
+  </div>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+  <!-- 모바일에서 사이드 광고 숨김 -->
+  <style>
+    @media (max-width: 1370px) {
+
+      .adsbygoogle[data-ad-slot="1428393398"],
+      .adsbygoogle[data-ad-slot="1851169108"] {
+        display: none !important;
       }
-      
-      window.addEventListener('scroll', updateSideAds);
-      window.addEventListener('resize', updateSideAds);
-      updateSideAds();
-    </script>
-    
-    <!-- 모바일에서 사이드 광고 숨김 -->
-    <style>
-      @media (max-width: 1370px) {
-        .adsbygoogle[data-ad-slot="1428393398"],
-        .adsbygoogle[data-ad-slot="1851169108"] {
-          display: none !important;
-        }
-      }
-    </style>
-    
-    
-    <div class="mt-[80px] md:mt-[100px]">
-      <div class="w-[90%] max-w-[1000px] mx-auto mt-8 md:mt-12">
-        <div class="bg-white p-5 rounded-lg shadow-md">
-          
-          <div class="md:grid md:grid-cols-2 md:gap-6">
-            <!-- 입력 폼 -->
-            <div class="mb-6 md:mb-0">
-              <div class="bg-[#f8f9fa] p-4 rounded-lg mb-6">
-                <h2 class="text-xl font-bold mb-4">초기 상태</h2>
-                <div class="flex items-center gap-4 mb-4">
-                  <div class="w-24">
-                    <label for="current-level" class="block mb-2">레벨</label>
-                    <input type="number" id="current-level" min="1" max="99" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                  </div>
-                  <div class="w-24">
-                    <label for="current-exp" class="block mb-2">경험치</label>
-                    <input type="number" id="current-exp" min="0" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                  </div>
-                  <div id="evolution-checkbox-container" class="flex items-center">
-                    <label class="flex items-center gap-2 mt-8">
-                      <input type="checkbox" id="evolution-checkbox" class="w-4 h-4">
-                      <span id="evolution-checkbox-text">성숙기 진화 여부</span>
-                    </label>
-                  </div>
+    }
+  </style>
+
+
+  <div class="mt-[80px] md:mt-[100px]">
+    <div class="w-[90%] max-w-[1000px] mx-auto mt-8 md:mt-12">
+      <div class="bg-white p-5 rounded-lg shadow-md">
+
+        <div class="md:grid md:grid-cols-2 md:gap-6">
+          <!-- 입력 폼 -->
+          <div class="mb-6 md:mb-0">
+            <div class="bg-[#f8f9fa] p-4 rounded-lg mb-6">
+              <h2 class="text-xl font-bold mb-4">초기 상태</h2>
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-24">
+                  <label for="current-level" class="block mb-2">레벨</label>
+                  <input type="number" id="current-level" min="1" max="99" value="1"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md">
                 </div>
-              </div>
-
-              <div class="bg-[#f8f9fa] p-4 rounded-lg">
-                <div class="grid grid-cols-1 gap-2">
-                  <div class="potion-item" data-potion="300" data-max-level="65">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/300 EXP 물약.webp" alt="300 EXP 물약" class="potion-img">
-                    <span>300 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="600" data-max-level="65">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/600 EXP 물약.webp" alt="600 EXP 물약" class="potion-img">
-                    <span>600 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="900" data-max-level="65">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/900 EXP 물약.webp" alt="900 EXP 물약" class="potion-img">
-                    <span>900 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="3000" data-max-level="65">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/3000 EXP 물약.webp" alt="3000 EXP 물약" class="potion-img">
-                    <span>3000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="6000" data-max-level="65">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/6000 EXP 물약.webp" alt="6000 EXP 물약" class="potion-img">
-                    <span>6000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="9000" data-max-level="65">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/9000 EXP 물약.webp" alt="9000 EXP 물약" class="potion-img">
-                    <span>9000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="12000" data-max-level="75">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/12000 EXP 물약.webp" alt="12000 EXP 물약" class="potion-img">
-                    <span>12000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="15000" data-max-level="85">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/15000 EXP 물약.webp" alt="15000 EXP 물약" class="potion-img">
-                    <span>15000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="18000" data-max-level="89">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/18000 EXP 물약.webp" alt="18000 EXP 물약" class="potion-img">
-                    <span>18000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="21000" data-max-level="94">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/21000 EXP 물약.webp" alt="21000 EXP 물약" class="potion-img">
-                    <span>21000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>
-                  <div class="potion-item" data-potion="24000" data-max-level="99">
-                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/24000 EXP 물약.webp" alt="24000 EXP 물약" class="potion-img">
-                    <span>24000 EXP 물약</span>
-                    <div class="counter-container">
-                      <button class="counter-btn minus-btn">-</button>
-                      <input type="number" class="counter-value" value="0" min="0">
-                      <button class="counter-btn plus-btn">+</button>
-                    </div>
-                  </div>                  
+                <div class="w-24">
+                  <label for="current-exp" class="block mb-2">경험치</label>
+                  <input type="number" id="current-exp" min="0" value="0"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                </div>
+                <div id="evolution-checkbox-container" class="flex items-center">
+                  <label class="flex items-center gap-2 mt-8">
+                    <input type="checkbox" id="evolution-checkbox" class="w-4 h-4">
+                    <span id="evolution-checkbox-text">성숙기 진화 여부</span>
+                  </label>
                 </div>
               </div>
             </div>
-            
-            <!-- 결과 출력 -->
-            <div>
-              <div class="bg-[#f8f9fa] p-4 rounded-lg h-full">
-                <div id="level-simulation" class="mb-6 p-3 bg-white rounded-md">
-                  <p>물약 사용 후 레벨: <span id="sim-final-level" class="font-bold">1</span></p>
-                  <p>물약 사용 후 경험치: <span id="sim-final-exp" class="font-bold">0</span></p>
+
+            <div class="bg-[#f8f9fa] p-4 rounded-lg">
+              <div class="grid grid-cols-1 gap-2">
+                <div class="potion-item" data-potion="300" data-max-level="65">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/300 EXP 물약.webp" alt="300 EXP 물약"
+                    class="potion-img">
+                  <span>300 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
                 </div>
-                
-                <div id="potion-result">
-                  <table class="result-table">
-                    <thead>
-                      <tr>
-                        <th>물약 종류</th>
-                        <th>개수</th>
-                        <th>총 경험치</th>
-                      </tr>
-                    </thead>
-                    <tbody id="potion-result-body">
-                      <!-- 자바스크립트로 채워짐 -->
-                    </tbody>
-                  </table>
+                <div class="potion-item" data-potion="600" data-max-level="65">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/600 EXP 물약.webp" alt="600 EXP 물약"
+                    class="potion-img">
+                  <span>600 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
                 </div>
+                <div class="potion-item" data-potion="900" data-max-level="65">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/900 EXP 물약.webp" alt="900 EXP 물약"
+                    class="potion-img">
+                  <span>900 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="3000" data-max-level="65">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/3000 EXP 물약.webp" alt="3000 EXP 물약"
+                    class="potion-img">
+                  <span>3000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="6000" data-max-level="65">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/6000 EXP 물약.webp" alt="6000 EXP 물약"
+                    class="potion-img">
+                  <span>6000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="9000" data-max-level="65">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/9000 EXP 물약.webp" alt="9000 EXP 물약"
+                    class="potion-img">
+                  <span>9000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="12000" data-max-level="75">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/12000 EXP 물약.webp" alt="12000 EXP 물약"
+                    class="potion-img">
+                  <span>12000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="15000" data-max-level="85">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/15000 EXP 물약.webp" alt="15000 EXP 물약"
+                    class="potion-img">
+                  <span>15000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="18000" data-max-level="89">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/18000 EXP 물약.webp" alt="18000 EXP 물약"
+                    class="potion-img">
+                  <span>18000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="21000" data-max-level="94">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/21000 EXP 물약.webp" alt="21000 EXP 물약"
+                    class="potion-img">
+                  <span>21000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+                <div class="potion-item" data-potion="24000" data-max-level="99">
+                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/24000 EXP 물약.webp" alt="24000 EXP 물약"
+                    class="potion-img">
+                  <span>24000 EXP 물약</span>
+                  <div class="counter-container">
+                    <button class="counter-btn minus-btn">-</button>
+                    <input type="number" class="counter-value" value="0" min="0">
+                    <button class="counter-btn plus-btn">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 결과 출력 -->
+          <div>
+            <div class="bg-[#f8f9fa] p-4 rounded-lg h-full">
+              <div id="level-simulation" class="mb-6 p-3 bg-white rounded-md">
+                <p>물약 사용 후 레벨: <span id="sim-final-level" class="font-bold">1</span></p>
+                <p>물약 사용 후 경험치: <span id="sim-final-exp" class="font-bold">0</span></p>
+              </div>
+
+              <div id="potion-result">
+                <table class="result-table">
+                  <thead>
+                    <tr>
+                      <th>물약 종류</th>
+                      <th>개수</th>
+                      <th>총 경험치</th>
+                    </tr>
+                  </thead>
+                  <tbody id="potion-result-body">
+                    <!-- 자바스크립트로 채워짐 -->
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script>
-      // 레벨별 필요 경험치 데이터
-      const expTable = [
-        {level: 1, exp: 16},
-        {level: 2, exp: 16},
-        {level: 3, exp: 16},
-        {level: 4, exp: 33},
-        {level: 5, exp: 58},
-        {level: 6, exp: 92},
-        {level: 7, exp: 136},
-        {level: 8, exp: 190},
-        {level: 9, exp: 255},
-        {level: 10, exp: 332},
-        {level: 11, exp: 422},
-        {level: 12, exp: 524},
-        {level: 13, exp: 640},
-        {level: 14, exp: 771},
-        {level: 15, exp: 916},  // 진화 레벨
-        {level: 16, exp: 1077},
-        {level: 17, exp: 1253},
-        {level: 18, exp: 1445},
-        {level: 19, exp: 1655},
-        {level: 20, exp: 1881},
-        {level: 21, exp: 2125},
-        {level: 22, exp: 2387},
-        {level: 23, exp: 2668},
-        {level: 24, exp: 2967},
-        {level: 25, exp: 3286},
-        {level: 26, exp: 3625},
-        {level: 27, exp: 3984},
-        {level: 28, exp: 4363},
-        {level: 29, exp: 4763},
-        {level: 30, exp: 10369},
-        {level: 31, exp: 11255},
-        {level: 32, exp: 12185},
-        {level: 33, exp: 13159},
-        {level: 34, exp: 14179},
-        {level: 35, exp: 15245},
-        {level: 36, exp: 16357},
-        {level: 37, exp: 17517},
-        {level: 38, exp: 18725},
-        {level: 39, exp: 19981},
-        {level: 40, exp: 21287},
-        {level: 41, exp: 22642},
-        {level: 42, exp: 24048},
-        {level: 43, exp: 25505},
-        {level: 44, exp: 27014},
-        {level: 45, exp: 28575},
-        {level: 46, exp: 30189},
-        {level: 47, exp: 31857},
-        {level: 48, exp: 33579},
-        {level: 49, exp: 35355},
-        {level: 50, exp: 37186},
-        {level: 51, exp: 39074},
-        {level: 52, exp: 41017},
-        {level: 53, exp: 43018},
-        {level: 54, exp: 45076},
-        {level: 55, exp: 47192},
-        {level: 56, exp: 49366},
-        {level: 57, exp: 51600},
-        {level: 58, exp: 53893},
-        {level: 59, exp: 56246},
-        {level: 60, exp: 58660},  // 진화 레벨
-        {level: 61, exp: 61134},
-        {level: 62, exp: 63671},
-        {level: 63, exp: 66269},
-        {level: 64, exp: 68931},
-        {level: 65, exp: 71655},
-        {level: 66, exp: 74443},
-        {level: 67, exp: 77295},
-        {level: 68, exp: 80211},
-        {level: 69, exp: 83193},
-        {level: 70, exp: 86240},
-        {level: 71, exp: 89353},
-        {level: 72, exp: 92532},
-        {level: 73, exp: 95779},
-        {level: 74, exp: 99093},
-        {level: 75, exp: 102475},
-        {level: 76, exp: 105925},
-        {level: 77, exp: 109443},
-        {level: 78, exp: 113031},
-        {level: 79, exp: 116689},
-        {level: 80, exp: 120417},
-        {level: 81, exp: 124215},
-        {level: 82, exp: 128085},
-        {level: 83, exp: 132026},
-        {level: 84, exp: 136038},
-        {level: 85, exp: 140123},
-        {level: 86, exp: 144281},
-        {level: 87, exp: 148512},
-        {level: 88, exp: 152816},
-        {level: 89, exp: 157195},
-        {level: 90, exp: 242472},  // 진화 레벨
-        {level: 91, exp: 249263},
-        {level: 92, exp: 256168},
-        {level: 93, exp: 263186},
-        {level: 94, exp: 270318},
-        {level: 95, exp: 277565},
-        {level: 96, exp: 284927},
-        {level: 97, exp: 292405},
-        {level: 98, exp: 300000},
-        {level: 99, exp: 307711},
-        {level: 100, exp: 0},  // 최대 레벨
-      ];
-      
-      // 진화 레벨
-      const evolutionLevels = [15, 60, 90];
-      
-      // 물약 정보 (레벨 제한 포함)
-      const potionLevelLimits = {
-        300: 65,
-        600: 65,
-        900: 65,
-        3000: 65,
-        6000: 65,
-        9000: 65,
-        12000: 75,
-        15000: 85,
-        18000: 89,
-        21000: 94,
-        24000: 99,
-      };
-      
-      // 상태 스택 추가
-      let stateStack = [];
-      // 초기 상태 저장
-      let initialLevel = 1;
-      let initialExp = 0;
-      // 진화 상태 저장
-      let isMatureEvolution = false;
-      let isPerfectEvolution = false;
+  <script src="app/exp.js"></script>
+</body>
 
-      document.addEventListener('DOMContentLoaded', function() {
-        // 입력값 변경 이벤트 리스너 추가 (초기 상태 저장 및 결과 갱신)
-        document.getElementById('current-level').addEventListener('input', function() {
-          initialLevel = parseInt(this.value);
-          // 레벨에 따라 체크박스 표시 및 텍스트 변경 (항상 동작 보장)
-          const checkboxContainer = document.getElementById('evolution-checkbox-container');
-          const checkboxText = document.getElementById('evolution-checkbox-text');
-          if (initialLevel >= 1 && initialLevel <= 15) {
-            checkboxContainer.classList.remove('hidden');
-            checkboxText.textContent = '성숙기 진화 여부';
-            isMatureEvolution = document.getElementById('evolution-checkbox').checked;
-            isPerfectEvolution = false;
-          } else if (initialLevel >= 50 && initialLevel <= 60) {
-            checkboxContainer.classList.remove('hidden');
-            checkboxText.textContent = '완전체 진화 여부';
-            isPerfectEvolution = document.getElementById('evolution-checkbox').checked;
-            isMatureEvolution = false;
-          } else {
-            checkboxContainer.classList.add('hidden');
-            isMatureEvolution = false;
-            isPerfectEvolution = false;
-          }
-          updateResults();
-        });
-        document.getElementById('current-exp').addEventListener('input', function() {
-          initialExp = parseInt(this.value);
-          updateResults();
-        });
-
-        // 플러스 버튼 클릭 시: 입력란 값은 변경하지 않고 카운터만 증가, 결과 갱신
-        document.querySelectorAll('.plus-btn').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const potionItem = this.closest('.potion-item');
-            const counterInput = potionItem.querySelector('.counter-value');
-            const currentValue = parseInt(counterInput.value);
-            counterInput.value = currentValue + 1;
-            potionItem.querySelector('.minus-btn').disabled = false;
-            updateResults();
-          });
-        });
-
-        // 마이너스 버튼: 입력란 값은 변경하지 않고 카운터만 감소, 결과 갱신
-        document.querySelectorAll('.minus-btn').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const potionItem = this.closest('.potion-item');
-            const counterInput = potionItem.querySelector('.counter-value');
-            const currentValue = parseInt(counterInput.value);
-            if (currentValue > 0) {
-              counterInput.value = currentValue - 1;
-              if (currentValue - 1 === 0) {
-                this.disabled = true;
-              }
-              updateResults();
-            }
-          });
-        });
-
-        // 숫자 입력창 직접 수정 시 전체 재계산
-        document.querySelectorAll('.counter-value').forEach(input => {
-          input.addEventListener('input', function() {
-            updateResults();
-          });
-        });
-
-        // 체크박스 변경 이벤트 리스너 추가
-        document.getElementById('evolution-checkbox').addEventListener('change', function() {
-          if (initialLevel >= 1 && initialLevel <= 15) {
-            isMatureEvolution = this.checked;
-            isPerfectEvolution = false;
-          } else if (initialLevel >= 50 && initialLevel <= 60) {
-            isPerfectEvolution = this.checked;
-            isMatureEvolution = false;
-          }
-          updateResults();
-        });
-
-        // 초기 계산
-        calculateNeededExp();
-        
-        // 모든 마이너스 버튼 초기 비활성화
-        document.querySelectorAll('.minus-btn').forEach(btn => {
-          btn.disabled = true;
-        });
-      });
-      
-      // 필요 경험치 계산
-      function calculateNeededExp() {
-        const currentLevel = parseInt(document.getElementById('current-level').value);
-        const currentExp = parseInt(document.getElementById('current-exp').value);
-        const targetLevel = parseInt(document.getElementById('target-level').value);
-        
-        // 입력값 검증
-        if (currentLevel < 1 || currentLevel >= 100) {
-          alert('현재 레벨은 1~99 사이여야 합니다.');
-          return;
-        }
-        
-        if (targetLevel <= currentLevel || targetLevel > 100) {
-          alert('목표 레벨은 현재 레벨보다 높고 100 이하여야 합니다.');
-          return;
-        }
-        
-        // 시뮬레이션을 통한 필요 경험치 계산
-        let totalExpNeeded = 0;
-        let simLevel = currentLevel;
-        let simExp = currentExp;
-        
-        while (simLevel < targetLevel) {
-          // 현재 레벨에서 다음 레벨까지 필요한 경험치
-          const expToNextLevel = expTable[simLevel - 1].exp - simExp;
-          totalExpNeeded += expToNextLevel;
-          
-          // 레벨 업
-          simLevel++;
-          simExp = 0;
-          
-          // 진화 레벨에 도달하면 경험치는 0이 됨
-          if (evolutionLevels.includes(simLevel)) {
-            simExp = 0;
-          }
-        }
-        
-        // 결과 표시
-        document.getElementById('total-exp-needed').textContent = totalExpNeeded.toLocaleString();
-        
-        // 레벨 시뮬레이션 초기값 설정
-        document.getElementById('sim-current-level').textContent = currentLevel;
-        document.getElementById('sim-current-exp').textContent = currentExp.toLocaleString();
-        document.getElementById('sim-level-exp').textContent = expTable[currentLevel - 1].exp.toLocaleString();
-        
-        // 물약 레벨 제한 적용
-        updatePotionAvailability(currentLevel);
-        
-        // 결과 업데이트
-        updateResults();
-      }
-      
-      // 물약 레벨 제한 적용
-      function updatePotionAvailability(currentLevel) {
-        document.querySelectorAll('.potion-item').forEach(item => {
-          const potionValue = parseInt(item.dataset.potion);
-          const maxLevel = parseInt(item.dataset.maxLevel);
-          
-          const plusBtn = item.querySelector('.plus-btn');
-          const minusBtn = item.querySelector('.minus-btn');
-          const counterInput = item.querySelector('.counter-value');
-          const count = parseInt(counterInput.value);
-          
-          if (currentLevel > maxLevel) {
-            plusBtn.disabled = true;
-            plusBtn.classList.add('opacity-50');
-            // 입력창은 항상 활성화 및 스타일 정상
-            counterInput.disabled = false;
-            counterInput.classList.remove('opacity-50');
-            minusBtn.disabled = count === 0;
-            minusBtn.classList.remove('opacity-50');
-            item.classList.remove('opacity-50');
-          } else {
-            plusBtn.disabled = false;
-            plusBtn.classList.remove('opacity-50');
-            counterInput.disabled = false;
-            counterInput.classList.remove('opacity-50');
-            minusBtn.disabled = count === 0;
-            minusBtn.classList.remove('opacity-50');
-            item.classList.remove('opacity-50');
-          }
-        });
-      }
-      
-      // updateResults: 현재 상태 입력란 값 + 카운터 값으로만 시뮬레이션
-      function updateResults() {
-        // 현재 상태 입력값
-        let simLevel = parseInt(document.getElementById('current-level').value);
-        let simExp = parseInt(document.getElementById('current-exp').value);
-
-        // 시뮬레이션: 카운터 값만큼 반복 적용
-        document.querySelectorAll('.potion-item').forEach(item => {
-          const potionExp = parseInt(item.dataset.potion);
-          const count = parseInt(item.querySelector('.counter-value').value);
-          for (let i = 0; i < count; i++) {
-            let nextLevel = simLevel;
-            let nextExp = simExp + potionExp;
-            while (nextLevel < 100) {
-              const expToNext = expTable[nextLevel - 1].exp;
-              if (nextExp >= expToNext) {
-                nextExp -= expToNext;
-                nextLevel++;
-                // 진화 레벨에서 경험치 초기화 로직 수정
-                if (evolutionLevels.includes(nextLevel)) {
-                  if (nextLevel === 15 && !isMatureEvolution) {
-                    nextExp = 0;
-                    break;
-                  } else if (nextLevel === 60 && !isPerfectEvolution) {
-                    nextExp = 0;
-                    break;
-                  } else if (nextLevel === 90) {
-                    nextExp = 0;
-                    break;
-                  }
-                }
-              } else {
-                break;
-              }
-            }
-            simLevel = nextLevel;
-            simExp = nextExp;
-          }
-        });
-        document.getElementById('sim-final-level').textContent = simLevel;
-        // 경험치/다음레벨까지 필요 경험치 표시
-        let simLevelExp = simLevel < 100 ? expTable[simLevel - 1].exp : 0;
-        document.getElementById('sim-final-exp').textContent = simExp.toLocaleString() + ' / ' + simLevelExp.toLocaleString();
-
-        // 선택한 물약 결과 테이블 등 기존 결과 갱신 로직 유지
-        let totalSelectedExp = 0;
-        const potionCounts = {};
-        document.querySelectorAll('.potion-item').forEach(item => {
-          const potionValue = parseInt(item.dataset.potion);
-          const count = parseInt(item.querySelector('.counter-value').value);
-          if (count > 0) {
-            potionCounts[potionValue] = count;
-            totalSelectedExp += potionValue * count;
-          }
-        });
-        // 결과 테이블 업데이트
-        updateResultTable(potionCounts);
-
-        // --- 레벨 시뮬레이션 결과(simLevel)를 기준으로 물약별 버튼/텍스트 활성화 ---
-        document.querySelectorAll('.potion-item').forEach(item => {
-          const maxLevel = parseInt(item.dataset.maxLevel);
-          const plusBtn = item.querySelector('.plus-btn');
-          const minusBtn = item.querySelector('.minus-btn');
-          const counterInput = item.querySelector('.counter-value');
-          const count = parseInt(counterInput.value);
-          if (simLevel > maxLevel) {
-            plusBtn.disabled = true;
-            plusBtn.classList.add('opacity-50');
-            counterInput.disabled = false;
-            counterInput.classList.remove('opacity-50');
-            minusBtn.disabled = count === 0;
-            minusBtn.classList.remove('opacity-50');
-            item.classList.remove('opacity-50');
-          } else {
-            plusBtn.disabled = false;
-            plusBtn.classList.remove('opacity-50');
-            counterInput.disabled = false;
-            counterInput.classList.remove('opacity-50');
-            minusBtn.disabled = count === 0;
-            minusBtn.classList.remove('opacity-50');
-            item.classList.remove('opacity-50');
-          }
-        });
-      }
-      
-      // 결과 테이블 업데이트
-      function updateResultTable(potionCounts) {
-        const resultBody = document.getElementById('potion-result-body');
-        resultBody.innerHTML = '';
-        
-        let totalCount = 0;
-        let totalExp = 0;
-        
-        // 물약을 경험치 순으로 정렬
-        const sortedPotions = Object.keys(potionCounts)
-          .map(p => parseInt(p))
-          .sort((a, b) => a - b);
-        
-        if (sortedPotions.length === 0) {
-          resultBody.innerHTML = `<tr><td colspan="3" class="text-center">선택된 물약이 없습니다</td></tr>`;
-          return;
-        }
-        
-        // 테이블에 물약 정보 추가
-        for (const potion of sortedPotions) {
-          const count = potionCounts[potion];
-          const expTotal = potion * count;
-          totalCount += count;
-          totalExp += expTotal;
-          
-          const row = document.createElement('tr');
-          const imageFileName = `${potion} EXP 물약.webp`;
-          row.innerHTML = `
-            <td class="potion-name"><img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/item/${imageFileName}" alt="${potion} EXP 물약" class="potion-img">${potion} EXP 물약</td>
-            <td>${count}</td>
-            <td>${expTotal.toLocaleString()}</td>
-          `;
-          resultBody.appendChild(row);
-        }
-        
-        // 합계 행 추가
-        const totalRow = document.createElement('tr');
-        totalRow.className = 'font-bold';
-        totalRow.innerHTML = `
-          <td>합계</td>
-          <td>${totalCount}</td>
-          <td>${totalExp.toLocaleString()}</td>
-        `;
-        resultBody.appendChild(totalRow);
-      }
-    </script>
-  </body>
 </html>
+```

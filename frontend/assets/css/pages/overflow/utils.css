@@ -1,0 +1,101 @@
+/* Image Container Styles */
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.mob-image {
+    background-color: #161616;
+    border-radius: 5px;
+    margin: 5px 0 3px 14px;
+    width: 50px;
+    height: auto;
+}
+
+.mob-overlay {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 14px;
+    width: 40px;
+    height: 40px;
+    background-image: url("https://media.dsrwiki.com/dsrwiki/item/item5.webp");
+    background-repeat: no-repeat;
+    background-size: auto, contain;
+    background-position: top left, center;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.mob-level-overlay {
+    position: absolute;
+    bottom: 8px;
+    right: -3px;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    z-index: 2;
+}
+
+/* Tooltip Styles */
+.mob-tooltip {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 90%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 0 1px rgba(48, 164, 199, 0.3), 0 0 2px rgba(48, 164, 199, 0.2),
+        0 0 3px rgba(48, 164, 199, 0.1), 0 0 5px rgba(48, 164, 199, 0.1);
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
+
+.image-container:hover .mob-tooltip {
+    display: block;
+}
+
+/* Item Container Styles */
+.item-container {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+.item-count-badge {
+    position: absolute;
+    bottom: 7px;
+    right: 13px;
+    color: #fff;
+    font-size: 13px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
+
+.item-tooltip {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 0 1px rgba(48, 164, 199, 0.3), 0 0 2px rgba(48, 164, 199, 0.2),
+        0 0 3px rgba(48, 164, 199, 0.1), 0 0 5px rgba(48, 164, 199, 0.1);
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
+
+.item-container:hover .item-tooltip {
+    display: block;
+}

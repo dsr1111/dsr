@@ -1,179 +1,164 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
-    <title>DSR WIKI</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068"
-     crossorigin="anonymous"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css"
-    />
-    <link rel="stylesheet" href="assets/css/index.css" />
-    <link rel="stylesheet" href="assets/css/styles1.css" />
-    <script
-      src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"
-      defer
-    ></script>
-    <script src="app/lazyload.js" defer></script>
-    <script src="app/index.js" defer></script>
-    <script src="app/nav.js" defer></script>
-    <script src="app/calendar.js" defer></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-V5VLCXSKM7');
-    </script>
-  </head>
-  <body>
-    <custom-nav></custom-nav>
-    
-    <div class="side-ad-wrapper left">
-      <ins class="adsbygoogle side-ad"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1428393398"></ins>
-    </div>
-    
-    <div class="side-ad-wrapper right">
-      <ins class="adsbygoogle side-ad"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1851169108"></ins>
-    </div>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-    <script>
-      function updateSideAds() {
-        const ads = document.querySelectorAll('.side-ad-wrapper');
-        const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
-      
-        ads.forEach(ad => {
-          ad.style.top = top + 'px';
-        });
-      }
-      
-      window.addEventListener('scroll', updateSideAds);
-      window.addEventListener('resize', updateSideAds);
-      updateSideAds();
-    </script>
-    
-    <!-- 모바일에서 사이드 광고 및 하단 광고 숨김 -->
-    <style>
-      @media (max-width: 1720px) {
-        .adsbygoogle[data-ad-slot="1428393398"],
-        .adsbygoogle[data-ad-slot="1851169108"] {
-          display: none !important;
-        }
-      }
-      /* 모바일에서 풀캘린더 숨김 */
-      @media (max-width: 768px) {
-        .calendar-placeholder {
-          display: none !important;
-        }
-      }
-    </style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
+  <title>DSR WIKI</title>
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      var adScript = document.createElement('script');
+      adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+      adScript.async = true;
+      adScript.crossOrigin = 'anonymous';
+      document.head.appendChild(adScript);
+    }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" />
+  <link rel="stylesheet" href="assets/css/index.css" />
+  <link rel="stylesheet" href="assets/css/styles1.css" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js" defer></script>
+  <script src="app/lazyload.js" defer></script>
+  <script src="app/index.js" defer></script>
+  <script src="app/nav.js" defer></script>
+  <script src="app/calendar.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-V5VLCXSKM7');
+  </script>
+</head>
 
-    <div class="calendar-container">
-      <div class="left-container">
-        <div class="overflow">
-          <p class="index-title">오버플로우</p>
+<body>
+  <custom-nav></custom-nav>
+
+  <div class="side-ad-wrapper left">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1428393398"></ins>
+  </div>
+
+  <div class="side-ad-wrapper right">
+    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1851169108"></ins>
+  </div>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+
+  <!-- 모바일에서 사이드 광고 및 하단 광고 숨김 -->
+  <style>
+    @media (max-width: 1720px) {
+
+      .adsbygoogle[data-ad-slot="1428393398"],
+      .adsbygoogle[data-ad-slot="1851169108"] {
+        display: none !important;
+      }
+    }
+
+    /* 모바일에서 풀캘린더 숨김 */
+    @media (max-width: 768px) {
+      .calendar-placeholder {
+        display: none !important;
+      }
+    }
+  </style>
+
+  <div class="calendar-container">
+    <div class="left-container">
+      <div class="overflow">
+        <p class="index-title">오버플로우</p>
+      </div>
+
+      <div class="crown">
+        <p class="index-title">크라운-비트 환산</p>
+
+        <div class="exchange-rate">
+          <label for="exchange-rate">100 크라운 :
+            <input type="number" id="exchange-rate" value="60" />
+            <span>만 비트</span></label>
         </div>
 
-        <div class="crown">
-          <p class="index-title">크라운-비트 환산</p>
+        <div class="conversion-input">
+          <select id="currency-type">
+            <option value="crown-to-bit">크라운 ➔ 비트</option>
+            <option value="bit-to-crown">비트 ➔ 크라운</option>
+          </select>
 
-          <div class="exchange-rate">
-            <label for="exchange-rate"
-              >100 크라운 :
-              <input type="number" id="exchange-rate" value="60" />
-              <span>만 비트</span></label
-            >
-          </div>
+          <label for="currency-input">금액 :
+            <input type="number" id="currency-input" />
+          </label>
+        </div>
 
-          <div class="conversion-input">
-            <select id="currency-type">
-              <option value="crown-to-bit">크라운 ➔ 비트</option>
-              <option value="bit-to-crown">비트 ➔ 크라운</option>
-            </select>
-
-            <label for="currency-input"
-              >금액 :
-              <input type="number" id="currency-input" />
+        <div class="result-display">
+          <p>계산 값 : <span id="conversion-result">0</span></p>
+        </div>
+      </div>
+      <div class="crown">
+        <p class="index-title">레이드 타이머</p>
+        <div class="raid-timer-controls" style="text-align:left; margin-bottom:6px;">
+          <div class="raid-alarm-header">
+            <label style="font-size:13px; font-weight:normal;">
+              <input type="checkbox" id="raid-alarm-toggle" style="vertical-align:middle;"> 알림 켜기
             </label>
+            <button id="raid-settings-toggle" class="settings-button"><i class="ri-settings-3-line"></i></button>
           </div>
-
-          <div class="result-display">
-            <p>계산 값 : <span id="conversion-result">0</span></p>
-          </div>
-        </div>
-        <div class="crown">
-          <p class="index-title">레이드 타이머</p>
-          <div class="raid-timer-controls" style="text-align:left; margin-bottom:6px;">
-            <div class="raid-alarm-header">
-              <label style="font-size:13px; font-weight:normal;">
-                <input type="checkbox" id="raid-alarm-toggle" style="vertical-align:middle;"> 알림 켜기
-              </label>
-              <button id="raid-settings-toggle" class="settings-button"><i class="ri-settings-3-line"></i></button>
+          <div id="raid-settings-panel" class="settings-panel" style="display: none;">
+            <button id="raid-settings-close" class="popup-close-button">&times;</button>
+            <div class="setting-item">
+              <label for="alarm-volume">볼륨:</label>
+              <input type="range" id="alarm-volume" min="0" max="1" step="0.1" value="0.5">
             </div>
-            <div id="raid-settings-panel" class="settings-panel" style="display: none;">
-                <button id="raid-settings-close" class="popup-close-button">&times;</button>
-                <div class="setting-item">
-                    <label for="alarm-volume">볼륨:</label>
-                    <input type="range" id="alarm-volume" min="0" max="1" step="0.1" value="0.5">
-                </div>
-                <div class="setting-item">
-                    <label for="alarm-duration">재생 시간:</label>
-                    <input type="range" id="alarm-duration" min="1" max="6" value="3">
-                    <span id="alarm-duration-value">3초</span>
-                </div>
-            </div>
-            <div style="font-size:11px; color:#888;">
-              <span id="notification-time" contenteditable="true" style="border-bottom: 1px dashed #888; padding: 0 2px; cursor: pointer; color: #4a90e2; font-weight: bold;" title="클릭하여 알림 시간을 수정할 수 있습니다">5</span>분 전 팝업과 사운드가 재생됩니다.
+            <div class="setting-item">
+              <label for="alarm-duration">재생 시간:</label>
+              <input type="range" id="alarm-duration" min="1" max="6" value="3">
+              <span id="alarm-duration-value">3초</span>
             </div>
           </div>
-          <div id="raid-timers"></div>
+          <div style="font-size:11px; color:#888;">
+            <span id="notification-time" contenteditable="true"
+              style="border-bottom: 1px dashed #888; padding: 0 2px; cursor: pointer; color: #4a90e2; font-weight: bold;"
+              title="클릭하여 알림 시간을 수정할 수 있습니다">5</span>분 전 팝업과 사운드가 재생됩니다.
+          </div>
         </div>
-
-      </div>
-      <div id="calendar-placeholder" class="calendar-placeholder">
-        <div class="calendar-content">
-          <div id="event-calendar" aria-live="polite"></div>
-          <p id="calendar-empty-message" class="calendar-empty-message" hidden></p>
-        </div>
+        <div id="raid-timers"></div>
       </div>
 
-      <div class="coupon-kakaopay-container">
-        <div class="coupon">
-          <p class="index-title">쿠폰</p>
-          <div class="coupon-container"></div>
-        </div>
-      </div>
     </div>
-    
-    <script src="app/raid-timer.js" defer></script>
-
-    <!-- Map Image Modal -->
-    <div id="map-modal" class="map-modal-overlay" style="display: none;">
-      <div class="map-modal-content">
-        <span id="map-modal-close" class="map-modal-close">&times;</span>
-        <img loading="lazy" id="map-modal-image" src="" alt="Raid Location Map">
+    <div id="calendar-placeholder" class="calendar-placeholder">
+      <div class="calendar-content">
+        <div id="event-calendar" aria-live="polite"></div>
+        <p id="calendar-empty-message" class="calendar-empty-message" hidden></p>
       </div>
     </div>
 
-    <!-- Custom Raid Alert -->
-    <div id="custom-raid-alert" class="custom-alert-overlay" style="display: none;">
-      <div class="custom-alert-box">
-        <h3 id="custom-alert-title">레이드 알림</h3>
-        <p id="custom-alert-message"></p>
-        <button id="custom-alert-close">닫기</button>
+    <div class="coupon-kakaopay-container">
+      <div class="coupon">
+        <p class="index-title">쿠폰</p>
+        <div class="coupon-container"></div>
       </div>
     </div>
-  </body>
+  </div>
+
+  <script src="app/raid-timer.js" defer></script>
+
+  <!-- Map Image Modal -->
+  <div id="map-modal" class="map-modal-overlay" style="display: none;">
+    <div class="map-modal-content">
+      <span id="map-modal-close" class="map-modal-close">&times;</span>
+      <img loading="lazy" id="map-modal-image" src="" alt="Raid Location Map">
+    </div>
+  </div>
+
+  <!-- Custom Raid Alert -->
+  <div id="custom-raid-alert" class="custom-alert-overlay" style="display: none;">
+    <div class="custom-alert-box">
+      <h3 id="custom-alert-title">레이드 알림</h3>
+      <p id="custom-alert-message"></p>
+      <button id="custom-alert-close">닫기</button>
+    </div>
+  </div>
+</body>
+
 </html>
