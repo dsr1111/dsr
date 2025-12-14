@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const positionTooltip = (event) => {
     const point = extractClientPoint(event);
     const tooltipRect = tooltip.getBoundingClientRect();
-    let left = point.x + 16;
+    let left = point.x - (tooltipRect.width / 2);
     let top = point.y + 16;
 
     if (left + tooltipRect.width > window.innerWidth - 12) {
