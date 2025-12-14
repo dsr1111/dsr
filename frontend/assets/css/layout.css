@@ -13,28 +13,7 @@
     flex-direction: column;
 }
 
-/* Side Ads */
-.side-ad-wrapper {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 160px;
-    height: 600px;
-    z-index: 999;
-}
 
-.side-ad-wrapper.left {
-    left: 10px;
-}
-
-.side-ad-wrapper.right {
-    right: 10px;
-}
-
-.side-ad {
-    width: 160px;
-    height: 600px;
-}
 
 /* Mobile Layout Adjustments */
 @media only screen and (max-width: 768px) {

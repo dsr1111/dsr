@@ -518,11 +518,16 @@ header {
 
 .side-ad-wrapper {
   position: absolute;
-  top: 0;
+  top: 180px !important;
   width: 160px;
   height: 600px;
-  z-index: 999;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+
 
 .side-ad-wrapper.left {
   left: 10px;
