@@ -144,9 +144,11 @@ a {
     opacity: 0;
     transition: top 0.4s, opacity 0.3s;
   }
+
   .nav__menu::-webkit-scrollbar {
     width: 0;
   }
+
   .nav__list {
     background-color: var(--black-color);
     padding-top: 1rem;
@@ -181,6 +183,7 @@ a {
   opacity: 0;
   transform: rotate(90deg);
 }
+
 .show-icon .nav__close {
   opacity: 1;
   transform: rotate(90deg);
@@ -247,7 +250,7 @@ a {
     max-height: 0;
     transition: max-height 0.4s ease-out;
   }
-  
+
   .show-dropdown {
     max-height: 1000px;
     transition: max-height 0.4s ease-in;
@@ -256,7 +259,7 @@ a {
 
 /* Show dropdown menu & submenu */
 .dropdown__item:hover .dropdown__menu,
-.dropdown__subitem:hover > .dropdown__submenu {
+.dropdown__subitem:hover>.dropdown__submenu {
   max-height: 1000px;
   transition: max-height 0.4s ease-in;
 }
@@ -302,20 +305,24 @@ a {
     display: flex;
     justify-content: space-between;
   }
+
   .nav__toggle {
     display: none;
   }
+
   .nav__list {
     height: 100%;
     display: flex;
     column-gap: 3rem;
   }
+
   .nav__link {
     height: 100%;
     padding: 0;
     justify-content: initial;
     column-gap: 0.25rem;
   }
+
   .nav__link:hover {
     background-color: transparent;
   }
@@ -338,9 +345,9 @@ a {
   }
 
   .dropdown__menu {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .dropdown__link,
@@ -367,7 +374,7 @@ a {
   }
 
   /* Show dropdown submenu */
-  .dropdown__subitem:hover > .dropdown__submenu {
+  .dropdown__subitem:hover>.dropdown__submenu {
     opacity: 1;
     top: 0;
     pointer-events: initial;
@@ -391,6 +398,7 @@ a {
 a:hover {
   color: orange;
 }
+
 /* HEADER */
 header {
   position: relative;
@@ -427,7 +435,7 @@ header {
   scale: 0.95;
 }
 
-.navbar .action_btn + .action_btn {
+.navbar .action_btn+.action_btn {
   margin-left: 20px;
 }
 
@@ -474,7 +482,7 @@ header {
   align-items: center;
 }
 
-.inline-items a + a {
+.inline-items a+a {
   margin-left: -150px;
 }
 
@@ -485,6 +493,7 @@ header {
 }
 
 @media (max-width: 992px) {
+
   .navbar .links,
   .navbar .action_btn,
   .navbar .home_btn {
@@ -526,4 +535,10 @@ header {
 .side-ad {
   width: 160px;
   height: 600px;
+}
+
+@media screen and (max-width: 1790px) {
+  .side-ad-wrapper {
+    display: none !important;
+  }
 }
