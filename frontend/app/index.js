@@ -7,8 +7,13 @@ document.addEventListener("DOMContentLoaded", function () {
 function initCouponSystem() {
   const today = new Date();
 
-  fetch("https://media.dsrwiki.com/data/csv/data/csv/coupon.json")
-    .then((response) => response.json())
+  fetch("https://media.dsrwiki.com/data/csv/coupon.json")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
       const couponContainer = document.querySelector(".coupon-container");
       if (!couponContainer) return;
@@ -44,7 +49,17 @@ function initCouponSystem() {
         couponContainer.appendChild(noCouponsEl);
       }
     })
-    .catch((error) => console.error("Error loading coupon data:", error));
+    .catch((error) => {
+      console.error("Error loading coupon data:", error);
+      const couponContainer = document.querySelector(".coupon-container");
+      if (couponContainer) {
+        couponContainer.innerHTML = '';
+        const errorEl = document.createElement("p");
+        errorEl.textContent = "쿠폰 정보를 불러올 수 없습니다.";
+        errorEl.style.fontSize = "13px";
+        couponContainer.appendChild(errorEl);
+      }
+    });
 }
 
 function createCouponElement(name, data, container) {
