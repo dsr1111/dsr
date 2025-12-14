@@ -285,6 +285,17 @@ function initMap() {
   mapDropdown.dispatchEvent(new Event("change"));
 }
 
+function findDigimonInfo(mobId) {
+  if (!window.digimonData) return null;
+
+  // ID 값을 기준으로 데이터 조회
+  if (mobId && window.digimonData[mobId]) {
+    return window.digimonData[mobId];
+  }
+
+  return null;
+}
+
 function createCheckbox(
   labelText,
   checkboxId,
@@ -367,7 +378,7 @@ function createCheckbox(
     if (checkboxId === "toggle-mob") {
       imgElement.classList.add("mob-image");
 
-      const digimonInfo = window.digimonData ? window.digimonData[item.name] : null;
+      const digimonInfo = findDigimonInfo(item.id);
       const typeValue = digimonInfo ? digimonInfo.type : item.type;
       const strongValue = digimonInfo && digimonInfo.strengths
         ? `${digimonInfo.strengths.attribute},${digimonInfo.strengths.effect}`
@@ -466,18 +477,13 @@ function showSpecialTooltipAtImage(
   let tooltip = document.createElement("div");
   tooltip.className = "special-tooltip";
 
-  // map.json의 mobs 데이터에서 해당 몹 정보 찾기
-  const selectedMap = maps[mapDropdown.value];
-  // src를 포함하여 정확한 몹 정보 찾기
-  const mobData = selectedMap.mobs.find(m => m.name === name && m.src === src);
-
   // 강점과 약점 정보 가져오기 (콤마 앞은 이미지, 뒤는 텍스트)
-  const 강점Parts = typeof mobData?.강점 === "string"
-    ? mobData.강점.split(',').map(s => s.trim()).filter(Boolean)
-    : Array.isArray(mobData?.강점) ? mobData.강점 : [];
-  const 약점Parts = typeof mobData?.약점 === "string"
-    ? mobData.약점.split(',').map(s => s.trim()).filter(Boolean)
-    : Array.isArray(mobData?.약점) ? mobData.약점 : [];
+  const 강점Parts = typeof 강점 === "string"
+    ? 강점.split(',').map(s => s.trim()).filter(Boolean)
+    : Array.isArray(강점) ? 강점 : [];
+  const 약점Parts = typeof 약점 === "string"
+    ? 약점.split(',').map(s => s.trim()).filter(Boolean)
+    : Array.isArray(약점) ? 약점 : [];
 
   const 드랍아이템목록 = Array.isArray(items) ? items : [];
 
