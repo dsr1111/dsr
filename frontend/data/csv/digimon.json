@@ -23835,7 +23835,7 @@
         ]
       }
     ]
-  },  
+  },
   "슬레이프몬": {
     "evolution_stage": "궁극체",
     "type": "백신",
@@ -27349,5 +27349,29 @@
         ]
       }
     ]
+  },
+  "멧돼지몬": {
+    "evolution_stage": "성숙기",
+    "type": "프리",
+    "stats": {
+      "level": 0,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "불",
+      "effect": "내성"
+    },
+    "weaknesses": {
+      "attribute": "물",
+      "effect": "약점"
+    },
+    "fields": [],
+    "skills": []
   }
 }

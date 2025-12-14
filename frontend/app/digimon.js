@@ -142,6 +142,7 @@
 
         Object.entries(digimonData).forEach(([name, digimon]) => {
           try {
+            if (name === '멧돼지몬') return;
             const evolution = digimon.evolution_stage;
             const type = digimon.type;
             const stats = digimon.stats;

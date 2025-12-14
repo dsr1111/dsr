@@ -367,8 +367,17 @@ function createCheckbox(
     if (checkboxId === "toggle-mob") {
       imgElement.classList.add("mob-image");
 
+      const digimonInfo = window.digimonData ? window.digimonData[item.name] : null;
+      const typeValue = digimonInfo ? digimonInfo.type : item.type;
+      const strongValue = digimonInfo && digimonInfo.strengths
+        ? `${digimonInfo.strengths.attribute},${digimonInfo.strengths.effect}`
+        : item.강점;
+      const weakValue = digimonInfo && digimonInfo.weaknesses
+        ? `${digimonInfo.weaknesses.attribute},${digimonInfo.weaknesses.effect}`
+        : item.약점;
+
       const typeElement = document.createElement("img");
-      typeElement.src = `https://media.dsrwiki.com/dsrwiki/${item.type}.webp`;
+      typeElement.src = `https://media.dsrwiki.com/dsrwiki/${typeValue}.webp`;
       typeElement.style.top = `${item.top - 5}px`;
       typeElement.style.left = `${item.left - 5}px`;
       typeElement.classList.add("type-marker");
@@ -380,8 +389,8 @@ function createCheckbox(
         item.src,
         item.level,
         item.hp,
-        item.강점,
-        item.약점,
+        strongValue,
+        weakValue,
         item.items,
         item.evol
       );

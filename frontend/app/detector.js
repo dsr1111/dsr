@@ -1,15 +1,18 @@
 
 let detectorData = null;
+let digimonGlobalData = null;
 let selectedDetector = null;
 let selectedDigimon = null;
 
 // JSON 데이터 로드
-fetch('https://media.dsrwiki.com/data/csv/detector.json')
-    .then(response => response.json())
-    .then(data => {
-        detectorData = data;
-        populateDetectorGrid();
-    });
+Promise.all([
+    fetch('https://media.dsrwiki.com/data/csv/detector.json').then(res => res.json()),
+    fetch('https://media.dsrwiki.com/data/csv/digimon.json').then(res => res.json())
+]).then(([detector, digimon]) => {
+    detectorData = detector;
+    digimonGlobalData = digimon;
+    populateDetectorGrid();
+});
 
 // 탐지기 버튼 그리드 생성
 function populateDetectorGrid() {
@@ -554,9 +557,7 @@ function showMapAndMarker(detector, digimon) {
 // 카드 하단에 스킬 테이블 추가
 async function showDigimonSkills(digimon) {
     // digimon.json에서 스킬 정보 가져오기
-    const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
-    const digimonData = await response.json();
-    const digimonInfo = digimonData[digimon];
+    const digimonInfo = digimonGlobalData[digimon];
 
     if (!digimonInfo || !digimonInfo.skills) {
         return '';
@@ -603,13 +604,20 @@ async function showDigimonSkills(digimon) {
 // 디지몬 정보 카드 표시
 async function showDigimonInfo(detector, digimon) {
     const data = detectorData[detector]['악역 디지몬'][digimon];
+    const digimonInfo = digimonGlobalData[digimon] || {};
+
+    const type = digimonInfo.type || data.type;
+    // digimon.json strong/weak to string format "Attr,Effect"
+    const strongStr = digimonInfo.strengths ? `${digimonInfo.strengths.attribute},${digimonInfo.strengths.effect}` : data.strong;
+    const weakStr = digimonInfo.weaknesses ? `${digimonInfo.weaknesses.attribute},${digimonInfo.weaknesses.effect}` : data.weak;
+
     let typeIcon = '';
-    if (data.type) {
+    if (type) {
         typeIcon = `<span class="type-icon-wrapper">
-            <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${data.type}.webp" alt="${data.type}" class="type-icon-img">
+            <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${type}.webp" alt="${type}" class="type-icon-img">
         </span>`;
     }
-    const strongBadges = data.strong ? data.strong.split(',').map((s, i) => {
+    const strongBadges = strongStr ? strongStr.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
             return `<span class="attr-badge-icon bg-strong">
@@ -619,7 +627,7 @@ async function showDigimonInfo(detector, digimon) {
             return `<span class="attr-text-span">${value}</span>`;
         }
     }).join('') : '';
-    const weakBadges = data.weak ? data.weak.split(',').map((s, i) => {
+    const weakBadges = weakStr ? weakStr.split(',').map((s, i) => {
         const value = s.trim();
         if (i === 0) {
             return `<span class="attr-badge-icon bg-weak">
@@ -642,9 +650,9 @@ async function showDigimonInfo(detector, digimon) {
         <div class="text-sm text-gray-700 space-y-3 mb-4">
           ${data.level ? `<div class="digimon-info-text"><b>레벨 :</b> ${data.level}</div>` : ''}
           ${data.HP ? `<div class="digimon-info-text"><b>HP :</b> ${data.HP}</div>` : ''}
-          ${data.type ? `<div class="digimon-info-flex"><b>타입 :</b> ${typeIcon}</div>` : ''}
-          ${data.strong ? `<div class="digimon-info-flex">강점 : ${strongBadges}</div>` : ''}
-          ${data.weak ? `<div class="digimon-info-flex">약점 : ${weakBadges}</div>` : ''}
+          ${type ? `<div class="digimon-info-flex"><b>타입 :</b> ${typeIcon}</div>` : ''}
+          ${strongStr ? `<div class="digimon-info-flex">강점 : ${strongBadges}</div>` : ''}
+          ${weakStr ? `<div class="digimon-info-flex">약점 : ${weakBadges}</div>` : ''}
         </div>
         <div class="flex-1 overflow-y-auto">
           ${skillTable}
