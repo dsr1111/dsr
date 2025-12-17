@@ -515,35 +515,3 @@ header {
     width: unset;
   }
 }
-
-.side-ad-wrapper {
-  position: absolute;
-  top: 180px !important;
-  width: 160px;
-  height: 600px;
-  z-index: 90;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-
-.side-ad-wrapper.left {
-  left: 10px;
-}
-
-.side-ad-wrapper.right {
-  right: 10px;
-}
-
-.side-ad {
-  width: 160px;
-  height: 600px;
-}
-
-@media screen and (max-width: 1790px) {
-  .side-ad-wrapper {
-    display: none !important;
-  }
-}

@@ -32,42 +32,6 @@
 <body>
   <custom-nav></custom-nav>
 
-  <div class="side-ad-wrapper left">
-    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1428393398"></ins>
-  </div>
-
-  <div class="side-ad-wrapper right">
-    <ins class="adsbygoogle side-ad" data-ad-client="ca-pub-6625279423156068" data-ad-slot="1851169108"></ins>
-  </div>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-  <script>
-    function updateSideAds() {
-      const ads = document.querySelectorAll('.side-ad-wrapper');
-      const top = window.scrollY + window.innerHeight / 2 - 300; // 중앙 정렬
-
-      ads.forEach(ad => {
-        ad.style.top = top + 'px';
-      });
-    }
-
-    window.addEventListener('scroll', updateSideAds);
-    window.addEventListener('resize', updateSideAds);
-    updateSideAds();
-  </script>
-
-  <!-- 모바일에서 사이드 광고 숨김 -->
-  <style>
-    @media (max-width: 1420px) {
-
-      .adsbygoogle[data-ad-slot="1428393398"],
-      .adsbygoogle[data-ad-slot="1851169108"] {
-        display: none !important;
-      }
-    }
-  </style>
-
-
   <div id="feedback-popup" class="feedback-popup">
     <div class="feedback-popup-content">
       <p>진화 조건 %가 미기입된 디지몬의 수치 피드백으로 제보받습니다.</p>

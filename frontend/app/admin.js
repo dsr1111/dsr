@@ -15,7 +15,7 @@ class DataManager {
         this.currentIndex = null; // 객체 기반이므로 인덱스 대신 이름(키)을 저장할 수 있음
         this.currentName = null; // 현재 수정 중인 디지몬의 이름
         this.lastAddedName = null; // 마지막으로 추가된 디지몬 이름
-        
+
         this.initializeEventListeners();
     }
 
@@ -57,7 +57,7 @@ class DataManager {
         const tableBody = document.getElementById('dataTableBody');
         const tableHead = document.querySelector('.data-table thead tr');
         tableBody.innerHTML = '';
-        
+
         // digimon.json 전용 테이블
         if (this.currentType === 'digimon') {
             tableHead.innerHTML = `
@@ -82,7 +82,7 @@ class DataManager {
                 <th>스킬3</th>
                 <th>관리</th>
             `;
-            
+
             // 객체를 배열로 변환하여 정렬
             const digimonArray = Object.entries(this.currentData).map(([name, data]) => ({ name, ...data }));
 
@@ -259,7 +259,7 @@ class DataManager {
             fields.forEach(field => {
                 const group = document.createElement('div');
                 group.className = 'form-group';
-                
+
                 if (field.type === 'select') {
                     group.innerHTML = `
                         <label>${field.label}:</label>
@@ -591,7 +591,7 @@ class DataManager {
             // 정렬
             const sortedData = {};
             const evolutionOrder = ["성장기", "성숙기", "완전체", "궁극체", "초궁극체", "조그레스", "특수"];
-            
+
             const digimonArray = Object.entries(this.currentData).map(([name, data]) => ({ name, ...data }));
             digimonArray.sort((a, b) => {
                 const stageA = evolutionOrder.indexOf(a.evolution_stage);
@@ -733,7 +733,7 @@ class DataManager {
                 delete data[oldName];
             }
             data[name] = newItem;
-            
+
             // 덱이름 기준으로 정렬
             const sortedData = {};
             Object.keys(data)
@@ -741,7 +741,7 @@ class DataManager {
                 .forEach(key => {
                     sortedData[key] = data[key];
                 });
-            
+
             this.currentData = sortedData;
         }
 
@@ -755,7 +755,7 @@ class DataManager {
         try {
             console.log('저장할 데이터:', this.currentData);
             const jsonContent = JSON.stringify(this.currentData, null, 2);
-            
+
             // 파일 다운로드 링크 생성
             const blob = new Blob([jsonContent], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -788,13 +788,13 @@ class DataManager {
 
     convertToCSV(data) {
         if (data.length === 0) return '';
-        
+
         const headers = Object.keys(data[0]);
         const csvRows = [
             headers.join(','),
             ...data.map(row => headers.map(header => row[header]).join(','))
         ];
-        
+
         return csvRows.join('\n');
     }
 
@@ -842,14 +842,14 @@ function hideEditFormWithOverlay() {
 
 // editForm 열릴 때 오버레이도 같이 열기
 const origShowEditForm = dataManager.showEditForm.bind(dataManager);
-dataManager.showEditForm = function(item) {
+dataManager.showEditForm = function (item) {
     origShowEditForm(item);
     showEditFormWithOverlay();
 };
 
 // editForm 닫힐 때 오버레이도 같이 닫기
 const origHideEditForm = dataManager.hideEditForm.bind(dataManager);
-dataManager.hideEditForm = function() {
+dataManager.hideEditForm = function () {
     origHideEditForm();
     hideEditFormWithOverlay();
 };
