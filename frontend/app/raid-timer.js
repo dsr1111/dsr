@@ -79,11 +79,11 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '배드퍼펫몬',
-  image: getImagePath('배드퍼펫몬'),
+  name: '조커몬',
+  image: getImagePath('조커몬'),
   baseTime: '19:00',
-  baseDate: '2025-12-04',
-  map: '강철 도시',
+  baseDate: '2025-12-18',
+  map: '어둠의 권역',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
@@ -95,7 +95,7 @@ let lastFetchTime = null; // serverKST를 가져온 로컬 시간
 async function initializeTime() {
   // 여러 서버 시간 API를 시도 (시스템 시간과 무관)
   const timeAPIs = [];
-  
+
   // 자체 백엔드 API가 설정되어 있으면 우선 사용
   if (CUSTOM_TIME_API) {
     timeAPIs.push(CUSTOM_TIME_API);
@@ -107,7 +107,7 @@ async function initializeTime() {
       'https://timeapi.io/api/Time/current/zone?timeZone=Asia/Seoul'
     );
   }
-  
+
   for (const apiUrl of timeAPIs) {
     try {
       const response = await fetch(apiUrl, {
@@ -117,14 +117,14 @@ async function initializeTime() {
           'Accept': 'application/json'
         }
       });
-      
+
       if (!response.ok) {
         continue; // 다음 API 시도
       }
-      
+
       const data = await response.json();
       let serverTime = null;
-      
+
       // 다양한 응답 형식 처리
       if (data.datetime) {
         // WorldTimeAPI 형식: { datetime: "2025-01-01T12:00:00+09:00" }
@@ -151,7 +151,7 @@ async function initializeTime() {
         // Unix 타임스탬프 (초 단위): { epochSecond: 1704067200 }
         serverTime = new Date(data.epochSecond * 1000);
       }
-      
+
       if (serverTime && !isNaN(serverTime.getTime())) {
         serverKST = serverTime;
         lastFetchTime = Date.now();
@@ -163,7 +163,7 @@ async function initializeTime() {
       continue;
     }
   }
-  
+
   // 모든 서버 API 실패 시, Intl API 사용 (시스템 시간 기반이지만 최선의 대안)
   try {
     const now = new Date();
@@ -177,15 +177,15 @@ async function initializeTime() {
       second: '2-digit',
       hour12: false
     }).formatToParts(now);
-    
+
     const kstParts = {};
     parts.forEach(part => {
       kstParts[part.type] = part.value;
     });
-    
+
     const kstString = `${kstParts.year}-${kstParts.month}-${kstParts.day}T${kstParts.hour}:${kstParts.minute}:${kstParts.second}+09:00`;
     serverKST = new Date(kstString);
-    
+
     if (!isNaN(serverKST.getTime())) {
       lastFetchTime = Date.now();
       console.warn('서버 API 실패, Intl API 사용 (시스템 시간 의존):', serverKST);
@@ -194,7 +194,7 @@ async function initializeTime() {
   } catch (error) {
     console.error('Intl API도 실패:', error);
   }
-  
+
   // 최종 폴백: 시스템 시간 사용 (경고)
   serverKST = new Date();
   lastFetchTime = Date.now();
@@ -262,75 +262,75 @@ function getKSTDateString(date) {
 }
 
 function getNextDailyTime(timeStr) {
-    const now = getCurrentKST();
-    
-    // 현재 KST 날짜 문자열 구하기
-    const kstDateString = getKSTDateString(now);
-    
-    // 오늘 해당 시간의 KST 타임스탬프 계산 (+09:00 오프셋 명시)
-    let next = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+  const now = getCurrentKST();
 
-    if (next <= now) {
-        // 다음 날로 설정 (24시간을 더함)
-        next = new Date(next.getTime() + 24 * 60 * 60 * 1000);
-    }
-    return next;
+  // 현재 KST 날짜 문자열 구하기
+  const kstDateString = getKSTDateString(now);
+
+  // 오늘 해당 시간의 KST 타임스탬프 계산 (+09:00 오프셋 명시)
+  let next = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+
+  if (next <= now) {
+    // 다음 날로 설정 (24시간을 더함)
+    next = new Date(next.getTime() + 24 * 60 * 60 * 1000);
+  }
+  return next;
 }
 
 function getNextBiweeklyTime(timeStr, baseDateStr) {
-    const now = getCurrentKST();
-    const base = new Date(baseDateStr + 'T00:00:00+09:00');
+  const now = getCurrentKST();
+  const base = new Date(baseDateStr + 'T00:00:00+09:00');
 
-    // KST 자정 기준으로 날짜 차이 계산
-    const nowKSTYear = getKSTYear(now);
-    const nowKSTMonth = getKSTMonth(now) - 1; // Date.UTC는 0-based
-    const nowKSTDay = getKSTDate(now);
-    const nowAtMidnightKST = Date.UTC(nowKSTYear, nowKSTMonth, nowKSTDay - 1, 15, 0, 0, 0);
-    
-    const baseKSTYear = getKSTYear(base);
-    const baseKSTMonth = getKSTMonth(base) - 1;
-    const baseKSTDay = getKSTDate(base);
-    const baseAtMidnightKST = Date.UTC(baseKSTYear, baseKSTMonth, baseKSTDay - 1, 15, 0, 0, 0);
-    
-    const diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
-    
-    const cycles = Math.floor(diffDays / 14);
-    let nextDate = new Date(baseAtMidnightKST + cycles * 14 * 24 * 60 * 60 * 1000);
-    
-    // 다음 레이드 시간을 KST로 설정
-    const kstDateString = getKSTDateString(nextDate);
-    let nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+  // KST 자정 기준으로 날짜 차이 계산
+  const nowKSTYear = getKSTYear(now);
+  const nowKSTMonth = getKSTMonth(now) - 1; // Date.UTC는 0-based
+  const nowKSTDay = getKSTDate(now);
+  const nowAtMidnightKST = Date.UTC(nowKSTYear, nowKSTMonth, nowKSTDay - 1, 15, 0, 0, 0);
 
-    if (nextRaidTime <= now) {
-        nextRaidTime = new Date(nextRaidTime.getTime() + 14 * 24 * 60 * 60 * 1000);
-    }
+  const baseKSTYear = getKSTYear(base);
+  const baseKSTMonth = getKSTMonth(base) - 1;
+  const baseKSTDay = getKSTDate(base);
+  const baseAtMidnightKST = Date.UTC(baseKSTYear, baseKSTMonth, baseKSTDay - 1, 15, 0, 0, 0);
 
-    return nextRaidTime;
+  const diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
+
+  const cycles = Math.floor(diffDays / 14);
+  let nextDate = new Date(baseAtMidnightKST + cycles * 14 * 24 * 60 * 60 * 1000);
+
+  // 다음 레이드 시간을 KST로 설정
+  const kstDateString = getKSTDateString(nextDate);
+  let nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+
+  if (nextRaidTime <= now) {
+    nextRaidTime = new Date(nextRaidTime.getTime() + 14 * 24 * 60 * 60 * 1000);
+  }
+
+  return nextRaidTime;
 }
 
 function getNextWeeklyTime(timeStr, days) {
-    const [hour, min] = timeStr.split(':').map(Number);
-    const now = getCurrentKST();
-    
-    for (let i = 0; i < 14; i++) { // 최대 2주까지만 탐색
-        const futureDate = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
-        
-        // KST 날짜 문자열 생성
-        const kstDateString = getKSTDateString(futureDate);
-        
-        const nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
-        
-        // KST 기준 요일 구하기
-        const kstDay = getKSTDay(nextRaidTime);
+  const [hour, min] = timeStr.split(':').map(Number);
+  const now = getCurrentKST();
 
-        if (days.includes(kstDay) && nextRaidTime > now) {
-            return nextRaidTime;
-        }
+  for (let i = 0; i < 14; i++) { // 최대 2주까지만 탐색
+    const futureDate = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
+
+    // KST 날짜 문자열 생성
+    const kstDateString = getKSTDateString(futureDate);
+
+    const nextRaidTime = new Date(`${kstDateString}T${timeStr}:00+09:00`);
+
+    // KST 기준 요일 구하기
+    const kstDay = getKSTDay(nextRaidTime);
+
+    if (days.includes(kstDay) && nextRaidTime > now) {
+      return nextRaidTime;
     }
-    // 만약 지난 2주간 해당 요일이 없다면, 기본 로직으로 다음 시간을 반환 (오류 방지)
-    const fallbackDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const kstDateString = getKSTDateString(fallbackDate);
-    return new Date(`${kstDateString}T${timeStr}:00+09:00`);
+  }
+  // 만약 지난 2주간 해당 요일이 없다면, 기본 로직으로 다음 시간을 반환 (오류 방지)
+  const fallbackDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const kstDateString = getKSTDateString(fallbackDate);
+  return new Date(`${kstDateString}T${timeStr}:00+09:00`);
 }
 
 function getTimeDiffString(target) {
@@ -356,51 +356,51 @@ function formatTimeToKR(str) {
 }
 
 function getMasterTyrannoNextTime() {
-    const now = getCurrentKST();
-    const baseDate = new Date(RotationRaid.baseDate + 'T00:00:00+09:00');
-    const [baseHour, baseMin] = RotationRaid.baseTime.split(':').map(Number);
+  const now = getCurrentKST();
+  const baseDate = new Date(RotationRaid.baseDate + 'T00:00:00+09:00');
+  const [baseHour, baseMin] = RotationRaid.baseTime.split(':').map(Number);
 
-    // KST 자정 기준으로 날짜 차이 계산
-    const nowKSTYear = getKSTYear(now);
-    const nowKSTMonth = getKSTMonth(now) - 1; // Date.UTC는 0-based
-    const nowKSTDay = getKSTDate(now);
-    const nowAtMidnightKST = Date.UTC(nowKSTYear, nowKSTMonth, nowKSTDay - 1, 15, 0, 0, 0);
-    
-    const baseKSTYear = getKSTYear(baseDate);
-    const baseKSTMonth = getKSTMonth(baseDate) - 1;
-    const baseKSTDay = getKSTDate(baseDate);
-    const baseAtMidnightKST = Date.UTC(baseKSTYear, baseKSTMonth, baseKSTDay - 1, 15, 0, 0, 0);
+  // KST 자정 기준으로 날짜 차이 계산
+  const nowKSTYear = getKSTYear(now);
+  const nowKSTMonth = getKSTMonth(now) - 1; // Date.UTC는 0-based
+  const nowKSTDay = getKSTDate(now);
+  const nowAtMidnightKST = Date.UTC(nowKSTYear, nowKSTMonth, nowKSTDay - 1, 15, 0, 0, 0);
 
-    let diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
+  const baseKSTYear = getKSTYear(baseDate);
+  const baseKSTMonth = getKSTMonth(baseDate) - 1;
+  const baseKSTDay = getKSTDate(baseDate);
+  const baseAtMidnightKST = Date.UTC(baseKSTYear, baseKSTMonth, baseKSTDay - 1, 15, 0, 0, 0);
 
-    // 레이드 날짜 계산 (baseDate에서 diffDays만큼 더함)
-    const raidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
-    
-    // 레이드 시간 계산: baseTime + (diffDays * 25분)
-    const totalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
-    const raidHour = Math.floor(totalMinutes / 60) % 24;
-    const raidMin = totalMinutes % 60;
-    
-    // 날짜가 넘어간 경우 처리
-    const extraDays = Math.floor(totalMinutes / (60 * 24));
-    let finalDate = new Date(baseAtMidnightKST + (diffDays + extraDays) * 24 * 60 * 60 * 1000);
-    const finalDateString = getKSTDateString(finalDate);
-    
-    let nextTime = new Date(`${finalDateString}T${raidHour.toString().padStart(2, '0')}:${raidMin.toString().padStart(2, '0')}:00+09:00`);
+  let diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
 
-    if (nextTime <= now) {
-        diffDays++;
-        const nextRaidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
-        const nextTotalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
-        const nextRaidHour = Math.floor(nextTotalMinutes / 60) % 24;
-        const nextRaidMin = nextTotalMinutes % 60;
-        const nextExtraDays = Math.floor(nextTotalMinutes / (60 * 24));
-        const nextFinalDate = new Date(baseAtMidnightKST + (diffDays + nextExtraDays) * 24 * 60 * 60 * 1000);
-        const nextFinalDateString = getKSTDateString(nextFinalDate);
-        nextTime = new Date(`${nextFinalDateString}T${nextRaidHour.toString().padStart(2, '0')}:${nextRaidMin.toString().padStart(2, '0')}:00+09:00`);
-    }
+  // 레이드 날짜 계산 (baseDate에서 diffDays만큼 더함)
+  const raidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
 
-    return nextTime;
+  // 레이드 시간 계산: baseTime + (diffDays * 25분)
+  const totalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
+  const raidHour = Math.floor(totalMinutes / 60) % 24;
+  const raidMin = totalMinutes % 60;
+
+  // 날짜가 넘어간 경우 처리
+  const extraDays = Math.floor(totalMinutes / (60 * 24));
+  let finalDate = new Date(baseAtMidnightKST + (diffDays + extraDays) * 24 * 60 * 60 * 1000);
+  const finalDateString = getKSTDateString(finalDate);
+
+  let nextTime = new Date(`${finalDateString}T${raidHour.toString().padStart(2, '0')}:${raidMin.toString().padStart(2, '0')}:00+09:00`);
+
+  if (nextTime <= now) {
+    diffDays++;
+    const nextRaidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
+    const nextTotalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
+    const nextRaidHour = Math.floor(nextTotalMinutes / 60) % 24;
+    const nextRaidMin = nextTotalMinutes % 60;
+    const nextExtraDays = Math.floor(nextTotalMinutes / (60 * 24));
+    const nextFinalDate = new Date(baseAtMidnightKST + (diffDays + nextExtraDays) * 24 * 60 * 60 * 1000);
+    const nextFinalDateString = getKSTDateString(nextFinalDate);
+    nextTime = new Date(`${nextFinalDateString}T${nextRaidHour.toString().padStart(2, '0')}:${nextRaidMin.toString().padStart(2, '0')}:00+09:00`);
+  }
+
+  return nextTime;
 }
 
 let sortedRaids = [];
@@ -435,7 +435,7 @@ function renderRaids() {
   allRaids.push({
     name: RotationRaid.name,
     image: RotationRaid.image,
-    timeStr: getKSTHours(tyrannoTime).toString().padStart(2,'0') + ':' + getKSTMinutes(tyrannoTime).toString().padStart(2,'0'),
+    timeStr: getKSTHours(tyrannoTime).toString().padStart(2, '0') + ':' + getKSTMinutes(tyrannoTime).toString().padStart(2, '0'),
     map: RotationRaid.map,
     nextTime: tyrannoTime,
   });
@@ -477,7 +477,7 @@ function updateTimers() {
   const items = document.querySelectorAll('.raid-timer-item');
   const now = getCurrentKST();
   let needsRerender = false;
-  
+
   // 알림 시간 설정값 가져오기
   const notificationTimeSpan = document.getElementById('notification-time');
   if (notificationTimeSpan) {
@@ -486,13 +486,13 @@ function updateTimers() {
       notificationTime = time;
     }
   }
-  
+
   for (let i = 0; i < items.length; i++) {
     const remainSpan = items[i].querySelector('.remain');
     if (sortedRaids[i]) {
       const diff = Math.floor((sortedRaids[i].nextTime - now) / 1000);
       remainSpan.textContent = getTimeDiffString(sortedRaids[i].nextTime);
-      
+
       // 남은 시간이 0이 되면 다음 시간으로 업데이트
       if (diff <= 0) {
         const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
@@ -516,7 +516,7 @@ function updateTimers() {
         delete cooldownUntil[notifyKey];
         needsRerender = true;
       }
-      
+
       // 경계 기반 1회 트리거 + 스누즈(쿨다운)
       const notifyKey = sortedRaids[i].name + sortedRaids[i].timeStr;
       const nowTs = Date.now();
@@ -535,13 +535,13 @@ function updateTimers() {
           if (alarmToggle && alarmToggle.checked) {
             const volumeSlider = document.getElementById('alarm-volume');
             const durationInput = document.getElementById('alarm-duration');
-            
+
             alarmAudio.volume = volumeSlider ? parseFloat(volumeSlider.value) : 0.5;
             const alarmDuration = durationInput ? parseInt(durationInput.value, 10) * 1000 : 3000;
 
             alarmAudio.currentTime = 0;
             alarmAudio.play();
-            
+
             setTimeout(() => {
               alarmAudio.pause();
               alarmAudio.currentTime = 0;
@@ -577,7 +577,7 @@ function updateTimers() {
       }
     }
   }
-  
+
   // 시간이 업데이트된 경우 전체 목록을 다시 렌더링
   if (needsRerender) {
     renderRaids();
@@ -615,24 +615,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 초기 볼륨 설정
   if (volumeSlider) {
     alarmAudio.volume = parseFloat(volumeSlider.value);
-    volumeSlider.addEventListener('input', function() {
+    volumeSlider.addEventListener('input', function () {
       alarmAudio.volume = parseFloat(this.value);
     });
   }
 
   // 재생 시간 슬라이더 이벤트 리스너
   if (durationInput && durationValueSpan) {
-    durationInput.addEventListener('input', function() {
+    durationInput.addEventListener('input', function () {
       durationValueSpan.textContent = `${this.value}초`;
     });
   }
-  
-  
+
+
   // 알림 시간 입력 제한
-  notificationTimeSpan.addEventListener('input', function() {
+  notificationTimeSpan.addEventListener('input', function () {
     // 빈 문자열이면 그대로 두기
     if (this.textContent === '') return;
-    
+
     let value = parseInt(this.textContent);
     if (isNaN(value)) {
       this.textContent = '';
@@ -640,9 +640,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       this.textContent = '60';
     }
   });
-  
+
   // 알림 시간 입력 완료 시 유효성 검사
-  notificationTimeSpan.addEventListener('blur', function() {
+  notificationTimeSpan.addEventListener('blur', function () {
     let value = parseInt(this.textContent);
     if (isNaN(value) || value < 1) {
       this.textContent = '5';
@@ -656,8 +656,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 알림 시간이 변경되면 notified 객체 초기화
     notified = {};
   });
-  
-  alarmToggle.addEventListener('change', async function() {
+
+  alarmToggle.addEventListener('change', async function () {
     if (this.checked) {
       if (Notification.permission === "default") {
         const permission = await Notification.requestPermission();
@@ -683,7 +683,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       '울퉁몬': { '21:30': '2130' },
       '오메가몬': 'omega',
       '위그드라실_7D6': '위그드라실',
-      [RotationRaid.name]: 'rotation1204',
+      [RotationRaid.name]: 'rotation1218',
       '청룡몬': '청룡몬',
       '백호몬': '백호몬',
       '주작몬': '주작몬',
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
-  
+
   renderRaids();
   setInterval(updateTimers, 1000);
 });

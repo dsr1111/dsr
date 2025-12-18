@@ -6312,6 +6312,30 @@
       }
     ]
   },
+  "멧돼지몬": {
+    "evolution_stage": "성숙기",
+    "type": "프리",
+    "stats": {
+      "level": 0,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "불",
+      "effect": "내성"
+    },
+    "weaknesses": {
+      "attribute": "물",
+      "effect": "약점"
+    },
+    "fields": [],
+    "skills": []
+  },
   "모노크로몬": {
     "evolution_stage": "성숙기",
     "type": "데이터",
@@ -24862,6 +24886,92 @@
       }
     ]
   },
+  "저스티몬:액셀암": {
+    "evolution_stage": "궁극체",
+    "type": "백신",
+    "stats": {
+      "level": 100,
+      "hp": 6005,
+      "sp": 1927,
+      "STR": 1023,
+      "INT": 978,
+      "DEF": 918,
+      "RES": 948,
+      "SPD": 481
+    },
+    "strengths": {
+      "attribute": "흙",
+      "effect": "내성"
+    },
+    "weaknesses": {
+      "attribute": "바람",
+      "effect": "회피불가"
+    },
+    "fields": [
+      "VB",
+      "WG"
+    ],
+    "skills": [
+      {
+        "name": "강철 주먹",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95
+        ]
+      },
+      {
+        "name": "저스티스 킥",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          1,
+          1.05,
+          1.1,
+          1.15,
+          1.2,
+          1.25,
+          1.3,
+          1.35,
+          1.4,
+          1.45
+        ]
+      },
+      {
+        "name": "액셀 암",
+        "hits": 5,
+        "range": "원거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0.18,
+          0.1885,
+          0.197,
+          0.2055,
+          0.214,
+          0.2225,
+          0.231,
+          0.2395,
+          0.248,
+          0.2565
+        ],
+        "effect": "혼란"
+      }
+    ]
+  },
   "주작몬": {
     "evolution_stage": "궁극체",
     "type": "바이러스",
@@ -26147,6 +26257,91 @@
       }
     ]
   },
+  "파워드라몬": {
+    "evolution_stage": "궁극체",
+    "type": "바이러스",
+    "stats": {
+      "level": 100,
+      "hp": 6364,
+      "sp": 1688,
+      "STR": 1113,
+      "INT": 1038,
+      "DEF": 971,
+      "RES": 859,
+      "SPD": 493
+    },
+    "strengths": {
+      "attribute": "강철",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "빛",
+      "effect": "약점"
+    },
+    "fields": [
+      "ME"
+    ],
+    "skills": [
+      {
+        "name": "부스터 클로",
+        "hits": 2,
+        "range": "근거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0.25,
+          0.275,
+          0.3,
+          0.325,
+          0.35,
+          0.375,
+          0.4,
+          0.425,
+          0.45,
+          0.475
+        ]
+      },
+      {
+        "name": "인피니티 핸드",
+        "hits": 4,
+        "range": "원거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          0.25,
+          0.2625,
+          0.275,
+          0.2875,
+          0.3,
+          0.3125,
+          0.325,
+          0.3375,
+          0.35,
+          0.3625
+        ]
+      },
+      {
+        "name": "인피니티 캐논",
+        "hits": 4,
+        "range": "원거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          0.35,
+          0.3625,
+          0.375,
+          0.3875,
+          0.4,
+          0.4125,
+          0.425,
+          0.4375,
+          0.45,
+          0.4625
+        ],
+        "additionalTurn": 2
+      }
+    ]
+  },
   "파피몬-우정의유대-": {
     "evolution_stage": "궁극체",
     "type": "언노운",
@@ -26231,91 +26426,6 @@
           0.2784
         ],
         "effect": "잔류 에너지"
-      }
-    ]
-  },
-  "파워드라몬": {
-    "evolution_stage": "궁극체",
-    "type": "바이러스",
-    "stats": {
-      "level": 100,
-      "hp": 6364,
-      "sp": 1688,
-      "STR": 1113,
-      "INT": 1038,
-      "DEF": 971,
-      "RES": 859,
-      "SPD": 493
-    },
-    "strengths": {
-      "attribute": "강철",
-      "effect": "반사"
-    },
-    "weaknesses": {
-      "attribute": "빛",
-      "effect": "약점"
-    },
-    "fields": [
-      "ME"
-    ],
-    "skills": [
-      {
-        "name": "부스터 클로",
-        "hits": 2,
-        "range": "근거리",
-        "attribute": "물리",
-        "target_count": "단일",
-        "multipliers": [
-          0.25,
-          0.275,
-          0.3,
-          0.325,
-          0.35,
-          0.375,
-          0.4,
-          0.425,
-          0.45,
-          0.475
-        ]
-      },
-      {
-        "name": "인피니티 핸드",
-        "hits": 4,
-        "range": "원거리",
-        "attribute": "강철",
-        "target_count": "단일",
-        "multipliers": [
-          0.25,
-          0.2625,
-          0.275,
-          0.2875,
-          0.3,
-          0.3125,
-          0.325,
-          0.3375,
-          0.35,
-          0.3625
-        ]
-      },
-      {
-        "name": "인피니티 캐논",
-        "hits": 4,
-        "range": "원거리",
-        "attribute": "강철",
-        "target_count": "단일",
-        "multipliers": [
-          0.35,
-          0.3625,
-          0.375,
-          0.3875,
-          0.4,
-          0.4125,
-          0.425,
-          0.4375,
-          0.45,
-          0.4625
-        ],
-        "additionalTurn": 2
       }
     ]
   },
@@ -27349,29 +27459,5 @@
         ]
       }
     ]
-  },
-  "멧돼지몬": {
-    "evolution_stage": "성숙기",
-    "type": "프리",
-    "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
-    },
-    "strengths": {
-      "attribute": "불",
-      "effect": "내성"
-    },
-    "weaknesses": {
-      "attribute": "물",
-      "effect": "약점"
-    },
-    "fields": [],
-    "skills": []
   }
 }

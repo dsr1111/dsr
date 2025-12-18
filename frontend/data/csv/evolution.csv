@@ -245,7 +245,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 블루메라몬,5
 빅콩알몬,5
 뿌띠몬,5
-사이버드라몬,5
+사이버드라몬,5,저스티몬:액셀암,95
 슈퍼스타몬,5
 스컬그레이몬,5,키메라몬,95
 스컬사탄몬,5,데스몬,95
@@ -358,6 +358,7 @@ name,evolution_stage,evol1,percent1,evol2,percent2,evol3,percent3,evol4,percent4
 오파니몬:폴다운모드,6
 워그레이몬,6,,,,,,,,,,,,,,,,,,,,,,,오메가몬,100,메탈가루몬,,,,아구몬-용기의유대-,100,불굴의 용기
 이바몬,6
+저스티몬:액셀암,6
 주작몬,6
 지드밀레니엄몬,6
 청룡몬,6
