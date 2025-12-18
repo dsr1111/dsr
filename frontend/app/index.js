@@ -109,7 +109,7 @@ function createTooltip(items) {
 
   items.forEach((item) => {
     const [itemName, itemQty, itemGrade] = item.split("x");
-    let cleanItemName = itemName.trim().replace(/\s*\(\d+(일|시간)\)$/, "");
+    let cleanItemName = itemName.trim().replace(/\s*\(\d+(일|시간)\)$/, "").replace(/^\[기간제\]\s*/, "");
     const sanitizedName = cleanItemName.replace(/%/g, "^");
     const imgPath = `https://media.dsrwiki.com/dsrwiki/item/${sanitizedName}.webp`;
     const backgroundPath = `https://media.dsrwiki.com/dsrwiki/item/item${itemGrade.trim()}.webp`;
