@@ -48,9 +48,6 @@
           <div class="filter-row">
             <label class="filter-label">진화 단계</label>
             <div class="button-group">
-              <label>
-                <input type="checkbox" id="select-all-evolution" onclick="toggleAllEvolution()" />
-              </label>
               <button id="성장기" class="evolution-btn" onclick="toggleEvolution('성장기')"
                 onmouseenter="showCustomTooltip(event, '성장기')" onmousemove="showCustomTooltip(event, '성장기')"
                 onmouseleave="hideCustomTooltip()">
@@ -77,9 +74,6 @@
           <div class="filter-row">
             <label class="filter-label">타입</label>
             <div class="button-group">
-              <label>
-                <input type="checkbox" id="select-all-type" onclick="toggleAllType()" />
-              </label>
               <button id="백신" class="type-btn" onclick="toggleType('백신')" onmouseenter="showCustomTooltip(event, '백신')"
                 onmousemove="showCustomTooltip(event, '백신')" onmouseleave="hideCustomTooltip()">
                 <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/백신.webp" alt="백신">
@@ -163,9 +157,6 @@
             </label>
 
             <div class="button-group">
-              <label>
-                <input type="checkbox" id="select-all-skill" onclick="toggleAllSkill()" />
-              </label>
               <button id="강철" class="skill-btn" onclick="toggleSkill('강철')"
                 onmouseenter="showCustomTooltip(event, '강철')" onmousemove="showCustomTooltip(event, '강철')"
                 onmouseleave="hideCustomTooltip()">
@@ -278,6 +269,7 @@
                 onmouseleave="hideCustomTooltip()">
                 <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/스턴.webp" alt="스턴">
               </button>
+              <div style="flex-basis: 100%; height: 10px;"></div>
               <button id="effect_연소" class="effect-btn" onclick="toggleEffect('effect_연소')"
                 onmouseenter="showCustomTooltip(event, '연소')" onmousemove="showCustomTooltip(event, '연소')"
                 onmouseleave="hideCustomTooltip()">
@@ -329,9 +321,6 @@
           <div class="filter-row">
             <label class="filter-label">강점</label>
             <div class="button-group">
-              <label>
-                <input type="checkbox" id="select-all-strong" onclick="toggleAllStrong()" />
-              </label>
               <button id="strong_강철" class="skillstrong-btn" onclick="toggleSkillStrong('strong_강철')"
                 onmouseenter="showCustomTooltip(event, '강철')" onmousemove="showCustomTooltip(event, '강철')"
                 onmouseleave="hideCustomTooltip()">
@@ -393,9 +382,6 @@
           <div class="filter-row">
             <label class="filter-label">약점</label>
             <div class="button-group">
-              <label>
-                <input type="checkbox" id="select-all-weak" onclick="toggleAllWeak()" />
-              </label>
               <button id="weak_강철" class="skillweak-btn" onclick="toggleSkillWeak('weak_강철')"
                 onmouseenter="showCustomTooltip(event, '강철')" onmousemove="showCustomTooltip(event, '강철')"
                 onmouseleave="hideCustomTooltip()">

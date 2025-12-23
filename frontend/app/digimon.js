@@ -317,7 +317,7 @@
               ${createSkillHtml(digimon.skills[2], 3, name)}
               <td class="digimon-cell-border-left">${fieldsHtml}</td>
             `;
-            newRow.style.display = "none";
+            newRow.style.display = "";
             tableBody.appendChild(newRow);
           } catch (error) {
             console.error('Error processing digimon:', error, name, digimon);
@@ -345,24 +345,7 @@
   // 4. FilterModule Module (필터 토글 및 테이블 필터링)
   // ====================================================
   const FilterModule = {
-    toggleAllEvolution() {
-      const evolutions = ["성장기", "성숙기", "완전체", "궁극체"];
-      const checkBox = document.getElementById("select-all-evolution");
-      if (checkBox.checked) {
-        evolutions.forEach((evo) => {
-          if (!filters.evolution.includes(evo)) {
-            filters.evolution.push(evo);
-            document.getElementById(evo).classList.add("active");
-          }
-        });
-      } else {
-        filters.evolution = [];
-        evolutions.forEach((evo) => {
-          document.getElementById(evo).classList.remove("active");
-        });
-      }
-      this.filterTable();
-    },
+
     toggleEvolution(evolution) {
       const index = filters.evolution.indexOf(evolution);
       if (index > -1) {
@@ -374,24 +357,7 @@
       }
       this.filterTable();
     },
-    toggleAllType() {
-      const types = ["백신", "데이터", "바이러스", "프리", "언노운", "NO DATA"];
-      const checkBox = document.getElementById("select-all-type");
-      if (checkBox.checked) {
-        types.forEach((type) => {
-          if (!filters.type.includes(type)) {
-            filters.type.push(type);
-            document.getElementById(type).classList.add("active");
-          }
-        });
-      } else {
-        types.forEach((type) => {
-          filters.type = filters.type.filter((item) => item !== type);
-          document.getElementById(type).classList.remove("active");
-        });
-      }
-      this.filterTable();
-    },
+
     toggleType(type) {
       const index = filters.type.indexOf(type);
       if (index > -1) {
@@ -403,24 +369,7 @@
       }
       this.filterTable();
     },
-    toggleAllSkill() {
-      const skills = ["강철", "나무", "흙", "물", "물리", "바람", "불", "빛", "어둠", "얼음", "천둥"];
-      const checkBox = document.getElementById("select-all-skill");
-      if (checkBox.checked) {
-        skills.forEach((skill) => {
-          if (!filters.skill.includes(skill)) {
-            filters.skill.push(skill);
-            document.getElementById(skill).classList.add("active");
-          }
-        });
-      } else {
-        skills.forEach((skill) => {
-          filters.skill = filters.skill.filter((item) => item !== skill);
-          document.getElementById(skill).classList.remove("active");
-        });
-      }
-      this.filterTable();
-    },
+
     toggleSkill(skill) {
       const index = filters.skill.indexOf(skill);
       if (index > -1) {
@@ -432,24 +381,7 @@
       }
       this.filterTable();
     },
-    toggleAllStrong() {
-      const strongs = ["강철", "나무", "흙", "물", "물리", "바람", "불", "빛", "어둠", "얼음", "천둥"];
-      const checkBox = document.getElementById("select-all-strong");
-      if (checkBox.checked) {
-        strongs.forEach((strong) => {
-          if (!filters.strong.includes(strong)) {
-            filters.strong.push(strong);
-            document.getElementById(`strong_${strong}`).classList.add("active");
-          }
-        });
-      } else {
-        strongs.forEach((strong) => {
-          filters.strong = filters.strong.filter((item) => item !== strong);
-          document.getElementById(`strong_${strong}`).classList.remove("active");
-        });
-      }
-      this.filterTable();
-    },
+
     toggleSkillStrong(skillstrong) {
       const strength = skillstrong.replace("strong_", "");
       const index = filters.strong.indexOf(strength);
@@ -462,24 +394,7 @@
       }
       this.filterTable();
     },
-    toggleAllWeak() {
-      const weaks = ["강철", "나무", "흙", "물", "물리", "바람", "불", "빛", "어둠", "얼음", "천둥"];
-      const checkBox = document.getElementById("select-all-weak");
-      if (checkBox.checked) {
-        weaks.forEach((weak) => {
-          if (!filters.weak.includes(weak)) {
-            filters.weak.push(weak);
-            document.getElementById(`weak_${weak}`).classList.add("active");
-          }
-        });
-      } else {
-        weaks.forEach((weak) => {
-          filters.weak = filters.weak.filter((item) => item !== weak);
-          document.getElementById(`weak_${weak}`).classList.remove("active");
-        });
-      }
-      this.filterTable();
-    },
+
     toggleSkillWeak(skillweak) {
       const weakness = skillweak.replace("weak_", "");
       const index = filters.weak.indexOf(weakness);
@@ -492,22 +407,7 @@
       }
       this.filterTable();
     },
-    toggleAllField() {
-      const fieldsArray = ["DA", "UK", "DR", "DS", "JT", "ME", "NSo", "NSp", "VB", "WG"];
-      const allSelected = fieldsArray.every((field) => filters.field.includes(field));
-      fieldsArray.forEach((field) => {
-        if (allSelected) {
-          filters.field = [];
-          document.getElementById(field).classList.remove("active");
-        } else {
-          if (!filters.field.includes(field)) {
-            filters.field.push(field);
-            document.getElementById(field).classList.add("active");
-          }
-        }
-      });
-      this.filterTable();
-    },
+
     toggleField(field) {
       const index = filters.field.indexOf(field);
       if (index > -1) {
@@ -558,7 +458,7 @@
 
       if (!hasFilter) {
         rows.forEach(row => {
-          row.style.display = "none";
+          row.style.display = "";
         });
         return;
       }
@@ -640,19 +540,9 @@
       filterButtons.forEach((button) => {
         button.classList.remove("active");
       });
-      document.getElementById("select-all-evolution").checked = false;
-      document.getElementById("select-all-type").checked = false;
-      document.getElementById("select-all-skill").checked = false;
-      document.getElementById("select-all-strong").checked = false;
-      document.getElementById("select-all-weak").checked = false;
 
-      const tableBody = document.getElementById("characterTable");
-      const rows = tableBody.querySelectorAll("tr");
-      rows.forEach(row => {
-        row.style.display = "none"; // 모든 행을 숨김
-      });
-
-      console.log('Filters reset, hiding all rows:', rows.length);
+      this.filterTable();
+      console.log('Filters reset, showing all rows');
     }
   };
 
@@ -828,17 +718,11 @@
   };
 
   window.resetFilters = FilterModule.resetFilters.bind(FilterModule);
-  window.toggleAllEvolution = FilterModule.toggleAllEvolution.bind(FilterModule);
   window.toggleEvolution = FilterModule.toggleEvolution.bind(FilterModule);
-  window.toggleAllType = FilterModule.toggleAllType.bind(FilterModule);
   window.toggleType = FilterModule.toggleType.bind(FilterModule);
-  window.toggleAllSkill = FilterModule.toggleAllSkill.bind(FilterModule);
   window.toggleSkill = FilterModule.toggleSkill.bind(FilterModule);
-  window.toggleAllStrong = FilterModule.toggleAllStrong.bind(FilterModule);
   window.toggleSkillStrong = FilterModule.toggleSkillStrong.bind(FilterModule);
-  window.toggleAllWeak = FilterModule.toggleAllWeak.bind(FilterModule);
   window.toggleSkillWeak = FilterModule.toggleSkillWeak.bind(FilterModule);
-  window.toggleAllField = FilterModule.toggleAllField.bind(FilterModule);
   window.toggleField = FilterModule.toggleField.bind(FilterModule);
   window.toggleEffect = FilterModule.toggleEffect.bind(FilterModule);
   window.sortTable = sortTable;

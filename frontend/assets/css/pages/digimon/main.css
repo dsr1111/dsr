@@ -106,7 +106,7 @@ body {
 
 .container1 {
   width: 100%;
-  max-width: 1540px;
+  max-width: 1370px;
   /* 최대 너비를 늘려서 필터 버튼들이 제대로 배치되도록 */
   margin: 20px auto;
   margin-top: 130px;
@@ -129,7 +129,7 @@ body {
   align-items: center;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+
   transition: background-color 0.2s ease;
 }
 
@@ -199,11 +199,9 @@ body {
 .filter-row {
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
-}
-
-.filter-row:last-child {
   margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
 }
 
 .filter-row .button-group {
@@ -231,16 +229,19 @@ body {
   font-weight: bold;
 }
 
+.filter-row:nth-last-child(2) {
+  border-bottom: none;
+}
+
 .search-box {
-  margin-top: 20px;
+  margin-top: 0;
   margin-bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
+  padding-top: 0;
 }
 
 .search-input {
@@ -271,6 +272,28 @@ body {
   position: relative;
   background-color: rgb(255, 255, 255);
   margin-top: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 1px;
+}
+
+/* 테이블 스크롤바 스타일 */
+.results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.results::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.results::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.results::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
 }
 
 /* 로딩 스피너 스타일 */
@@ -338,6 +361,9 @@ body {
 .result-table th {
   background-color: #e9ebec;
   font-weight: bold;
+  position: sticky;
+  top: -1px;
+  z-index: 10;
 }
 
 .result-table th.sortable {
@@ -405,7 +431,7 @@ body {
 }
 
 .button-group-field {
-  padding-left: 28px;
+  padding-left: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 6.2px;
@@ -428,9 +454,9 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Effect 버튼 그룹에 필드 버튼과 동일한 패딩 적용 */
+/* Effect 버튼 그룹에 패딩 적용 */
 .button-group:has(.effect-btn) {
-  padding-left: 28px;
+  padding-left: 13px;
 }
 
 .effect-btn img {
