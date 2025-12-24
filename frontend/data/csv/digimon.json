@@ -596,14 +596,14 @@
     "evolution_stage": "성장기",
     "type": "백신",
     "stats": {
-      "level": 15,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 2353,
+      "sp": 613,
+      "STR": 366,
+      "INT": 288,
+      "DEF": 332,
+      "RES": 310,
+      "SPD": 161
     },
     "strengths": {
       "attribute": "물리",
@@ -2243,14 +2243,14 @@
     "evolution_stage": "성장기",
     "type": "백신",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 2263,
+      "sp": 650,
+      "STR": 321,
+      "INT": 344,
+      "DEF": 329,
+      "RES": 299,
+      "SPD": 161
     },
     "strengths": {
       "attribute": "빛",
@@ -3036,14 +3036,14 @@
     "evolution_stage": "성장기",
     "type": "백신",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 2039,
+      "sp": 613,
+      "STR": 310,
+      "INT": 336,
+      "DEF": 280,
+      "RES": 355,
+      "SPD": 157
     },
     "strengths": {
       "attribute": "얼음",
@@ -3102,14 +3102,14 @@
     "evolution_stage": "성장기",
     "type": "데이터",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 2219,
+      "sp": 620,
+      "STR": 317,
+      "INT": 347,
+      "DEF": 306,
+      "RES": 329,
+      "SPD": 131
     },
     "strengths": {
       "attribute": "나무",
@@ -5713,14 +5713,14 @@
     "evolution_stage": "성숙기",
     "type": "백신",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 2719,
+      "sp": 996,
+      "STR": 523,
+      "INT": 588,
+      "DEF": 448,
+      "RES": 493,
+      "SPD": 291
     },
     "strengths": {
       "attribute": "강철",
@@ -7541,14 +7541,14 @@
     "evolution_stage": "성숙기",
     "type": "백신",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 3287,
+      "sp": 807,
+      "STR": 608,
+      "INT": 443,
+      "DEF": 513,
+      "RES": 398,
+      "SPD": 286
     },
     "strengths": {
       "attribute": "불",
@@ -12783,14 +12783,14 @@
     "evolution_stage": "완전체",
     "type": "백신",
     "stats": {
-      "level": 90,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 5005,
+      "sp": 1145,
+      "STR": 822,
+      "INT": 766,
+      "DEF": 716,
+      "RES": 691,
+      "SPD": 352
     },
     "strengths": {
       "attribute": "물리",
@@ -15189,14 +15189,14 @@
     "evolution_stage": "완전체",
     "type": "백신",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 4482,
+      "sp": 1394,
+      "STR": 809,
+      "INT": 635,
+      "DEF": 791,
+      "RES": 691,
+      "SPD": 367
     },
     "strengths": {
       "attribute": "빛",
@@ -17508,14 +17508,14 @@
     "evolution_stage": "완전체",
     "type": "백신",
     "stats": {
-      "level": 0,
-      "hp": 0,
-      "sp": 0,
-      "STR": 0,
-      "INT": 0,
-      "DEF": 0,
-      "RES": 0,
-      "SPD": 0
+      "level": 100,
+      "hp": 3810,
+      "sp": 1506,
+      "STR": 840,
+      "INT": 797,
+      "DEF": 616,
+      "RES": 591,
+      "SPD": 436
     },
     "strengths": {
       "attribute": "빛",

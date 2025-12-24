@@ -1,0 +1,150 @@
+/* ===== Referral Code Floating Widget ===== */
+/* 밝은 색상 테마 */
+
+.referral-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* Panel - 단일 패널 형태 */
+.referral-panel {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transition: all 0.2s ease;
+    border: 1px solid #e0e0e0;
+}
+
+/* Header with toggle */
+.referral-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    gap: 8px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.referral-header:hover {
+    background-color: #f0f1f2;
+}
+
+.referral-title {
+    color: #333;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.referral-title i {
+    color: #ff6b6b;
+    font-size: 15px;
+}
+
+.referral-toggle {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.referral-toggle:hover {
+    color: #333;
+}
+
+.referral-float.collapsed .referral-toggle {
+    transform: rotate(180deg);
+}
+
+/* Content - 접혔을 때 숨김 */
+.referral-content {
+    padding: 12px 14px;
+    transition: all 0.2s ease;
+}
+
+.referral-float.collapsed .referral-content {
+    display: none;
+}
+
+/* Code Box */
+.referral-code-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background-color: #f4f6f8;
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px dashed #d0d5dd;
+}
+
+.referral-code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+    letter-spacing: 1.5px;
+}
+
+.referral-copy-btn {
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.referral-copy-btn:hover {
+    background-color: #357abd;
+}
+
+.referral-copy-btn.copied {
+    background-color: #38a169;
+}
+
+.referral-copy-btn i {
+    font-size: 13px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .referral-float {
+        bottom: 16px;
+        right: 16px;
+    }
+
+    .referral-panel {
+        max-width: calc(100vw - 32px);
+    }
+
+    .referral-code {
+        font-size: 15px;
+    }
+
+    .referral-header {
+        padding: 8px 12px;
+    }
+
+    .referral-content {
+        padding: 10px 12px;
+    }
+}
