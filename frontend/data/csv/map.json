@@ -1007,7 +1007,7 @@
         "top": 638.75,
         "left": 245.0,
         "src": "https://media.dsrwiki.com/dsrwiki/digimon/안드로몬/안드로몬.webp",
-        "name": "안드로몬",
+        "name": "공장의 주인 안드로몬",
         "level": 21,
         "hp": 2285,
         "items": [
@@ -1139,7 +1139,7 @@
         "top": 315.0,
         "left": 468.125,
         "src": "https://media.dsrwiki.com/dsrwiki/digimon/메라몬/메라몬.webp",
-        "name": "메라몬",
+        "name": "불타고 있는 메라몬",
         "level": 26,
         "hp": 1851,
         "items": [

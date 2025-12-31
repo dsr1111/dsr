@@ -49,6 +49,7 @@ class CustomNav extends HTMLElement {
   connectedCallback() {
     this.render();
     this.initMenu();
+    this.initAds();
   }
 
   render() {
@@ -170,6 +171,60 @@ class CustomNav extends HTMLElement {
       expcarryBtn.addEventListener("click", () => {
         window.open("https://open.kakao.com/o/gUkDeqpg", "_blank");
       });
+    }
+  }
+
+  initAds() {
+    // 로컬 체크
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // 페이지별 클래스 부여
+    const path = window.location.pathname;
+    if (path.includes('map.html')) document.body.classList.add('page-map');
+    else if (path.includes('exp.html') || path.includes('gacha.html') || path.includes('calculator.html')) document.body.classList.add('page-narrow');
+    else if (path.includes('overflow.html')) document.body.classList.add('page-overflow');
+    else if (path.includes('digimon.html') || path.includes('evolution.html')) document.body.classList.add('page-wide');
+    else if (path.includes('detector.html')) document.body.classList.add('page-detector');
+    else document.body.classList.add('page-standard');
+
+    // 중복 방지
+    if (document.querySelector('.side-ad-container')) return;
+
+    const adContainer = document.createElement('div');
+    adContainer.className = 'side-ad-container';
+
+    const leftAd = document.createElement('div');
+    leftAd.className = 'side-ad-left';
+    leftAd.innerHTML = `
+      <div class="ad-label" style="font-size:10px; color:#ccc; text-align:center; margin-bottom:2px;">광고</div>
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:600px"
+           data-ad-client="ca-pub-6625279423156068"
+           data-ad-slot="1428393398"></ins>
+    `;
+
+    const rightAd = document.createElement('div');
+    rightAd.className = 'side-ad-right';
+    rightAd.innerHTML = `
+      <div class="ad-label" style="font-size:10px; color:#ccc; text-align:center; margin-bottom:2px;">광고</div>
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:600px"
+           data-ad-client="ca-pub-6625279423156068"
+           data-ad-slot="1428393398"></ins>
+    `;
+
+    adContainer.appendChild(leftAd);
+    adContainer.appendChild(rightAd);
+    document.body.appendChild(adContainer);
+
+    // 광고 푸시
+    if (!isLocal) {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error("AdSense push failed", e);
+      }
     }
   }
 }
