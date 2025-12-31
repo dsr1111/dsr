@@ -518,8 +518,8 @@ header {
 
 /*=============== SIDE ADS ===============*/
 .side-ad-container {
-  display: none;
-  /* 기본 숨김 (안전) */
+  display: block;
+  /* 항상 표시 */
   pointer-events: none;
 }
 
@@ -529,8 +529,10 @@ header {
   top: 50%;
   transform: translateY(-50%);
   width: 160px;
-  height: auto;
-  z-index: 10;
+  height: 600px;
+  /* 높이 명시 */
+  z-index: 90;
+  /* z-index 상향 */
   pointer-events: auto;
 }
 
@@ -541,20 +543,3 @@ header {
 .side-ad-right {
   right: 20px;
 }
-
-/* 안전한 기본값: 1540px 이상일 때만 표시 */
-@media (min-width: 1540px) {
-  .side-ad-container {
-    display: block;
-  }
-}
-
-/* 페이지별 커스텀 스타일 (사용자 지정 필요) */
-/*
-body.page-map .side-ad-container { }
-body.page-narrow .side-ad-container { }
-body.page-standard .side-ad-container { }
-body.page-overflow .side-ad-container { }
-body.page-wide .side-ad-container { }
-body.page-detector .side-ad-container { }
-*/
