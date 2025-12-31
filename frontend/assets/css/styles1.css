@@ -530,9 +530,6 @@ header {
   transform: translateY(-50%);
   width: 160px;
   height: 600px;
-  /* 높이 명시 */
-  z-index: 90;
-  /* z-index 상향 */
   pointer-events: auto;
 }
 
