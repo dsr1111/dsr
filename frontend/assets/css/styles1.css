@@ -518,8 +518,8 @@ header {
 
 /*=============== SIDE ADS ===============*/
 .side-ad-container {
-  display: block;
-  /* 항상 표시 */
+  display: none;
+  /* 기본 숨김 (미디어 쿼리로 제어) */
   pointer-events: none;
 }
 
@@ -531,6 +531,7 @@ header {
   width: 160px;
   height: 600px;
   pointer-events: auto;
+  z-index: 90;
 }
 
 .side-ad-left {
@@ -539,4 +540,65 @@ header {
 
 .side-ad-right {
   right: 5px;
+}
+
+/* 페이지별 사이드 광고 표시 (미디어 쿼리) */
+@media (min-width: 1660px) {
+  body.page-index .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1680px) {
+  body.page-digimon .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1350px) {
+  body.page-deck .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1415px) {
+  body.page-evolution .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1085px) {
+  body.page-map .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1850px) {
+  body.page-detector .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1645px) {
+  body.page-overflow .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1330px) {
+  body.page-calculator .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1345px) {
+  body.page-exp .side-ad-container {
+    display: block;
+  }
+}
+
+@media (min-width: 1350px) {
+  body.page-gacha .side-ad-container {
+    display: block;
+  }
 }

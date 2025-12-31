@@ -180,12 +180,16 @@ class CustomNav extends HTMLElement {
 
     // 페이지별 클래스 부여
     const path = window.location.pathname;
-    if (path.includes('map.html')) document.body.classList.add('page-map');
-    else if (path.includes('exp.html') || path.includes('gacha.html') || path.includes('calculator.html')) document.body.classList.add('page-narrow');
-    else if (path.includes('overflow.html')) document.body.classList.add('page-overflow');
-    else if (path.includes('digimon.html') || path.includes('evolution.html')) document.body.classList.add('page-wide');
+    if (path.includes('digimon.html')) document.body.classList.add('page-digimon');
+    else if (path.includes('deck.html')) document.body.classList.add('page-deck');
+    else if (path.includes('evolution.html')) document.body.classList.add('page-evolution');
+    else if (path.includes('map.html')) document.body.classList.add('page-map');
     else if (path.includes('detector.html')) document.body.classList.add('page-detector');
-    else document.body.classList.add('page-standard');
+    else if (path.includes('overflow.html')) document.body.classList.add('page-overflow');
+    else if (path.includes('calculator.html')) document.body.classList.add('page-calculator');
+    else if (path.includes('exp.html')) document.body.classList.add('page-exp');
+    else if (path.includes('gacha.html')) document.body.classList.add('page-gacha');
+    else document.body.classList.add('page-index'); // index.html 또는 기본값
 
     // 중복 방지
     if (document.querySelector('.side-ad-container')) return;
@@ -210,7 +214,7 @@ class CustomNav extends HTMLElement {
       <ins class="adsbygoogle"
            style="display:inline-block;width:160px;height:600px"
            data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1428393398"></ins>
+           data-ad-slot="1851169108"></ins>
     `;
 
     adContainer.appendChild(leftAd);
