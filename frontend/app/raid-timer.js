@@ -687,6 +687,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       '청룡몬': '청룡몬',
       '백호몬': '백호몬',
       '주작몬': '주작몬',
+      '블랙세라피몬': 'weekend',
+      '오파니몬:폴다운모드': 'weekend',
+      '메기드라몬': 'weekend'
     };
 
     timersContainer.addEventListener('click', (e) => {

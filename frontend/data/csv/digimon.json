@@ -331,6 +331,71 @@
       }
     ]
   },
+  "드라코몬": {
+    "evolution_stage": "성장기",
+    "type": "데이터",
+    "stats": {
+      "level": 15,
+      "hp": 689,
+      "sp": 203,
+      "STR": 119,
+      "INT": 98,
+      "DEF": 103,
+      "RES": 97,
+      "SPD": 49
+    },
+    "strengths": {
+      "attribute": "물리",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "물",
+      "effect": "약점"
+    },
+    "fields": [
+      "DR"
+    ],
+    "skills": [
+      {
+        "name": "테일 스매시",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95
+        ]
+      },
+      {
+        "name": "베이비 브레스",
+        "hits": 3,
+        "range": "원거리",
+        "attribute": "불",
+        "target_count": "단일",
+        "multipliers": [
+          0.3333,
+          0.35,
+          0.3666,
+          0.3833,
+          0.4,
+          0.4166,
+          0.4333,
+          0.45,
+          0.4666,
+          0.4833
+        ]
+      }
+    ]
+  },
   "레나몬": {
     "evolution_stage": "성장기",
     "type": "데이터",
