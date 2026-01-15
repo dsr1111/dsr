@@ -8118,6 +8118,172 @@
       }
     ]
   },
+  "아이즈몬": {
+    "evolution_stage": "성숙기",
+    "type": "바이러스",
+    "stats": {
+      "level": 0,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "어둠",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "빛",
+      "effect": "약점"
+    },
+    "fields": [],
+    "skills": [
+      {
+        "name": "암습",
+        "hits": 5,
+        "range": "근거리",
+        "attribute": "어둠",
+        "target_count": "단일",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "우환",
+        "hits": 5,
+        "range": "원거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "사념안",
+        "hits": 8,
+        "range": "원거리",
+        "attribute": "어둠",
+        "target_count": "단일",
+        "effect": "혼란",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "아이즈몬:스캐터모드": {
+    "evolution_stage": "성숙기",
+    "type": "바이러스",
+    "stats": {
+      "level": 0,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "어둠",
+      "effect": "내성"
+    },
+    "weaknesses": {
+      "attribute": "빛",
+      "effect": "효과확률"
+    },
+    "fields": [],
+    "skills": [
+      {
+        "name": "할퀴기",
+        "hits": 2,
+        "range": "근거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "사념안",
+        "hits": 4,
+        "range": "원거리",
+        "attribute": "어둠",
+        "target_count": "단일",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "그림자 묶기",
+        "hits": 1,
+        "range": "원거리",
+        "attribute": "어둠",
+        "target_count": "단일",
+        "effect": "꼭두각시",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
   "아큐라몬": {
     "evolution_stage": "성숙기",
     "type": "프리",
