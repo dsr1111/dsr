@@ -473,7 +473,7 @@ body {
 
 /* Effect 버튼 그룹 스타일 */
 .button-group:has(.effect-btn) {
-  padding-left: 13px;
+  padding-left: 19px;
 }
 
 .effect-btn img {
@@ -1061,4 +1061,18 @@ tbody {
 .side-ad {
   width: 160px;
   height: 600px;
+}
+
+/* 툴팁 화살표를 아래쪽으로 변경하는 클래스 */
+.custom-tooltip.flipped .tooltip-arrow {
+  top: auto;
+  bottom: -8px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(40, 40, 40, 0.95);
+  border-bottom: none;
+}
+
+.custom-tooltip.flipped {
+  margin-top: 0;
 }

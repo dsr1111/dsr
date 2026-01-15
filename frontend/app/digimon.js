@@ -36,18 +36,34 @@
   }
 
   // 커스텀 툴팁 표시 함수
-  function showCustomTooltip(e, text) {
+  function showCustomTooltip(e, text, isHtml = false) {
     const tooltip = document.getElementById('custom-tooltip');
     const tooltipSpan = tooltip.querySelector('span');
-    tooltipSpan.textContent = text;
+    if (isHtml) {
+      tooltipSpan.innerHTML = text;
+    } else {
+      tooltipSpan.textContent = text;
+    }
     tooltip.style.display = 'block';
+
+    // 초기 상태: 화살표 위쪽 (기본값)
+    tooltip.classList.remove('flipped');
 
     const rect = e.target.getBoundingClientRect();
     const tooltipRect = tooltip.getBoundingClientRect();
 
     const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+    let top = rect.bottom + 5;
+
+    // 화면 아래쪽을 넘어가는지 확인
+    if (top + tooltipRect.height > window.innerHeight) {
+      // 툴팁 높이 + 간격(5px) + 화살표 높이(8px) 만큼 위로 이동
+      top = rect.top - tooltipRect.height - 13;
+      tooltip.classList.add('flipped'); // 위로 뒤집힘 -> 화살표는 아래쪽으로
+    }
+
     tooltip.style.left = `${left}px`;
-    tooltip.style.top = `${rect.bottom + 5}px`;
+    tooltip.style.top = `${top}px`;
 
     if (left + tooltipRect.width > window.innerWidth) {
       tooltip.style.left = `${window.innerWidth - tooltipRect.width - 10}px`;
@@ -61,6 +77,59 @@
   function hideCustomTooltip() {
     const tooltip = document.getElementById('custom-tooltip');
     tooltip.style.display = 'none';
+  }
+
+  const effectDescriptions = {
+    출혈: "* 출혈<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물리속성에 취약해집니다.<br>힐 받을 경우 해제됩니다.",
+    화상: "* 화상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>바람속성에 취약해집니다.<br>물속성 피격 시 해제됩니다.",
+    중독: "* 중독<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>어둠속성에 취약해집니다.<br>불속성 피격 시 해제됩니다.",
+    감전: "* 감전<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
+    빙결: "* 빙결<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>천둥속성에 취약해집니다.<br>천둥속성 피격 시 해제됩니다.",
+    석화: "* 석화<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>강철속성에 취약해집니다.<br>강철속성 피격 시 해제됩니다.",
+    격리: "* 격리<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>빛속성에 취약해집니다.<br>빛속성 피격 시 해제됩니다.",
+    스턴: "* 스턴<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.",
+    연소: "* 연소<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 대상의 SP 추가 소모.<br>스킬 레벨에 따라 소모량 증가.",
+    매료: "* 매료<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
+    "방어력 감소": "* 방어력 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 DEF x% 감소",
+    "방어력 증가": "* 방어력 증가<br>일정 턴 동안 DEF x% 증가",
+    "공격력 증가": "* 공격력 증가<br>일정 턴 동안 STR x% 증가",
+    "속도 감소": "* 속도 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 SPD x% 감소",
+    "속도 증가": "* 속도 증가<br>일정 턴 동안 SPD x% 증가",
+    "치명타율 증가": "* 치명타율 증가<br>일정 턴 동안 치명타율 x% 증가",
+    "회피율 증가": "* 회피율 증가<br>일정 턴 동안 회피율 x% 증가",
+    회복: "* 회복",
+    혼란: "* 혼란<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
+    금속화: "* 금속화<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가해지며, 턴마다 지속 피해를 입힙니다.<br>불속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
+    "잔류 에너지": "* 잔류 에너지<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>빛속성에 취약해집니다.<br>흙속성 피격 시 해제됩니다.",
+    "꼭두각시": "* 꼭두각시<br>공격 시 **% 확률로 발생됩니다.<br>일정 턴 동안 명령이 불가해집니다.<br>피아식별 없이 행동하게 됩니다.<br>빛속성 피격 시 해제됩니다.",
+  };
+
+  const effectDescriptionsLower = Object.keys(effectDescriptions).reduce(
+    (acc, key) => {
+      acc[key.toLowerCase()] = effectDescriptions[key];
+      return acc;
+    },
+    {}
+  );
+
+  function showEffectTooltip(e, effectName, digimonName, skillNumber) {
+    if (!effectName) return;
+    const normalizedEffect = effectName.trim().toLowerCase();
+    const effectDescription = effectDescriptionsLower[normalizedEffect] || "효과 설명을 찾을 수 없습니다.";
+
+    let effectImagePath = `https://media.dsrwiki.com/dsrwiki/debuff/${effectName}.webp`;
+    if (normalizedEffect === "회복") {
+      effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/skill${skillNumber}.webp`;
+    }
+
+    const content = `
+      <div class="tooltip-content">
+        <img loading="lazy" src="${effectImagePath}" alt="${effectName} 이미지" class="tooltip-inner-img">
+        <div class="tooltip-description">${effectDescription}</div>
+      </div>
+    `;
+
+    showCustomTooltip(e, content, true);
   }
 
   // ====================================================
@@ -203,54 +272,19 @@
                 skillClass = "skill-bg-blue";
               }
 
-              const effectDescriptions = {
-                출혈: "* 출혈<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물리속성에 취약해집니다.<br>힐 받을 경우 해제됩니다.",
-                화상: "* 화상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>바람속성에 취약해집니다.<br>물속성 피격 시 해제됩니다.",
-                중독: "* 중독<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>어둠속성에 취약해집니다.<br>불속성 피격 시 해제됩니다.",
-                감전: "* 감전<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
-                빙결: "* 빙결<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>천둥속성에 취약해집니다.<br>천둥속성 피격 시 해제됩니다.",
-                석화: "* 석화<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>강철속성에 취약해집니다.<br>강철속성 피격 시 해제됩니다.",
-                격리: "* 격리<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>빛속성에 취약해집니다.<br>빛속성 피격 시 해제됩니다.",
-                스턴: "* 스턴<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.",
-                연소: "* 연소<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 대상의 SP 추가 소모.<br>스킬 레벨에 따라 소모량 증가.",
-                매료: "* 매료<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
-                "방어력 감소": "* 방어력 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 DEF x% 감소",
-                "방어력 증가": "* 방어력 증가<br>일정 턴 동안 DEF x% 증가",
-                "공격력 증가": "* 공격력 증가<br>일정 턴 동안 STR x% 증가",
-                "속도 감소": "* 속도 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 SPD x% 감소",
-                "속도 증가": "* 속도 증가<br>일정 턴 동안 SPD x% 증가",
-                "치명타율 증가": "* 치명타율 증가<br>일정 턴 동안 치명타율 x% 증가",
-                "회피율 증가": "* 회피율 증가<br>일정 턴 동안 회피율 x% 증가",
-                회복: "* 회복",
-                혼란: "* 혼란<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
-                금속화: "* 금속화<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가해지며, 턴마다 지속 피해를 입힙니다.<br>불속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
-                "잔류 에너지": "* 잔류 에너지<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>빛속성에 취약해집니다.<br>흙속성 피격 시 해제됩니다.",
-                "꼭두각시": "* 꼭두각시<br>공격 시 **% 확률로 발생됩니다.<br>일정 턴 동안 명령이 불가해집니다.<br>피아식별 없이 행동하게 됩니다.<br>빛속성 피격 시 해제됩니다.",
-              };
-
               const normalizedEffect = (skill.effect || '').trim().toLowerCase();
-              const effectDescriptionsLower = Object.keys(effectDescriptions).reduce(
-                (acc, key) => {
-                  acc[key.toLowerCase()] = effectDescriptions[key];
-                  return acc;
-                },
-                {}
-              );
-              const effectDescription = effectDescriptionsLower[normalizedEffect] || "효과 설명을 찾을 수 없습니다.";
               let effectImagePath = skill.effect ? `https://media.dsrwiki.com/dsrwiki/debuff/${skill.effect}.webp` : "";
               if (normalizedEffect === "회복") {
                 effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/skill${skillNumber}.webp`;
               }
-              const effectTooltipHtml = skill.effect && effectDescription
-                ? `<div class="tooltip">
-                               <img loading="lazy" src="${effectImagePath}" alt="${skill.effect}" class="digimon-effect-img">
-                       <div class="tooltiptext">
-                         <div class="tooltip-content">
-                                   <img loading="lazy" src="${effectImagePath}" alt="${skill.effect} 이미지" class="tooltip-inner-img">
-                           <div class="tooltip-description">${effectDescription}</div>
-                         </div>
-                       </div>
-                     </div>`
+
+              const effectTooltipHtml = skill.effect
+                ? `<img loading="lazy" src="${effectImagePath}" alt="${skill.effect}" 
+                    class="digimon-effect-img"
+                    onmouseenter="showEffectTooltip(event, '${skill.effect}', '${digimonName}', ${skillNumber})"
+                    onmousemove="showEffectTooltip(event, '${skill.effect}', '${digimonName}', ${skillNumber})"
+                    onmouseleave="hideCustomTooltip()"
+                   >`
                 : "";
 
               return `
@@ -731,5 +765,6 @@
   window.hideTooltip = hideTooltip;
   window.showCustomTooltip = showCustomTooltip;
   window.hideCustomTooltip = hideCustomTooltip;
+  window.showEffectTooltip = showEffectTooltip;
   window.toggleFilters = toggleFilters;
 })();
