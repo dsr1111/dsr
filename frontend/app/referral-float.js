@@ -13,8 +13,12 @@ class ReferralFloat extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render();
-    this.initEvents();
+    // 추천인 코드 기간 종료로 인한 숨김 처리
+    this.style.display = 'none';
+    return;
+
+    // this.render();
+    // this.initEvents();
   }
 
   render() {
