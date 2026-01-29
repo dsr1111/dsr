@@ -16792,6 +16792,93 @@
       }
     ]
   },
+  "오로치몬": {
+    "evolution_stage": "완전체",
+    "type": "바이러스",
+    "stats": {
+      "level": 100,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "물",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "불",
+      "effect": "효과확률"
+    },
+    "fields": [
+      "NSp",
+      "NSo",
+      "UK"
+    ],
+    "skills": [
+      {
+        "name": "스피리터스 브레스",
+        "hits": 2,
+        "range": "근거리",
+        "attribute": "바람",
+        "target_count": "단일",
+        "multipliers": [
+          0.25,
+          0.275,
+          0.3,
+          0.325,
+          0.35,
+          0.375,
+          0.4,
+          0.425,
+          0.45,
+          0.475
+        ]
+      },
+      {
+        "name": "술 브레스",
+        "hits": 6,
+        "range": "원거리",
+        "attribute": "물",
+        "target_count": "단일",
+        "effect": "혼란",
+        "multipliers": [
+          0.15,
+          0.1571,
+          0.1642,
+          0.1713,
+          0.1784,
+          0.1854,
+          0.1925,
+          0.1996,
+          0.2067,
+          0.2137
+        ]
+      },
+      {
+        "name": "천총운검",
+        "hits": 3,
+        "range": "원거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          0.3333,
+          0.35,
+          0.3666,
+          0.3833,
+          0.4,
+          0.4166,
+          0.4333,
+          0.45,
+          0.4666,
+          0.4833
+        ]
+      }
+    ]
+  },
   "오쿠와몬": {
     "evolution_stage": "완전체",
     "type": "바이러스",
@@ -27255,6 +27342,93 @@
           0.2565
         ],
         "effect": "감전"
+      }
+    ]
+  },
+  "현무몬": {
+    "evolution_stage": "궁극체",
+    "type": "백신",
+    "stats": {
+      "level": 100,
+      "hp": 5826,
+      "sp": 1942,
+      "STR": 963,
+      "INT": 963,
+      "DEF": 1075,
+      "RES": 963,
+      "SPD": 481
+    },
+    "strengths": {
+      "attribute": "나무",
+      "effect": "반사"
+    },
+    "weaknesses": {
+      "attribute": "천둥",
+      "effect": "회피불가"
+    },
+    "fields": [
+      "JT",
+      "NSp",
+      "UK"
+    ],
+    "skills": [
+      {
+        "name": "쌍룡파",
+        "hits": 2,
+        "range": "원거리",
+        "attribute": "빛",
+        "target_count": "단일",
+        "multipliers": [
+          0.25,
+          0.275,
+          0.3,
+          0.325,
+          0.35,
+          0.375,
+          0.4,
+          0.425,
+          0.45,
+          0.475
+        ]
+      },
+      {
+        "name": "무환",
+        "hits": 4,
+        "range": "원거리",
+        "attribute": "어둠",
+        "target_count": "단일",
+        "effect": "혼란, 안개 장벽",
+        "multipliers": [
+          0.225,
+          0.2356,
+          0.2462,
+          0.2569,
+          0.2675,
+          0.2781,
+          0.2887,
+          0.2993,
+          0.31,
+          0.3206
+        ]
+      },
+      {
+        "name": "흑박",
+        "hits": 5,
+        "range": "근거리",
+        "attribute": "나무",
+        "target_count": "단일",
+        "multipliers": [
+          0.2,
+          0.21,
+          0.22,
+          0.23,
+          0.24,
+          0.25,
+          0.26,
+          0.27,
+          0.28,
+          0.29
+        ]
       }
     ]
   },

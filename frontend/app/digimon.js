@@ -102,6 +102,7 @@
     금속화: "* 금속화<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가해지며, 턴마다 지속 피해를 입힙니다.<br>불속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
     "잔류 에너지": "* 잔류 에너지<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>빛속성에 취약해집니다.<br>흙속성 피격 시 해제됩니다.",
     "꼭두각시": "* 꼭두각시<br>공격 시 **% 확률로 발생됩니다.<br>일정 턴 동안 명령이 불가해집니다.<br>피아식별 없이 행동하게 됩니다.<br>빛속성 피격 시 해제됩니다.",
+    "안개 장벽": "* 안개 장벽<br>일정 턴 동안 아군 모두에게 DEF x% 증가",
   };
 
   const effectDescriptionsLower = Object.keys(effectDescriptions).reduce(
@@ -272,20 +273,28 @@
                 skillClass = "skill-bg-blue";
               }
 
-              const normalizedEffect = (skill.effect || '').trim().toLowerCase();
-              let effectImagePath = skill.effect ? `https://media.dsrwiki.com/dsrwiki/debuff/${skill.effect}.webp` : "";
-              if (normalizedEffect === "회복") {
-                effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/skill${skillNumber}.webp`;
-              }
+              let effectTooltipHtml = "";
+              if (skill.effect) {
+                // 콤마로 구분된 여러 효과 처리
+                const effects = skill.effect.split(',').map(e => e.trim());
 
-              const effectTooltipHtml = skill.effect
-                ? `<img loading="lazy" src="${effectImagePath}" alt="${skill.effect}" 
-                    class="digimon-effect-img"
-                    onmouseenter="showEffectTooltip(event, '${skill.effect}', '${digimonName}', ${skillNumber})"
-                    onmousemove="showEffectTooltip(event, '${skill.effect}', '${digimonName}', ${skillNumber})"
-                    onmouseleave="hideCustomTooltip()"
-                   >`
-                : "";
+                effectTooltipHtml = effects.map(eff => {
+                  const normalizedEff = eff.toLowerCase();
+                  let effectImagePath = `https://media.dsrwiki.com/dsrwiki/debuff/${eff}.webp`;
+
+                  if (normalizedEff === "회복") {
+                    effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/skill${skillNumber}.webp`;
+                  }
+
+                  return `<img loading="lazy" src="${effectImagePath}" alt="${eff}" 
+                      class="digimon-effect-img"
+                      onmouseenter="showEffectTooltip(event, '${eff}', '${digimonName}', ${skillNumber})"
+                      onmousemove="showEffectTooltip(event, '${eff}', '${digimonName}', ${skillNumber})"
+                      onmouseleave="hideCustomTooltip()"
+                      style="margin-right: 2px;"
+                     >`;
+                }).join('');
+              }
 
               return `
                 <td class="${skillClass}">
@@ -537,13 +546,12 @@
         const effectMatches = filters.effect.length === 0 ||
           filters.effect.some(effect => {
             // 각 스킬의 effect 속성 확인 (dataset에서 직접 가져오기)
-            const skill1Effect = row.dataset.skill1Effect === effect;
-            const skill2Effect = row.dataset.skill2Effect === effect;
-            const skill3Effect = row.dataset.skill3Effect === effect;
+            // 콤마로 구분된 다중 효과 지원 (trim 후 포함 여부 확인)
+            const skill1Effects = (row.dataset.skill1Effect || "").split(',').map(e => e.trim());
+            const skill2Effects = (row.dataset.skill2Effect || "").split(',').map(e => e.trim());
+            const skill3Effects = (row.dataset.skill3Effect || "").split(',').map(e => e.trim());
 
-
-
-            return skill1Effect || skill2Effect || skill3Effect;
+            return skill1Effects.includes(effect) || skill2Effects.includes(effect) || skill3Effects.includes(effect);
           });
 
         if (
