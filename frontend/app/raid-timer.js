@@ -61,6 +61,14 @@ const raids = [
     map: '기어 사바나',
   },
   {
+    name: '현무몬',
+    image: getImagePath('현무몬'),
+    times: ['22:00'],
+    type: 'weekly',
+    days: [3], // 수요일
+    map: '용의 눈 호수',
+  },
+  {
     name: '청룡몬',
     image: getImagePath('청룡몬'),
     times: ['22:00'],
@@ -83,7 +91,7 @@ const RotationRaid = {
   image: getImagePath('록몬'),
   baseTime: '19:00',
   baseDate: '2026-01-29',
-  map: '용의 눈 호수',
+  map: '기어 사바나',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
@@ -687,6 +695,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       '청룡몬': '청룡몬',
       '백호몬': '백호몬',
       '주작몬': '주작몬',
+      '현무몬': '현무몬',
       '블랙세라피몬': 'weekend',
       '오파니몬:폴다운모드': 'weekend',
       '메기드라몬': 'weekend'
