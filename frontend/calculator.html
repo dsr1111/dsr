@@ -2,393 +2,422 @@
 <html lang="ko">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
-  <title>데미지 계산기 | DSR WIKI</title>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/styles1.css" />
-  <link rel="stylesheet" href="assets/css/pages/calculator/main.css" />
-  <script src="app/lazyload.js" defer></script>
-  <script src="app/calculator.js" defer></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="app/nav.js" defer></script>
-  <script>
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-      var adScript = document.createElement('script');
-      adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
-      adScript.async = true;
-      adScript.crossOrigin = 'anonymous';
-      document.head.appendChild(adScript);
-    }
-  </script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            header: 'hsl(220, 24%, 18%)',
-          }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon" />
+    <title>데미지 계산기 | DSR WIKI</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles1.css" />
+    <link rel="stylesheet" href="assets/css/pages/calculator/main.css" />
+    <script src="app/lazyload.js" defer></script>
+    <script src="app/calculator.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="app/nav.js" defer></script>
+    <script>
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            var adScript = document.createElement('script');
+            adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+            adScript.async = true;
+            adScript.crossOrigin = 'anonymous';
+            document.head.appendChild(adScript);
         }
-      }
-    }
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-V5VLCXSKM7');
-  </script>
-  <link rel="stylesheet" href="web/static/pretendard.css">
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        header: 'hsl(220, 24%, 18%)',
+                    }
+                }
+            }
+        }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-V5VLCXSKM7');
+    </script>
+    <link rel="stylesheet" href="web/static/pretendard.css">
 </head>
 
 <body class="bg-[#f4f4f9] font-['Pretendard']">
 
-  <custom-nav></custom-nav>
+    <custom-nav></custom-nav>
 
-  <div class="w-[90%] max-w-[1000px] mx-auto mt-[100px]">
-    <div class="bg-white p-5 rounded-lg md:mt-[200px] md:grid md:grid-cols-3 md:gap-5">
+    <div class="w-[90%] max-w-[1000px] mx-auto mt-[100px]">
+        <div class="bg-white p-5 rounded-lg md:mt-[200px] md:grid md:grid-cols-3 md:gap-5 md:items-center">
 
-      <div class="col-span-1 h-full flex flex-col">
-        <table class="w-full max-w-[300px] border-collapse flex-grow border-b border-[#ddd]">
-          <tr>
-            <th colspan="3" class="bg-header text-white text-xl h-10 border border-[#ddd] relative">
-              <div class="flex justify-between items-center">
-                <span class="flex-grow text-center">내 디지몬</span>
-                <div class="absolute right-2 flex items-center">
-                  <label class="text-sm text-white flex items-center">
-                    <input type="checkbox" id="manual-mode" class="mr-1">수동 입력
-                  </label>
-                </div>
-              </div>
-            </th>
-          </tr>
-          <tr id="manual-input-row" style="display: none;">
-            <td colspan="3" class="border border-[#ddd] p-2">
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="text-sm">타입:</label>
-                  <select id="manual-type" class="w-full p-1 text-sm bg-[#f0f0f0]">
-                    <option value="백신">백신</option>
-                    <option value="바이러스">바이러스</option>
-                    <option value="데이터">데이터</option>
-                    <option value="프리">프리</option>
-                    <option value="언노운">언노운</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="text-sm">레벨:</label>
-                  <input type="number" id="manual-level" class="w-full p-1 text-sm bg-[#f0f0f0] text-center" value="1">
-                </div>
-                <div>
-                  <label class="text-sm">기본 힘:</label>
-                  <input type="number" id="manual-power" class="w-full p-1 text-sm bg-[#f0f0f0] text-center" value="0">
-                </div>
-                <div>
-                  <label class="text-sm">스킬 계수(%):</label>
-                  <input type="number" id="manual-skill-coefficient" class="w-full p-1 text-sm bg-[#f0f0f0] text-center"
-                    value="1" step="0.01">
-                </div>
-                <div>
-                  <label class="text-sm">스킬 타수:</label>
-                  <input type="number" id="manual-hit-count" class="w-full p-1 text-sm bg-[#f0f0f0] text-center"
-                    value="1">
-                </div>
-                <div>
-                  <label class="text-sm">스킬 대상:</label>
-                  <select id="manual-target-type" class="w-full p-1 text-sm bg-[#f0f0f0]">
-                    <option value="단일">단일</option>
-                    <option value="전체">전체</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="text-sm">스킬 속성:</label>
-                  <select id="manual-skill-element" class="w-full p-1 text-sm bg-[#f0f0f0]">
-                    <option value="강철">강철</option>
-                    <option value="나무">나무</option>
-                    <option value="흙">흙</option>
-                    <option value="물">물</option>
-                    <option value="물리">물리</option>
-                    <option value="바람">바람</option>
-                    <option value="불">불</option>
-                    <option value="빛">빛</option>
-                    <option value="어둠">어둠</option>
-                    <option value="얼음">얼음</option>
-                    <option value="천둥">천둥</option>
-                  </select>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr id="normal-mode-row">
-            <td class="border border-[#ddd] text-center text-sm">진화 단계</td>
-            <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
-              <select id="stage-select"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-                <option value="성장기">성장기</option>
-                <option value="성숙기">성숙기</option>
-                <option value="완전체">완전체</option>
-                <option value="궁극체">궁극체</option>
-              </select>
-            </td>
-          </tr>
-          <tr id="character-select-row">
-            <td class="border border-[#ddd] text-center text-sm">이름</td>
-            <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
-              <select id="character-select"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3" id="character-image-cell"
-              class="border border-[#ddd] text-center text-sm bg-black h-[150px]"></td>
-          </tr>
-          <tr id="type-row">
-            <td class="border border-[#ddd] text-center text-sm h-10">타입</td>
-            <td colspan="2" id="type-image-cell" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr id="level-row">
-            <td class="border border-[#ddd] text-center text-sm h-[30px]">레벨</td>
-            <td colspan="2" id="level-cell" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr id="power-row">
-            <td class="border border-[#ddd] text-center text-sm h-[30px]">기본 힘</td>
-            <td colspan="2" id="힘-cell" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr id="skill-select-area-row">
-            <td rowspan="2" class="border border-[#ddd] text-center text-sm">스킬</td>
-            <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
-              <select id="skill-select"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-                <option value="skill1">1스킬</option>
-                <option value="skill2">2스킬</option>
-                <option value="skill3">3스킬</option>
-              </select>
-            </td>
-            <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
-              <select id="skilllevel-select"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-                <option value="1레벨">1레벨</option>
-                <option value="2레벨">2레벨</option>
-                <option value="3레벨">3레벨</option>
-                <option value="4레벨">4레벨</option>
-                <option value="5레벨">5레벨</option>
-                <option value="6레벨">6레벨</option>
-                <option value="7레벨">7레벨</option>
-                <option value="8레벨">8레벨</option>
-                <option value="9레벨">9레벨</option>
-                <option value="10레벨">10레벨</option>
-              </select>
-            </td>
-          </tr>
-          <tr id="skill-image-row">
-            <td colspan="2" id="skill-cell" class="border-x border-[#ddd] text-center text-sm h-10"></td>
-          </tr>
-        </table>
-      </div>
+            <div class="col-span-1 flex flex-col">
+                <table class="w-full max-w-[300px] border-collapse border-b border-[#ddd]">
+                    <tr>
+                        <th colspan="3" class="bg-header text-white text-xl h-10 border border-[#ddd] relative">
+                            <div class="flex justify-between items-center">
+                                <span class="flex-grow text-center">내 디지몬</span>
+                                <div class="absolute right-2 flex items-center">
+                                    <label class="text-sm text-white flex items-center">
+                                        <input type="checkbox" id="manual-mode" class="mr-1">수동 입력
+                                    </label>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr id="manual-input-row" style="display: none;">
+                        <td colspan="3" class="border border-[#ddd] p-2">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-sm">타입:</label>
+                                    <select id="manual-type" class="w-full p-1 text-sm bg-[#f0f0f0]">
+                                        <option value="백신">백신</option>
+                                        <option value="바이러스">바이러스</option>
+                                        <option value="데이터">데이터</option>
+                                        <option value="프리">프리</option>
+                                        <option value="언노운">언노운</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-sm">레벨:</label>
+                                    <input type="number" id="manual-level"
+                                        class="w-full p-1 text-sm bg-[#f0f0f0] text-center" value="1">
+                                </div>
+                                <div>
+                                    <label class="text-sm">기본 힘:</label>
+                                    <input type="number" id="manual-power"
+                                        class="w-full p-1 text-sm bg-[#f0f0f0] text-center" value="0">
+                                </div>
+                                <div>
+                                    <label class="text-sm">스킬 계수(%):</label>
+                                    <input type="number" id="manual-skill-coefficient"
+                                        class="w-full p-1 text-sm bg-[#f0f0f0] text-center" value="1" step="0.01">
+                                </div>
+                                <div>
+                                    <label class="text-sm">스킬 타수:</label>
+                                    <input type="number" id="manual-hit-count"
+                                        class="w-full p-1 text-sm bg-[#f0f0f0] text-center" value="1">
+                                </div>
+                                <div>
+                                    <label class="text-sm">스킬 대상:</label>
+                                    <select id="manual-target-type" class="w-full p-1 text-sm bg-[#f0f0f0]">
+                                        <option value="단일">단일</option>
+                                        <option value="전체">전체</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-sm">스킬 속성:</label>
+                                    <select id="manual-skill-element" class="w-full p-1 text-sm bg-[#f0f0f0]">
+                                        <option value="강철">강철</option>
+                                        <option value="나무">나무</option>
+                                        <option value="흙">흙</option>
+                                        <option value="물">물</option>
+                                        <option value="물리">물리</option>
+                                        <option value="바람">바람</option>
+                                        <option value="불">불</option>
+                                        <option value="빛">빛</option>
+                                        <option value="어둠">어둠</option>
+                                        <option value="얼음">얼음</option>
+                                        <option value="천둥">천둥</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr id="normal-mode-row">
+                        <td class="border border-[#ddd] text-center text-sm">진화 단계</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                            <select id="stage-select"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                                <option value="성장기">성장기</option>
+                                <option value="성숙기">성숙기</option>
+                                <option value="완전체">완전체</option>
+                                <option value="궁극체">궁극체</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="character-select-row">
+                        <td class="border border-[#ddd] text-center text-sm">이름</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                            <select id="character-select"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" id="character-image-cell"
+                            class="border border-[#ddd] text-center text-sm bg-black h-[150px]"></td>
+                    </tr>
+                    <tr id="type-row">
+                        <td class="border border-[#ddd] text-center text-sm h-10">타입</td>
+                        <td colspan="2" id="type-image-cell" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr id="level-row">
+                        <td class="border border-[#ddd] text-center text-sm h-[30px]">레벨</td>
+                        <td colspan="2" id="level-cell" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr id="power-row">
+                        <td class="border border-[#ddd] text-center text-sm h-[30px]">기본 힘</td>
+                        <td colspan="2" id="힘-cell" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr id="skill-select-area-row">
+                        <td rowspan="2" class="border border-[#ddd] text-center text-sm">스킬</td>
+                        <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                            <select id="skill-select"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                                <option value="skill1">1스킬</option>
+                                <option value="skill2">2스킬</option>
+                                <option value="skill3">3스킬</option>
+                            </select>
+                        </td>
+                        <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                            <select id="skilllevel-select"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                                <option value="1레벨">1레벨</option>
+                                <option value="2레벨">2레벨</option>
+                                <option value="3레벨">3레벨</option>
+                                <option value="4레벨">4레벨</option>
+                                <option value="5레벨">5레벨</option>
+                                <option value="6레벨">6레벨</option>
+                                <option value="7레벨">7레벨</option>
+                                <option value="8레벨">8레벨</option>
+                                <option value="9레벨">9레벨</option>
+                                <option value="10레벨">10레벨</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="skill-image-row">
+                        <td colspan="2" id="skill-cell" class="border-x border-[#ddd] text-center text-sm h-10"></td>
+                    </tr>
+                </table>
+            </div>
 
-      <div class="col-span-1 mt-5 md:mt-0 h-full flex flex-col">
-        <table class="w-full max-w-[300px] border-collapse flex-grow">
-          <tr>
-            <th colspan="4" class="bg-header text-white text-xl h-10 border border-[#ddd]">악역 디지몬</th>
-          </tr>
-          <tr>
-            <td colspan="4" class="border border-[#ddd] text-center text-sm h-10">출현 지역</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm map1-cell">
-              <select id="map1-select"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-                <option value="서버대륙">서버대륙</option>
-                <option value="현실 세계">현실 세계</option>
-                <option value="스파이럴 마운틴">스파이럴 마운틴</option>
-                <option value="데이터 세계">데이터 세계</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="4" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm map2-cell">
-              <select id="map2-select"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer"></select>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="4" class="border border-[#ddd] text-center text-sm h-10">이름</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
-              <select id="mob-select"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td id="mob-image-cell" colspan="2" rowspan="6" class="border border-[#ddd] text-center text-sm bg-black">
-            </td>
-            <td class="border border-[#ddd] text-center text-sm h-[35px]">레벨</td>
-            <td id="mob-level" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[35px]">타입</td>
-            <td id="mob-type" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[35px]">체력</td>
-            <td id="mob-hp" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[35px]">수비</td>
-            <td id="mob-def" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[35px]">강점</td>
-            <td id="mob-strong" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[35px]">약점</td>
-            <td id="mob-weak" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-        </table>
-      </div>
+            <div class="col-span-1 mt-5 md:mt-0 flex flex-col">
+                <table class="w-full max-w-[300px] border-collapse">
+                    <tr>
+                        <th colspan="4" class="bg-header text-white text-xl h-10 border border-[#ddd]">악역 디지몬</th>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="border border-[#ddd] text-center text-sm h-10">출현 지역</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm map1-cell">
+                            <select id="map1-select"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                                <option value="서버대륙">서버대륙</option>
+                                <option value="현실 세계">현실 세계</option>
+                                <option value="스파이럴 마운틴">스파이럴 마운틴</option>
+                                <option value="데이터 세계">데이터 세계</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm map2-cell">
+                            <select id="map2-select"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="border border-[#ddd] text-center text-sm h-10">이름</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                            <select id="mob-select"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="mob-image-cell" colspan="2" rowspan="6"
+                            class="border border-[#ddd] text-center text-sm bg-black">
+                        </td>
+                        <td class="border border-[#ddd] text-center text-sm h-[35px]">레벨</td>
+                        <td id="mob-level" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[35px]">타입</td>
+                        <td id="mob-type" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[35px]">체력</td>
+                        <td id="mob-hp" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[35px]">수비</td>
+                        <td id="mob-def" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[35px]">강점</td>
+                        <td id="mob-strong" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[35px]">약점</td>
+                        <td id="mob-weak" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                </table>
+            </div>
 
-      <div class="col-span-1 mt-5 md:mt-0 h-full flex flex-col gap-5">
-        <table class="w-full max-w-[300px] border-collapse">
-          <tr>
-            <th colspan="3" class="bg-header text-white text-xl h-10 border border-[#ddd]">추가 수치</th>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">포텐셜(+%)</td>
-            <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
-              <input type="text" id="potential" autocomplete="off"
-                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
-            </td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">유년기 교정(+%)</td>
-            <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
-              <input type="text" id="correction" autocomplete="off"
-                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
-            </td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">시너지(+%)</td>
-            <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
-              <input type="text" id="synergy" autocomplete="off"
-                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
-            </td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">버프</td>
-            <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
-              <input type="text" id="buff" autocomplete="off"
-                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
-            </td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">특화</td>
-            <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
-              <input type="text" id="specialization" autocomplete="off"
-                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
-            </td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">장비</td>
-            <td class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
-              <input type="text" id="equipment1" placeholder="스탯(STR)" autocomplete="off"
-                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
-            </td>
-            <td class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
-              <input type="text" id="equipment2" placeholder="스킬 추뎀" autocomplete="off"
-                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
-            </td>
-          </tr>
-        </table>
+            <div class="col-span-1 mt-5 md:mt-0 flex flex-col gap-5">
+                <table class="w-full max-w-[300px] border-collapse">
+                    <tr>
+                        <th colspan="3" class="bg-header text-white text-xl h-10 border border-[#ddd]">추가 수치</th>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">포텐셜(+%)</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="potential" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">유년기 교정(+%)</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="correction" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">시너지</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="synergy" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">버프</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="buff" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">특화</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="specialization" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">장비</td>
+                        <td class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="equipment1" placeholder="스탯(STR)" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                        <td class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="equipment2" placeholder="스킬 추뎀" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">크리티컬 확률</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="crit-rate" placeholder="0%" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">데미지 범위</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm p-0">
+                            <div class="flex items-center justify-center h-full">
+                                <input type="text" id="dmg-min" placeholder="95%" autocomplete="off"
+                                    class="w-[45%] h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center border-none">
+                                <span class="w-[10%] text-[#1D232F]">~</span>
+                                <input type="text" id="dmg-max" placeholder="105%" autocomplete="off"
+                                    class="w-[45%] h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center border-none">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-[30px] w-[35%]">크리티컬 데미지율</td>
+                        <td colspan="2" class="bg-[#f0f0f0] border border-[#ddd] text-left text-sm">
+                            <input type="text" id="crit-dmg" placeholder="150%" autocomplete="off"
+                                class="w-full h-full p-2 bg-[#f0f0f0] text-[#1D232F] text-sm text-center">
+                        </td>
+                    </tr>
+                </table>
 
-        <table class="w-full max-w-[300px] border-collapse">
-          <tr>
-            <th colspan="2" class="bg-header text-white text-xl h-10 border border-[#ddd]">계산 결과</th>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-10">총 힘 스탯</td>
-            <td id="str-result" class="border border-[#ddd] text-center text-sm"></td>
-          </tr>
-          <tr>
-            <td class="border border-[#ddd] text-center text-sm h-10">몹 수</td>
-            <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
-              <select id="mob-count"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-                <option value="1">1마리</option>
-                <option value="2">2마리</option>
-                <option value="3">3마리</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td rowspan="2" class="border border-[#ddd] text-center text-sm">필요 힘</td>
-            <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
-              <select id="skillcount"
-                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
-                <option value="1킬">1킬</option>
-                <option value="2킬">2킬</option>
-                <option value="3킬">3킬</option>
-                <option value="4킬">4킬</option>
-                <option value="5킬">5킬</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td id="needstr" class="border border-[#ddd] text-center text-sm h-10"></td>
-          </tr>
-        </table>
-      </div>
+                <table class="w-full max-w-[300px] border-collapse">
+                    <tr>
+                        <th colspan="2" class="bg-header text-white text-xl h-10 border border-[#ddd]">계산 결과</th>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-10">총 힘 스탯</td>
+                        <td id="str-result" class="border border-[#ddd] text-center text-sm"></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-[#ddd] text-center text-sm h-10">몹 수</td>
+                        <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                            <select id="mob-count"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                                <option value="1">1마리</option>
+                                <option value="2">2마리</option>
+                                <option value="3">3마리</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" class="border border-[#ddd] text-center text-sm">처치 확률</td>
+                        <td class="bg-[#f0f0f0] border border-[#ddd] text-center text-sm">
+                            <select id="skillcount"
+                                class="bg-[#f0f0f0] w-full h-full p-2.5 text-sm text-[#1D232F] text-center cursor-pointer">
+                                <option value="1킬">1킬</option>
+                                <option value="2킬">2킬</option>
+                                <option value="3킬">3킬</option>
+                                <option value="4킬">4킬</option>
+                                <option value="5킬">5킬</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="needstr" class="border border-[#ddd] text-center text-sm h-10"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <style>
-    .character-image {
-      width: 150px;
-      height: 150px;
-      background-color: black;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto;
-    }
+    <style>
+        .character-image {
+            width: 150px;
+            height: 150px;
+            background-color: black;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+        }
 
-    .mob-image {
-      width: 150px;
-      height: 150px;
-      background-color: black;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto;
-    }
+        .mob-image {
+            width: 150px;
+            height: 150px;
+            background-color: black;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+        }
 
-    #type-image-cell,
-    #skill-cell,
-    #mob-type,
-    #mob-strong,
-    #mob-weak {
-      justify-content: center;
-      align-items: center;
-    }
+        #type-image-cell,
+        #skill-cell,
+        #mob-type,
+        #mob-strong,
+        #mob-weak {
+            justify-content: center;
+            align-items: center;
+        }
 
-    #type-image-cell img,
-    #mob-type img,
-    #mob-strong img,
-    #mob-weak img {
-      margin: 0 auto;
-    }
+        #type-image-cell img,
+        #mob-type img,
+        #mob-strong img,
+        #mob-weak img {
+            margin: 0 auto;
+        }
 
-    #skill-cell img {
-      margin: 0 6px 0 0 !important;
-      display: inline-block;
-    }
-  </style>
+        #skill-cell img {
+            margin: 0 6px 0 0 !important;
+            display: inline-block;
+        }
+    </style>
 
-  <referral-float></referral-float>
-  <script src="app/referral-float.js" defer></script>
+    <referral-float></referral-float>
+    <script src="app/referral-float.js" defer></script>
 </body>
 
 </html>

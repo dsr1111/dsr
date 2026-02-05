@@ -297,7 +297,7 @@ window.addEventListener("DOMContentLoaded", async function () {
     }
 
     await calculateStrengthResult();
-    await calculateNeedStr();
+    await calculateProbability();
   } catch (error) {
     console.error("Error in DOMContentLoaded:", error);
   }
@@ -323,7 +323,7 @@ document.getElementById("manual-mode").addEventListener("change", async function
   if (isManualMode) {
     // 수동 입력 모드일 때 계산 함수 호출
     calculateStrengthResult();
-    calculateNeedStr();
+    calculateProbability();
   } else {
     // 일반 모드로 돌아올 때 캐릭터 정보 다시 불러오기
     const characterName = document.getElementById("character-select").value;
@@ -337,7 +337,7 @@ document.getElementById("manual-mode").addEventListener("change", async function
 
     // 계산 함수 호출
     calculateStrengthResult();
-    calculateNeedStr();
+    calculateProbability();
   }
 });
 
@@ -346,7 +346,7 @@ document.querySelectorAll("#manual-type, #manual-level, #manual-power, #manual-s
   input.addEventListener("input", () => {
     if (document.getElementById("manual-mode").checked) {
       calculateStrengthResult();
-      calculateNeedStr();
+      calculateProbability();
     }
   });
 });
@@ -380,7 +380,7 @@ async function calculateStrengthResult() {
 
   const potential = getInputValue("potential") / 100;
   const correction = getInputValue("correction") / 100;
-  const synergy = getInputValue("synergy") / 100;
+  const synergy = getInputValue("synergy");
   const buff = getInputValue("buff");
   const specialization = getInputValue("specialization");
   const equipment = getInputValue("equipment1");
@@ -389,7 +389,7 @@ async function calculateStrengthResult() {
     basePower +
     Math.ceil(basePower * potential) +
     Math.ceil(basePower * correction) +
-    Math.ceil(basePower * synergy) +
+    synergy +
     buff +
     specialization +
     equipment;
@@ -401,13 +401,60 @@ async function calculateStrengthResult() {
 
 document
   .querySelectorAll(
-    "#potential, #correction, #synergy, #buff, #specialization, #equipment"
+    "#potential, #correction, #synergy, #buff, #specialization, #equipment, #dmg-min, #dmg-max"
   )
   .forEach((input) => input.addEventListener("input", calculateStrengthResult));
 
 window.addEventListener("DOMContentLoaded", calculateStrengthResult);
 
-async function calculateNeedStr() {
+// Helper functions for probability calculation
+function factorial(n) {
+  if (n === 0 || n === 1) return 1;
+  let result = 1;
+  for (let i = 2; i <= n; i++) result *= i;
+  return result;
+}
+
+function combinations(n, k) {
+  if (k < 0 || k > n) return 0;
+  return factorial(n) / (factorial(k) * factorial(n - k));
+}
+
+function irwinHallCDF(x, n) {
+  if (n === 0) return 0;
+  let sum = 0;
+  for (let k = 0; k <= Math.floor(x); k++) {
+    sum += Math.pow(-1, k) * combinations(n, k) * Math.pow(x - k, n);
+  }
+  return sum / factorial(n);
+}
+
+// CDF of Normal Distribution approximation
+function normalCDF(x, mean, stdDev) {
+  return 0.5 * (1 + erf((x - mean) / (stdDev * Math.sqrt(2))));
+}
+
+function erf(x) {
+  // Save the sign of x
+  var sign = (x >= 0) ? 1 : -1;
+  x = Math.abs(x);
+
+  // Constants
+  var a1 = 0.254829592;
+  var a2 = -0.284496736;
+  var a3 = 1.421413741;
+  var a4 = -1.453152027;
+  var a5 = 1.061405429;
+  var p = 0.3275911;
+
+  // A&S formula 7.1.26
+  var t = 1.0 / (1.0 + p * x);
+  var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+
+  return sign * y;
+}
+
+async function calculateProbability() {
   try {
     const mobName = document.getElementById("mob-select").value;
     const selectedMap = document.getElementById("map2-select").value;
@@ -496,16 +543,21 @@ async function calculateNeedStr() {
       skillCoefficient = 1;
     }
 
+    // Ensure hitCount is at least 1 and integer for probability calculation logic
+    // Using Round since usually hit counts are integers.
+    const effectiveHits = Math.max(1, Math.round(hitCount));
+
     const skillCount = document.getElementById("skillcount").value;
+    let targetHP = mobHP;
 
     if (skillCount === "2킬") {
-      mobHP = mobHP / 2;
+      targetHP = mobHP / 2;
     } else if (skillCount === "3킬") {
-      mobHP = mobHP / 3;
+      targetHP = mobHP / 3;
     } else if (skillCount === "4킬") {
-      mobHP = mobHP / 4;
+      targetHP = mobHP / 4;
     } else if (skillCount === "5킬") {
-      mobHP = mobHP / 5;
+      targetHP = mobHP / 5;
     }
 
     let compatibility = 1.0;
@@ -539,7 +591,6 @@ async function calculateNeedStr() {
     if (mySkillElement === mobStrong) elementalFactor = 0.75;
     else if (mySkillElement === mobWeak) elementalFactor = 1.25;
 
-    const minDamageRatio = 0.95;
     const levelConstant = myLevel * 12 + 24;
 
     let equipment2Value = parseFloat(document.getElementById("equipment2").value) || 0;
@@ -550,49 +601,183 @@ async function calculateNeedStr() {
       skillCoefficient += increaseValue;
     }
 
+
+
     const totalStrength = await calculateStrengthResult();
 
-    const needStr = Math.floor(mobHP / (skillCoefficient * hitCount * compatibility * elementalFactor * levelConstant * minDamageRatio / mobDef));
+    // Critical Damage Parameters
+    let critDmgInput = document.getElementById("crit-dmg").value.replace(/%/g, '');
+    let critMultiplier = (critDmgInput === "" ? 150 : parseFloat(critDmgInput)) || 150;
+    critMultiplier = critMultiplier / 100;
 
-    document.getElementById("needstr").textContent = needStr;
+    // Critical Rate Parameters
+    let critRateInput = document.getElementById("crit-rate").value.replace(/%/g, '');
+    let critRatePercent = (critRateInput === "" ? 0 : parseFloat(critRateInput)) || 0;
+    let critProbability = Math.max(0, Math.min(100, critRatePercent)) / 100;
+
+    // Elemental Factor for Crits (remove 1.25x weakness bonus)
+    let appliedElementalFactor = elementalFactor;
+    if (mySkillElement === mobWeak) {
+      appliedElementalFactor = 1.0;
+    }
+
+    // Damage Range Percentages
+    const minRangeInput = document.getElementById("dmg-min").value;
+    const maxRangeInput = document.getElementById("dmg-max").value;
+    const minRangePercent = (minRangeInput === "" ? 95 : parseFloat(minRangeInput)) || 95;
+    const maxRangePercent = (maxRangeInput === "" ? 105 : parseFloat(maxRangeInput)) || 105;
+
+    // --- 1. Normal Hit Parameters ---
+    const normalDamageFactor = (skillCoefficient * compatibility * elementalFactor * levelConstant) / (mobDef || 1);
+    const normalBaseDmg = totalStrength * normalDamageFactor;
+    const normalMinDmg = normalBaseDmg * (minRangePercent / 100);
+    const normalMaxDmg = normalBaseDmg * (maxRangePercent / 100);
+
+    // Normal Approximation stats for single normal hit
+    const normalMean = (normalMinDmg + normalMaxDmg) / 2;
+    const normalRange = normalMaxDmg - normalMinDmg;
+    const normalVar = (normalRange * normalRange) / 12;
+
+    // --- 2. Critical Hit Parameters ---
+    const critDamageFactor = (skillCoefficient * compatibility * appliedElementalFactor * levelConstant) / (mobDef || 1);
+    const critBaseDmg = totalStrength * critDamageFactor * critMultiplier;
+    const critMinDmg = critBaseDmg * (minRangePercent / 100);
+    const critMaxDmg = critBaseDmg * (maxRangePercent / 100);
+
+    // Normal Approximation stats for single crit hit
+    const critMean = (critMinDmg + critMaxDmg) / 2;
+    const critRange = critMaxDmg - critMinDmg;
+    const critVar = (critRange * critRange) / 12; // Variance of Uniform distribution
+
+    let totalKillProbability = 0;
+
+    // Iterate through all possible numbers of critical hits (k from 0 to effectiveHits)
+    for (let k = 0; k <= effectiveHits; k++) {
+      let normalHits = effectiveHits - k;
+
+      // Probability of getting exactly k crits (Binomial Distribution)
+      let binomialProb = combinations(effectiveHits, k) * Math.pow(critProbability, k) * Math.pow(1 - critProbability, normalHits);
+
+      if (binomialProb < 1e-9) continue; // Optimization: skip negligible probabilities
+
+      let conditionalKillProb = 0;
+
+      // Distribution of Total Damage for this specific combination of k crits + (N-k) normals
+      if (k === 0) {
+        // Case: All Normal Hits (Sum of N uniform variables)
+        // Use Irwin-Hall logic (reuse existing logic but adapted)
+        const totalMin = normalMinDmg * effectiveHits;
+        const totalMax = normalMaxDmg * effectiveHits;
+
+        if (totalMin >= targetHP) {
+          conditionalKillProb = 1;
+        } else if (totalMax < targetHP) {
+          conditionalKillProb = 0;
+        } else {
+          if (effectiveHits > 15) {
+            const totalMean = normalMean * effectiveHits;
+            const totalVar = normalVar * effectiveHits;
+            conditionalKillProb = 1 - normalCDF(targetHP, totalMean, Math.sqrt(totalVar));
+          } else {
+            const rangePerHit = normalRange;
+            if (rangePerHit <= 0.0001) {
+              conditionalKillProb = (totalMean >= targetHP) ? 1 : 0;
+            } else {
+              const z_target = (targetHP - effectiveHits * normalMinDmg) / rangePerHit;
+              conditionalKillProb = 1 - irwinHallCDF(z_target, effectiveHits);
+            }
+          }
+        }
+
+      } else if (k === effectiveHits) {
+        // Case: All Critical Hits (Sum of N uniform variables)
+        const totalMin = critMinDmg * effectiveHits;
+        const totalMax = critMaxDmg * effectiveHits;
+
+        if (totalMin >= targetHP) {
+          conditionalKillProb = 1;
+        } else if (totalMax < targetHP) {
+          conditionalKillProb = 0;
+        } else {
+          if (effectiveHits > 15) {
+            const totalMean = critMean * effectiveHits;
+            const totalVar = critVar * effectiveHits;
+            conditionalKillProb = 1 - normalCDF(targetHP, totalMean, Math.sqrt(totalVar));
+          } else {
+            const rangePerHit = critRange;
+            if (rangePerHit <= 0.0001) {
+              conditionalKillProb = (totalMean >= targetHP) ? 1 : 0;
+            } else {
+              const z_target = (targetHP - effectiveHits * critMinDmg) / rangePerHit;
+              conditionalKillProb = 1 - irwinHallCDF(z_target, effectiveHits);
+            }
+          }
+        }
+      } else {
+        // Case: Mixed Hits (Sum of k Uniform(Crit) + (N-k) Uniform(Normal))
+        // Use Normal Approximation for the sum
+        const totalMean = k * critMean + normalHits * normalMean;
+        const totalVar = k * critVar + normalHits * normalVar;
+        const totalStdDev = Math.sqrt(totalVar);
+
+        // Approximate absolute min/max for bounds check (optional but safe)
+        const absMin = k * critMinDmg + normalHits * normalMinDmg;
+        const absMax = k * critMaxDmg + normalHits * normalMaxDmg;
+
+        if (absMin >= targetHP) {
+          conditionalKillProb = 1;
+        } else if (absMax < targetHP) {
+          conditionalKillProb = 0;
+        } else {
+          conditionalKillProb = 1 - normalCDF(targetHP, totalMean, totalStdDev);
+        }
+      }
+
+      totalKillProbability += binomialProb * conditionalKillProb;
+    }
+
+    // Clamp and format
+    let finalProbability = Math.max(0, Math.min(100, totalKillProbability * 100)); // Convert to percent
+    document.getElementById("needstr").textContent = finalProbability.toFixed(2) + "%";
+
   } catch (error) {
-    console.error("Error in calculateNeedStr:", error);
+    console.error("Error in calculateProbability:", error);
     document.getElementById("needstr").textContent = "계산 불가";
   }
 }
 document
   .querySelectorAll(
-    "#potential, #correction, #synergy, #buff, #specialization, #equipment1, #equipment2"
+    "#potential, #correction, #synergy, #buff, #specialization, #equipment1, #equipment2, #dmg-min, #dmg-max, #crit-dmg, #crit-rate"
   )
   .forEach((input) =>
     input.addEventListener("input", async () => {
       await calculateStrengthResult();
-      await calculateNeedStr();
+      await calculateProbability();
     })
   );
 
 document
   .getElementById("skill-select")
-  .addEventListener("change", calculateNeedStr);
+  .addEventListener("change", calculateProbability);
 document
   .getElementById("skilllevel-select")
-  .addEventListener("change", calculateNeedStr);
+  .addEventListener("change", calculateProbability);
 document
   .getElementById("skillcount")
-  .addEventListener("change", calculateNeedStr);
+  .addEventListener("change", calculateProbability);
 document
   .getElementById("mob-select")
-  .addEventListener("change", calculateNeedStr);
+  .addEventListener("change", calculateProbability);
 document
   .getElementById("map2-select")
-  .addEventListener("change", calculateNeedStr);
+  .addEventListener("change", calculateProbability);
 
 // 몹 수 선택 이벤트 리스너 추가
 document
   .getElementById("mob-count")
-  .addEventListener("change", calculateNeedStr);
+  .addEventListener("change", calculateProbability);
 
 window.addEventListener("DOMContentLoaded", async () => {
   await calculateStrengthResult();
-  await calculateNeedStr();
+  await calculateProbability();
 });
