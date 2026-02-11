@@ -381,34 +381,27 @@ function getMasterTyrannoNextTime() {
 
   let diffDays = Math.floor((nowAtMidnightKST - baseAtMidnightKST) / (1000 * 60 * 60 * 24));
 
-  // 레이드 날짜 계산 (baseDate에서 diffDays만큼 더함)
-  const raidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
+  // 25분씩 누적되어 날짜가 밀리는 것을 감안하여, 하루 전부터 탐색 시작
+  diffDays -= 1;
 
-  // 레이드 시간 계산: baseTime + (diffDays * 25분)
-  const totalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
-  const raidHour = Math.floor(totalMinutes / 60) % 24;
-  const raidMin = totalMinutes % 60;
+  while (true) {
+    // 레이드 시간 계산: baseTime + (diffDays * 25분)
+    const totalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
+    const raidHour = Math.floor(totalMinutes / 60) % 24;
+    const raidMin = totalMinutes % 60;
 
-  // 날짜가 넘어간 경우 처리
-  const extraDays = Math.floor(totalMinutes / (60 * 24));
-  let finalDate = new Date(baseAtMidnightKST + (diffDays + extraDays) * 24 * 60 * 60 * 1000);
-  const finalDateString = getKSTDateString(finalDate);
+    // 날짜가 넘어간 경우 처리
+    const extraDays = Math.floor(totalMinutes / (60 * 24));
+    let finalDate = new Date(baseAtMidnightKST + (diffDays + extraDays) * 24 * 60 * 60 * 1000);
+    const finalDateString = getKSTDateString(finalDate);
 
-  let nextTime = new Date(`${finalDateString}T${raidHour.toString().padStart(2, '0')}:${raidMin.toString().padStart(2, '0')}:00+09:00`);
+    let nextTime = new Date(`${finalDateString}T${raidHour.toString().padStart(2, '0')}:${raidMin.toString().padStart(2, '0')}:00+09:00`);
 
-  if (nextTime <= now) {
+    if (nextTime > now) {
+      return nextTime;
+    }
     diffDays++;
-    const nextRaidDateString = getKSTDateString(new Date(baseAtMidnightKST + diffDays * 24 * 60 * 60 * 1000));
-    const nextTotalMinutes = baseHour * 60 + baseMin + (diffDays * 25);
-    const nextRaidHour = Math.floor(nextTotalMinutes / 60) % 24;
-    const nextRaidMin = nextTotalMinutes % 60;
-    const nextExtraDays = Math.floor(nextTotalMinutes / (60 * 24));
-    const nextFinalDate = new Date(baseAtMidnightKST + (diffDays + nextExtraDays) * 24 * 60 * 60 * 1000);
-    const nextFinalDateString = getKSTDateString(nextFinalDate);
-    nextTime = new Date(`${nextFinalDateString}T${nextRaidHour.toString().padStart(2, '0')}:${nextRaidMin.toString().padStart(2, '0')}:00+09:00`);
   }
-
-  return nextTime;
 }
 
 let sortedRaids = [];
