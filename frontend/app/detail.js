@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const rect = element.getBoundingClientRect();
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+
     tooltip.style.left = (rect.left + scrollLeft + (rect.width / 2)) + 'px';
     tooltip.style.top = (rect.bottom + scrollTop + 5) + 'px';
     tooltip.style.transform = 'translateX(-50%)';
@@ -87,11 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const characterImg = document.getElementById("character-img");
         characterImg.src = characterImgPath;
         addTooltipToElement(characterImg, characterName);
-        
+
         const evolutionImg = document.getElementById("evolution-img");
         evolutionImg.src = `https://media.dsrwiki.com/dsrwiki/${evolutionStage}.webp`;
         addTooltipToElement(evolutionImg, evolutionStage);
-        
+
         const typeImg = document.getElementById("type-img");
         typeImg.src = `https://media.dsrwiki.com/dsrwiki/${type}.webp`;
         addTooltipToElement(typeImg, type);
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // 진화 단계에 따른 기본 디지코어 꾸러미 추가
             let defaultDigicore = null;
 
-            switch(evolutionStage) {
+            switch (evolutionStage) {
               case "성장기":
                 defaultDigicore = [
                   {
@@ -174,6 +174,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 ];
                 break;
               case "궁극체":
+                const excludedUltimates = [
+                  "갓드라몬", "그랜쿠가몬", "듀크몬", "로제몬", "마린엔젤몬",
+                  "메탈가루몬", "밀레니엄몬", "바이킹몬", "발두르몬", "백호몬",
+                  "세라피몬", "슬래쉬엔젤몬", "오메가몬", "오파니몬", "워그레이몬",
+                  "주작몬", "청룡몬", "케루비몬(선)", "현무몬", "홀리드라몬"
+                ];
+
                 defaultDigicore = [
                   {
                     name: "궁극체 디지코어 꾸러미",
@@ -186,20 +193,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     probability: "10%",
                     tradeable: true,
                     count: 1
-                  },
-                  {
+                  }
+                ];
+
+                if (!excludedUltimates.includes(characterName)) {
+                  defaultDigicore.push({
                     name: "돌연변이 치료제",
                     probability: "2.5%",
                     tradeable: true,
                     count: 1
-                  }
-                ];
+                  });
+                }
                 break;
             }
 
             // 기본 디지코어 꾸러미와 특별 아이템 합치기
-            const allItems = defaultDigicore ? 
-              (Array.isArray(defaultDigicore) ? [...defaultDigicore, ...(characterDigicore?.items || [])] : [defaultDigicore, ...(characterDigicore?.items || [])]) : 
+            const allItems = defaultDigicore ?
+              (Array.isArray(defaultDigicore) ? [...defaultDigicore, ...(characterDigicore?.items || [])] : [defaultDigicore, ...(characterDigicore?.items || [])]) :
               (characterDigicore?.items || []);
 
             if (allItems.length > 0) {
@@ -284,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .catch(error => {
             console.error("디지코어화 데이터를 불러오는 중 오류가 발생했습니다:", error);
-            document.getElementById("digicore-container").innerHTML = 
+            document.getElementById("digicore-container").innerHTML =
               '<p class="error-message">디지코어화 정보를 불러오는 중 오류가 발생했습니다.</p>';
           });
 
@@ -307,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 강약점 테이블 생성
         const swTableBody = document.getElementById("sw").querySelector("tbody");
         swTableBody.innerHTML = ''; // Clear existing rows
-        
+
         // 강점 행 생성
         if (strengthAttr) {
           let additionalText = "";
@@ -320,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
           } else if (strengthEff === "효과확률") {
             additionalText = '해당 속성의 공격에 효과가 있을 경우, <span class="highlight">효과에 걸릴 확률</span>이 증가합니다.';
           }
-          
+
           swTableBody.innerHTML += `
             <tr>
               <td class=\"sw-icon\">
@@ -333,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </tr>
           `;
         }
-        
+
         // 약점 행 생성
         if (weaknessAttr) {
           let additionalText = "";
@@ -344,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
           } else if (weaknessEff === "효과확률") {
             additionalText = '해당 속성의 공격에 효과가 있을 경우, <span class="highlight">효과에 걸릴 확률</span>이 증가합니다.';
           }
-          
+
           swTableBody.innerHTML += `
             <tr>
               <td class=\"sw-icon\">
@@ -373,7 +383,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // 각 스킬 행 생성
           const skillRow = document.createElement('tr');
-          
+
           // 스킬 정보 셀 생성
           const skillCell = document.createElement('td');
           skillCell.innerHTML = `
@@ -424,7 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
           `;
-          
+
           skillRow.appendChild(skillCell);
           skillDetailsTable.appendChild(skillRow);
         });
@@ -445,7 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
       deckContainer.innerHTML = "";
 
       // 해당 디지몬이 포함된 덱 찾기
-      const matchingDecks = Object.entries(deckData).filter(([_, deck]) => 
+      const matchingDecks = Object.entries(deckData).filter(([_, deck]) =>
         deck.digimon.some(d => d.name === characterName)
       );
 
@@ -453,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
         matchingDecks.forEach(([deckName, deck]) => {
           const deckCard = document.createElement("div");
           deckCard.className = "deck-card";
-          
+
           // 덱 카드 HTML 생성
           deckCard.innerHTML = `
             <div class="deck-header">
@@ -473,20 +483,20 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
               <div class="effects-container">
                 ${deck.effects.map(effect => {
-                  // 숫자 강조
-                  const html = effect.replace(/(\+\s*[\d\.]+%?)/g, '<span class=\"effect-value\">$1</span>');
-                  return html;
-                }).join(' / ')}
+            // 숫자 강조
+            const html = effect.replace(/(\+\s*[\d\.]+%?)/g, '<span class=\"effect-value\">$1</span>');
+            return html;
+          }).join(' / ')}
               </div>
             </div>
           `;
-          
+
           deckContainer.appendChild(deckCard);
 
           // 툴팁 기능 추가
           deckCard.querySelectorAll('.digimon-avatar').forEach(avatar => {
             const tooltip = avatar.querySelector('.digimon-tooltip');
-            
+
             avatar.addEventListener('mouseover', () => {
               document.querySelectorAll('.digimon-tooltip').forEach(t => t.remove());
               const tt = document.createElement('div');
@@ -504,7 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
               tt.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
               document.body.appendChild(tt);
               const r = avatar.getBoundingClientRect();
-              tt.style.left = r.left + r.width/2 + 'px';
+              tt.style.left = r.left + r.width / 2 + 'px';
               tt.style.top = r.bottom + 10 + 'px';
               tt.style.transform = 'translateX(-50%)';
               tt.style.opacity = '1';
@@ -521,7 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(error => {
       console.error("덱 데이터를 불러오는 중 오류가 발생했습니다:", error);
-      document.getElementById("deck-container").innerHTML = 
+      document.getElementById("deck-container").innerHTML =
         '<p class="error-message">덱 정보를 불러오는 중 오류가 발생했습니다.</p>';
     });
 });
