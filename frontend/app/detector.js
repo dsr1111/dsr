@@ -62,7 +62,7 @@ function populateDigimonGrid(detector) {
     document.getElementById('digimonMechanicCard').innerHTML = '';
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
-        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬' && digimon !== '주작몬' && digimon !== '청룡몬' && digimon !== '백호몬' && (digimon !== '로더레오몬' || detector === '로더레오몬 탐지기')) {
+        if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬' && digimon !== '주작몬' && digimon !== '청룡몬' && digimon !== '백호몬' && digimon !== '현무몬' && (digimon !== '로더레오몬' || detector === '로더레오몬 탐지기')) {
             const button = document.createElement('button');
             button.className = 'digimon-button';
             button.dataset.digimon = digimon;
@@ -160,6 +160,14 @@ function populateDigimonGrid(detector) {
                 // 로더레오몬 아닌 다른 디지몬 선택 시 백호몬 버튼 제거 (로더레오몬 탐지기)
                 if (digimon !== '로더레오몬' && detector === '로더레오몬 탐지기') {
                     const baekhoButton = document.querySelector('.digimon-button[data-digimon="백호몬"]');
+                    if (baekhoButton) {
+                        baekhoButton.remove();
+                    }
+                }
+
+                // 현무몬 아닌 다른 디지몬 선택 시 백호몬 버튼 제거
+                if (digimon !== '현무몬' && detector === '신형 탐지기') {
+                    const baekhoButton = document.querySelector('.digimon-button[data-digimon="현무몬"]');
                     if (baekhoButton) {
                         baekhoButton.remove();
                     }
@@ -457,6 +465,35 @@ function populateDigimonGrid(detector) {
                             if (prevSelected) prevSelected.classList.remove('selected');
                             baekhoButton.classList.add('selected');
                             selectedDigimon = '백호몬';
+                            showMapAndMarker(selectedDetector, selectedDigimon);
+                            showDigimonInfo(selectedDetector, selectedDigimon);
+                        });
+                        digimonGrid.appendChild(baekhoButton);
+                    }
+                }
+
+                // 오로치몬 선택 시 현무몬 버튼 추가
+                if (digimon === '오로치몬' && detector === '신형 탐지기') {
+                    const existingBaekhoButton = document.querySelector('.digimon-button[data-digimon="현무몬"]');
+                    if (!existingBaekhoButton) {
+                        const baekhoButton = document.createElement('button');
+                        baekhoButton.className = 'digimon-button';
+                        baekhoButton.dataset.digimon = '현무몬';
+                        const baekhoImgBg = document.createElement('div');
+                        baekhoImgBg.className = 'digimon-img-bg';
+                        const baekhoImg = document.createElement('img');
+                        baekhoImg.src = 'https://media.dsrwiki.com/dsrwiki/digimon/현무몬/현무몬.webp';
+                        baekhoImg.alt = '현무몬';
+                        baekhoImgBg.appendChild(baekhoImg);
+                        const baekhoSpan = document.createElement('span');
+                        baekhoSpan.textContent = '현무몬';
+                        baekhoButton.appendChild(baekhoImgBg);
+                        baekhoButton.appendChild(baekhoSpan);
+                        baekhoButton.addEventListener('click', () => {
+                            const prevSelected = document.querySelector('.digimon-button.selected');
+                            if (prevSelected) prevSelected.classList.remove('selected');
+                            baekhoButton.classList.add('selected');
+                            selectedDigimon = '현무몬';
                             showMapAndMarker(selectedDetector, selectedDigimon);
                             showDigimonInfo(selectedDetector, selectedDigimon);
                         });
