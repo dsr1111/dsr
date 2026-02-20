@@ -98,6 +98,27 @@ table.result-table .digimon-icon {
   background-color: rgb(220, 248, 248);
 }
 
+.skill-bg-green {
+  background-color: rgb(230, 255, 230);
+  /* HP Cost */
+}
+
+.skill-bg-mixed-aoe-cast {
+  background: linear-gradient(135deg, rgb(220, 248, 248) 50%, rgb(255, 234, 234) 50%);
+}
+
+.skill-bg-mixed-aoe-hp {
+  background: linear-gradient(135deg, rgb(220, 248, 248) 50%, rgb(230, 255, 230) 50%);
+}
+
+.skill-bg-mixed-cast-hp {
+  background: linear-gradient(135deg, rgb(255, 234, 234) 50%, rgb(230, 255, 230) 50%);
+}
+
+.skill-bg-mixed-all {
+  background: linear-gradient(135deg, rgb(220, 248, 248) 0%, rgb(220, 248, 248) 33.33%, rgb(255, 234, 234) 33.33%, rgb(255, 234, 234) 66.66%, rgb(230, 255, 230) 66.66%, rgb(230, 255, 230) 100%);
+}
+
 body {
   font-family: "Pretendard", sans-serif;
   font-weight: normal;
@@ -106,7 +127,7 @@ body {
 
 .container1 {
   width: 100%;
-  max-width: 1370px;
+  max-width: 1400px;
   /* 최대 너비를 늘려서 필터 버튼들이 제대로 배치되도록 */
   margin: 20px auto;
   margin-top: 130px;
@@ -820,6 +841,16 @@ tbody {
   width: 15px;
   height: 15px;
   background-color: rgb(255, 234, 234);
+  margin-right: 5px;
+  border: #202020 1px solid;
+}
+
+.hpcost-text::before {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: rgb(230, 255, 230);
   margin-right: 5px;
   border: #202020 1px solid;
 }

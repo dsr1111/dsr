@@ -210,7 +210,7 @@
         // 로딩 표시 시작
         this.showLoading();
 
-        const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
+        const response = await fetch('data/csv/digimon.json');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -275,11 +275,24 @@
 
             const createSkillHtml = (skill, skillNumber, digimonName) => {
               if (!skill) return "<td></td>";
+              let isAoE = skill.target_count === "전체";
+              let isCast = !!skill.additionalTurn;
+              let isHPCost = !!skill.hpCost;
               let skillClass = "";
-              if (skill.additionalTurn) {
+
+              if (isAoE && isCast && isHPCost) {
+                skillClass = "skill-bg-mixed-all";
+              } else if (isAoE && isCast) {
+                skillClass = "skill-bg-mixed-aoe-cast";
+              } else if (isAoE && isHPCost) {
+                skillClass = "skill-bg-mixed-aoe-hp";
+              } else if (isCast && isHPCost) {
+                skillClass = "skill-bg-mixed-cast-hp";
+              } else if (isHPCost) {
+                skillClass = "skill-bg-green";
+              } else if (isCast) {
                 skillClass = "skill-bg-red";
-              }
-              if (skill.target_count === "전체") {
+              } else if (isAoE) {
                 skillClass = "skill-bg-blue";
               }
 
@@ -319,7 +332,7 @@
                     onmouseleave="hideCustomTooltip()"
                   >
                   ${effectTooltipHtml}
-                  <span>${skill.hits === '보조' ? skill.hits : `${skill.hits}타`} / ${skill.range}</span>
+                  <span>${skill.hits === '보조' ? skill.hits : `${skill.hits}타`} / ${skill.range}${skill.additionalTurn ? ` <span style="font-size: 0.9em; color: gray;">(${Number(skill.additionalTurn).toFixed(1)})</span>` : ''}</span>
                 </td>
               `;
             };
