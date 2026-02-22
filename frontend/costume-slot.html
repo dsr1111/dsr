@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" href="https://media.dsrwiki.com/dsrwiki/icon.webp" type="image/x-icon">
+    <title>코스튬 슬롯 각인 시뮬레이터 | DSR WIKI</title>
+    <link rel="stylesheet" href="assets/css/styles1.css">
+    <link rel="stylesheet" href="assets/css/pages/costume-slot/main.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="app/lazyload.js" defer></script>
+    <script src="app/nav.js" defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5VLCXSKM7"></script>
+    <script>
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            var adScript = document.createElement('script');
+            adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625279423156068';
+            adScript.async = true;
+            adScript.crossOrigin = 'anonymous';
+            document.head.appendChild(adScript);
+        }
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-V5VLCXSKM7');
+    </script>
+</head>
+
+<body class="bg-gray-100" style="font-family: 'Pretendard', sans-serif;">
+    <custom-nav></custom-nav>
+
+    <div class="mt-20 md:mt-28">
+        <div class="container mx-auto px-4">
+            <div class="mb-8">
+                <div class="ce-modal-overlay">
+                    <div class="ce-modal">
+                        <button class="ce-close-btn"><i class="ri-close-line"></i></button>
+
+                        <div class="ce-title-wrap">
+                            <h2 class="ce-title">코스튬 슬롯 각인</h2>
+                        </div>
+
+                        <div class="ce-tabs">
+                            <button class="ce-tab active">능력치 각인</button>
+                            <button class="ce-tab inactive">수치 각인</button>
+                        </div>
+
+                        <div class="ce-layout">
+                            <!-- Left Sidebar (Slots) -->
+                            <div class="ce-sidebar">
+                                <button class="ce-slot-btn active" data-slot="머리 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/머리 슬롯.webp" class="ce-slot-img"
+                                            alt="머리 슬롯"></div>
+                                    <span class="ce-slot-text">머리 슬롯</span>
+                                </button>
+                                <button class="ce-slot-btn" data-slot="얼굴 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/얼굴 슬롯.webp" class="ce-slot-img"
+                                            alt="얼굴 슬롯"></div>
+                                    <span class="ce-slot-text">얼굴 슬롯</span>
+                                </button>
+                                <button class="ce-slot-btn" data-slot="상의 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/상의 슬롯.webp" class="ce-slot-img"
+                                            alt="상의 슬롯"></div>
+                                    <span class="ce-slot-text">상의 슬롯</span>
+                                </button>
+                                <button class="ce-slot-btn" data-slot="장갑 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/장갑 슬롯.webp" class="ce-slot-img"
+                                            alt="장갑 슬롯"></div>
+                                    <span class="ce-slot-text">장갑 슬롯</span>
+                                </button>
+                                <button class="ce-slot-btn" data-slot="하의 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/하의 슬롯.webp" class="ce-slot-img"
+                                            alt="하의 슬롯"></div>
+                                    <span class="ce-slot-text">하의 슬롯</span>
+                                </button>
+                                <button class="ce-slot-btn" data-slot="양말 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/양말 슬롯.webp" class="ce-slot-img"
+                                            alt="양말 슬롯"></div>
+                                    <span class="ce-slot-text">양말 슬롯</span>
+                                </button>
+                                <button class="ce-slot-btn" data-slot="신발 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/신발 슬롯.webp" class="ce-slot-img"
+                                            alt="신발 슬롯"></div>
+                                    <span class="ce-slot-text">신발 슬롯</span>
+                                </button>
+                                <button class="ce-slot-btn" data-slot="등 슬롯">
+                                    <div class="ce-slot-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/등 슬롯.webp" class="ce-slot-img"
+                                            alt="등 슬롯"></div>
+                                    <span class="ce-slot-text">등 슬롯</span>
+                                </button>
+                            </div>
+
+                            <!-- Right Content Area -->
+                            <div class="ce-content">
+                                <div class="ce-current-header">
+                                    <div class="ce-current-icon-box"><img
+                                            src="https://media.dsrwiki.com/dsrwiki/item/머리 슬롯.webp" class="ce-slot-img"
+                                            id="current-slot-icon" alt="current slot"></div>
+                                    <div class="ce-current-title"><span id="current-slot-name">머리 슬롯</span></div>
+                                </div>
+
+                                <div class="ce-section">
+                                    <div class="ce-section-title">소모 재료</div>
+                                    <div class="ce-material-list" id="ce-material-list">
+                                        <div class="ce-material-item">
+                                            <div class="ce-mat-icon amulet"><img
+                                                    src="https://media.dsrwiki.com/dsrwiki/icon.webp"
+                                                    style="width:20px;opacity:0.5;" alt="amulet"></div>
+                                            <span class="ce-mat-name">능력치 각인 부적</span>
+                                            <span class="ce-mat-count red">0 / 5</span>
+                                        </div>
+                                        <div class="ce-material-item">
+                                            <div class="ce-mat-icon"><img
+                                                    src="https://media.dsrwiki.com/dsrwiki/icon.webp"
+                                                    style="width:20px;opacity:0.5;filter:hue-rotate(90deg);" alt="bell">
+                                            </div>
+                                            <span class="ce-mat-name">능력치 잠금 방울</span>
+                                            <span class="ce-mat-count green">0 / 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ce-section" style="flex:1;">
+                                    <div class="ce-stats-header">잠금 가능 횟수 : <span id="ce-lock-count">2</span>
+                                        &nbsp;/&nbsp; 2</div>
+                                    <div class="ce-stat-list" id="ce-stat-list">
+                                        <div class="ce-stat-row">
+                                            <span class="ce-stat-name">바람 데미지 증가</span>
+                                            <div class="ce-stat-value-wrap">
+                                                <span class="ce-stat-value">+1.93%</span>
+                                                <i class="ri-lock-unlock-fill ce-stat-lock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ce-stat-row">
+                                            <span class="ce-stat-name">빛 데미지 증가</span>
+                                            <div class="ce-stat-value-wrap">
+                                                <span class="ce-stat-value">+1.82%</span>
+                                                <i class="ri-lock-unlock-fill ce-stat-lock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ce-stat-row">
+                                            <span class="ce-stat-name">빛 데미지 방어</span>
+                                            <div class="ce-stat-value-wrap">
+                                                <span class="ce-stat-value">+1.32%</span>
+                                                <i class="ri-lock-unlock-fill ce-stat-lock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ce-stat-row">
+                                            <span class="ce-stat-name">지능</span>
+                                            <div class="ce-stat-value-wrap">
+                                                <span class="ce-stat-value">+11</span>
+                                                <i class="ri-lock-unlock-fill ce-stat-lock"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ce-stat-row">
+                                            <span class="ce-stat-name">빛 데미지 증가</span>
+                                            <div class="ce-stat-value-wrap">
+                                                <span class="ce-stat-value">+1.83%</span>
+                                                <i class="ri-lock-unlock-fill ce-stat-lock"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ce-footer">
+                                    <div class="ce-cost">
+                                        누적 소모 비용 : <span class="ce-cost-value" id="ce-cost-value">400000</span>
+                                        <img class="ce-cost-icon" src="https://media.dsrwiki.com/dsrwiki/bit.webp"
+                                            alt="bit">
+                                    </div>
+                                    <div class="ce-actions">
+                                        <button class="ce-engrave-btn" id="ce-engrave-btn">능력치 각인</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <referral-float></referral-float>
+    <script src="app/referral-float.js" defer></script>
+    <script src="app/costume-slot.js" defer></script>
+</body>
+
+</html>

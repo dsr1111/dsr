@@ -1,0 +1,408 @@
+﻿/* 코스튬 슬롯 각인 CSS */
+
+.ce-modal-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.ce-modal {
+    background-color: #171b26;
+    border: 1px solid #333d52;
+    border-radius: 12px;
+    width: 580px;
+    padding: 20px;
+    color: #e2e8f0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.ce-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: opacity 0.2s;
+}
+
+.ce-close-btn:hover {
+    opacity: 0.7;
+}
+
+.ce-title-wrap {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.ce-title {
+    color: #3bb2ff;
+    font-size: 24px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(59, 178, 255, 0.4);
+}
+
+.ce-help-icon {
+    background-color: #558eb8;
+    color: #171b26;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.ce-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.ce-tab {
+    padding: 4px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.ce-tab.active {
+    background-color: #3bb2ff;
+    color: #fff;
+}
+
+.ce-tab.inactive {
+    background-color: #13151b;
+    color: #a0aec0;
+    border: 1px solid #2d3748;
+}
+
+.ce-layout {
+    display: flex;
+    gap: 15px;
+}
+
+/* Left Sidebar (Slots) */
+.ce-sidebar {
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ce-slot-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px;
+    border-radius: 8px;
+    background-color: #1e2434;
+    border: 1px solid #2a3143;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ce-slot-btn:hover {
+    background-color: #272f44;
+}
+
+.ce-slot-btn.active {
+    background-color: #3aa2fa;
+    border-color: #4eb0ff;
+    box-shadow: 0 0 10px rgba(58, 162, 250, 0.4);
+}
+
+.ce-slot-icon-box {
+    background-color: #151924;
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #212838;
+}
+
+.ce-slot-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.ce-slot-text {
+    flex: 1;
+    text-align: left;
+    padding-left: 4px;
+    font-size: 14px;
+    color: #cbd5e1;
+    font-weight: 500;
+}
+
+.ce-slot-btn.active .ce-slot-text {
+    color: #fff;
+}
+
+/* Right Content Area */
+.ce-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Selected Item Header */
+.ce-current-header {
+    background-color: #1e2434;
+    border-radius: 8px;
+    padding: 6px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #2a3143;
+}
+
+.ce-current-icon-box {
+    width: 44px;
+    height: 44px;
+    background-color: #151924;
+    border: 1px solid #3bb2ff;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(59, 178, 255, 0.3);
+}
+
+.ce-current-icon-box i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.ce-current-title {
+    flex: 1;
+    justify-content: center;
+    font-size: 14px;
+    color: #a0aec0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: normal;
+    margin-right: 44px;
+    /* 아이콘 크기만큼 마진을 주어 시각적으로 정중앙에 위치하게 보정 (러프하게) */
+}
+
+.ce-current-title i {
+    color: #a0aec0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Materials Section */
+.ce-section {
+    background-color: #1e2434;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #2a3143;
+}
+
+.ce-section-title {
+    text-align: center;
+    color: #a0aec0;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.ce-material-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ce-material-item {
+    background-color: #171b26;
+    border: 1px solid #242b3d;
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ce-mat-icon {
+    width: 36px;
+    height: 36px;
+    background-color: #0b0d14;
+    border: 1px solid #333d52;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.ce-mat-name {
+    flex: 1;
+    font-size: 13px;
+    color: #e2e8f0;
+}
+
+.ce-mat-count {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ce-mat-count.red {
+    color: #fe3535;
+}
+
+.ce-mat-count.green {
+    color: #00ea73;
+}
+
+/* Stats Section */
+.ce-stats-header {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 12px;
+    color: #a0aec0;
+    margin-bottom: 8px;
+}
+
+.ce-stats-header span {
+    color: #00ea73;
+}
+
+.ce-stat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ce-stat-row {
+    background-color: #1a1f2e;
+    border: 1px solid #242b3d;
+    border-radius: 4px;
+    padding: 0 12px;
+    height: 34px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ce-stat-row.locked {
+    background-color: #1a1f2e;
+    opacity: 0.5;
+}
+
+.ce-stat-row.locked .ce-stat-name,
+.ce-stat-row.locked .ce-stat-value {
+    color: #718096;
+}
+
+.ce-stat-name {
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.ce-stat-value-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ce-stat-value {
+    font-size: 13px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.ce-stat-lock {
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.ce-stat-lock:hover {
+    color: #fff;
+}
+
+/* Footer Section */
+.ce-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ce-cost {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.ce-cost-value {
+    color: #3bb2ff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.ce-cost-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.ce-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ce-engrave-btn {
+    background-color: #192a40;
+    border: 1px solid #2c4a70;
+    color: #8fa6c2;
+    padding: 5px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.ce-engrave-btn:hover {
+    background-color: #1e334d;
+}
+
+.ce-checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #a0aec0;
+    cursor: pointer;
+}
+
+.ce-checkbox-wrap input {
+    width: 16px;
+    height: 16px;
+    accent-color: #3bb2ff;
+    cursor: pointer;
+}

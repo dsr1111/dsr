@@ -602,3 +602,9 @@ header {
     display: block;
   }
 }
+
+@media (min-width: 1050px) {
+  body.page-costume-slot .side-ad-container {
+    display: block;
+  }
+}

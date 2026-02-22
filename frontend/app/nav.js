@@ -28,6 +28,7 @@ const MENU_ITEMS = [
       { label: '데미지 계산기', href: '../calculator' },
       { label: 'EXP 물약 시뮬레이터', href: '../exp' },
       { label: '가챠 시뮬레이터', href: '../gacha' },
+      { label: '코스튬 슬롯 각인 시뮬레이터', href: '../costume-slot' },
     ]
   },
   {
@@ -180,15 +181,16 @@ class CustomNav extends HTMLElement {
 
     // 페이지별 클래스 부여
     const path = window.location.pathname;
-    if (path.includes('digimon.html')) document.body.classList.add('page-digimon');
-    else if (path.includes('deck.html')) document.body.classList.add('page-deck');
-    else if (path.includes('evolution.html')) document.body.classList.add('page-evolution');
-    else if (path.includes('map.html')) document.body.classList.add('page-map');
-    else if (path.includes('detector.html')) document.body.classList.add('page-detector');
-    else if (path.includes('overflow.html')) document.body.classList.add('page-overflow');
-    else if (path.includes('calculator.html')) document.body.classList.add('page-calculator');
-    else if (path.includes('exp.html')) document.body.classList.add('page-exp');
-    else if (path.includes('gacha.html')) document.body.classList.add('page-gacha');
+    if (path.includes('digimon')) document.body.classList.add('page-digimon');
+    else if (path.includes('deck')) document.body.classList.add('page-deck');
+    else if (path.includes('evolution')) document.body.classList.add('page-evolution');
+    else if (path.includes('map')) document.body.classList.add('page-map');
+    else if (path.includes('detector')) document.body.classList.add('page-detector');
+    else if (path.includes('overflow')) document.body.classList.add('page-overflow');
+    else if (path.includes('calculator')) document.body.classList.add('page-calculator');
+    else if (path.includes('exp')) document.body.classList.add('page-exp');
+    else if (path.includes('gacha')) document.body.classList.add('page-gacha');
+    else if (path.includes('costume-slot')) document.body.classList.add('page-costume-slot');
     else document.body.classList.add('page-index'); // index.html 또는 기본값
 
     // 중복 방지
