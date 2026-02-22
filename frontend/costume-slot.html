@@ -44,9 +44,12 @@
                             <h2 class="ce-title">코스튬 슬롯 각인</h2>
                         </div>
 
-                        <div class="ce-tabs">
-                            <button class="ce-tab active">능력치 각인</button>
-                            <button class="ce-tab inactive">수치 각인</button>
+                        <div class="ce-tabs-wrap">
+                            <div class="ce-tabs">
+                                <button class="ce-tab active">능력치 각인</button>
+                                <button class="ce-tab inactive">수치 각인</button>
+                            </div>
+                            <button class="ce-stats-btn" id="ce-stats-btn"><i class="ri-bar-chart-fill"></i> 통계</button>
                         </div>
 
                         <div class="ce-layout">
@@ -185,6 +188,41 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="ce-stats-modal" class="ce-stats-modal-overlay" style="display: none;">
+        <div class="ce-stats-modal">
+            <button class="ce-stats-close-btn" id="ce-stats-close-btn"><i class="ri-close-line"></i></button>
+            <h3 class="ce-stats-title">총 누적 통계</h3>
+
+            <div class="ce-stats-content">
+                <div class="ce-stats-col">
+                    <div class="ce-stats-section">
+                        <div class="ce-stats-section-title">누적 소모 비용</div>
+                        <div class="ce-stats-cost-value">
+                            <span id="total-cost-value">0</span>
+                            <img src="https://media.dsrwiki.com/dsrwiki/bit.webp"
+                                style="height:18px;margin-left:4px;vertical-align:middle;object-fit:contain;">
+                        </div>
+                    </div>
+
+                    <div class="ce-stats-section" style="flex:1;">
+                        <div class="ce-stats-section-title">누적 소모 재료 (부위별 합산)</div>
+                        <div class="ce-stats-mat-wrap" id="total-mats-list">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ce-stats-col ce-stats-col-right">
+                    <div class="ce-stats-section" style="flex:1;">
+                        <div class="ce-stats-section-title">적용된 옵션 합산 (전체 부위)</div>
+                        <div class="ce-stats-opts-wrap" id="total-stats-list">
                         </div>
                     </div>
                 </div>

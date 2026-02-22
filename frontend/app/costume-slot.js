@@ -129,6 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.ce-tab');
     const slotBtns = document.querySelectorAll('.ce-slot-btn');
 
+    // Stats mode elements
+    const uiStatsBtn = document.getElementById('ce-stats-btn');
+    const uiStatsModal = document.getElementById('ce-stats-modal');
+    const uiStatsCloseBtn = document.getElementById('ce-stats-close-btn');
+    const totalCostValue = document.getElementById('total-cost-value');
+    const totalMatsList = document.getElementById('total-mats-list');
+    const totalStatsList = document.getElementById('total-stats-list');
+
     function renderStatsOnly(rows) {
         if (!uiStatList) return;
         uiStatList.innerHTML = '';
@@ -228,6 +236,75 @@ document.addEventListener('DOMContentLoaded', () => {
             // Keeping them allows easy re-roll between modes
             renderRightPanel();
         });
+    });
+
+    uiStatsBtn.addEventListener('click', () => {
+        let tCost = 0;
+        const matCounts = {};
+        const statCounts = {};
+
+        slots.forEach(s => {
+            const partName = s.replace(' 슬롯', '');
+
+            // Collect material and cost
+            ['stat', 'value'].forEach(m => {
+                const c = consumption[s][m];
+                tCost += c.cost;
+                if (c.main > 0) {
+                    const mName = m === 'stat' ? `${partName} 능력치 각인 부적` : `${partName} 수치 각인 부적`;
+                    matCounts[mName] = (matCounts[mName] || 0) + c.main;
+                }
+                if (c.lock > 0) {
+                    const lName = m === 'stat' ? '능력치 잠금 방울' : '수치 잠금 방울';
+                    matCounts[lName] = (matCounts[lName] || 0) + c.lock;
+                }
+            });
+
+            // Collect allocated stats
+            state[s].forEach(r => {
+                if (r.stat && r.value > 0) {
+                    statCounts[r.stat] = (statCounts[r.stat] || 0) + r.value;
+                }
+            });
+        });
+
+        totalCostValue.textContent = tCost.toLocaleString();
+
+        let matHtml = '';
+        const matKeys = Object.keys(matCounts).sort();
+        if (matKeys.length === 0) {
+            matHtml = '<div style="color:#718096;font-size:12px;text-align:center;padding:10px;">소모된 재료가 없습니다.</div>';
+        } else {
+            for (let k of matKeys) {
+                matHtml += `<div class="ce-stats-mat-item">
+                    <span>${k}</span>
+                    <span style="color:#00ea73;font-weight:bold;">${matCounts[k].toLocaleString()} 개</span>
+                </div>`;
+            }
+        }
+        totalMatsList.innerHTML = matHtml;
+
+        let optHtml = '';
+        const optKeys = Object.keys(statCounts).sort();
+        if (optKeys.length === 0) {
+            optHtml = '<div style="color:#718096;font-size:12px;grid-column:span 2;text-align:center;padding:10px;">적용된 옵션이 없습니다.</div>';
+        } else {
+            for (let k of optKeys) {
+                const isFloat = STAT_VALUES[k] ? STAT_VALUES[k].isFloat : false;
+                const valStr = isFloat ? statCounts[k].toFixed(2) + '%' : Math.round(statCounts[k]);
+                optHtml += `<div class="ce-stats-opt-item">
+                    <span class="name">${k}</span>
+                    <span class="val">+${valStr}</span>
+                </div>`;
+            }
+        }
+        totalStatsList.innerHTML = optHtml;
+
+        uiStatsModal.style.display = 'flex';
+    });
+
+    uiStatsCloseBtn.addEventListener('click', () => {
+        uiStatsModal.style.display = 'none';
     });
 
     slotBtns.forEach(btn => {
