@@ -210,7 +210,7 @@
         // 로딩 표시 시작
         this.showLoading();
 
-        const response = await fetch('data/csv/digimon.json');
+        const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
