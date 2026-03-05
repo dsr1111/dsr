@@ -99,9 +99,38 @@
           this.materialIndex.set(m.name, arr);
         });
       });
+
+      // "유대감" 추가 반영
+      if (cond['유대감'] && String(cond['유대감']).trim() !== "") {
+        const typeStr = (cond["진화타입"] || "").trim();
+        let type = "normal";
+        if (typeStr === "암흑진화") type = "dark";
+        else if (typeStr === "특수진화") type = "special";
+        else if (typeStr === "버스트진화") type = "burst";
+
+        let children = [];
+        if (type === "normal") {
+          children = [
+            evoRow.evol1, evoRow.evol2, evoRow.evol3, evoRow.evol4, evoRow.evol5,
+            evoRow.evol6, evoRow.evol7, evoRow.evol8, evoRow.evol9, evoRow.evol10,
+            evoRow.evol11
+          ].filter(Boolean);
+        } else if (type === "dark") {
+          if (evoRow.암흑진화) children = [evoRow.암흑진화];
+        } else if (type === "special") {
+          if (evoRow.특수진화) children = [evoRow.특수진화];
+        } else if (type === "burst") {
+          if (evoRow.버스트진화) children = [evoRow.버스트진화];
+        }
+
+        if (children.length > 0) {
+          const arr = this.materialIndex.get("유대감") || [];
+          children.forEach(child => arr.push({ type, parent, child }));
+          this.materialIndex.set("유대감", arr);
+        }
+      }
     });
 
-    // jogress.csv: ingredient1/ingredient2 -> child = name, parents = [digimon1,digimon2]
     this.jogressData.forEach(j => {
       [j.ingredient1, j.ingredient2].filter(Boolean).forEach(raw => {
         parseMaterials(raw).forEach(m => {
@@ -110,6 +139,13 @@
           this.materialIndex.set(m.name, arr);
         });
       });
+
+      // "유대감" 추가 (조그레스)
+      if ((j.bond1 && String(j.bond1).trim() !== "") || (j.bond2 && String(j.bond2).trim() !== "")) {
+        const arr = this.materialIndex.get("유대감") || [];
+        arr.push({ type: "jogress", parent: j.digimon1, child: j.name, parents: [j.digimon1, j.digimon2] });
+        this.materialIndex.set("유대감", arr);
+      }
     });
   };
 
@@ -284,7 +320,13 @@
         const imgContainer = document.createElement("div");
         imgContainer.classList.add("digimon-image-container");
         const img = document.createElement("img");
-        img.src = `https://media.dsrwiki.com/dsrwiki/item/${safeName}.webp`;
+
+        if (name === "유대감") {
+          img.src = `https://media.dsrwiki.com/dsrwiki/item/%EC%9C%A0%EB%8C%80%EA%B0%90%201%5E%20%EC%A6%9D%EA%B0%80%20%EB%AC%BC%EC%95%BD.webp`;
+        } else {
+          img.src = `https://media.dsrwiki.com/dsrwiki/item/${safeName}.webp`;
+        }
+
         img.alt = name;
         img.classList.add("digimon-img-responsive");
         img.addEventListener("mouseover", (event) => {
