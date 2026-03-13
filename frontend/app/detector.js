@@ -6,7 +6,7 @@ let selectedDigimon = null;
 
 // JSON 데이터 로드
 Promise.all([
-    fetch('https://media.dsrwiki.com/data/csv/detector.json').then(res => res.json()),
+    fetch('data/csv/detector.json').then(res => res.json()),
     fetch('https://media.dsrwiki.com/data/csv/digimon.json').then(res => res.json())
 ]).then(([detector, digimon]) => {
     detectorData = detector;
@@ -19,8 +19,8 @@ function populateDetectorGrid() {
     const detectorGrid = document.getElementById('detectorGrid');
     detectorGrid.innerHTML = '';
     Object.keys(detectorData).forEach(detector => {
-        // 상자 관련 항목과 작은 사랑의 꾸러미 제외
-        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미' && detector !== '분노에 잠식된 꾸러미' && detector !== '검은 날개의 꾸러미' && detector !== '정의의 상자') {
+        // 상자 관련 항목과 꾸러미 제외
+        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미' && detector !== '분노에 잠식된 꾸러미' && detector !== '검은 날개의 꾸러미' && detector !== '정의의 상자' && detector !== '심연의 악마 꾸러미') {
             const button = document.createElement('button');
             button.className = 'detector-button';
             button.dataset.detector = detector;
@@ -755,7 +755,7 @@ function showDigimonMechanicInfo(detector, digimon) {
                     </div>`;
             })
             .join('');
-        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미' || name === '분노에 잠식된 꾸러미' || name === '검은 날개의 꾸러미' || name === '정의의 상자')
+        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미' || name === '분노에 잠식된 꾸러미' || name === '검은 날개의 꾸러미' || name === '정의의 상자' || name === '심연의 악마 꾸러미')
             ? `<span class="extra-info-badge badge-yellow" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
                 구성품 확인
                 <div class="custom-tooltip custom-tooltip-popup">
