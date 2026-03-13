@@ -6,7 +6,7 @@ let selectedDigimon = null;
 
 // JSON 데이터 로드
 Promise.all([
-    fetch('data/csv/detector.json').then(res => res.json()),
+    fetch('https://media.dsrwiki.com/data/csv/detector.json').then(res => res.json()),
     fetch('https://media.dsrwiki.com/data/csv/digimon.json').then(res => res.json())
 ]).then(([detector, digimon]) => {
     detectorData = detector;
