@@ -87,11 +87,11 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '메라몬',
-  image: getImagePath('메라몬'),
+  name: '위자몬',
+  image: getImagePath('위자몬'),
   baseTime: '19:00',
-  baseDate: '2026-03-12',
-  map: '사막 지대',
+  baseDate: '2026-03-27',
+  map: '어둠 성 계곡',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
@@ -684,7 +684,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       '울퉁몬': { '21:30': '2130' },
       '오메가몬': 'omega',
       '위그드라실_7D6': '위그드라실',
-      [RotationRaid.name]: 'rotation0312',
+      [RotationRaid.name]: 'rotation0327',
       '청룡몬': '청룡몬',
       '백호몬': '백호몬',
       '주작몬': '주작몬',
