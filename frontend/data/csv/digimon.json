@@ -396,6 +396,73 @@
       }
     ]
   },
+  "드라큐몬": {
+    "evolution_stage": "성장기",
+    "type": "바이러스",
+    "stats": {
+      "level": 15,
+      "hp": 789,
+      "sp": 187,
+      "STR": 101,
+      "INT": 106,
+      "DEF": 107,
+      "RES": 91,
+      "SPD": 50
+    },
+    "strengths": {
+      "attribute": "어둠",
+      "effect": "내성"
+    },
+    "weaknesses": {
+      "attribute": "빛",
+      "effect": "효과확률"
+    },
+    "fields": [
+      "DA",
+      "NSo"
+    ],
+    "skills": [
+      {
+        "name": "언데드 팡",
+        "hits": 5,
+        "range": "근거리",
+        "attribute": "물리",
+        "target_count": "단일",
+        "multipliers": [
+          0.1,
+          0.11,
+          0.12,
+          0.13,
+          0.14,
+          0.15,
+          0.16,
+          0.17,
+          0.18,
+          0.19
+        ]
+      },
+      {
+        "name": "아이 오브 나이트메어",
+        "hits": 1,
+        "range": "원거리",
+        "attribute": "어둠",
+        "target_count": "단일",
+        "effect": "매료",
+        "multipliers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
   "레나몬": {
     "evolution_stage": "성장기",
     "type": "데이터",
@@ -11889,6 +11956,91 @@
           0.27,
           0.28,
           0.29
+        ]
+      }
+    ]
+  },
+  "그라운드라몬": {
+    "evolution_stage": "완전체",
+    "type": "바이러스",
+    "stats": {
+      "level": 0,
+      "hp": 0,
+      "sp": 0,
+      "STR": 0,
+      "INT": 0,
+      "DEF": 0,
+      "RES": 0,
+      "SPD": 0
+    },
+    "strengths": {
+      "attribute": "흙",
+      "effect": "내성"
+    },
+    "weaknesses": {
+      "attribute": "물",
+      "effect": "회피불가"
+    },
+    "fields": [
+      "DR"
+    ],
+    "skills": [
+      {
+        "name": "스크랩리스 클로",
+        "hits": 3,
+        "range": "근거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "multipliers": [
+          0.1666,
+          0.1833,
+          0.2,
+          0.2166,
+          0.2333,
+          0.25,
+          0.2666,
+          0.2833,
+          0.3,
+          0.3166
+        ]
+      },
+      {
+        "name": "기가 크랙",
+        "hits": 4,
+        "range": "근거리",
+        "attribute": "흙",
+        "target_count": "단일",
+        "multipliers": [
+          0.225,
+          0.2356,
+          0.2462,
+          0.2569,
+          0.2675,
+          0.2781,
+          0.2887,
+          0.2993,
+          0.31,
+          0.3206
+        ]
+      },
+      {
+        "name": "메가톤 해머 크러시",
+        "hits": 1,
+        "range": "근거리",
+        "attribute": "강철",
+        "target_count": "단일",
+        "effect": "출혈",
+        "multipliers": [
+          0.9,
+          0.9425,
+          0.985,
+          1.0275,
+          1.07,
+          1.1125,
+          1.155,
+          1.1975,
+          1.24,
+          1.2825
         ]
       }
     ]

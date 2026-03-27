@@ -90,7 +90,7 @@ const RotationRaid = {
   name: '위자몬',
   image: getImagePath('위자몬'),
   baseTime: '19:00',
-  baseDate: '2026-03-27',
+  baseDate: '2026-03-26',
   map: '어둠 성 계곡',
 };
 
