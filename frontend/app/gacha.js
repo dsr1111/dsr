@@ -375,7 +375,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('clear-btn').addEventListener('click', function () {
         const consoleContent = document.getElementById('console-content');
         consoleContent.innerHTML = '';
-        // 카운터는 유지
+        // 카운터 및 통계 초기화
+        totalOpenCount = 0;
+        updateCounter();
+        resetStats();
     });
 
     // 통계 보기 버튼
