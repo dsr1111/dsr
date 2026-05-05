@@ -84,14 +84,22 @@ const raids = [
     days: [5], // 금요일
     map: '사막 지대',
   },
+  {
+    name: '엑자몬',
+    image: getImagePath('엑자몬'),
+    times: ['00:30'],
+    type: 'biweekly',
+    baseDate: '2026-04-26',
+    map: '어둠성 계곡',
+  },
 ];
 
 const RotationRaid = {
-  name: '위자몬',
-  image: getImagePath('위자몬'),
+  name: '슬레이프몬',
+  image: getImagePath('슬레이프몬'),
   baseTime: '19:00',
-  baseDate: '2026-03-26',
-  map: '어둠 성 계곡',
+  baseDate: '2026-04-23',
+  map: '어둠의 권역',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
@@ -684,11 +692,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       '울퉁몬': { '21:30': '2130' },
       '오메가몬': 'omega',
       '위그드라실_7D6': '위그드라실',
-      [RotationRaid.name]: 'rotation0327',
+      [RotationRaid.name]: 'rotation0423',
       '청룡몬': '청룡몬',
       '백호몬': '백호몬',
       '주작몬': '주작몬',
       '현무몬': '현무몬',
+      '엑자몬': '엑자몬',
       '블랙세라피몬': 'weekend',
       '오파니몬:폴다운모드': 'weekend',
       '메기드라몬': 'weekend'
