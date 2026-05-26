@@ -145,7 +145,8 @@ body {
 .portal-image,
 .warp-image,
 .shop-image,
-.overflows-image {
+.overflows-image,
+.dungeon-image {
   width: 41px;
   height: 41px;
 }

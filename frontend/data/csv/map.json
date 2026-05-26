@@ -713,6 +713,13 @@
         "top": 395,
         "left": 130,
         "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
+      },
+      {
+        "id": "warp1",
+        "tooltip": "워프 포인트<br>기어 사바나 둥실몬 서식지",
+        "top": 87,
+        "left": 489,
+        "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
       }
     ],
     "shops": [
@@ -726,18 +733,20 @@
     ],
     "overflows": [
       {
-        "id": "overflow1",
-        "tooltip": "오버플로우 던전<br>파닥몬",
-        "top": 295,
-        "left": 590,
-        "src": "https://media.dsrwiki.com/dsrwiki/map/오버플로우.webp"
-      },
-      {
         "id": "overflow2",
         "tooltip": "무한 오버플로우 던전<br>운석몬",
         "top": 210,
         "left": 350,
         "src": "https://media.dsrwiki.com/dsrwiki/map/오버플로우.webp"
+      }
+    ],
+    "dungeon": [
+      {
+        "id": "dungeon1",
+        "tooltip": "장난감 마을 던전 입구<br>장난감 마을 입구",
+        "top": 535,
+        "left": 140,
+        "src": "https://media.dsrwiki.com/dsrwiki/map/던전.webp"
       }
     ],
     "datacube": [
@@ -1272,6 +1281,15 @@
         "top": 295,
         "left": 128,
         "src": "https://media.dsrwiki.com/dsrwiki/map/오버플로우.webp"
+      }
+    ],
+    "dungeon": [
+      {
+        "id": "dungeon1",
+        "tooltip": "세라피몬의 성 경험치 던전 입구<br>케루비몬(악)의 게이트",
+        "top": 540,
+        "left": 390,
+        "src": "https://media.dsrwiki.com/dsrwiki/map/던전.webp"
       }
     ],
     "datacube": [
@@ -8188,6 +8206,15 @@
         "top": 88,
         "left": 335,
         "src": "https://media.dsrwiki.com/dsrwiki/map/워프포인트.webp"
+      }
+    ],
+    "dungeon": [
+      {
+        "id": "dungeon1",
+        "tooltip": "다크 웹 던전 입구<br>웜홀",
+        "top": 17,
+        "left": 323,
+        "src": "https://media.dsrwiki.com/dsrwiki/map/던전.webp"
       }
     ],
     "datacube": [

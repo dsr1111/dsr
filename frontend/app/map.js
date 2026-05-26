@@ -88,8 +88,8 @@ conDropdown.addEventListener("change", function () {
   });
 
   // 첫 번째 옵션 선택 및 이미지 업데이트
-  mapSelect.value = options[0];
-  updateImage(options[0]);
+  mapSelect.value = options[1];
+  updateImage(options[1]);
 });
 
 // map-dropdown 선택 변경 시 이미지 업데이트
@@ -133,7 +133,7 @@ function initializeDropdownOptions() {
 
     // 첫 번째 옵션 선택 후 initMap 호출
     mapDropdown.value = options[0];
-    initMap(); // 첫 번째 값에 대해 아이콘 표시
+    initMap(); // 선택된 값에 대해 아이콘 표시
   });
 
   // 초기 설정
@@ -147,6 +147,7 @@ let currentPortals = [];
 let currentWarps = [];
 let currentShops = [];
 let currentOverflows = [];
+let currentDungeons = [];
 let currentDatacube = [];
 let currentMobs = [];
 
@@ -210,6 +211,7 @@ function initMap() {
       currentWarps = [];
       currentShops = [];
       currentOverflows = [];
+      currentDungeons = [];
       currentDatacube = [];
       currentMobs = [];
       dropdownContent.innerHTML = "";
@@ -256,6 +258,16 @@ function initMap() {
           "오버플로우 아이콘",
           selectedMap.overflows,
           currentOverflows
+        );
+      }
+
+      if (selectedMap.dungeon && selectedMap.dungeon.length > 0) {
+        createCheckbox(
+          "던전",
+          "toggle-dungeons",
+          "던전 아이콘",
+          selectedMap.dungeon,
+          currentDungeons
         );
       }
 
@@ -311,7 +323,7 @@ function createCheckbox(
   input.id = checkboxId;
 
   // 기본 체크 상태 설정
-  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId === "toggle-overflows" || checkboxId === "toggle-mob") {
+  if (checkboxId === "toggle-warps" || checkboxId === "toggle-portals" || checkboxId === "toggle-shops" || checkboxId === "toggle-overflows" || checkboxId === "toggle-dungeons" || checkboxId === "toggle-mob") {
     input.checked = true; // 워프포인트는 체크된 상태로 로드
   } else {
     input.checked = false; // 나머지는 체크 해제된 상태로 로드
@@ -373,6 +385,8 @@ function createCheckbox(
       imgElement.classList.add("overflows-image");
     } else if (checkboxId === "toggle-datacube") {
       imgElement.classList.add("datacube-image");
+    } else if (checkboxId === "toggle-dungeons") {
+      imgElement.classList.add("dungeon-image");
     }
 
     if (checkboxId === "toggle-mob") {
