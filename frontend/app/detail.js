@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
 
   // 디지몬 데이터 가져오기
-  fetch("https://media.dsrwiki.com/data/csv/digimon.json")
+  fetch("https://media.dsrwiki.com/dsrwiki/data/csv/digimon.json")
     .then((response) => response.json())
     .then((data) => {
       const character = data[characterName];
@@ -396,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td class="skill-name-cell">
                     <div class="skill-name-container">
                       <span class="skill-name">${skillData.name}</span>
-                      <img loading="lazy" src="${skill1ImgPath}" alt="속성" class="skill-attribute">
+                      <img loading="lazy" src="${skill1ImgPath}" alt="속성" class="skill-attribute skill-main-attribute-img" data-tooltip="${skillData.attribute}">
                     </div>
                   </td>
                 </tr>
@@ -408,6 +408,14 @@ document.addEventListener("DOMContentLoaded", () => {
                       <span class="skill-tag tag-hit">${isNaN(skillData.hits) ? skillData.hits : `${skillData.hits}타`}</span>
                       ${skillData.effect ? `<span class="skill-tag tag-effect">${skillData.effect}</span>` : ''}
                       ${skillData.additionalTurn ? `<span class="skill-tag tag-cast">추가 시전 턴 : ${skillData.additionalTurn}턴</span>` : ''}
+                      ${skillData.change && Array.isArray(skillData.change) && skillData.change.length > 0 ? `
+                        <div class="skill-change-inline">
+                          <span class="skill-change-inline-label">변경 가능 속성 </span>
+                          ${skillData.change.map(attr => `
+                            <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${attr}.webp" alt="${attr}" class="skill-attribute skill-change-img" data-tooltip="${attr}">
+                          `).join('')}
+                        </div>
+                      ` : ''}
                     </div>
                   </td>
                 </tr>
@@ -434,6 +442,18 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
           `;
+
+          if (skillData.change && Array.isArray(skillData.change)) {
+            skillCell.querySelectorAll('.skill-change-img').forEach(img => {
+              const attrText = img.getAttribute('data-tooltip');
+              addTooltipToElement(img, attrText);
+            });
+          }
+
+          const mainAttrImg = skillCell.querySelector('.skill-main-attribute-img');
+          if (mainAttrImg) {
+            addTooltipToElement(mainAttrImg, skillData.attribute);
+          }
 
           skillRow.appendChild(skillCell);
           skillDetailsTable.appendChild(skillRow);

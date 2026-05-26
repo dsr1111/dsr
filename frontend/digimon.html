@@ -213,123 +213,166 @@
 
           <div class="filter-row">
             <label class="filter-label">스킬 효과</label>
-            <div class="button-group">
-              <button id="effect_감전" class="effect-btn" onclick="toggleEffect('effect_감전')"
-                onmouseenter="showCustomTooltip(event, '감전')" onmousemove="showCustomTooltip(event, '감전')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/감전.webp" alt="감전">
-              </button>
-              <button id="effect_격리" class="effect-btn" onclick="toggleEffect('effect_격리')"
-                onmouseenter="showCustomTooltip(event, '격리')" onmousemove="showCustomTooltip(event, '격리')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/격리.webp" alt="격리">
-              </button>
-              <button id="effect_공격력증가" class="effect-btn" onclick="toggleEffect('effect_공격력증가')"
-                onmouseenter="showCustomTooltip(event, '공격력 증가')" onmousemove="showCustomTooltip(event, '공격력 증가')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/공격력 증가.webp" alt="공격력 증가">
-              </button>
-              <button id="effect_매료" class="effect-btn" onclick="toggleEffect('effect_매료')"
-                onmouseenter="showCustomTooltip(event, '매료')" onmousemove="showCustomTooltip(event, '매료')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/매료.webp" alt="매료">
-              </button>
-              <button id="effect_방어력감소" class="effect-btn" onclick="toggleEffect('effect_방어력감소')"
-                onmouseenter="showCustomTooltip(event, '방어력 감소')" onmousemove="showCustomTooltip(event, '방어력 감소')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/방어력 감소.webp" alt="방어력 감소">
-              </button>
-              <button id="effect_방어력증가" class="effect-btn" onclick="toggleEffect('effect_방어력증가')"
-                onmouseenter="showCustomTooltip(event, '방어력 증가')" onmousemove="showCustomTooltip(event, '방어력 증가')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/방어력 증가.webp" alt="방어력 증가">
-              </button>
-              <button id="effect_빙결" class="effect-btn" onclick="toggleEffect('effect_빙결')"
-                onmouseenter="showCustomTooltip(event, '빙결')" onmousemove="showCustomTooltip(event, '빙결')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/빙결.webp" alt="빙결">
-              </button>
-              <button id="effect_석화" class="effect-btn" onclick="toggleEffect('effect_석화')"
-                onmouseenter="showCustomTooltip(event, '석화')" onmousemove="showCustomTooltip(event, '석화')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/석화.webp" alt="석화">
-              </button>
-              <button id="effect_속도감소" class="effect-btn" onclick="toggleEffect('effect_속도감소')"
-                onmouseenter="showCustomTooltip(event, '속도 감소')" onmousemove="showCustomTooltip(event, '속도 감소')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/속도 감소.webp" alt="속도 감소">
-              </button>
-              <button id="effect_속도증가" class="effect-btn" onclick="toggleEffect('effect_속도증가')"
-                onmouseenter="showCustomTooltip(event, '속도 증가')" onmousemove="showCustomTooltip(event, '속도 증가')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/속도 증가.webp" alt="속도 증가">
-              </button>
-              <button id="effect_스턴" class="effect-btn" onclick="toggleEffect('effect_스턴')"
-                onmouseenter="showCustomTooltip(event, '스턴')" onmousemove="showCustomTooltip(event, '스턴')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/스턴.webp" alt="스턴">
-              </button>
-              <div class="effect-line-break" style="flex-basis: 100%; height: 10px;"></div>
-              <button id="effect_연소" class="effect-btn" onclick="toggleEffect('effect_연소')"
-                onmouseenter="showCustomTooltip(event, '연소')" onmousemove="showCustomTooltip(event, '연소')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/연소.webp" alt="연소">
-              </button>
-              <button id="effect_중독" class="effect-btn" onclick="toggleEffect('effect_중독')"
-                onmouseenter="showCustomTooltip(event, '중독')" onmousemove="showCustomTooltip(event, '중독')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/중독.webp" alt="중독">
-              </button>
-              <button id="effect_출혈" class="effect-btn" onclick="toggleEffect('effect_출혈')"
-                onmouseenter="showCustomTooltip(event, '출혈')" onmousemove="showCustomTooltip(event, '출혈')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/출혈.webp" alt="출혈">
-              </button>
-              <button id="effect_치명타율증가" class="effect-btn" onclick="toggleEffect('effect_치명타율증가')"
-                onmouseenter="showCustomTooltip(event, '치명타율 증가')" onmousemove="showCustomTooltip(event, '치명타율 증가')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/치명타율 증가.webp" alt="치명타율 증가">
-              </button>
-              <button id="effect_혼란" class="effect-btn" onclick="toggleEffect('effect_혼란')"
-                onmouseenter="showCustomTooltip(event, '혼란')" onmousemove="showCustomTooltip(event, '혼란')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/혼란.webp" alt="혼란">
-              </button>
-              <button id="effect_화상" class="effect-btn" onclick="toggleEffect('effect_화상')"
-                onmouseenter="showCustomTooltip(event, '화상')" onmousemove="showCustomTooltip(event, '화상')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/화상.webp" alt="화상">
-              </button>
-              <button id="effect_회피율증가" class="effect-btn" onclick="toggleEffect('effect_회피율증가')"
-                onmouseenter="showCustomTooltip(event, '회피율 증가')" onmousemove="showCustomTooltip(event, '회피율 증가')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/회피율 증가.webp" alt="회피율 증가">
-              </button>
-              <button id="effect_금속화" class="effect-btn" onclick="toggleEffect('effect_금속화')"
-                onmouseenter="showCustomTooltip(event, '금속화')" onmousemove="showCustomTooltip(event, '금속화')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/금속화.webp" alt="금속화">
-              </button>
-              <button id="effect_잔류에너지" class="effect-btn" onclick="toggleEffect('effect_잔류에너지')"
-                onmouseenter="showCustomTooltip(event, '잔류 에너지')" onmousemove="showCustomTooltip(event, '잔류 에너지')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/잔류 에너지.webp" alt="잔류 에너지">
-              </button>
-              <button id="effect_꼭두각시" class="effect-btn" onclick="toggleEffect('effect_꼭두각시')"
-                onmouseenter="showCustomTooltip(event, '꼭두각시')" onmousemove="showCustomTooltip(event, '꼭두각시')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/꼭두각시.webp" alt="꼭두각시">
-              </button>
-              <button id="effect_안개장벽" class="effect-btn" onclick="toggleEffect('effect_안개장벽')"
-                onmouseenter="showCustomTooltip(event, '안개 장벽')" onmousemove="showCustomTooltip(event, '안개 장벽')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/안개 장벽.webp" alt="안개 장벽">
-              </button>
-              <button id="effect_영원한잠" class="effect-btn" onclick="toggleEffect('effect_영원한잠')"
-                onmouseenter="showCustomTooltip(event, '영원한 잠')" onmousemove="showCustomTooltip(event, '영원한 잠')"
-                onmouseleave="hideCustomTooltip()">
-                <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/영원한 잠.webp" alt="영원한 잠">
-              </button>
+            <div class="button-group"
+              style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; width: 100%;">
+              <div class="effect-subgroup" style="display: flex; align-items: center; gap: 9px; width: 100%;">
+                <span style="font-size: 13px; font-weight: bold; width: 36px; flex-shrink: 0; text-align: left; margin-left: 15px;">도트</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0px; justify-content: flex-start;">
+                  <button id="effect_감전" class="effect-btn" onclick="toggleEffect('effect_감전')"
+                    onmouseenter="showCustomTooltip(event, '감전')" onmousemove="showCustomTooltip(event, '감전')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/감전.webp" alt="감전">
+                  </button>
+                  <button id="effect_연소" class="effect-btn" onclick="toggleEffect('effect_연소')"
+                    onmouseenter="showCustomTooltip(event, '연소')" onmousemove="showCustomTooltip(event, '연소')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/연소.webp" alt="연소">
+                  </button>
+                  <button id="effect_중독" class="effect-btn" onclick="toggleEffect('effect_중독')"
+                    onmouseenter="showCustomTooltip(event, '중독')" onmousemove="showCustomTooltip(event, '중독')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/중독.webp" alt="중독">
+                  </button>
+                  <button id="effect_출혈" class="effect-btn" onclick="toggleEffect('effect_출혈')"
+                    onmouseenter="showCustomTooltip(event, '출혈')" onmousemove="showCustomTooltip(event, '출혈')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/출혈.webp" alt="출혈">
+                  </button>
+                  <button id="effect_화상" class="effect-btn" onclick="toggleEffect('effect_화상')"
+                    onmouseenter="showCustomTooltip(event, '화상')" onmousemove="showCustomTooltip(event, '화상')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/화상.webp" alt="화상">
+                  </button>
+                  <button id="effect_잔류에너지" class="effect-btn" onclick="toggleEffect('effect_잔류에너지')"
+                    onmouseenter="showCustomTooltip(event, '잔류 에너지')" onmousemove="showCustomTooltip(event, '잔류 에너지')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/잔류 에너지.webp" alt="잔류 에너지">
+                  </button>
+                </div>
+              </div>
+
+              <div class="effect-subgroup" style="display: flex; align-items: center; gap: 9px; width: 100%;">
+                <span style="font-size: 13px; font-weight: bold; width: 36px; flex-shrink: 0; text-align: left; margin-left: 15px;">CC</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0px; justify-content: flex-start;">
+                  <button id="effect_격리" class="effect-btn" onclick="toggleEffect('effect_격리')"
+                    onmouseenter="showCustomTooltip(event, '격리')" onmousemove="showCustomTooltip(event, '격리')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/격리.webp" alt="격리">
+                  </button>
+                  <button id="effect_마비" class="effect-btn" onclick="toggleEffect('effect_마비')"
+                    onmouseenter="showCustomTooltip(event, '마비')" onmousemove="showCustomTooltip(event, '마비')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/마비.webp" alt="마비">
+                  </button>
+                  <button id="effect_매료" class="effect-btn" onclick="toggleEffect('effect_매료')"
+                    onmouseenter="showCustomTooltip(event, '매료')" onmousemove="showCustomTooltip(event, '매료')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/매료.webp" alt="매료">
+                  </button>
+                  <button id="effect_봉인" class="effect-btn" onclick="toggleEffect('effect_봉인')"
+                    onmouseenter="showCustomTooltip(event, '봉인')" onmousemove="showCustomTooltip(event, '봉인')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/봉인.webp" alt="봉인">
+                  </button>
+                  <button id="effect_빙결" class="effect-btn" onclick="toggleEffect('effect_빙결')"
+                    onmouseenter="showCustomTooltip(event, '빙결')" onmousemove="showCustomTooltip(event, '빙결')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/빙결.webp" alt="빙결">
+                  </button>
+                  <button id="effect_석화" class="effect-btn" onclick="toggleEffect('effect_석화')"
+                    onmouseenter="showCustomTooltip(event, '석화')" onmousemove="showCustomTooltip(event, '석화')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/석화.webp" alt="석화">
+                  </button>
+                  <button id="effect_스턴" class="effect-btn" onclick="toggleEffect('effect_스턴')"
+                    onmouseenter="showCustomTooltip(event, '스턴')" onmousemove="showCustomTooltip(event, '스턴')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/스턴.webp" alt="스턴">
+                  </button>
+                  <button id="effect_진공" class="effect-btn" onclick="toggleEffect('effect_진공')"
+                    onmouseenter="showCustomTooltip(event, '진공')" onmousemove="showCustomTooltip(event, '진공')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/진공.webp" alt="진공">
+                  </button>
+                  <button id="effect_침잠" class="effect-btn" onclick="toggleEffect('effect_침잠')"
+                    onmouseenter="showCustomTooltip(event, '침잠')" onmousemove="showCustomTooltip(event, '침잠')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/침잠.webp" alt="침잠">
+                  </button>
+                  <button id="effect_혼란" class="effect-btn" onclick="toggleEffect('effect_혼란')"
+                    onmouseenter="showCustomTooltip(event, '혼란')" onmousemove="showCustomTooltip(event, '혼란')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/혼란.webp" alt="혼란">
+                  </button>
+                  <button id="effect_금속화" class="effect-btn" onclick="toggleEffect('effect_금속화')"
+                    onmouseenter="showCustomTooltip(event, '금속화')" onmousemove="showCustomTooltip(event, '금속화')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/금속화.webp" alt="금속화">
+                  </button>
+                  <button id="effect_꼭두각시" class="effect-btn" onclick="toggleEffect('effect_꼭두각시')"
+                    onmouseenter="showCustomTooltip(event, '꼭두각시')" onmousemove="showCustomTooltip(event, '꼭두각시')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/꼭두각시.webp" alt="꼭두각시">
+                  </button>
+                  <button id="effect_영원한잠" class="effect-btn" onclick="toggleEffect('effect_영원한잠')"
+                    onmouseenter="showCustomTooltip(event, '영원한 잠')" onmousemove="showCustomTooltip(event, '영원한 잠')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/영원한 잠.webp" alt="영원한 잠">
+                  </button>
+                </div>
+              </div>
+
+              <div class="effect-subgroup" style="display: flex; align-items: center; gap: 9px; width: 100%;">
+                <span style="font-size: 13px; font-weight: bold; width: 36px; flex-shrink: 0; text-align: left; margin-left: 15px;">버프</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0px; justify-content: flex-start;">
+                  <button id="effect_공격력증가" class="effect-btn" onclick="toggleEffect('effect_공격력증가')"
+                    onmouseenter="showCustomTooltip(event, '공격력 증가')" onmousemove="showCustomTooltip(event, '공격력 증가')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/공격력 증가.webp" alt="공격력 증가">
+                  </button>
+                  <button id="effect_방어력증가" class="effect-btn" onclick="toggleEffect('effect_방어력증가')"
+                    onmouseenter="showCustomTooltip(event, '방어력 증가')" onmousemove="showCustomTooltip(event, '방어력 증가')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/방어력 증가.webp" alt="방어력 증가">
+                  </button>
+                  <button id="effect_속도증가" class="effect-btn" onclick="toggleEffect('effect_속도증가')"
+                    onmouseenter="showCustomTooltip(event, '속도 증가')" onmousemove="showCustomTooltip(event, '속도 증가')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/속도 증가.webp" alt="속도 증가">
+                  </button>
+                  <button id="effect_치명타율증가" class="effect-btn" onclick="toggleEffect('effect_치명타율증가')"
+                    onmouseenter="showCustomTooltip(event, '치명타율 증가')" onmousemove="showCustomTooltip(event, '치명타율 증가')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/치명타율 증가.webp" alt="치명타율 증가">
+                  </button>
+                  <button id="effect_회피율증가" class="effect-btn" onclick="toggleEffect('effect_회피율증가')"
+                    onmouseenter="showCustomTooltip(event, '회피율 증가')" onmousemove="showCustomTooltip(event, '회피율 증가')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/회피율 증가.webp" alt="회피율 증가">
+                  </button>
+                  <button id="effect_안개장벽" class="effect-btn" onclick="toggleEffect('effect_안개장벽')"
+                    onmouseenter="showCustomTooltip(event, '안개 장벽')" onmousemove="showCustomTooltip(event, '안개 장벽')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/안개 장벽.webp" alt="안개 장벽">
+                  </button>
+                </div>
+              </div>
+
+              <div class="effect-subgroup" style="display: flex; align-items: center; gap: 9px; width: 100%;">
+                <span style="font-size: 13px; font-weight: bold; width: 36px; flex-shrink: 0; text-align: left; margin-left: 15px;">디버프</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0px; justify-content: flex-start;">
+                  <button id="effect_방어력감소" class="effect-btn" onclick="toggleEffect('effect_방어력감소')"
+                    onmouseenter="showCustomTooltip(event, '방어력 감소')" onmousemove="showCustomTooltip(event, '방어력 감소')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/방어력 감소.webp" alt="방어력 감소">
+                  </button>
+                  <button id="effect_속도감소" class="effect-btn" onclick="toggleEffect('effect_속도감소')"
+                    onmouseenter="showCustomTooltip(event, '속도 감소')" onmousemove="showCustomTooltip(event, '속도 감소')"
+                    onmouseleave="hideCustomTooltip()">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/debuff/속도 감소.webp" alt="속도 감소">
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

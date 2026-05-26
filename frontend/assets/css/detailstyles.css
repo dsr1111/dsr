@@ -381,6 +381,7 @@ body {
   background-image: url('https://media.dsrwiki.com/dsrwiki/background.webp');
   background-size: 120%;
   background-position: center;
+  cursor: pointer;
 }
 
 .skill-tags {
@@ -388,6 +389,7 @@ body {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 .skill-tag {
@@ -1240,4 +1242,26 @@ body {
 .side-ad {
   width: 160px;
   height: 600px;
+}
+
+/* Skill Changeable Attributes Style */
+.skill-change-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.skill-change-inline-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #111111;
+  white-space: nowrap;
+  margin-right: 6px;
+}
+
+.skill-change-img {
+  cursor: pointer;
+  vertical-align: middle;
 }

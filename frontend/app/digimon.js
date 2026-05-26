@@ -84,10 +84,14 @@
     화상: "* 화상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>바람속성에 취약해집니다.<br>물속성 피격 시 해제됩니다.",
     중독: "* 중독<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>어둠속성에 취약해집니다.<br>불속성 피격 시 해제됩니다.",
     감전: "* 감전<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
+    봉인: "* 봉인<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>빛속성에 취약해집니다.<br>천둥속성 피격 시 해제됩니다.",
     빙결: "* 빙결<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>천둥속성에 취약해집니다.<br>천둥속성 피격 시 해제됩니다.",
     석화: "* 석화<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>강철속성에 취약해집니다.<br>강철속성 피격 시 해제됩니다.",
     격리: "* 격리<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>빛속성에 취약해집니다.<br>빛속성 피격 시 해제됩니다.",
     스턴: "* 스턴<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.",
+    마비: "* 마비<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>불속성에 취약해집니다.<br>물리속성 피격 시 해제됩니다.",
+    침잠: "* 침잠<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>바람속성에 취약해집니다.<br>흙속성 피격 시 해제됩니다.",
+    진공: "* 진공<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>흙속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
     연소: "* 연소<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 대상의 SP 추가 소모.<br>스킬 레벨에 따라 소모량 증가.",
     매료: "* 매료<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
     "방어력 감소": "* 방어력 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 DEF x% 감소",
@@ -141,6 +145,31 @@
       </div>
     `;
 
+    showCustomTooltip(e, content, true);
+  }
+
+  function showConvertibleTooltip(e, changeAttrString) {
+    const changeAttrs = changeAttrString ? changeAttrString.split(',').map(a => a.trim()).filter(Boolean) : [];
+    let content = "";
+    if (changeAttrs.length > 0) {
+      content = `
+        <div class="convertible-tooltip-content" style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-weight: bold; font-size: 14px; color: #fff;">변환 가능 속성:</span>
+          <div style="display: flex; gap: 4px; align-items: center;">
+            ${changeAttrs.map(attr => `
+              <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${attr}.webp" alt="${attr}" style="width: 26px; height: 26px; object-fit: contain; vertical-align: middle;">
+            `).join('')}
+          </div>
+        </div>
+      `;
+    } else {
+      content = `
+        <div class="convertible-tooltip-content" style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-weight: bold; font-size: 14px; color: #fff;">변환 가능 속성:</span>
+          <span style="font-size: 14px; color: #bbb;">없음</span>
+        </div>
+      `;
+    }
     showCustomTooltip(e, content, true);
   }
 
@@ -211,7 +240,7 @@
         // 로딩 표시 시작
         this.showLoading();
 
-        const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
+        const response = await fetch('https://media.dsrwiki.com/dsrwiki/data/csv/digimon.json');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -324,12 +353,14 @@
                 }).join('');
               }
 
+              const changeAttrString = skill.change && Array.isArray(skill.change) ? skill.change.join(',') : '';
+
               return `
                 <td class="${skillClass}">
                   <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}" 
                     class="digimon-attr-img bg-skill"
-                    onmouseenter="showCustomTooltip(event, '${skill.attribute}')"
-                    onmousemove="showCustomTooltip(event, '${skill.attribute}')"
+                    onmouseenter="showConvertibleTooltip(event, '${changeAttrString}')"
+                    onmousemove="showConvertibleTooltip(event, '${changeAttrString}')"
                     onmouseleave="hideCustomTooltip()"
                   >
                   ${effectTooltipHtml}
@@ -804,5 +835,6 @@
   window.showCustomTooltip = showCustomTooltip;
   window.hideCustomTooltip = hideCustomTooltip;
   window.showEffectTooltip = showEffectTooltip;
+  window.showConvertibleTooltip = showConvertibleTooltip;
   window.toggleFilters = toggleFilters;
 })();
