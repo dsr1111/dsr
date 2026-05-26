@@ -39,6 +39,22 @@ table.result-table .digimon-attr-img {
   cursor: pointer;
 }
 
+@keyframes pulseGlow {
+  0% {
+    filter: drop-shadow(0 0 1px #ffd700) drop-shadow(0 0 2px #ff8c00);
+  }
+  50% {
+    filter: drop-shadow(0 0 3px #ffd700) drop-shadow(0 0 5px #ffaa00);
+  }
+  100% {
+    filter: drop-shadow(0 0 1px #ffd700) drop-shadow(0 0 2px #ff8c00);
+  }
+}
+
+.converted-glow {
+  animation: pulseGlow 1.5s infinite alternate;
+}
+
 table.result-table .digimon-field-img {
   width: 25px;
   height: 25px;
@@ -492,8 +508,9 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Effect 버튼 그룹 스타일 */
-.button-group:has(.effect-btn) {
+/* Effect, Skill 버튼 그룹 스타일 */
+.button-group:has(.effect-btn),
+.button-group:has(.skill-btn) {
   padding-left: 19px;
 }
 

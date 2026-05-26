@@ -5,7 +5,9 @@
   const filters = {
     evolution: [],
     type: [],
-    skill: [],
+    skill1: [],
+    skill2: [],
+    skill3: [],
     strong: [],
     weak: [],
     field: [],
@@ -357,12 +359,15 @@
 
               return `
                 <td class="${skillClass}">
-                  <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}" 
-                    class="digimon-attr-img bg-skill"
-                    onmouseenter="showConvertibleTooltip(event, '${changeAttrString}')"
-                    onmousemove="showConvertibleTooltip(event, '${changeAttrString}')"
-                    onmouseleave="hideCustomTooltip()"
-                  >
+                  <div style="position: relative; display: inline-block;" class="main-skill-icon-wrapper">
+                    <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/${skill.attribute}.webp" alt="${skill.attribute}" 
+                      class="digimon-attr-img bg-skill main-skill-icon"
+                      data-default-attr="${skill.attribute}"
+                      onmouseenter="showConvertibleTooltip(event, '${changeAttrString}')"
+                      onmousemove="showConvertibleTooltip(event, '${changeAttrString}')"
+                      onmouseleave="hideCustomTooltip()"
+                    >
+                  </div>
                   ${effectTooltipHtml}
                   <span>${skill.hits === '보조' ? skill.hits : `${skill.hits}타`} / ${skill.range}${skill.additionalTurn ? ` <span style="font-size: 0.9em; color: gray;">(${Number(skill.additionalTurn).toFixed(1)})</span>` : ''}</span>
                 </td>
@@ -389,6 +394,15 @@
             newRow.dataset.약점 = weaknesses.attribute;
             newRow.dataset.약점효과 = weaknesses.effect;
             newRow.dataset.fields = fields;
+            
+            // 스킬 속성 및 변환 데이터 저장
+            newRow.dataset.skill1Attr = digimon.skills[0]?.attribute || "";
+            newRow.dataset.skill2Attr = digimon.skills[1]?.attribute || "";
+            newRow.dataset.skill3Attr = digimon.skills[2]?.attribute || "";
+            newRow.dataset.skill1Change = digimon.skills[0]?.change ? digimon.skills[0].change.join(',') : "";
+            newRow.dataset.skill2Change = digimon.skills[1]?.change ? digimon.skills[1].change.join(',') : "";
+            newRow.dataset.skill3Change = digimon.skills[2]?.change ? digimon.skills[2].change.join(',') : "";
+
             // 스킬 효과 데이터 저장
             newRow.dataset.skill1Effect = digimon.skills[0]?.effect || "";
             newRow.dataset.skill2Effect = digimon.skills[1]?.effect || "";
@@ -473,14 +487,41 @@
       this.filterTable();
     },
 
-    toggleSkill(skill) {
-      const index = filters.skill.indexOf(skill);
+    toggleSkill1(skill) {
+      const index = filters.skill1.indexOf(skill);
+      const btnId = `skill1_${skill}`;
       if (index > -1) {
-        filters.skill.splice(index, 1);
-        document.getElementById(skill).classList.remove("active");
+        filters.skill1.splice(index, 1);
+        document.getElementById(btnId).classList.remove("active");
       } else {
-        filters.skill.push(skill);
-        document.getElementById(skill).classList.add("active");
+        filters.skill1.push(skill);
+        document.getElementById(btnId).classList.add("active");
+      }
+      this.filterTable();
+    },
+
+    toggleSkill2(skill) {
+      const index = filters.skill2.indexOf(skill);
+      const btnId = `skill2_${skill}`;
+      if (index > -1) {
+        filters.skill2.splice(index, 1);
+        document.getElementById(btnId).classList.remove("active");
+      } else {
+        filters.skill2.push(skill);
+        document.getElementById(btnId).classList.add("active");
+      }
+      this.filterTable();
+    },
+
+    toggleSkill3(skill) {
+      const index = filters.skill3.indexOf(skill);
+      const btnId = `skill3_${skill}`;
+      if (index > -1) {
+        filters.skill3.splice(index, 1);
+        document.getElementById(btnId).classList.remove("active");
+      } else {
+        filters.skill3.push(skill);
+        document.getElementById(btnId).classList.add("active");
       }
       this.filterTable();
     },
@@ -591,17 +632,52 @@
         const weaknessesMatch =
           filters.weak.length === 0 ||
           filters.weak.some((filter) => filter === weakness);
-        const skill1Image = row.cells[13].querySelector("img");
-        const skill1 = skill1Image ? skill1Image.alt : "";
-        const skill2Image = row.cells[14].querySelector("img");
-        const skill2 = skill2Image ? skill2Image.alt : "";
-        const skill3Image = row.cells[15].querySelector("img");
-        const skill3 = skill3Image ? skill3Image.alt : "";
-        const skillsMatch =
-          filters.skill.length === 0 ||
-          filters.skill.includes(skill1) ||
-          filters.skill.includes(skill2) ||
-          filters.skill.includes(skill3);
+          
+        const skill1Attr = row.dataset.skill1Attr || "";
+        const skill2Attr = row.dataset.skill2Attr || "";
+        const skill3Attr = row.dataset.skill3Attr || "";
+        const skill1Change = row.dataset.skill1Change ? row.dataset.skill1Change.split(',') : [];
+        const skill2Change = row.dataset.skill2Change ? row.dataset.skill2Change.split(',') : [];
+        const skill3Change = row.dataset.skill3Change ? row.dataset.skill3Change.split(',') : [];
+
+        const updateSkillUI = (cell, defaultAttr, changeAttrs, activeFilter) => {
+           if (!cell || !defaultAttr) return false;
+           const img = cell.querySelector('.main-skill-icon');
+           if (!img) return false;
+
+           if (activeFilter.length === 0) {
+             img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
+             img.alt = defaultAttr;
+             img.classList.remove('converted-glow');
+             return true;
+           }
+
+           if (activeFilter.includes(defaultAttr)) {
+             img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
+             img.alt = defaultAttr;
+             img.classList.remove('converted-glow');
+             return true;
+           }
+
+           const matchedConvertible = activeFilter.find(f => changeAttrs.includes(f));
+           if (matchedConvertible) {
+             img.src = `https://media.dsrwiki.com/dsrwiki/${matchedConvertible}.webp`;
+             img.alt = matchedConvertible;
+             img.classList.add('converted-glow');
+             return true;
+           }
+
+           img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
+           img.alt = defaultAttr;
+           img.classList.remove('converted-glow');
+           return false;
+        };
+
+        const match1 = updateSkillUI(row.cells[13], skill1Attr, skill1Change, filters.skill1);
+        const match2 = updateSkillUI(row.cells[14], skill2Attr, skill2Change, filters.skill2);
+        const match3 = updateSkillUI(row.cells[15], skill3Attr, skill3Change, filters.skill3);
+
+        const skillsMatch = match1 && match2 && match3;
 
         // Effect 필터링 로직
         const effectMatches = filters.effect.length === 0 ||
@@ -633,7 +709,9 @@
     resetFilters() {
       filters.evolution = [];
       filters.type = [];
-      filters.skill = [];
+      filters.skill1 = [];
+      filters.skill2 = [];
+      filters.skill3 = [];
       filters.strong = [];
       filters.weak = [];
       filters.field = [];
@@ -824,7 +902,9 @@
   window.resetFilters = FilterModule.resetFilters.bind(FilterModule);
   window.toggleEvolution = FilterModule.toggleEvolution.bind(FilterModule);
   window.toggleType = FilterModule.toggleType.bind(FilterModule);
-  window.toggleSkill = FilterModule.toggleSkill.bind(FilterModule);
+  window.toggleSkill1 = FilterModule.toggleSkill1.bind(FilterModule);
+  window.toggleSkill2 = FilterModule.toggleSkill2.bind(FilterModule);
+  window.toggleSkill3 = FilterModule.toggleSkill3.bind(FilterModule);
   window.toggleSkillStrong = FilterModule.toggleSkillStrong.bind(FilterModule);
   window.toggleSkillWeak = FilterModule.toggleSkillWeak.bind(FilterModule);
   window.toggleField = FilterModule.toggleField.bind(FilterModule);
