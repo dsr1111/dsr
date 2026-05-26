@@ -3,32 +3,32 @@ const MENU_ITEMS = [
     type: 'dropdown',
     label: '디지몬',
     items: [
-      { label: '도감', href: '../digimon.html' },
-      { label: '덱', href: '../deck.html' },
-      { label: '진화트리', href: '../evolution.html' },
+      { label: '도감', href: '../digimon' },
+      { label: '덱', href: '../deck' },
+      { label: '진화트리', href: '../evolution' },
     ]
   },
   {
     type: 'link',
     label: '맵',
-    href: '../map.html'
+    href: '../map'
   },
   {
     type: 'dropdown',
     label: '던전',
     items: [
-      { label: '탐지기', href: '../detector.html' },
-      { label: '오버플로우', href: '../overflow.html' },
+      { label: '탐지기', href: '../detector' },
+      { label: '오버플로우', href: '../overflow' },
     ]
   },
   {
     type: 'dropdown',
     label: '도구',
     items: [
-      { label: '데미지 계산기', href: '../calculator.html' },
-      { label: 'EXP 물약 시뮬레이터', href: '../exp.html' },
-      { label: '가챠 시뮬레이터', href: '../gacha.html' },
-      { label: '코스튬 슬롯 각인 시뮬레이터', href: '../costume-slot.html' },
+      { label: '데미지 계산기', href: '../calculator' },
+      { label: 'EXP 물약 시뮬레이터', href: '../exp' },
+      { label: '가챠 시뮬레이터', href: '../gacha' },
+      { label: '코스튬 슬롯 각인 시뮬레이터', href: '../costume-slot' },
     ]
   },
   {
@@ -89,7 +89,7 @@ class CustomNav extends HTMLElement {
       <header class="header">
         <nav class="nav container">
           <div class="nav__data">
-            <a href="../index.html">
+            <a href="../index">
               <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/logo2.webp" class="nav__logo" />
             </a>
 
@@ -191,7 +191,7 @@ class CustomNav extends HTMLElement {
     else if (path.includes('exp')) document.body.classList.add('page-exp');
     else if (path.includes('gacha')) document.body.classList.add('page-gacha');
     else if (path.includes('costume-slot')) document.body.classList.add('page-costume-slot');
-    else document.body.classList.add('page-index'); // index.html 또는 기본값
+    else document.body.classList.add('page-index'); // index 또는 기본값
 
     // 중복 방지
     if (document.querySelector('.side-ad-container')) return;
