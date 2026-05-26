@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sanitizedCharacterName = characterName.replace(/:/g, "_");
 
   // 디지몬 데이터 가져오기
-  fetch("https://media.dsrwiki.com/dsrwiki/data/csv/digimon.json")
+  fetch("https://media.dsrwiki.com/data/csv/digimon.json")
     .then((response) => response.json())
     .then((data) => {
       const character = data[characterName];
