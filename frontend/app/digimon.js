@@ -83,6 +83,13 @@
 
   const effectDescriptions = {
     출혈: "* 출혈<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물리속성에 취약해집니다.<br>힐 받을 경우 해제됩니다.",
+    열상: "* 열상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>흙속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
+    저주: "* 저주<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>빛속성에 취약해집니다.<br>천둥속성 피격 시 해제됩니다.",
+    질식: "* 질식<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물리속성에 취약해집니다.<br>강철속성 피격 시 해제됩니다.",
+    성흔: "* 성흔<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>얼음속성에 취약해집니다.<br>바람속성 피격 시 해제됩니다.",
+    파열: "* 파열<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>나무속성에 취약해집니다.<br>어둠속성 피격 시 해제됩니다.",
+    한기: "* 한기<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>천둥속성에 취약해집니다.<br>물속성 피격 시 해제됩니다.",
+    부식: "* 부식<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>바람속성에 취약해집니다.<br>흙속성 피격 시 해제됩니다.",
     화상: "* 화상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>바람속성에 취약해집니다.<br>물속성 피격 시 해제됩니다.",
     중독: "* 중독<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>어둠속성에 취약해집니다.<br>불속성 피격 시 해제됩니다.",
     감전: "* 감전<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
@@ -95,6 +102,7 @@
     마비: "* 마비<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>불속성에 취약해집니다.<br>물리속성 피격 시 해제됩니다.",
     침잠: "* 침잠<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>바람속성에 취약해집니다.<br>흙속성 피격 시 해제됩니다.",
     진공: "* 진공<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>흙속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
+    공황: "* 공황<br>공격 시 25% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>물속성에 취약해집니다.<br>얼음속성 피격 시 해제됩니다.",
     연소: "* 연소<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 대상의 SP 추가 소모.<br>스킬 레벨에 따라 소모량 증가.",
     매료: "* 매료<br>공격 시 29.5% 확률로 발생됩니다.<br>일정 턴 동안 명령 불가.<br>피아식별 없이 행동.",
     "방어력 감소": "* 방어력 감소<br>공격 시 65% 확률로 발생됩니다.<br>일정 턴 동안 DEF x% 감소",
@@ -395,7 +403,7 @@
             newRow.dataset.약점 = weaknesses.attribute;
             newRow.dataset.약점효과 = weaknesses.effect;
             newRow.dataset.fields = fields;
-            
+
             // 스킬 속성 및 변환 데이터 저장
             newRow.dataset.skill1Attr = digimon.skills[0]?.attribute || "";
             newRow.dataset.skill2Attr = digimon.skills[1]?.attribute || "";
@@ -633,7 +641,7 @@
         const weaknessesMatch =
           filters.weak.length === 0 ||
           filters.weak.some((filter) => filter === weakness);
-          
+
         const skill1Attr = row.dataset.skill1Attr || "";
         const skill2Attr = row.dataset.skill2Attr || "";
         const skill3Attr = row.dataset.skill3Attr || "";
@@ -642,36 +650,36 @@
         const skill3Change = row.dataset.skill3Change ? row.dataset.skill3Change.split(',') : [];
 
         const updateSkillUI = (cell, defaultAttr, changeAttrs, activeFilter) => {
-           if (!cell || !defaultAttr) return false;
-           const img = cell.querySelector('.main-skill-icon');
-           if (!img) return false;
+          if (!cell || !defaultAttr) return false;
+          const img = cell.querySelector('.main-skill-icon');
+          if (!img) return false;
 
-           if (activeFilter.length === 0) {
-             img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
-             img.alt = defaultAttr;
-             img.classList.remove('converted-glow');
-             return true;
-           }
+          if (activeFilter.length === 0) {
+            img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
+            img.alt = defaultAttr;
+            img.classList.remove('converted-glow');
+            return true;
+          }
 
-           if (activeFilter.includes(defaultAttr)) {
-             img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
-             img.alt = defaultAttr;
-             img.classList.remove('converted-glow');
-             return true;
-           }
+          if (activeFilter.includes(defaultAttr)) {
+            img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
+            img.alt = defaultAttr;
+            img.classList.remove('converted-glow');
+            return true;
+          }
 
-           const matchedConvertible = activeFilter.find(f => changeAttrs.includes(f));
-           if (matchedConvertible) {
-             img.src = `https://media.dsrwiki.com/dsrwiki/${matchedConvertible}.webp`;
-             img.alt = matchedConvertible;
-             img.classList.add('converted-glow');
-             return true;
-           }
+          const matchedConvertible = activeFilter.find(f => changeAttrs.includes(f));
+          if (matchedConvertible) {
+            img.src = `https://media.dsrwiki.com/dsrwiki/${matchedConvertible}.webp`;
+            img.alt = matchedConvertible;
+            img.classList.add('converted-glow');
+            return true;
+          }
 
-           img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
-           img.alt = defaultAttr;
-           img.classList.remove('converted-glow');
-           return false;
+          img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
+          img.alt = defaultAttr;
+          img.classList.remove('converted-glow');
+          return false;
         };
 
         const match1 = updateSkillUI(row.cells[13], skill1Attr, skill1Change, filters.skill1);
