@@ -134,9 +134,11 @@
     const normalizedEffect = effectName.trim().toLowerCase();
     let effectDescription = effectDescriptionsLower[normalizedEffect] || "효과 설명을 찾을 수 없습니다.";
 
+    const safeDigimonName = digimonName ? digimonName.replace(/:/g, '_') : '';
+
     let effectImagePath = `https://media.dsrwiki.com/dsrwiki/debuff/${effectName}.webp`;
     if (normalizedEffect === "회복") {
-      effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/skill${skillNumber}.webp`;
+      effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${safeDigimonName}/skill${skillNumber}.webp`;
     } else if (normalizedEffect === "스택 증가") {
       effectImagePath = `https://media.dsrwiki.com/dsrwiki/debuff/스택.webp`;
       if (digimonName === "황룡몬") {
@@ -145,7 +147,7 @@
         effectDescription = "벨페몬:레이지모드 전용 스택.<br>해당 스킬을 사용할 때마다 '나태의 업화' 스택이 2개씩 쌓입니다.<br><br>스택은 최대 6개까지 쌓을 수 있습니다.";
       }
     } else if (normalizedEffect === "스택 소모") {
-      effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/stack.webp`;
+      effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${safeDigimonName}/stack.webp`;
       if (digimonName === "황룡몬") {
         effectDescription = "황룡몬 전용 스택.<br>황룡몬이 보유한 음양 스택이 1/2/3개 일 때,<br>'황회' 스킬의 대미지가 1.4/2.26/3.45배 증가합니다.<br><br>'황회' 스킬 사용 시 보유 중인 모든 스택을 소모합니다."; // 황룡몬 스택 소모 설명 입력
       } else if (digimonName === "벨페몬:레이지모드") {
