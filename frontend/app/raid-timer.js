@@ -92,6 +92,14 @@ const raids = [
     baseDate: '2026-04-26',
     map: '어둠성 계곡',
   },
+  {
+    name: '꼬끼몬',
+    image: getImagePath('꼬끼몬'),
+    times: [],
+    minute: 45,
+    type: 'hourly',
+    map: '어둠성 계곡',
+  },
 ];
 
 const RotationRaid = {
@@ -349,6 +357,21 @@ function getNextWeeklyTime(timeStr, days) {
   return new Date(`${kstDateString}T${timeStr}:00+09:00`);
 }
 
+function getNextHourlyTime(minute) {
+  const now = getCurrentKST();
+
+  const kstHour = getKSTHours(now);
+  const kstDateString = getKSTDateString(now);
+  
+  let nextTime = new Date(`${kstDateString}T${kstHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00+09:00`);
+  
+  if (nextTime <= now) {
+    nextTime = new Date(nextTime.getTime() + 60 * 60 * 1000);
+  }
+
+  return nextTime;
+}
+
 function getTimeDiffString(target) {
   const now = getCurrentKST();
   let diff = Math.floor((target - now) / 1000);
@@ -421,6 +444,20 @@ function renderRaids() {
   container.style.overflowY = 'auto';
   let allRaids = [];
   raids.forEach(raid => {
+    if (raid.type === 'hourly') {
+      const nextTime = getNextHourlyTime(raid.minute);
+      if (nextTime) {
+        allRaids.push({
+          name: raid.name,
+          image: raid.image,
+          timeStr: getKSTHours(nextTime).toString().padStart(2, '0') + ':' + getKSTMinutes(nextTime).toString().padStart(2, '0'),
+          map: raid.map,
+          nextTime,
+        });
+      }
+      return;
+    }
+
     raid.times.forEach(timeStr => {
       let nextTime;
       if (raid.type === 'daily') {
@@ -516,6 +553,14 @@ function updateTimers() {
               sortedRaids[i].nextTime = getNextBiweeklyTime(sortedRaids[i].timeStr, raid.baseDate);
             } else if (raid.type === 'weekly') {
               sortedRaids[i].nextTime = getNextWeeklyTime(sortedRaids[i].timeStr, raid.days);
+            } else if (raid.type === 'hourly') {
+              const nextTime = getNextHourlyTime(raid.minute);
+              if (nextTime) {
+                sortedRaids[i].nextTime = nextTime;
+                sortedRaids[i].timeStr = getKSTHours(nextTime).toString().padStart(2, '0') + ':' + getKSTMinutes(nextTime).toString().padStart(2, '0');
+              } else {
+                needsRerender = true;
+              }
             }
           }
         }
@@ -700,7 +745,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       '엑자몬': '엑자몬',
       '블랙세라피몬': 'weekend',
       '오파니몬:폴다운모드': 'weekend',
-      '메기드라몬': 'weekend'
+      '메기드라몬': 'weekend',
+      '꼬끼몬': '꼬끼몬'
     };
 
     timersContainer.addEventListener('click', (e) => {
