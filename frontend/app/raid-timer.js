@@ -93,21 +93,27 @@ const raids = [
     map: '어둠성 계곡',
   },
   {
-    name: '꼬끼몬',
-    image: getImagePath('꼬끼몬'),
-    times: [],
-    minute: 45,
-    type: 'hourly',
-    map: '어둠성 계곡',
-  },
+    name: '위그드라실_7D6',
+    image: getImagePath('위그드라실_7D6'),
+    type: 'custom_weekly',
+    schedules: [
+      { day: 5, time: '21:00' },
+      { day: 6, time: '09:00' },
+      { day: 6, time: '21:00' },
+      { day: 0, time: '09:00' },
+      { day: 0, time: '21:00' },
+      { day: 1, time: '09:00' }
+    ],
+    map: '무한 산',
+  }
 ];
 
 const RotationRaid = {
-  name: '안드로몬',
-  image: getImagePath('안드로몬'),
+  name: '록몬',
+  image: getImagePath('록몬'),
   baseTime: '19:00',
-  baseDate: '2026-07-02',
-  map: '기어 사바나',
+  baseDate: '2026-07-16',
+  map: '어둠성 계곡',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
@@ -357,14 +363,29 @@ function getNextWeeklyTime(timeStr, days) {
   return new Date(`${kstDateString}T${timeStr}:00+09:00`);
 }
 
+function getNextCustomWeeklyTime(schedules) {
+  let minTime = null;
+  let bestTimeStr = '';
+
+  for (const schedule of schedules) {
+    const nextRaidTime = getNextWeeklyTime(schedule.time, [schedule.day]);
+    if (!minTime || nextRaidTime < minTime) {
+      minTime = nextRaidTime;
+      bestTimeStr = schedule.time;
+    }
+  }
+
+  return { nextTime: minTime, timeStr: bestTimeStr };
+}
+
 function getNextHourlyTime(minute) {
   const now = getCurrentKST();
 
   const kstHour = getKSTHours(now);
   const kstDateString = getKSTDateString(now);
-  
+
   let nextTime = new Date(`${kstDateString}T${kstHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00+09:00`);
-  
+
   if (nextTime <= now) {
     nextTime = new Date(nextTime.getTime() + 60 * 60 * 1000);
   }
@@ -451,6 +472,20 @@ function renderRaids() {
           name: raid.name,
           image: raid.image,
           timeStr: getKSTHours(nextTime).toString().padStart(2, '0') + ':' + getKSTMinutes(nextTime).toString().padStart(2, '0'),
+          map: raid.map,
+          nextTime,
+        });
+      }
+      return;
+    }
+
+    if (raid.type === 'custom_weekly') {
+      const { nextTime, timeStr } = getNextCustomWeeklyTime(raid.schedules);
+      if (nextTime) {
+        allRaids.push({
+          name: raid.name,
+          image: raid.image,
+          timeStr,
           map: raid.map,
           nextTime,
         });
@@ -545,7 +580,7 @@ function updateTimers() {
         if (sortedRaids[i].name === RotationRaid.name) {
           sortedRaids[i].nextTime = getMasterTyrannoNextTime();
         } else {
-          const raid = raids.find(r => r.name === sortedRaids[i].name);
+          const raid = raids.find(r => r.name === sortedRaids[i].name && (r.type === 'hourly' || r.type === 'custom_weekly' || (r.times && r.times.includes(sortedRaids[i].timeStr))));
           if (raid) {
             if (raid.type === 'daily') {
               sortedRaids[i].nextTime = getNextDailyTime(sortedRaids[i].timeStr);
@@ -558,6 +593,14 @@ function updateTimers() {
               if (nextTime) {
                 sortedRaids[i].nextTime = nextTime;
                 sortedRaids[i].timeStr = getKSTHours(nextTime).toString().padStart(2, '0') + ':' + getKSTMinutes(nextTime).toString().padStart(2, '0');
+              } else {
+                needsRerender = true;
+              }
+            } else if (raid.type === 'custom_weekly') {
+              const { nextTime, timeStr } = getNextCustomWeeklyTime(raid.schedules);
+              if (nextTime) {
+                sortedRaids[i].nextTime = nextTime;
+                sortedRaids[i].timeStr = timeStr;
               } else {
                 needsRerender = true;
               }

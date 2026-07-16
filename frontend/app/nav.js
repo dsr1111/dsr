@@ -51,6 +51,7 @@ class CustomNav extends HTMLElement {
     this.render();
     this.initMenu();
     this.initAds();
+    this.initReferral();
   }
 
   render() {
@@ -191,7 +192,7 @@ class CustomNav extends HTMLElement {
     else if (path.includes('exp')) document.body.classList.add('page-exp');
     else if (path.includes('gacha')) document.body.classList.add('page-gacha');
     else if (path.includes('costume-slot')) document.body.classList.add('page-costume-slot');
-    else document.body.classList.add('page-index'); // index 또는 기본값
+    else document.body.classList.add('page-index'); // index.html 또는 기본값
 
     // 중복 방지
     if (document.querySelector('.side-ad-container')) return;
@@ -232,6 +233,132 @@ class CustomNav extends HTMLElement {
         console.error("AdSense push failed", e);
       }
     }
+  }
+
+  initReferral() {
+    // 이미 닫은 경우 다시 띄우지 않음
+    if (localStorage.getItem('referralClosed') === 'true') return;
+
+    // 이미 배너가 있으면 중복 생성 방지
+    if (document.getElementById('referral-banner')) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'referral-banner';
+    banner.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(11, 14, 26, 0.95);
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 9999;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 250px;
+      backdrop-filter: blur(4px);
+    `;
+
+    // 접힌 상태 확인
+    const isFolded = localStorage.getItem('referralFolded') === 'true';
+
+    banner.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:bold; font-size: 14px; color: #a66bff;">💎 추천인 코드</span>
+        <div style="display:flex; gap: 8px; align-items:center;">
+          <span id="ref-fold" style="cursor:pointer; font-size:12px; opacity:0.8; user-select:none;" title="접기/펴기">${isFolded ? '▲' : '▼'}</span>
+          <span id="ref-close" style="cursor:pointer; font-size:14px; opacity:0.8; user-select:none;" title="닫기">✕</span>
+        </div>
+      </div>
+      <div id="ref-content" style="display: ${isFolded ? 'none' : 'block'};">
+        <div style="font-size:12px; margin-bottom:8px; color:#aaa; line-height:1.4;">
+          신규 유저 가입 시 아래 코드를 입력하면 특별한 보상을 받을 수 있습니다!
+        </div>
+        <div style="background:#1a1d2e; padding:10px; border-radius:4px; text-align:center; font-weight:bold; font-size:18px; letter-spacing:2px; border:1px dashed #a66bff; margin-bottom:8px;">
+          A2USQRY
+        </div>
+        <div style="text-align:right;">
+          <button id="ref-copy" style="background:#a66bff; color:#fff; border:none; border-radius:4px; padding:6px 12px; cursor:pointer; font-size:12px; font-weight:bold; transition: background 0.2s;">복사하기</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(banner);
+
+    const foldBtn = document.getElementById('ref-fold');
+    const closeBtn = document.getElementById('ref-close');
+    const content = document.getElementById('ref-content');
+    const copyBtn = document.getElementById('ref-copy');
+
+    if (isFolded) {
+      banner.style.width = '160px';
+      banner.style.padding = '10px 15px';
+    }
+
+    foldBtn.addEventListener('click', () => {
+      const currentlyFolded = content.style.display === 'none';
+      if (currentlyFolded) {
+        content.style.display = 'block';
+        foldBtn.innerText = '▼';
+        banner.style.width = '250px';
+        banner.style.padding = '15px';
+        localStorage.setItem('referralFolded', 'false');
+      } else {
+        content.style.display = 'none';
+        foldBtn.innerText = '▲';
+        banner.style.width = '160px';
+        banner.style.padding = '10px 15px';
+        localStorage.setItem('referralFolded', 'true');
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      banner.remove();
+      localStorage.setItem('referralClosed', 'true');
+    });
+
+    // 호버 효과
+    copyBtn.addEventListener('mouseover', () => {
+      if(copyBtn.innerText === '복사하기') copyBtn.style.background = '#8e54e9';
+    });
+    copyBtn.addEventListener('mouseout', () => {
+      if(copyBtn.innerText === '복사하기') copyBtn.style.background = '#a66bff';
+    });
+
+    copyBtn.addEventListener('click', () => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('A2USQRY').then(() => {
+          const originalText = copyBtn.innerText;
+          copyBtn.innerText = '복사 완료!';
+          copyBtn.style.background = '#4caf50';
+          setTimeout(() => {
+            copyBtn.innerText = originalText;
+            copyBtn.style.background = '#a66bff';
+          }, 2000);
+        });
+      } else {
+        // Fallback
+        const tempInput = document.createElement('input');
+        tempInput.value = 'A2USQRY';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        
+        const originalText = copyBtn.innerText;
+        copyBtn.innerText = '복사 완료!';
+        copyBtn.style.background = '#4caf50';
+        setTimeout(() => {
+          copyBtn.innerText = originalText;
+          copyBtn.style.background = '#a66bff';
+        }, 2000);
+      }
+    });
   }
 }
 
