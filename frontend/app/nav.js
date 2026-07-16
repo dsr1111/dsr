@@ -236,9 +236,6 @@ class CustomNav extends HTMLElement {
   }
 
   initReferral() {
-    // 이미 닫은 경우 다시 띄우지 않음
-    if (localStorage.getItem('referralClosed') === 'true') return;
-
     // 이미 배너가 있으면 중복 생성 방지
     if (document.getElementById('referral-banner')) return;
 
@@ -248,12 +245,12 @@ class CustomNav extends HTMLElement {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: rgba(11, 14, 26, 0.95);
-      border: 1px solid #333;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid #e0e0e0;
       border-radius: 8px;
-      color: #fff;
+      color: #333;
       padding: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       z-index: 9999;
       font-family: inherit;
       transition: all 0.3s ease;
@@ -269,21 +266,16 @@ class CustomNav extends HTMLElement {
 
     banner.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:bold; font-size: 14px; color: #a66bff;">💎 추천인 코드</span>
+        <span style="font-weight:bold; font-size: 14px; color: #ff8c00;">추천인 코드</span>
         <div style="display:flex; gap: 8px; align-items:center;">
-          <span id="ref-fold" style="cursor:pointer; font-size:12px; opacity:0.8; user-select:none;" title="접기/펴기">${isFolded ? '▲' : '▼'}</span>
-          <span id="ref-close" style="cursor:pointer; font-size:14px; opacity:0.8; user-select:none;" title="닫기">✕</span>
+          <span id="ref-fold" style="cursor:pointer; font-size:12px; opacity:0.6; user-select:none;" title="접기/펴기">${isFolded ? '▲' : '▼'}</span>
+          <span id="ref-close" style="cursor:pointer; font-size:14px; opacity:0.6; user-select:none;" title="닫기">✕</span>
         </div>
       </div>
       <div id="ref-content" style="display: ${isFolded ? 'none' : 'block'};">
-        <div style="font-size:12px; margin-bottom:8px; color:#aaa; line-height:1.4;">
-          신규 유저 가입 시 아래 코드를 입력하면 특별한 보상을 받을 수 있습니다!
-        </div>
-        <div style="background:#1a1d2e; padding:10px; border-radius:4px; text-align:center; font-weight:bold; font-size:18px; letter-spacing:2px; border:1px dashed #a66bff; margin-bottom:8px;">
+
+        <div id="ref-code-box" style="background:#f8f9fa; padding:10px; border-radius:4px; text-align:center; font-weight:bold; font-size:18px; letter-spacing:2px; border:1px dashed #ccc; margin-bottom:8px; color:#333; cursor:pointer; transition: all 0.2s ease;" title="클릭하여 복사">
           A2USQRY
-        </div>
-        <div style="text-align:right;">
-          <button id="ref-copy" style="background:#a66bff; color:#fff; border:none; border-radius:4px; padding:6px 12px; cursor:pointer; font-size:12px; font-weight:bold; transition: background 0.2s;">복사하기</button>
         </div>
       </div>
     `;
@@ -293,7 +285,7 @@ class CustomNav extends HTMLElement {
     const foldBtn = document.getElementById('ref-fold');
     const closeBtn = document.getElementById('ref-close');
     const content = document.getElementById('ref-content');
-    const copyBtn = document.getElementById('ref-copy');
+    const codeBox = document.getElementById('ref-code-box');
 
     if (isFolded) {
       banner.style.width = '160px';
@@ -319,44 +311,44 @@ class CustomNav extends HTMLElement {
 
     closeBtn.addEventListener('click', () => {
       banner.remove();
-      localStorage.setItem('referralClosed', 'true');
     });
 
-    // 호버 효과
-    copyBtn.addEventListener('mouseover', () => {
-      if(copyBtn.innerText === '복사하기') copyBtn.style.background = '#8e54e9';
+    codeBox.addEventListener('mouseover', () => {
+      if (codeBox.innerText === 'A2USQRY') {
+        codeBox.style.background = '#e9ecef';
+      }
     });
-    copyBtn.addEventListener('mouseout', () => {
-      if(copyBtn.innerText === '복사하기') copyBtn.style.background = '#a66bff';
+    codeBox.addEventListener('mouseout', () => {
+      if (codeBox.innerText === 'A2USQRY') {
+        codeBox.style.background = '#f8f9fa';
+      }
     });
 
-    copyBtn.addEventListener('click', () => {
+    codeBox.addEventListener('click', () => {
+      const originalText = 'A2USQRY';
+      const doCopy = () => {
+        codeBox.innerText = '복사 완료!';
+        codeBox.style.color = '#28a745';
+        codeBox.style.borderColor = '#28a745';
+        codeBox.style.background = '#f8f9fa';
+        setTimeout(() => {
+          codeBox.innerText = originalText;
+          codeBox.style.color = '#333';
+          codeBox.style.borderColor = '#ccc';
+        }, 2000);
+      };
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText('A2USQRY').then(() => {
-          const originalText = copyBtn.innerText;
-          copyBtn.innerText = '복사 완료!';
-          copyBtn.style.background = '#4caf50';
-          setTimeout(() => {
-            copyBtn.innerText = originalText;
-            copyBtn.style.background = '#a66bff';
-          }, 2000);
-        });
+        navigator.clipboard.writeText(originalText).then(doCopy);
       } else {
         // Fallback
         const tempInput = document.createElement('input');
-        tempInput.value = 'A2USQRY';
+        tempInput.value = originalText;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-        
-        const originalText = copyBtn.innerText;
-        copyBtn.innerText = '복사 완료!';
-        copyBtn.style.background = '#4caf50';
-        setTimeout(() => {
-          copyBtn.innerText = originalText;
-          copyBtn.style.background = '#a66bff';
-        }, 2000);
+        doCopy();
       }
     });
   }
