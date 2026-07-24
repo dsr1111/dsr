@@ -656,9 +656,12 @@
         const skill3Change = row.dataset.skill3Change ? row.dataset.skill3Change.split(',') : [];
 
         const updateSkillUI = (cell, defaultAttr, changeAttrs, activeFilter) => {
-          if (!cell || !defaultAttr) return false;
+          if (!defaultAttr) {
+            return activeFilter.length === 0;
+          }
+          if (!cell) return activeFilter.length === 0;
           const img = cell.querySelector('.main-skill-icon');
-          if (!img) return false;
+          if (!img) return activeFilter.length === 0;
 
           if (activeFilter.length === 0) {
             img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
