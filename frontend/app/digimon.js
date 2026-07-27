@@ -385,7 +385,7 @@
                     >
                   </div>
                   ${effectTooltipHtml}
-                  <span>${skill.hits === '보조' ? skill.hits : `${skill.hits}타`} / ${skill.range}${skill.additionalTurn ? ` <span style="font-size: 0.9em; color: gray;">(${Number(skill.additionalTurn).toFixed(1)})</span>` : ''}</span>
+                  <span>${skill.hits === '보조' ? skill.hits : `${skill.hits}타`} / ${skill.range}${skill.additionalTurn ? ` <span style="font-size: 0.9em; color: gray;">(${skill.additionalTurn})</span>` : ''}</span>
                 </td>
               `;
             };
