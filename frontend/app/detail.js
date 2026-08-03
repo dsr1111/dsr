@@ -228,6 +228,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             ${item.tradeable !== undefined ? `
                               <div class="digicore-item-tradeable ${item.tradeable ? 'tradeable' : 'untradeable'}">${item.tradeable ? '거래가능' : '거래불가'}</div>
                             ` : ''}
+                            ${(item.mutant || item.isMutant) ? `
+                              <div class="digicore-item-mutant">돌연변이</div>
+                            ` : ''}
                           </div>
                         </div>
                       </div>
@@ -249,6 +252,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                       ${possibleItem.tradeable !== undefined ? `
                                         <div class="digicore-item-tradeable ${possibleItem.tradeable ? 'tradeable' : 'untradeable'}">${possibleItem.tradeable ? '거래가능' : '거래불가'}</div>
                                       ` : ''}
+                                      ${(possibleItem.mutant || possibleItem.isMutant) ? `
+                                        <div class="digicore-item-mutant">돌연변이</div>
+                                      ` : ''}
                                     </div>
                                   </div>
                                 </div>
@@ -269,6 +275,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                                 <div class="possible-item-probability ${(subItem.probability === '확정' || subItem.probability === '100%') ? 'guaranteed' : 'probability'}">${subItem.probability}</div>
                                                 ${subItem.tradeable !== undefined ? `
                                                   <div class="digicore-item-tradeable ${subItem.tradeable ? 'tradeable' : 'untradeable'}">${subItem.tradeable ? '거래가능' : '거래불가'}</div>
+                                                ` : ''}
+                                                ${(subItem.mutant || subItem.isMutant) ? `
+                                                  <div class="digicore-item-mutant">돌연변이</div>
                                                 ` : ''}
                                               </div>
                                             </div>
