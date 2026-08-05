@@ -81,6 +81,110 @@
     tooltip.style.display = 'none';
   }
 
+  const attributeEffects = {
+    cc: {
+      강철: "중압",
+      흙: "석화",
+      물: "침잠",
+      물리: "스턴",
+      바람: "진공",
+      불: "공황",
+      빛: "격리",
+      어둠: "봉인",
+      얼음: "빙결",
+      천둥: "마비",
+    },
+    dot: {
+      강철: "파열",
+      나무: "중독",
+      흙: "질식",
+      물: "부식",
+      물리: "출혈",
+      바람: "열상",
+      불: "화상",
+      빛: "성흔",
+      어둠: "저주",
+      얼음: "한기",
+      천둥: "감전",
+    },
+  };
+
+  const ccEffects = new Set(Object.values(attributeEffects.cc));
+  const dotEffects = new Set(Object.values(attributeEffects.dot));
+
+  function getEffectForAttribute(effectName, attribute) {
+    if (ccEffects.has(effectName)) {
+      // 나무 속성 CC 명칭은 정해지지 않았으므로 원래 명칭을 유지한다.
+      return attributeEffects.cc[attribute] || effectName;
+    }
+    if (dotEffects.has(effectName)) {
+      return attributeEffects.dot[attribute] || effectName;
+    }
+    return effectName;
+  }
+
+  function getPossibleSkillEffects(effectString, defaultAttribute, changeAttributes, attributeFilters) {
+    const effects = (effectString || "")
+      .split(',')
+      .map((effect) => effect.trim())
+      .filter(Boolean);
+    const availableAttributes = [defaultAttribute, ...changeAttributes].filter(Boolean);
+    const attributes = attributeFilters.length > 0
+      ? availableAttributes.filter((attribute) => attributeFilters.includes(attribute))
+      : availableAttributes;
+
+    return new Set(
+      attributes.flatMap((attribute) =>
+        effects.map((effect) =>
+          attribute === defaultAttribute ? effect : getEffectForAttribute(effect, attribute)
+        )
+      )
+    );
+  }
+
+  function getAttributeForEffectFilter(effectString, defaultAttribute, changeAttributes, effectFilters) {
+    if (effectFilters.length === 0) return null;
+
+    const effects = (effectString || "")
+      .split(',')
+      .map((effect) => effect.trim())
+      .filter(Boolean);
+    const availableAttributes = [defaultAttribute, ...changeAttributes].filter(Boolean);
+
+    return availableAttributes.find((attribute) =>
+      effects.some((effect) => {
+        const displayedEffect = attribute === defaultAttribute
+          ? effect
+          : getEffectForAttribute(effect, attribute);
+        return effectFilters.includes(displayedEffect);
+      })
+    ) || null;
+  }
+
+  function updateSkillEffectIcons(cell, attribute) {
+    const defaultAttribute = cell.querySelector('.main-skill-icon')?.dataset.defaultAttr;
+
+    cell.querySelectorAll('.digimon-effect-img[data-default-effect]').forEach((effectImg) => {
+      const defaultEffect = effectImg.dataset.defaultEffect;
+      if (!ccEffects.has(defaultEffect) && !dotEffects.has(defaultEffect)) return;
+
+      const displayedEffect = attribute === defaultAttribute
+        ? defaultEffect
+        : getEffectForAttribute(defaultEffect, attribute);
+
+      effectImg.src = `https://media.dsrwiki.com/dsrwiki/debuff/${displayedEffect}.webp`;
+      effectImg.alt = displayedEffect;
+      effectImg.setAttribute(
+        'onmouseenter',
+        `showEffectTooltip(event, '${displayedEffect}', '${effectImg.dataset.digimonName}', ${effectImg.dataset.skillNumber})`
+      );
+      effectImg.setAttribute(
+        'onmousemove',
+        `showEffectTooltip(event, '${displayedEffect}', '${effectImg.dataset.digimonName}', ${effectImg.dataset.skillNumber})`
+      );
+    });
+  }
+
   const effectDescriptions = {
     출혈: "* 출혈<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>물리속성에 취약해집니다.<br>힐 받을 경우 해제됩니다.",
     열상: "* 열상<br>공격 시 65% 확률로 발생됩니다.<br>턴마다 지속 피해를 입힙니다.<br>흙속성에 취약해집니다.<br>나무속성 피격 시 해제됩니다.",
@@ -364,6 +468,9 @@
 
                   return `<img loading="lazy" src="${effectImagePath}" alt="${eff}" 
                       class="digimon-effect-img"
+                      data-default-effect="${eff}"
+                      data-digimon-name="${digimonName}"
+                      data-skill-number="${skillNumber}"
                       onmouseenter="showEffectTooltip(event, '${eff}', '${digimonName}', ${skillNumber})"
                       onmousemove="showEffectTooltip(event, '${eff}', '${digimonName}', ${skillNumber})"
                       onmouseleave="hideCustomTooltip()"
@@ -622,6 +729,16 @@
 
       if (!hasFilter) {
         rows.forEach(row => {
+          updateSkillEffectIcons(row.cells[13], row.dataset.skill1Attr || "");
+          updateSkillEffectIcons(row.cells[14], row.dataset.skill2Attr || "");
+          updateSkillEffectIcons(row.cells[15], row.dataset.skill3Attr || "");
+
+          row.querySelectorAll('.main-skill-icon').forEach((img) => {
+            const defaultAttr = img.dataset.defaultAttr;
+            img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
+            img.alt = defaultAttr;
+            img.classList.remove('converted-glow');
+          });
           row.style.display = "";
         });
         return;
@@ -654,11 +771,11 @@
         const skill1Attr = row.dataset.skill1Attr || "";
         const skill2Attr = row.dataset.skill2Attr || "";
         const skill3Attr = row.dataset.skill3Attr || "";
-        const skill1Change = row.dataset.skill1Change ? row.dataset.skill1Change.split(',') : [];
-        const skill2Change = row.dataset.skill2Change ? row.dataset.skill2Change.split(',') : [];
-        const skill3Change = row.dataset.skill3Change ? row.dataset.skill3Change.split(',') : [];
+        const skill1Change = row.dataset.skill1Change ? row.dataset.skill1Change.split(',').map(a => a.trim()).filter(Boolean) : [];
+        const skill2Change = row.dataset.skill2Change ? row.dataset.skill2Change.split(',').map(a => a.trim()).filter(Boolean) : [];
+        const skill3Change = row.dataset.skill3Change ? row.dataset.skill3Change.split(',').map(a => a.trim()).filter(Boolean) : [];
 
-        const updateSkillUI = (cell, defaultAttr, changeAttrs, activeFilter) => {
+        const updateSkillUI = (cell, defaultAttr, changeAttrs, activeFilter, effectString) => {
           if (!defaultAttr) {
             return activeFilter.length === 0;
           }
@@ -667,9 +784,18 @@
           if (!img) return activeFilter.length === 0;
 
           if (activeFilter.length === 0) {
-            img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
-            img.alt = defaultAttr;
-            img.classList.remove('converted-glow');
+            const effectMatchedAttr = getAttributeForEffectFilter(
+              effectString,
+              defaultAttr,
+              changeAttrs,
+              filters.effect
+            );
+            const displayedAttr = effectMatchedAttr || defaultAttr;
+
+            img.src = `https://media.dsrwiki.com/dsrwiki/${displayedAttr}.webp`;
+            img.alt = displayedAttr;
+            img.classList.toggle('converted-glow', displayedAttr !== defaultAttr);
+            updateSkillEffectIcons(cell, displayedAttr);
             return true;
           }
 
@@ -677,6 +803,7 @@
             img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
             img.alt = defaultAttr;
             img.classList.remove('converted-glow');
+            updateSkillEffectIcons(cell, defaultAttr);
             return true;
           }
 
@@ -685,32 +812,46 @@
             img.src = `https://media.dsrwiki.com/dsrwiki/${matchedConvertible}.webp`;
             img.alt = matchedConvertible;
             img.classList.add('converted-glow');
+            updateSkillEffectIcons(cell, matchedConvertible);
             return true;
           }
 
           img.src = `https://media.dsrwiki.com/dsrwiki/${defaultAttr}.webp`;
           img.alt = defaultAttr;
           img.classList.remove('converted-glow');
+          updateSkillEffectIcons(cell, defaultAttr);
           return false;
         };
 
-        const match1 = updateSkillUI(row.cells[13], skill1Attr, skill1Change, filters.skill1);
-        const match2 = updateSkillUI(row.cells[14], skill2Attr, skill2Change, filters.skill2);
-        const match3 = updateSkillUI(row.cells[15], skill3Attr, skill3Change, filters.skill3);
+        const match1 = updateSkillUI(row.cells[13], skill1Attr, skill1Change, filters.skill1, row.dataset.skill1Effect);
+        const match2 = updateSkillUI(row.cells[14], skill2Attr, skill2Change, filters.skill2, row.dataset.skill2Effect);
+        const match3 = updateSkillUI(row.cells[15], skill3Attr, skill3Change, filters.skill3, row.dataset.skill3Effect);
 
         const skillsMatch = match1 && match2 && match3;
 
         // Effect 필터링 로직
+        const skill1Effects = getPossibleSkillEffects(
+          row.dataset.skill1Effect,
+          skill1Attr,
+          skill1Change,
+          filters.skill1
+        );
+        const skill2Effects = getPossibleSkillEffects(
+          row.dataset.skill2Effect,
+          skill2Attr,
+          skill2Change,
+          filters.skill2
+        );
+        const skill3Effects = getPossibleSkillEffects(
+          row.dataset.skill3Effect,
+          skill3Attr,
+          skill3Change,
+          filters.skill3
+        );
         const effectMatches = filters.effect.length === 0 ||
-          filters.effect.some(effect => {
-            // 각 스킬의 effect 속성 확인 (dataset에서 직접 가져오기)
-            // 콤마로 구분된 다중 효과 지원 (trim 후 포함 여부 확인)
-            const skill1Effects = (row.dataset.skill1Effect || "").split(',').map(e => e.trim());
-            const skill2Effects = (row.dataset.skill2Effect || "").split(',').map(e => e.trim());
-            const skill3Effects = (row.dataset.skill3Effect || "").split(',').map(e => e.trim());
-
-            return skill1Effects.includes(effect) || skill2Effects.includes(effect) || skill3Effects.includes(effect);
-          });
+          filters.effect.some(effect =>
+            skill1Effects.has(effect) || skill2Effects.has(effect) || skill3Effects.has(effect)
+          );
 
         if (
           evolutionMatches &&
