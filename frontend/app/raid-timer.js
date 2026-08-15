@@ -109,11 +109,11 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '히포그리포몬',
-  image: getImagePath('히포그리포몬'),
+  name: '키메라몬',
+  image: getImagePath('키메라몬'),
   baseTime: '19:00',
-  baseDate: '2026-07-30',
-  map: '기어 사바나',
+  baseDate: '2026-08-13',
+  map: '사막 지대',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
