@@ -309,6 +309,16 @@ class DataManager {
                         <input type="text" name="skill${i}_attribute" value="${skill.attribute || ''}">
                     </div>
                     <div class="form-group">
+                        <label>변환 가능 속성 (쉼표로 구분):</label>
+                        <input type="text" name="skill${i}_change" value="${Array.isArray(skill.change) ? skill.change.join(', ') : ''}" placeholder="예: 물리, 불, 강철">
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="skill${i}_hpCost" ${skill.hpCost ? 'checked' : ''}>
+                            HP 코스트 스킬
+                        </label>
+                    </div>
+                    <div class="form-group">
                         <label>대상 수:</label>
                         <input type="text" name="skill${i}_target_count" value="${skill.target_count || ''}">
                     </div>
@@ -560,6 +570,10 @@ class DataManager {
                 const skillName = formData.get(`skill${i}_name`);
                 if (skillName) {
                     const multipliers_str = formData.get(`skill${i}_multipliers`);
+                    const change = (formData.get(`skill${i}_change`) || '')
+                        .split(',')
+                        .map(attribute => attribute.trim())
+                        .filter(Boolean);
                     let multipliers = [];
                     try {
                         multipliers = multipliers_str.split(',').map(m => parseFloat(m.trim()));
@@ -569,7 +583,7 @@ class DataManager {
                         return;
                     }
 
-                    newDigimon.skills.push({
+                    const newSkill = {
                         name: skillName,
                         hits: parseInt(formData.get(`skill${i}_hits`)) || 1,
                         range: formData.get(`skill${i}_range`) || '',
@@ -578,7 +592,17 @@ class DataManager {
                         effect: formData.get(`skill${i}_effect`) || undefined,
                         additionalTurn: parseInt(formData.get(`skill${i}_additionalTurn`)) || undefined,
                         multipliers: multipliers
-                    });
+                    };
+
+                    if (formData.has(`skill${i}_hpCost`)) {
+                        newSkill.hpCost = true;
+                    }
+
+                    if (change.length > 0) {
+                        newSkill.change = change;
+                    }
+
+                    newDigimon.skills.push(newSkill);
                 }
             }
 
