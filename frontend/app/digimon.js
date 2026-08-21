@@ -114,7 +114,6 @@
 
   function getEffectForAttribute(effectName, attribute) {
     if (ccEffects.has(effectName)) {
-      // 나무 속성 CC 명칭은 정해지지 않았으므로 원래 명칭을 유지한다.
       return attributeEffects.cc[attribute] || effectName;
     }
     if (dotEffects.has(effectName)) {
@@ -224,7 +223,8 @@
     "안개 장벽": "* 안개 장벽<br>일정 턴 동안 아군 모두에게 DEF x% 증가",
     "영원한 잠": "* 영원한 잠<br>공격 시 18% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가해집니다.<br>물 속성 피격 시 해제됩니다.",
     "만개": "* 만개<br>2턴 동안 매 턴 HP를 261 회복합니다.",
-    "스나이퍼 미사일": "* 스나이퍼 미사일<br>공격 시 14% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>불 속성에 취약해집니다.<br>물리 속성 피격 시 해제됩니다."
+    "스나이퍼 미사일": "* 스나이퍼 미사일<br>공격 시 14% 확률로 발생됩니다.<br>일정 턴 동안 행동 불가.<br>불 속성에 취약해집니다.<br>물리 속성 피격 시 해제됩니다.",
+    감염: "* 감염<br>공격 시 30% 확률로 발생합니다.<br>턴마다 지속 피해를 입힙니다.<br>일정 턴 동안 명령이 불가해집니다.<br>피아식별 없이 행동하게 됩니다."
   };
 
   const effectDescriptionsLower = Object.keys(effectDescriptions).reduce(

@@ -91,20 +91,6 @@ const raids = [
     type: 'biweekly',
     baseDate: '2026-04-26',
     map: '어둠성 계곡',
-  },
-  {
-    name: '위그드라실_7D6',
-    image: getImagePath('위그드라실_7D6'),
-    type: 'custom_weekly',
-    schedules: [
-      { day: 5, time: '21:00' },
-      { day: 6, time: '09:00' },
-      { day: 6, time: '21:00' },
-      { day: 0, time: '09:00' },
-      { day: 0, time: '21:00' },
-      { day: 1, time: '09:00' }
-    ],
-    map: '무한 산',
   }
 ];
 
