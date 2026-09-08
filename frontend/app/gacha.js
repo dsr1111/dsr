@@ -50,8 +50,8 @@ function extractTradeInfo(itemName) {
 }
 
 // 콘솔에 메시지 추가
-function addConsoleLine(message, isSystem = false, isRare = false, logNumber = null) {
-    const consoleContent = document.getElementById('console-content');
+function addConsoleLine(message, isSystem = false, isRare = false, logNumber = null, outputTarget = null) {
+    const consoleContent = outputTarget || document.getElementById('console-content');
     const line = document.createElement('div');
     line.className = 'console-line';
 
@@ -75,6 +75,12 @@ function addConsoleLine(message, isSystem = false, isRare = false, logNumber = n
 
     consoleContent.appendChild(line);
 
+    if (!outputTarget) {
+        scrollConsoleToBottom();
+    }
+}
+
+function scrollConsoleToBottom() {
     // 스크롤을 맨 아래로 (DOM 업데이트 후 실행)
     setTimeout(() => {
         const consoleWrapper = document.querySelector('.console-content-wrapper');
@@ -143,9 +149,9 @@ function selectBox(boxId) {
 }
 
 // 가챠 실행 함수 (단일)
-function executeSingleGacha() {
+function executeSingleGacha(outputTarget = null) {
     if (!currentBox || gachaItems.length === 0) {
-        addConsoleLine('먼저 상자를 선택해주세요.', true);
+        addConsoleLine('먼저 상자를 선택해주세요.', true, false, null, outputTarget);
         return null;
     }
 
@@ -187,10 +193,12 @@ function executeSingleGacha() {
     // 카운터 증가 (번호는 증가 전 값 사용)
     totalOpenCount++;
     const currentLogNumber = totalOpenCount;
-    updateCounter();
+    if (!outputTarget) {
+        updateCounter();
+    }
 
     const message = `<span style="color: #9cdcfe;">[${currentBox.name}]</span> <span class="${gradeClass}">[${tradeInfo.displayName}]</span> <span class="item-count">${selectedItem.count}개</span>를 획득했습니다.${tradeStatusHtml}`;
-    addConsoleLine(message, false, isRare, currentLogNumber);
+    addConsoleLine(message, false, isRare, currentLogNumber, outputTarget);
 
     // 통계 업데이트
     updateStats(selectedItem, tradeInfo, isRare);
@@ -280,9 +288,21 @@ function executeMultipleGacha(count) {
         return;
     }
 
-    // 각 상자 열기
-    for (let i = 0; i < count; i++) {
-        executeSingleGacha();
+    // 추첨 순서와 통계는 그대로 두고 화면 반영만 일괄 처리한다.
+    const fragment = document.createDocumentFragment();
+    const previousOpenCount = totalOpenCount;
+    try {
+        for (let i = 0; i < count; i++) {
+            executeSingleGacha(fragment);
+        }
+    } finally {
+        if (fragment.hasChildNodes()) {
+            document.getElementById('console-content').appendChild(fragment);
+            scrollConsoleToBottom();
+        }
+        if (totalOpenCount !== previousOpenCount) {
+            updateCounter();
+        }
     }
 }
 

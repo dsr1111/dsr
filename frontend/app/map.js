@@ -73,7 +73,7 @@ function updateImage(selectedMap) {
   imageContainer.innerHTML = `<img loading="lazy" src="${imagePath}"  alt="${selectedMap}" width="700" height="700">`;
 }
 
-// 지역 선택 시 map-dropdown 옵션 업데이트 및 첫 번째 값으로 이미지 설정
+// 데이터 로딩 전 임시 표시와 로딩 후 지도 표시를 한 곳에서 처리
 conDropdown.addEventListener("change", function () {
   const selectedRegion = conDropdown.value;
   const options = mapOptions[selectedRegion];
@@ -87,23 +87,24 @@ conDropdown.addEventListener("change", function () {
     mapSelect.appendChild(opt);
   });
 
-  // 첫 번째 옵션 선택 및 이미지 업데이트
-  mapSelect.value = options[1];
-  updateImage(options[1]);
+  // 로딩 완료 후에는 기존과 동일하게 첫 번째 지도를 선택
+  mapSelect.value = mapDataLoaded ? options[0] : options[1];
+  renderSelectedMap();
 });
 
-// map-dropdown 선택 변경 시 이미지 업데이트
-mapSelect.addEventListener("change", function () {
-  updateImage(mapSelect.value);
-});
+// 지도 선택 이벤트는 최초 한 번만 등록
+mapSelect.addEventListener("change", renderSelectedMap);
 
 // 페이지 로드 시 초기 이미지 설정
 window.onload = function () {
-  conDropdown.dispatchEvent(new Event("change"));
+  if (!mapDataLoaded) {
+    conDropdown.dispatchEvent(new Event("change"));
+  }
 };
 
 let maps = {};
 let digimonData = {};
+let mapDataLoaded = false;
 
 // JSON 데이터 처리
 Promise.all([
@@ -118,25 +119,8 @@ Promise.all([
   .catch((error) => console.error("Error loading JSON data:", error));
 
 function initializeDropdownOptions() {
-  conDropdown.addEventListener("change", function () {
-    const selectedRegion = conDropdown.value;
-    const options = mapOptions[selectedRegion];
-
-    // map-dropdown 옵션을 업데이트
-    mapDropdown.innerHTML = "";
-    options.forEach((option) => {
-      const opt = document.createElement("option");
-      opt.value = option;
-      opt.textContent = option;
-      mapDropdown.appendChild(opt);
-    });
-
-    // 첫 번째 옵션 선택 후 initMap 호출
-    mapDropdown.value = options[0];
-    initMap(); // 선택된 값에 대해 아이콘 표시
-  });
-
-  // 초기 설정
+  mapDataLoaded = true;
+  // 데이터 준비 시 한 번만 초기 지도 표시
   conDropdown.dispatchEvent(new Event("change"));
 }
 
@@ -200,9 +184,12 @@ function preloadDatacubeImages(datacubeItems) {
   });
 }
 
-function initMap() {
-  mapDropdown.addEventListener("change", function () {
+function renderSelectedMap() {
     const selectedMap = maps[mapDropdown.value];
+    if (!mapDataLoaded || !selectedMap) {
+      updateImage(mapDropdown.value);
+      return;
+    }
     if (selectedMap) {
       // 배경 이미지 설정 및 현재 아이콘 목록 초기화
       imageContainer.style.backgroundImage = `url(${selectedMap.backgroundImage})`;
@@ -291,10 +278,6 @@ function initMap() {
         );
       }
     }
-  });
-
-  // 페이지 로드 시 초기 맵 설정
-  mapDropdown.dispatchEvent(new Event("change"));
 }
 
 function findDigimonInfo(mobId) {

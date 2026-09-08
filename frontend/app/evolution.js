@@ -445,6 +445,7 @@
   // TooltipManager: 툴팁 처리
   // ===============================
   const TooltipManager = {
+    nodeChangeContexts: new WeakMap(),
     showNameTooltip(event, name) {
       let tooltip = document.querySelector('.name-tooltip');
       if (!tooltip) {
@@ -725,7 +726,18 @@
       const container = target.closest(".digimon-container");
       const plusBtn = container ? container.querySelector(".plus-btn") : null;
       if (plusBtn) {
+        const existingContext = this.nodeChangeContexts.get(plusBtn);
+        if (existingContext) {
+          existingContext.target = target;
+          existingContext.tooltip = tooltip;
+          return;
+        }
+
+        // 마우스 이동 시에는 대상만 갱신하고 버튼 이벤트는 한 번만 등록한다.
+        const context = { target, tooltip };
+        this.nodeChangeContexts.set(plusBtn, context);
         plusBtn.addEventListener("click", () => {
+          const { target, tooltip } = context;
           setTimeout(() => {
             this.updateTooltipPosition(target, tooltip);
           }, 300);

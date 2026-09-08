@@ -27,6 +27,43 @@ async function fetchCSVData(fileName) {
   }
 }
 
+// 데이터와 힘 계산 결과는 한 번의 갱신 안에서만 공유합니다.
+// 다음 입력에서는 새 컨텍스트를 만들어 서버 데이터를 다시 읽습니다.
+const calculationContextTag = Symbol("calculationContext");
+let latestCalculationId = 0;
+
+function createCalculationContext() {
+  const calculationId = ++latestCalculationId;
+  let digimonDataPromise;
+  let mobDataPromise;
+  return {
+    [calculationContextTag]: true,
+    hasStrengthResult: false,
+    strengthResult: undefined,
+    isCurrent() {
+      return calculationId === latestCalculationId;
+    },
+    getDigimonData() {
+      return digimonDataPromise ??= fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
+    },
+    getMobData() {
+      return mobDataPromise ??= fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
+    },
+  };
+}
+
+function getCalculationContext(value) {
+  // change/DOMContentLoaded 리스너가 전달한 Event는 계산 컨텍스트가 아닙니다.
+  return value?.[calculationContextTag] === true ? value : createCalculationContext();
+}
+
+async function updateCalculationResults() {
+  const context = createCalculationContext();
+  await calculateStrengthResult(context);
+  if (!context.isCurrent()) return;
+  await calculateProbability(context);
+}
+
 document.getElementById("skill-select").addEventListener("change", function () {
   const characterName = document.getElementById("character-select").value;
   displaySkillImage(characterName);
@@ -296,8 +333,7 @@ window.addEventListener("DOMContentLoaded", async function () {
       }
     }
 
-    await calculateStrengthResult();
-    await calculateProbability();
+    await updateCalculationResults();
   } catch (error) {
     console.error("Error in DOMContentLoaded:", error);
   }
@@ -322,8 +358,7 @@ document.getElementById("manual-mode").addEventListener("change", async function
 
   if (isManualMode) {
     // 수동 입력 모드일 때 계산 함수 호출
-    calculateStrengthResult();
-    calculateProbability();
+    updateCalculationResults();
   } else {
     // 일반 모드로 돌아올 때 캐릭터 정보 다시 불러오기
     const characterName = document.getElementById("character-select").value;
@@ -336,8 +371,7 @@ document.getElementById("manual-mode").addEventListener("change", async function
     }
 
     // 계산 함수 호출
-    calculateStrengthResult();
-    calculateProbability();
+    updateCalculationResults();
   }
 });
 
@@ -345,13 +379,15 @@ document.getElementById("manual-mode").addEventListener("change", async function
 document.querySelectorAll("#manual-type, #manual-level, #manual-power, #manual-skill-coefficient, #manual-hit-count, #manual-skill-element, #manual-target-type").forEach(input => {
   input.addEventListener("input", () => {
     if (document.getElementById("manual-mode").checked) {
-      calculateStrengthResult();
-      calculateProbability();
+      return updateCalculationResults();
     }
   });
 });
 
-async function calculateStrengthResult() {
+async function calculateStrengthResult(value) {
+  const context = getCalculationContext(value);
+  if (context.hasStrengthResult) return context.strengthResult;
+
   function getInputValue(id) {
     const value = document.getElementById(id).value;
     return value ? parseFloat(value) : 0;
@@ -368,7 +404,7 @@ async function calculateStrengthResult() {
     myLevel = getInputValue("manual-level");
   } else {
     const characterName = document.getElementById("character-select").value;
-    const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
+    const digimonData = await context.getDigimonData();
     const digimon = digimonData[characterName];
 
     if (digimon) {
@@ -394,16 +430,17 @@ async function calculateStrengthResult() {
     specialization +
     equipment;
 
-  document.getElementById("str-result").textContent = totalStrength;
+  if (context.isCurrent()) {
+    document.getElementById("str-result").textContent = totalStrength;
+  }
+
+  context.strengthResult = totalStrength;
+  context.hasStrengthResult = true;
 
   return totalStrength;
 }
 
-document
-  .querySelectorAll(
-    "#potential, #correction, #synergy, #buff, #specialization, #equipment, #dmg-min, #dmg-max"
-  )
-  .forEach((input) => input.addEventListener("input", calculateStrengthResult));
+document.getElementById("equipment")?.addEventListener("input", calculateStrengthResult);
 
 window.addEventListener("DOMContentLoaded", calculateStrengthResult);
 
@@ -454,7 +491,9 @@ function erf(x) {
   return sign * y;
 }
 
-async function calculateProbability() {
+async function calculateProbability(value) {
+  const context = getCalculationContext(value);
+  if (!context.isCurrent()) return;
   try {
     const mobName = document.getElementById("mob-select").value;
     const selectedMap = document.getElementById("map2-select").value;
@@ -471,7 +510,8 @@ async function calculateProbability() {
     let mobStrong = "";
     let mobWeak = "";
 
-    const mobData = await fetchCSVData("https://media.dsrwiki.com/data/csv/mob.csv");
+    const mobData = await context.getMobData();
+    if (!context.isCurrent()) return;
     const mobRow = mobData.find(
       (row) => row[2] === mobName && row[1] === selectedMap
     );
@@ -509,7 +549,8 @@ async function calculateProbability() {
       }
     } else {
       const characterName = document.getElementById("character-select").value;
-      const digimonData = await fetchJSONData("https://media.dsrwiki.com/data/csv/digimon.json");
+      const digimonData = await context.getDigimonData();
+      if (!context.isCurrent()) return;
       const digimon = digimonData[characterName];
 
       if (!digimon) {
@@ -603,7 +644,8 @@ async function calculateProbability() {
 
 
 
-    const totalStrength = await calculateStrengthResult();
+    const totalStrength = await calculateStrengthResult(context);
+    if (!context.isCurrent()) return;
 
     // Critical Damage Parameters
     let critDmgInput = document.getElementById("crit-dmg").value.replace(/%/g, '');
@@ -741,6 +783,7 @@ async function calculateProbability() {
     document.getElementById("needstr").textContent = finalProbability.toFixed(2) + "%";
 
   } catch (error) {
+    if (!context.isCurrent()) return;
     console.error("Error in calculateProbability:", error);
     document.getElementById("needstr").textContent = "계산 불가";
   }
@@ -750,10 +793,7 @@ document
     "#potential, #correction, #synergy, #buff, #specialization, #equipment1, #equipment2, #dmg-min, #dmg-max, #crit-dmg, #crit-rate"
   )
   .forEach((input) =>
-    input.addEventListener("input", async () => {
-      await calculateStrengthResult();
-      await calculateProbability();
-    })
+    input.addEventListener("input", updateCalculationResults)
   );
 
 document
@@ -777,7 +817,4 @@ document
   .getElementById("mob-count")
   .addEventListener("change", calculateProbability);
 
-window.addEventListener("DOMContentLoaded", async () => {
-  await calculateStrengthResult();
-  await calculateProbability();
-});
+window.addEventListener("DOMContentLoaded", updateCalculationResults);

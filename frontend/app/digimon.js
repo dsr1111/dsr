@@ -988,15 +988,21 @@
         return;
       }
 
+      const hasFilter = Object.values(filters).some(
+        (filter) => filter.length > 0
+      );
+      const isEmptySearch = searchInputArray.length === 1 && searchInputArray[0] === "";
+
+      // 빈 검색어의 전체 필터 복원은 행마다 반복하지 않고 한 번만 처리한다.
+      if (hasFilter && isEmptySearch) {
+        FilterModule.filterTable();
+        return;
+      }
+
       rows.forEach((row) => {
         const name = row.dataset.name ? row.dataset.name.toLowerCase() : "";
-        const hasFilter = Object.values(filters).some(
-          (filter) => filter.length > 0
-        );
-        if (!hasFilter && searchInputArray.length === 1 && searchInputArray[0] === "") {
+        if (isEmptySearch) {
           row.style.display = "none";
-        } else if (searchInputArray.length === 1 && searchInputArray[0] === "") {
-          FilterModule.filterTable();
         } else {
           const nameMatches = searchInputArray.some((term) => name.includes(term));
           row.style.display = nameMatches ? "" : "none";
