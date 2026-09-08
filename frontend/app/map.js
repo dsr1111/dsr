@@ -532,13 +532,18 @@ function showSpecialTooltipAtImage(
             <ul class="drop-items-list">
                 ${드랍아이템목록
       .map((item) => {
-        const itemImageSrc = item.includes("조합법")
+        const itemName = item.trim().replace(/^.*?시즌\s*-\s*(카드 상자 [A-Z])$/, "$1");
+        // 카드 표시는 시즌 공통 명칭, 이미지는 기존 등록 파일을 유지
+        const imageName = /^카드 상자 [A-Z]$/.test(itemName)
+          ? `악의 습격 시즌 - ${itemName}`
+          : itemName;
+        const itemImageSrc = itemName.includes("조합법")
           ? "https://media.dsrwiki.com/dsrwiki/item/조합법.webp"
-          : `https://media.dsrwiki.com/dsrwiki/item/${item.trim()}.webp`;
+          : `https://media.dsrwiki.com/dsrwiki/item/${imageName}.webp`;
         return `
                         <li class="drop-item">
-                            <img loading="lazy" src=\"${itemImageSrc}\"  alt=\" ${item.trim()}\" class="drop-item-img">
-                            ${item.trim()}
+                            <img loading="lazy" src=\"${itemImageSrc}\"  alt=\" ${itemName}\" class="drop-item-img">
+                            ${itemName}
                         </li>`;
       })
       .join("")}

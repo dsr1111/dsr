@@ -1,0 +1,29 @@
+# Canonical public URLs (query strings are preserved by Netlify).
+/index.html / 301!
+/index / 301!
+/admin.html /admin 301!
+/calculator.html /calculator 301!
+/costume-slot.html /costume-slot 301!
+/deck.html /deck 301!
+/detail.html /detail 301!
+/detector.html /detector 301!
+/digimon.html /digimon 301!
+/evolution.html /evolution 301!
+/exp.html /exp 301!
+/gacha.html /gacha 301!
+/map.html /map 301!
+/overflow.html /overflow 301!
+
+# Serve the existing HTML documents without exposing their file extension.
+/admin /admin.html 200
+/calculator /calculator.html 200
+/costume-slot /costume-slot.html 200
+/deck /deck.html 200
+/detail /detail.html 200
+/detector /detector.html 200
+/digimon /digimon.html 200
+/evolution /evolution.html 200
+/exp /exp.html 200
+/gacha /gacha.html 200
+/map /map.html 200
+/overflow /overflow.html 200

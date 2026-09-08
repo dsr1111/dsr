@@ -191,12 +191,12 @@ function initLocationSchedule() {
   };
 
   const locationLinks = {
-    "무한 산": "overflow.html?map=무한 산",
-    "사막 지대": "overflow.html?map=사막 지대",
-    "어둠성 계곡": "overflow.html?map=어둠성 계곡",
-    "현실 세계": "overflow.html?map=현실 세계",
-    "스파이럴 마운틴": "overflow.html?map=스파이럴 마운틴",
-    "데이터 세계": "overflow.html?map=데이터 세계"
+    "무한 산": "/overflow?map=무한 산",
+    "사막 지대": "/overflow?map=사막 지대",
+    "어둠성 계곡": "/overflow?map=어둠성 계곡",
+    "현실 세계": "/overflow?map=현실 세계",
+    "스파이럴 마운틴": "/overflow?map=스파이럴 마운틴",
+    "데이터 세계": "/overflow?map=데이터 세계"
   };
 
   const today = new Date();

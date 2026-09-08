@@ -1,34 +1,37 @@
+// 추천인 홍보 배너를 사이트 전체에서 비활성화
+const REFERRAL_ENABLED = false;
+
 const MENU_ITEMS = [
   {
     type: 'dropdown',
     label: '디지몬',
     items: [
-      { label: '도감', href: '../digimon.html' },
-      { label: '덱', href: '../deck.html' },
-      { label: '진화트리', href: '../evolution.html' },
+      { label: '도감', href: '/digimon' },
+      { label: '덱', href: '/deck' },
+      { label: '진화트리', href: '/evolution' },
     ]
   },
   {
     type: 'link',
     label: '맵',
-    href: '../map.html'
+    href: '/map'
   },
   {
     type: 'dropdown',
     label: '던전',
     items: [
-      { label: '탐지기', href: '../detector.html' },
-      { label: '오버플로우', href: '../overflow.html' },
+      { label: '탐지기', href: '/detector' },
+      { label: '오버플로우', href: '/overflow' },
     ]
   },
   {
     type: 'dropdown',
     label: '도구',
     items: [
-      { label: '데미지 계산기', href: '../calculator.html' },
-      { label: 'EXP 물약 시뮬레이터', href: '../exp.html' },
-      { label: '가챠 시뮬레이터', href: '../gacha.html' },
-      { label: '코스튬 슬롯 각인 시뮬레이터', href: '../costume-slot.html' },
+      { label: '데미지 계산기', href: '/calculator' },
+      { label: 'EXP 물약 시뮬레이터', href: '/exp' },
+      { label: '가챠 시뮬레이터', href: '/gacha' },
+      { label: '코스튬 슬롯 각인 시뮬레이터', href: '/costume-slot' },
     ]
   },
   {
@@ -90,7 +93,7 @@ class CustomNav extends HTMLElement {
       <header class="header">
         <nav class="nav container">
           <div class="nav__data">
-            <a href="../index.html">
+            <a href="/">
               <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/logo2.webp" class="nav__logo" />
             </a>
 
@@ -230,6 +233,11 @@ class CustomNav extends HTMLElement {
   }
 
   initReferral() {
+    if (!REFERRAL_ENABLED) {
+      document.getElementById('referral-banner')?.remove();
+      return;
+    }
+
     // 이미 배너가 있으면 중복 생성 방지
     if (document.getElementById('referral-banner')) return;
 

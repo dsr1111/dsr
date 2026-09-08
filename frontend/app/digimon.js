@@ -537,7 +537,7 @@
                 <div class="digimon-icon-container">
                   <img loading="lazy" src="${characterImagePath}" alt="${name}" class="digimon-icon" onerror="this.src='https://media.dsrwiki.com/dsrwiki/digimon/default.webp';">
                 </div>
-                <a href="detail.html?name=${encodeURIComponent(name)}" class="digimon-link">${name}</a>
+                <a href="/detail?name=${encodeURIComponent(name)}" class="digimon-link">${name}</a>
               </td>
               <td class="digimon-table-cell">${stats.level}</td>
               <td class="digimon-table-cell">${evolution}</td>
