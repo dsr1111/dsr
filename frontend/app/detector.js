@@ -4,6 +4,13 @@ let digimonGlobalData = null;
 let selectedDetector = null;
 let selectedDigimon = null;
 
+// 신규 탐지기의 전투 중 진화 연결
+const detectorEvolutions = {
+    '미라쥬가오가몬 탐지기': { from: '미라쥬가오가몬', to: '미라쥬가오가몬:버스트모드' },
+    '브롯사몬 탐지기': { from: '브롯사몬', to: '블룸로드몬' },
+    '황제드라몬:드래곤모드 탐지기': { from: '황제드라몬:드래곤모드', to: '황제드라몬:드래곤모드(감염)' }
+};
+
 // JSON 데이터 로드
 Promise.all([
     fetch('https://media.dsrwiki.com/data/csv/detector.json').then(res => res.json()),
@@ -19,13 +26,13 @@ function populateDetectorGrid() {
     const detectorGrid = document.getElementById('detectorGrid');
     detectorGrid.innerHTML = '';
     Object.keys(detectorData).forEach(detector => {
-        // 상자 관련 항목과 꾸러미 제외
-        if (!detector.includes('균열 데이터 상자') && detector !== '작은 사랑의 꾸러미' && detector !== '분노에 잠식된 꾸러미' && detector !== '검은 날개의 꾸러미' && detector !== '정의의 상자' && detector !== '심연의 악마 꾸러미') {
+        // 몬스터 정보가 있는 탐지기만 표시하고 상자 구성품 항목은 제외
+        if (detectorData[detector]?.['악역 디지몬']) {
             const button = document.createElement('button');
             button.className = 'detector-button';
             button.dataset.detector = detector;
             // 변조된 스파이럴 탐지기는 스파이럴 탐지기 이미지 사용
-            let imgSrc = `https://media.dsrwiki.com/dsrwiki/item/${detector}.webp`;
+            let imgSrc = `https://media.dsrwiki.com/dsrwiki/item/${detector.replace(/:/g, '_')}.webp`;
             if (detector.replace(/\s/g, '') === '변조된스파이럴탐지기') {
                 imgSrc = 'https://media.dsrwiki.com/dsrwiki/item/스파이럴 탐지기.webp';
             }
@@ -62,6 +69,7 @@ function populateDigimonGrid(detector) {
     document.getElementById('digimonMechanicCard').innerHTML = '';
     const digimons = detectorData[detector]['악역 디지몬'];
     Object.keys(digimons).forEach(digimon => {
+        if (digimon === detectorEvolutions[detector]?.to) return;
         if (digimon !== '베놈묘티스몬' && digimon !== '베리얼묘티스몬' && digimon !== '로제몬:버스트모드' && digimon !== '마왕몬' && digimon !== '레이브몬:버스트모드' && digimon !== '반쵸레오몬:버스트모드' && digimon !== '크레니엄몬' && digimon !== '주작몬' && digimon !== '청룡몬' && digimon !== '백호몬' && digimon !== '현무몬' && (digimon !== '로더레오몬' || detector === '로더레오몬 탐지기')) {
             const button = document.createElement('button');
             button.className = 'digimon-button';
@@ -69,7 +77,8 @@ function populateDigimonGrid(detector) {
             const imgBg = document.createElement('div');
             imgBg.className = 'digimon-img-bg';
             const img = document.createElement('img');
-            img.src = `https://media.dsrwiki.com/dsrwiki/digimon/${digimon}/${digimon}.webp`;
+            const imageName = digimon.replace(/:/g, '_');
+            img.src = `https://media.dsrwiki.com/dsrwiki/digimon/${imageName}/${imageName}.webp`;
             img.alt = digimon;
             imgBg.appendChild(img);
             const span = document.createElement('span');
@@ -84,6 +93,8 @@ function populateDigimonGrid(detector) {
                 selectedDigimon = digimon;
                 showMapAndMarker(selectedDetector, selectedDigimon);
                 showDigimonInfo(selectedDetector, selectedDigimon);
+
+                appendDetectorEvolutionButton(detector, digimon);
 
                 // 안드로몬이 아닌 다른 디지몬 선택 시 크레니엄몬 버튼 제거
                 if (digimon !== '안드로몬' && detector === '보급형 탐지기') {
@@ -559,6 +570,36 @@ function populateDigimonGrid(detector) {
     }
 }
 
+// 기본 형태를 선택한 뒤 진화 형태도 조회할 수 있도록 버튼 추가
+function appendDetectorEvolutionButton(detector, digimon) {
+    const evolution = detectorEvolutions[detector];
+    if (!evolution || evolution.from !== digimon) return;
+    const grid = document.getElementById('digimonGrid');
+    if (!detectorData[detector]['악역 디지몬'][evolution.to] ||
+        Array.from(grid.children).some(button => button.dataset.digimon === evolution.to)) return;
+    const button = document.createElement('button');
+    button.className = 'digimon-button';
+    button.dataset.digimon = evolution.to;
+    const imageName = evolution.to.replace(/:/g, '_');
+    const imageBg = document.createElement('div');
+    imageBg.className = 'digimon-img-bg';
+    const img = document.createElement('img');
+    img.src = `https://media.dsrwiki.com/dsrwiki/digimon/${imageName}/${imageName}.webp`;
+    img.alt = evolution.to;
+    imageBg.appendChild(img);
+    const label = document.createElement('span');
+    label.textContent = evolution.to;
+    button.append(imageBg, label);
+    button.addEventListener('click', () => {
+        grid.querySelector('.selected')?.classList.remove('selected');
+        button.classList.add('selected');
+        selectedDigimon = evolution.to;
+        showMapAndMarker(detector, selectedDigimon);
+        showDigimonInfo(detector, selectedDigimon);
+    });
+    grid.appendChild(button);
+}
+
 // 맵과 디지몬 마커 표시
 function showMapAndMarker(detector, digimon) {
     const digimonData = detectorData[detector]['악역 디지몬'][digimon];
@@ -571,6 +612,17 @@ function showMapAndMarker(detector, digimon) {
     mapImage.src = `https://media.dsrwiki.com/dsrwiki/map/${mapName}.webp`;
     // 디지몬 마커 설정
     const marker = document.getElementById('digimonMarker');
+    const coordinates = digimonData.coordinates;
+    const hasCoordinates = coordinates && [coordinates.x, coordinates.y].every(value =>
+        value !== null && value !== undefined && String(value).trim() !== '' && Number.isFinite(Number(value))
+    );
+    document.getElementById('mapContainer').classList.remove('hidden');
+    if (!hasCoordinates) {
+        marker.classList.add('hidden');
+        marker.style.left = '';
+        marker.style.top = '';
+        return;
+    }
     const markerImg = marker.querySelector('img');
     const digimonImageName = digimon.replace(':', '_');
     markerImg.src = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonImageName}/${digimonImageName}.webp`;
@@ -755,7 +807,7 @@ function showDigimonMechanicInfo(detector, digimon) {
                     </div>`;
             })
             .join('');
-        const extraInfo = (name.includes('균열 데이터 상자') || name === '작은 사랑의 꾸러미' || name === '분노에 잠식된 꾸러미' || name === '검은 날개의 꾸러미' || name === '정의의 상자' || name === '심연의 악마 꾸러미')
+        const extraInfo = Object.keys(itemsList).length > 0
             ? `<span class="extra-info-badge badge-yellow" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
                 구성품 확인
                 <div class="custom-tooltip custom-tooltip-popup">
