@@ -10,7 +10,7 @@ let logStats = {
     items: {}, // { "아이템명": { count: 횟수, grade: 등급, probability: 확률 } }
     grades: { 1: 0, 2: 0, 3: 0, 4: 0 },
     tradeable: { available: 0, unavailable: 0 },
-    rareItems: 0 // 확률 0.5% 미만 아이템 획득 횟수
+    rareItems: 0 // 서버 공지 대상으로 설정된 아이템 획득 수량
 };
 
 // 통계 초기화 함수
@@ -55,7 +55,7 @@ function addConsoleLine(message, isSystem = false, isRare = false, logNumber = n
     const line = document.createElement('div');
     line.className = 'console-line';
 
-    // 희귀 아이템인 경우 특별한 클래스 추가
+    // 서버 공지 대상 보상인 경우 하이라이트 클래스 추가
     if (isRare) {
         line.classList.add('rare-item');
     }
@@ -173,18 +173,9 @@ function executeSingleGacha() {
     const gradeClass = getGradeColorClass(selectedItem.grade);
     const tradeInfo = extractTradeInfo(selectedItem.name);
 
-    // 희귀 아이템 판단
-    let isRare = false;
-    if (currentBox.id === 'gunggeukche') {
-        // 궁극체 디지코어 꾸러미는 희귀 효과 없음
-        isRare = false;
-    } else if (currentBox.id === 'bulmyeol') {
-        // 불멸의 우정 상자는 0.7% 이하일 때 희귀 효과
-        isRare = selectedItem.probability <= 0.7;
-    } else {
-        // 나머지 상자는 0.61% 미만일 때 희귀 효과
-        isRare = selectedItem.probability < 0.61;
-    }
+    // 게임 Item_Box.Draw_Server_MSG를 옮긴 값으로만 하이라이트 판단
+    // 필드가 없는 이전 데이터는 확률로 추정하지 않고 하이라이트하지 않음
+    const isRare = selectedItem.serverNotice === true;
 
     let tradeStatusHtml = '';
     if (tradeInfo.tradeStatus === 'available') {
@@ -236,7 +227,7 @@ function updateStats(item, tradeInfo, isRare) {
         logStats.tradeable.unavailable += item.count;
     }
 
-    // 희귀 아이템 통계
+    // 서버 공지 대상 아이템 통계 (하이라이트와 동일한 기준)
     if (isRare) {
         logStats.rareItems += item.count;
     }
