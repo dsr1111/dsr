@@ -91,15 +91,31 @@ const raids = [
     type: 'biweekly',
     baseDate: '2026-04-26',
     map: '어둠성 계곡',
+  },
+  {
+    name: '알파몬',
+    image: getImagePath('알파몬'),
+    type: 'custom_weekly',
+    schedules: [
+      { day: 5, time: '21:00' }, // 금요일
+      { day: 6, time: '09:00' }, // 토요일
+      { day: 6, time: '21:00' },
+      { day: 0, time: '09:00' }, // 일요일
+      { day: 0, time: '21:00' },
+      { day: 1, time: '09:00' }, // 월요일
+    ],
+    activeFrom: '2026-09-10T15:00:00+09:00',
+    activeUntil: '2026-10-08T10:00:00+09:00',
+    map: '오다이바 입구',
   }
 ];
 
 const RotationRaid = {
-  name: '릴리몬',
-  image: getImagePath('릴리몬'),
+  name: '레이디데블몬',
+  image: getImagePath('레이디데블몬'),
   baseTime: '19:00',
-  baseDate: '2026-08-27',
-  map: '용의 눈 호수',
+  baseDate: '2026-09-10',
+  map: '어둠의 권역',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
@@ -324,9 +340,9 @@ function getNextBiweeklyTime(timeStr, baseDateStr) {
   return nextRaidTime;
 }
 
-function getNextWeeklyTime(timeStr, days) {
+function getNextWeeklyTime(timeStr, days, referenceTime = getCurrentKST()) {
   const [hour, min] = timeStr.split(':').map(Number);
-  const now = getCurrentKST();
+  const now = referenceTime;
 
   for (let i = 0; i < 14; i++) { // 최대 2주까지만 탐색
     const futureDate = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
@@ -349,12 +365,26 @@ function getNextWeeklyTime(timeStr, days) {
   return new Date(`${kstDateString}T${timeStr}:00+09:00`);
 }
 
-function getNextCustomWeeklyTime(schedules) {
+function getNextCustomWeeklyTime(schedules, activeFrom = null, activeUntil = null) {
+  const now = getCurrentKST();
+  const startTime = activeFrom ? new Date(activeFrom) : null;
+  const endTime = activeUntil ? new Date(activeUntil) : null;
+
+  if (endTime && now >= endTime) {
+    return { nextTime: null, timeStr: '' };
+  }
+
+  const referenceTime = startTime && now < startTime
+    ? new Date(startTime.getTime() - 1000)
+    : now;
   let minTime = null;
   let bestTimeStr = '';
 
   for (const schedule of schedules) {
-    const nextRaidTime = getNextWeeklyTime(schedule.time, [schedule.day]);
+    const nextRaidTime = getNextWeeklyTime(schedule.time, [schedule.day], referenceTime);
+    if (endTime && nextRaidTime >= endTime) {
+      continue;
+    }
     if (!minTime || nextRaidTime < minTime) {
       minTime = nextRaidTime;
       bestTimeStr = schedule.time;
@@ -466,7 +496,11 @@ function renderRaids() {
     }
 
     if (raid.type === 'custom_weekly') {
-      const { nextTime, timeStr } = getNextCustomWeeklyTime(raid.schedules);
+      const { nextTime, timeStr } = getNextCustomWeeklyTime(
+        raid.schedules,
+        raid.activeFrom,
+        raid.activeUntil
+      );
       if (nextTime) {
         allRaids.push({
           name: raid.name,
@@ -520,7 +554,7 @@ function renderRaids() {
     div.style.fontSize = '0.8rem';
     div.innerHTML = `
       <div style="background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px;">
-        <img loading="lazy" src="${raid.image}" alt="${raid.name}" width="46" height="46" style="object-fit:contain; display:block;">
+        <img loading="lazy" src="${raid.image}" alt="${raid.name}" width="46" height="46" style="object-fit:contain; display:block;" onerror="this.onerror=null; this.src='/image/digimon/default.webp';">
       </div>
       <div style="display:flex; flex-direction:column; text-align:left;">
         <span><strong>${raid.name}</strong></span>
@@ -583,7 +617,11 @@ function updateTimers() {
                 needsRerender = true;
               }
             } else if (raid.type === 'custom_weekly') {
-              const { nextTime, timeStr } = getNextCustomWeeklyTime(raid.schedules);
+              const { nextTime, timeStr } = getNextCustomWeeklyTime(
+                raid.schedules,
+                raid.activeFrom,
+                raid.activeUntil
+              );
               if (nextTime) {
                 sortedRaids[i].nextTime = nextTime;
                 sortedRaids[i].timeStr = timeStr;
@@ -766,7 +804,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       '울퉁몬': { '21:30': '2130' },
       '오메가몬': 'omega',
       '위그드라실_7D6': '위그드라실',
-      [RotationRaid.name]: 'rotation0604',
       '청룡몬': '청룡몬',
       '백호몬': '백호몬',
       '주작몬': '주작몬',
