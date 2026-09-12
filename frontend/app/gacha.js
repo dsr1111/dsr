@@ -278,6 +278,7 @@ function updateStatsModal() {
 
 // 가챠 일괄 실행 함수
 function executeMultipleGacha(count) {
+    if (window.GachaPresentation?.busy) return;
     if (!currentBox) {
         addConsoleLine('먼저 상자를 선택해주세요.', true);
         return;
@@ -291,9 +292,11 @@ function executeMultipleGacha(count) {
     // 추첨 순서와 통계는 그대로 두고 화면 반영만 일괄 처리한다.
     const fragment = document.createDocumentFragment();
     const previousOpenCount = totalOpenCount;
+    const resultBatch = [];
     try {
         for (let i = 0; i < count; i++) {
-            executeSingleGacha(fragment);
+            const result = executeSingleGacha(fragment);
+            if (result) resultBatch.push(result);
         }
     } finally {
         if (fragment.hasChildNodes()) {
@@ -304,6 +307,7 @@ function executeMultipleGacha(count) {
             updateCounter();
         }
     }
+    window.GachaPresentation?.present(currentBox, resultBatch);
 }
 
 // 이벤트 리스너 설정
