@@ -40,6 +40,7 @@
   </script>
   <link rel="stylesheet" href="web/static/pretendard.css">
   <link rel="stylesheet" href="assets/css/pages/gacha/main.css">
+  <link rel="stylesheet" href="assets/css/pages/gacha/presentation.css">
 </head>
 
 <body class="bg-[#f4f4f9] font-['Pretendard']">
@@ -75,6 +76,11 @@
           </div>
         </div>
 
+        <div class="presentation-options">
+          <label><input id="presentation-enabled" type="checkbox" checked> 개봉 연출</label>
+          <label><input id="presentation-sound" type="checkbox"> 연출 소리</label>
+          <button id="presentation-reopen" type="button" disabled>지난 결과 다시 보기</button>
+        </div>
         <!-- 콘솔 영역 -->
 
         <div class="console-container">
@@ -110,6 +116,8 @@
 
 
   <script src="app/gacha.js"></script>
+  <script src="app/gacha-presentation-assets.js"></script>
+  <script src="app/gacha-presentation.js"></script>
 
   <referral-float></referral-float>
   <script src="app/referral-float.js" defer></script>
