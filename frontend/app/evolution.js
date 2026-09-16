@@ -424,6 +424,7 @@
           verticalLine.style.display = "none";
         }
       });
+      EvolutionPathRenderer.schedule();
     },
 
     activateHighlightedChildPlusButtons(parentNode) {
@@ -752,8 +753,70 @@
   // ===============================
   // EvolutionTreeManager: 진화 트리 처리
   // ===============================
+  // Keep the original connector geometry. Each highlighted edge owns only the
+  // portion of the shared vertical trunk between its parent and child.
+  const EvolutionPathRenderer = {
+    frame: null,
+    schedule() {
+      if (this.frame !== null) return;
+      this.frame = requestAnimationFrame(() => {
+        this.frame = null;
+        this.render();
+      });
+    },
+    render() {
+      const tree = document.getElementById('evolution-tree');
+      tree.querySelectorAll('.evolution-path-active').forEach(line => {
+        line.classList.remove('evolution-path-active');
+      });
+      tree.querySelectorAll('.evolution-path-segment').forEach(segment => segment.remove());
+      if (UIManager.mode !== 'digimon') return;
+
+      const ancestors = EvolutionTreeManager.pathAncestors;
+      const edges = [];
+      // Read geometry before writing any overlays. Hidden/collapsed edges do not participate.
+      tree.querySelectorAll('.digimon-container').forEach(parent => {
+        const parentName = parent.dataset.digimonName;
+        if (!ancestors.has(parentName) || parentName === EvolutionTreeManager.selectedDigimonName) return;
+        const children = parent.querySelector(':scope > .children-container.visible');
+        const horizontal = parent.querySelector(':scope > .horizontal-line');
+        const vertical = parent.querySelector(':scope > .vertical-line');
+        if (!children || !horizontal || !vertical || !children.getClientRects().length) return;
+        const trunkRect = vertical.getBoundingClientRect();
+        const parentRect = horizontal.getBoundingClientRect();
+        if (!parentRect.width) return;
+        for (const child of children.children) {
+          if (!ancestors.has(child.dataset.digimonName)) continue;
+          const connector = child.querySelector(':scope > .horizontal-connector');
+          if (!connector || !connector.getClientRects().length) continue;
+          const childRect = connector.getBoundingClientRect();
+          // Clip to the original trunk: never add pixels outside the existing lines.
+          const top = Math.max(trunkRect.top, Math.min(parentRect.top, childRect.top));
+          const bottom = Math.min(trunkRect.bottom, Math.max(parentRect.bottom, childRect.bottom));
+          edges.push({ horizontal, vertical, connector, parentName,
+            childName: child.dataset.digimonName,
+            top: top - trunkRect.top, height: Math.max(0, bottom - top) });
+        }
+      });
+      for (const edge of edges) {
+        edge.horizontal.classList.add('evolution-path-active');
+        edge.connector.classList.add('evolution-path-active');
+        if (!edge.height) continue;
+        const segment = document.createElement('span');
+        segment.className = 'evolution-path-segment';
+        segment.setAttribute('aria-hidden', 'true');
+        segment.dataset.from = edge.parentName;
+        segment.dataset.to = edge.childName;
+        segment.style.top = `${edge.top}px`;
+        segment.style.height = `${edge.height}px`;
+        edge.vertical.appendChild(segment);
+      }
+    }
+  };
+
   const EvolutionTreeManager = {
     selectedDigimonName: null,
+    pathAncestors: new Set(),
     // name 기준으로 하위 자손 디지몬 이름 전체 집합을 반환
     getAllDescendants(startName, visited = new Set()) {
       if (visited.has(startName)) return [];
@@ -816,6 +879,7 @@
     showEvolutionTreeForDigimon(digimonName) {
       this.selectedDigimonName = digimonName;
       const lowerEvolutions = this.findAllLowerEvolutions(digimonName);
+      this.pathAncestors = new Set(lowerEvolutions);
       const treeData = this.filterTreeByDigimonName(digimonName);
 
       if (treeData.length > 0) {
@@ -1115,6 +1179,7 @@
     createDigimonNode(digimon, lowerEvolutions, evoType = "normal") {
       const container = document.createElement("div");
       container.classList.add("digimon-container");
+      container.dataset.digimonName = digimon.name;
       const digimonDiv = document.createElement("div");
       digimonDiv.classList.add("digimon");
       const safeName = digimon.name.replace(":", "_");
@@ -1271,8 +1336,10 @@
   document.addEventListener("DOMContentLoaded", () => {
     UIManager.init();
     DataModule.loadCSVFiles();
-
-
+    const tree = document.getElementById('evolution-tree');
+    const pathResizeObserver = new ResizeObserver(() => EvolutionPathRenderer.schedule());
+    pathResizeObserver.observe(tree);
+    window.addEventListener('resize', () => EvolutionPathRenderer.schedule());
   });
 
   // 인라인 이벤트(HTML onclick)를 사용할 수 있도록 전역 함수 노출

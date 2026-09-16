@@ -181,6 +181,23 @@ body {
   z-index: 1;
 }
 
+/* Selection changes color only; connector positions, dimensions and labels stay intact. */
+#evolution-tree {
+  --evolution-path-color: #ff1744;
+}
+
+#evolution-tree .evolution-path-active {
+  background-color: var(--evolution-path-color);
+}
+
+.evolution-path-segment {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background-color: var(--evolution-path-color);
+  pointer-events: none;
+}
+
 .horizontal-connector.dark-evo {
   background-color: #793fb2;
 }
@@ -395,13 +412,18 @@ body {
   font-weight: 600;
 }
 
-.highlighted {
+.tree-container:not(.materials-mode) .digimon.highlighted {
+  border-color: var(--evolution-path-color);
+}
+
+.tree-container.materials-mode .highlighted {
   border: 2px solid red;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   background-color: #e9ecef;
 }
 
-/* 재료 전용 하이라이트 제거: 기존 .highlighted만 사용 */
+/* Digimon routes and node borders share the selection color.
+   Node backgrounds/shadows stay unchanged; material-mode markers are retained. */
 .evolution-tooltip {
   display: none;
   position: absolute;
