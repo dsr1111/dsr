@@ -107,15 +107,22 @@ const raids = [
     activeFrom: '2026-09-10T15:00:00+09:00',
     activeUntil: '2026-10-08T10:00:00+09:00',
     map: '오다이바 입구',
+  },
+  {
+    name: '미라쥬가오가몬:버스트모드',
+    image: getImagePath('미라쥬가오가몬:버스트모드'),
+    times: ['02:00', '06:00', '10:00', '14:00', '18:00', '22:00'],
+    type: 'daily',
+    map: '무한 산',
   }
 ];
 
 const RotationRaid = {
-  name: '레이디데블몬',
-  image: getImagePath('레이디데블몬'),
+  name: '배드퍼펫몬',
+  image: getImagePath('배드퍼펫몬'),
   baseTime: '19:00',
-  baseDate: '2026-09-10',
-  map: '어둠의 권역',
+  baseDate: '2026-09-24',
+  map: '강철 도시',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
