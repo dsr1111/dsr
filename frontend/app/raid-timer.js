@@ -520,6 +520,9 @@ function renderRaids() {
       return;
     }
 
+    let minNextTime = null;
+    let bestTimeStr = null;
+
     raid.times.forEach(timeStr => {
       let nextTime;
       if (raid.type === 'daily') {
@@ -529,14 +532,21 @@ function renderRaids() {
       } else if (raid.type === 'weekly') {
         nextTime = getNextWeeklyTime(timeStr, raid.days);
       }
+      if (nextTime && (!minNextTime || nextTime < minNextTime)) {
+        minNextTime = nextTime;
+        bestTimeStr = timeStr;
+      }
+    });
+
+    if (minNextTime && bestTimeStr) {
       allRaids.push({
         name: raid.name,
         image: raid.image,
-        timeStr,
+        timeStr: bestTimeStr,
         map: raid.map,
-        nextTime,
+        nextTime: minNextTime,
       });
-    });
+    }
   });
 
   const tyrannoTime = getMasterTyrannoNextTime();
