@@ -1,0 +1,6 @@
+/* The original navigation uses opacity alone. Also hide inactive menus to keep
+   them out of focus navigation and to avoid transparency-only rendering. */
+.dropdown__menu{visibility:hidden}
+.dropdown__menu.show-dropdown{visibility:visible;opacity:1;pointer-events:auto}
+@media(min-width:1118px){.dropdown__item:hover>.dropdown__menu{visibility:visible}.dropdown__menu.show-dropdown{top:4.75rem}}
+@media(max-width:1117px){.nav__menu{visibility:hidden}.nav__menu.show-menu{visibility:visible}.dropdown__menu.show-dropdown{max-height:1000px}}

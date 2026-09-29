@@ -2,6 +2,10 @@
   publish = ""
   command = ""
 
+# Keep /digimon-style URLs without automatic trailing-slash conversion.
+[build.processing.html]
+  pretty_urls = false
+
 [[headers]]
   for = "/image/*.png"
   [headers.values]
