@@ -139,4 +139,24 @@ async function load() {
     const retry = document.createElement('button'); retry.type='button';retry.className='quiet-button';retry.textContent='다시 시도';retry.addEventListener('click',load);$('status').append(retry);
   }
 }
+// Suppress incidental viewport overflow only while the complete card group is
+// visible. Re-enable scrolling as soon as a smaller window or longer content
+// needs it; do not permanently lock the page on mobile or browser zoom.
+let viewportCheckFrame = 0;
+function updateViewportScrolling() {
+  cancelAnimationFrame(viewportCheckFrame);
+  viewportCheckFrame = requestAnimationFrame(() => {
+    const workspace = document.querySelector('.workspace');
+    const rect = workspace.getBoundingClientRect();
+    const navigation = document.querySelector('custom-nav')?.shadowRoot?.querySelector('.header');
+    const navBottom = navigation?.getBoundingClientRect().bottom || 0;
+    const fits = matchMedia('(min-width: 941px)').matches && rect.height > 0 &&
+      rect.top + window.scrollY >= navBottom &&
+      rect.bottom + window.scrollY <= window.innerHeight + 0.5;
+    document.documentElement.classList.toggle('calculator-fits-viewport', fits);
+  });
+}
+new ResizeObserver(updateViewportScrolling).observe(document.querySelector('.workspace'));
+window.addEventListener('resize', updateViewportScrolling);
+window.addEventListener('load', updateViewportScrolling);
 load();

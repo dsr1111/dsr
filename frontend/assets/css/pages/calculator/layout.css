@@ -1,5 +1,6 @@
 /* A rectangular group of four cards. Content determines row height; nothing
    is clipped or scaled, and settings remain part of the normal flow. */
+html.calculator-fits-viewport{overflow-y:hidden}
 .advanced .advanced-heading{font-size:12px;font-weight:600;margin:0;line-height:1.7}
 .element-button img,#mob-weak img,#mob-strong img{width:22px;height:22px;background-size:120%;background-position:center;background-repeat:no-repeat}
 .element-button img{background-image:url('https://media.dsrwiki.com/dsrwiki/background.webp')}
