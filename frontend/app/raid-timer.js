@@ -118,11 +118,11 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '배드퍼펫몬',
-  image: getImagePath('배드퍼펫몬'),
+  name: '푸쿠몬',
+  image: getImagePath('푸쿠몬'),
   baseTime: '19:00',
-  baseDate: '2026-09-24',
-  map: '강철 도시',
+  baseDate: '2026-10-08',
+  map: '어둠성 계곡',
 };
 
 // Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)

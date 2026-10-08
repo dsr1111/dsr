@@ -259,7 +259,8 @@
       if (!container) return;
       container.innerHTML = "";
       data.forEach(digimon => {
-        const safeName = digimon.name.replace(":", "_");
+        // 폼몬은 이름 변경 전 CDN 이미지를 그대로 사용한다.
+        const safeName = (digimon.name === "폼몬" ? "포무몬" : digimon.name).replace(/:/g, "_");
         const imgContainer = document.createElement("div");
         imgContainer.classList.add("digimon-image-container");
 
@@ -1182,7 +1183,7 @@
       container.dataset.digimonName = digimon.name;
       const digimonDiv = document.createElement("div");
       digimonDiv.classList.add("digimon");
-      const safeName = digimon.name.replace(":", "_");
+      const safeName = (digimon.name === "폼몬" ? "포무몬" : digimon.name).replace(/:/g, "_");
       const img = document.createElement("img");
       img.src = `https://media.dsrwiki.com/dsrwiki/digimon/${safeName}/${safeName}.webp`;
       img.alt = digimon.name;

@@ -251,6 +251,8 @@
         effectDescription = "황룡몬 전용 스택.<br>해당 스킬을 사용할 때마다 '음양' 스택이 1개씩 쌓입니다.<br><br>스택은 최대 3개까지 쌓을 수 있습니다."; // 황룡몬 스택 증가 설명 입력
       } else if (digimonName === "벨페몬:레이지모드") {
         effectDescription = "벨페몬:레이지모드 전용 스택.<br>해당 스킬을 사용할 때마다 '나태의 업화' 스택이 2개씩 쌓입니다.<br><br>스택은 최대 6개까지 쌓을 수 있습니다.";
+      } else if (digimonName === "알파몬:왕룡검") {
+        effectDescription = "알파몬:왕룡검 전용 '용혼' 스택.<br>'궁극전인 왕룡검'을 사용할 때마다 스택이 1개씩 쌓입니다.<br><br>스택은 최대 2개까지 쌓을 수 있습니다.";
       }
     } else if (normalizedEffect === "스택 소모") {
       effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${safeDigimonName}/stack.webp`;
@@ -258,12 +260,14 @@
         effectDescription = "황룡몬 전용 스택.<br>황룡몬이 보유한 음양 스택이 1/2/3개 일 때,<br>'황회' 스킬의 대미지가 1.4/2.26/3.45배 증가합니다.<br><br>'황회' 스킬 사용 시 보유 중인 모든 스택을 소모합니다."; // 황룡몬 스택 소모 설명 입력
       } else if (digimonName === "벨페몬:레이지모드") {
         effectDescription = "벨페몬:레이지모드 전용 스택.<br>벨페몬:레이지모드가 보유한 나태의 업화 스택이 3/5개 일 때,<br>'기프트 오브 다크네스' 스킬의 대미지가 2.33/3.44배 증가합니다.";
+      } else if (digimonName === "알파몬:왕룡검") {
+        effectDescription = "알파몬:왕룡검 전용 '용혼' 스택.<br>보유 스택이 1/2개일 때 '디지털라이즈 오브 소울'의 대미지가 1.715/2.7605배가 됩니다.<br>(게임 설명 표기: 1.72/2.76배)<br><br>해당 스킬 사용 시 보유 중인 모든 용혼 스택을 소모합니다.";
       }
     }
 
     const content = `
       <div class="tooltip-content">
-        <img loading="lazy" src="${effectImagePath}" alt="${effectName} 이미지" class="tooltip-inner-img">
+        <img loading="lazy" src="${effectImagePath}" alt="${effectName} 이미지" class="tooltip-inner-img" ${normalizedEffect === "스택 소모" ? 'onerror="this.onerror=null;this.src=\'https://media.dsrwiki.com/dsrwiki/debuff/스택.webp\';"' : ''}>
         <div class="tooltip-description">${effectDescription}</div>
       </div>
     `;
@@ -463,7 +467,7 @@
                   } else if (normalizedEff === "스택 증가") {
                     effectImagePath = `https://media.dsrwiki.com/dsrwiki/debuff/스택.webp`;
                   } else if (normalizedEff === "스택 소모") {
-                    effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName}/stack.webp`;
+                    effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonName.replace(/:/g, '_')}/stack.webp`;
                   }
 
                   return `<img loading="lazy" src="${effectImagePath}" alt="${eff}" 
@@ -471,6 +475,7 @@
                       data-default-effect="${eff}"
                       data-digimon-name="${digimonName}"
                       data-skill-number="${skillNumber}"
+                      ${normalizedEff === "스택 소모" ? 'onerror="this.onerror=null;this.src=\'https://media.dsrwiki.com/dsrwiki/debuff/스택.webp\';"' : ''}
                       onmouseenter="showEffectTooltip(event, '${eff}', '${digimonName}', ${skillNumber})"
                       onmousemove="showEffectTooltip(event, '${eff}', '${digimonName}', ${skillNumber})"
                       onmouseleave="hideCustomTooltip()"
@@ -498,7 +503,8 @@
               `;
             };
 
-            const sanitizedName = name.replace(/[:]/g, "_");
+            // 표시명은 폼몬으로 변경됐지만 기존 CDN 이미지 경로는 유지한다.
+            const sanitizedName = (name === "폼몬" ? "포무몬" : name).replace(/[:]/g, "_");
             const characterImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${sanitizedName}/${sanitizedName}.webp`;
 
             const newRow = document.createElement("tr");

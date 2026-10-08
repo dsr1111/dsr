@@ -4,7 +4,8 @@ function getQueryParam(param) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const characterName = decodeURIComponent(getQueryParam("name"));
+  const requestedName = decodeURIComponent(getQueryParam("name"));
+  const characterName = requestedName === "포무몬" ? "폼몬" : requestedName;
   if (!characterName) {
     document.getElementById("character-name").textContent = "캐릭터 정보를 찾을 수 없습니다.";
     return;
@@ -56,7 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("character-name").textContent = characterName;
   document.title = `${characterName} | DSRWIKI`;
-  const sanitizedCharacterName = characterName.replace(/:/g, "_");
+  // 이름 변경 전 공유 링크와 CDN 이미지도 계속 사용할 수 있게 한다.
+  const sanitizedCharacterName = (characterName === "폼몬" ? "포무몬" : characterName).replace(/:/g, "_");
 
   // 디지몬 데이터 가져오기
   fetch("https://media.dsrwiki.com/data/csv/digimon.json")
