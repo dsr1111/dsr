@@ -252,7 +252,7 @@
       } else if (digimonName === "벨페몬:레이지모드") {
         effectDescription = "벨페몬:레이지모드 전용 스택.<br>해당 스킬을 사용할 때마다 '나태의 업화' 스택이 2개씩 쌓입니다.<br><br>스택은 최대 6개까지 쌓을 수 있습니다.";
       } else if (digimonName === "알파몬:왕룡검") {
-        effectDescription = "알파몬:왕룡검 전용 '용혼' 스택.<br>'궁극전인 왕룡검'을 사용할 때마다 스택이 1개씩 쌓입니다.<br><br>스택은 최대 2개까지 쌓을 수 있습니다.";
+        effectDescription = "알파몬:왕룡검 전용 스택.<br>해당 스킬을 사용할 때마다 '용혼' 스택이 1개씩 쌓입니다.<br><br>스택은 최대 2개까지 쌓을 수 있습니다.";
       }
     } else if (normalizedEffect === "스택 소모") {
       effectImagePath = `https://media.dsrwiki.com/dsrwiki/digimon/${safeDigimonName}/stack.webp`;
@@ -261,7 +261,7 @@
       } else if (digimonName === "벨페몬:레이지모드") {
         effectDescription = "벨페몬:레이지모드 전용 스택.<br>벨페몬:레이지모드가 보유한 나태의 업화 스택이 3/5개 일 때,<br>'기프트 오브 다크네스' 스킬의 대미지가 2.33/3.44배 증가합니다.";
       } else if (digimonName === "알파몬:왕룡검") {
-        effectDescription = "알파몬:왕룡검 전용 '용혼' 스택.<br>보유 스택이 1/2개일 때 '디지털라이즈 오브 소울'의 대미지가 1.715/2.7605배가 됩니다.<br>(게임 설명 표기: 1.72/2.76배)<br><br>해당 스킬 사용 시 보유 중인 모든 용혼 스택을 소모합니다.";
+        effectDescription = "알파몬:왕룡검 전용 '용혼' 스택.<br>보유 스택이 1/2개일 때 '디지털라이즈 오브 소울'의 대미지가 1.72/2.76배가 됩니다.<br>해당 스킬 사용 시 보유 중인 모든 용혼 스택을 소모합니다.";
       }
     }
 
