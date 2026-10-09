@@ -4755,5 +4755,90 @@ window.GACHA_PRESENTATION_ASSETS = {
         "icon": "items/10004.png"
       }
     ]
+  },
+  "ultimate-ouryuken": {
+    "items": [
+      {
+        "itemName": "왕룡검 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 5
+      },
+      {
+        "itemName": "완전한 완전체 디지코어 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 4,
+        "icon": "items/10005.png"
+      },
+      {
+        "itemName": "에보류터 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 4,
+        "icon": "items/2018.png"
+      },
+      {
+        "itemName": "세번째 덱 기간 확장권 (30일) (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 3,
+        "icon": "items/136.png"
+      },
+      {
+        "itemName": "디지아일랜드 외형 랜덤 변경권 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 3,
+        "icon": "items/2078.png"
+      },
+      {
+        "itemName": "유대감 1% 증가 물약 (거래불가)",
+        "itemCount": 1,
+        "presentationGrade": 3,
+        "icon": "items/119.png"
+      },
+      {
+        "itemName": "분홍색 곰인형 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 3,
+        "icon": "items/25008.png"
+      },
+      {
+        "itemName": "홀리 링 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 3,
+        "icon": "items/2020.png"
+      },
+      {
+        "itemName": "돌연변이 치료제 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 3,
+        "icon": "items/2013.png"
+      },
+      {
+        "itemName": "최하급 스킬 보호석 (거래가능)",
+        "itemCount": 5,
+        "presentationGrade": 2,
+        "icon": "items/2016.png"
+      },
+      {
+        "itemName": "완전한 성숙기 디지코어 (거래불가)",
+        "itemCount": 1,
+        "presentationGrade": 2,
+        "icon": "items/10004.png"
+      },
+      {
+        "itemName": "변신 물약 랜덤 박스 (거래가능)",
+        "itemCount": 5,
+        "presentationGrade": 1
+      },
+      {
+        "itemName": "창고 확장권 (거래가능)",
+        "itemCount": 1,
+        "presentationGrade": 1
+      },
+      {
+        "itemName": "EVP데이터 칩(100%) (거래가능)",
+        "itemCount": 10,
+        "presentationGrade": 1,
+        "icon": "items/63.png"
+      }
+    ]
   }
 };
