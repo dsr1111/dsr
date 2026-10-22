@@ -118,10 +118,10 @@ const raids = [
 ];
 
 const RotationRaid = {
-  name: '푸쿠몬',
-  image: getImagePath('푸쿠몬'),
+  name: '왕개굴몬',
+  image: getImagePath('왕개굴몬'),
   baseTime: '19:00',
-  baseDate: '2026-10-08',
+  baseDate: '2026-10-22',
   map: '어둠성 계곡',
 };
 

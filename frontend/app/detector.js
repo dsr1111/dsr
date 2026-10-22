@@ -8,7 +8,8 @@ let selectedDigimon = null;
 const detectorEvolutions = {
     '미라쥬가오가몬 탐지기': { from: '미라쥬가오가몬', to: '미라쥬가오가몬:버스트모드' },
     '브롯사몬 탐지기': { from: '브롯사몬', to: '블룸로드몬' },
-    '황제드라몬:드래곤모드 탐지기': { from: '황제드라몬:드래곤모드', to: '황제드라몬:드래곤모드(감염)' }
+    '황제드라몬:드래곤모드 탐지기': { from: '황제드라몬:드래곤모드', to: '황제드라몬:드래곤모드(감염)' },
+    '알파몬 탐지기': { from: '알파몬', to: '알파몬:왕룡검' }
 };
 
 // JSON 데이터 로드
@@ -756,7 +757,8 @@ async function showDigimonInfo(detector, digimon) {
 
 // 기믹과 아이템 정보 카드 표시
 function showDigimonMechanicInfo(detector, digimon) {
-    const data = detectorData[detector]['악역 디지몬'][digimon];
+    const detectorInfo = detectorData[detector];
+    const data = detectorInfo['악역 디지몬'][digimon];
 
     // 아이템 정보 HTML 생성 (이름별로 거래상태/드롭타입 병합)
     const itemMap = {};
@@ -780,6 +782,11 @@ function showDigimonMechanicInfo(detector, digimon) {
         }
         const finalImageName = imageName.includes('균열 데이터 상자') ? '균열 데이터 상자' : imageName;
         const imagePath = `https://media.dsrwiki.com/dsrwiki/item/${finalImageName}.webp`;
+        const details = detectorInfo.itemDetails?.[name.trim()];
+        const quantityText = details ? ` × ${details.count}` : '';
+        const probabilityBadge = details
+            ? `<span class="drop-type-badge badge-green">${details.probability}%</span>`
+            : '';
         // 거래상태 뱃지들
         const tradeBadges = Array.from(info.tradeStatus).map(status =>
             `<span class="trade-status-badge ${status === '거래가능' ? 'badge-green' : 'badge-red'}">${status}</span>`
@@ -818,15 +825,22 @@ function showDigimonMechanicInfo(detector, digimon) {
         return `
             <div class="mechanic-item-row">
                 <img loading="lazy" src="${imagePath}" alt="${name.trim()}" class="mechanic-item-img">
-                <span class="mechanic-item-name">${name.trim()}</span>
+                <span class="mechanic-item-name">${name.trim()}${quantityText}</span>
                 ${tradeBadges}
                 ${dropBadges}
+                ${probabilityBadge}
                 ${extraInfo}
             </div>`;
     }).join('') : '<div style="color: black; font-size: 14px;">정보 없음</div>';
 
     document.getElementById('digimonMechanicCard').innerHTML = `
         <div class="bg-white rounded-lg shadow p-4 w-full h-full flex flex-col">
+            ${detectorInfo.acquisition ? `
+                <div class="mb-4">
+                    <h3 class="mechanic-section-title">획득 방법</h3>
+                    <div class="text-sm text-gray-700">${detectorInfo.acquisition}</div>
+                </div>
+            ` : ''}
             ${data.gimmick ? `
                 <div class="mb-4">
                     <h3 class="mechanic-section-title">
@@ -843,6 +857,11 @@ function showDigimonMechanicInfo(detector, digimon) {
                     <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/title.webp" alt="title" class="title-icon">
                     드롭 아이템
                 </h3>
+                ${detectorInfo.rewardNotes?.length ? `
+                    <div class="mb-4 text-sm text-gray-700 space-y-1">
+                        ${detectorInfo.rewardNotes.map(note => `<p>${note}</p>`).join('')}
+                    </div>
+                ` : ''}
                 <div class="overflow-x-auto md:overflow-x-visible space-y-1 whitespace-nowrap">
 
                     ${itemHtml}
