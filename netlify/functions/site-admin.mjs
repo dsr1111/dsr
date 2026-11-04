@@ -6,20 +6,12 @@
 //   SUPABASE_SECRET_KEY        secret 키(sb_secret_...) — 절대 브라우저에 노출 금지
 //                              (예전 이름 SUPABASE_SERVICE_ROLE_KEY 도 인식)
 //   COUPON_ADMIN_PASSWORD      관리자 비밀번호 (바꾸면 기존 로그인은 모두 만료)
-import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
+import { json, issueToken, verifyToken, safeEqual, sameSiteJson } from '../lib/admin-auth.mjs';
 
-const TOKEN_TTL_MS = 12 * 60 * 60 * 1000; // 12시간
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const COLOR_RE = /^#[0-9a-fA-F]{6}$/;
-
-function json(body, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'private, no-store' },
-  });
-}
 
 function env() {
   const url = process.env.SUPABASE_URL;
@@ -27,37 +19,6 @@ function env() {
   const password = process.env.COUPON_ADMIN_PASSWORD;
   if (!url || !key || !password) return null;
   return { url: url.replace(/\/+$/, '').replace(/\/rest\/v1$/, ''), key, password };
-}
-
-// ---------- 로그인 토큰 ----------
-// 비밀번호 + secret 키로 서명 키를 만들어 비밀번호를 바꾸면 기존 토큰이 무효가 됩니다.
-function signingKey(cfg) {
-  return createHash('sha256').update(`coupon-admin:${cfg.password}:${cfg.key}`).digest();
-}
-
-function sign(cfg, payload) {
-  return createHmac('sha256', signingKey(cfg)).update(payload).digest('base64url');
-}
-
-function safeEqual(a, b) {
-  const ha = createHash('sha256').update(String(a)).digest();
-  const hb = createHash('sha256').update(String(b)).digest();
-  return timingSafeEqual(ha, hb);
-}
-
-function issueToken(cfg) {
-  const exp = Date.now() + TOKEN_TTL_MS;
-  const payload = `v1.${exp}`;
-  return { token: `${payload}.${sign(cfg, payload)}`, expiresAt: exp };
-}
-
-function verifyToken(cfg, header) {
-  const token = (header || '').replace(/^Bearer\s+/i, '');
-  const parts = token.split('.');
-  if (parts.length !== 3 || parts[0] !== 'v1') return false;
-  const exp = Number(parts[1]);
-  if (!Number.isFinite(exp) || exp < Date.now()) return false;
-  return safeEqual(parts[2], sign(cfg, `${parts[0]}.${parts[1]}`));
 }
 
 // ---------- 입력 검증 도우미 ----------
@@ -238,10 +199,7 @@ export default async (request) => {
   if (!cfg) return json({ error: '서버 설정이 완료되지 않았습니다. (환경 변수 확인)' }, 500);
 
   // 같은 사이트에서 보낸 JSON 요청만 허용
-  if (request.headers.get('sec-fetch-site') === 'cross-site') return json({ error: '허용되지 않은 요청입니다.' }, 403);
-  if (request.method !== 'GET' && request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') {
-    return json({ error: '요청 형식을 확인해주세요.' }, 400);
-  }
+  if (!sameSiteJson(request)) return json({ error: '허용되지 않은 요청입니다.' }, 403);
 
   let body = {};
   if (request.method !== 'GET') {

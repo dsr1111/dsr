@@ -362,12 +362,13 @@
       if (resultTable) resultTable.style.display = 'table';
     },
 
-    async fetchData() {
+    async fetchData(fresh = false) {
       try {
         // 로딩 표시 시작
         this.showLoading();
 
-        const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json');
+        // fresh: 관리자가 저장한 직후에는 브라우저 캐시를 건너뜀
+        const response = await fetch('https://media.dsrwiki.com/data/csv/digimon.json' + (fresh ? `?t=${Date.now()}` : ''), fresh ? { cache: 'no-store' } : undefined);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -578,6 +579,10 @@
 
         // 데이터 로딩 완료 후 필터 상태 복원
         restoreFilterState();
+
+        // 관리자 도구가 수정 버튼을 붙일 수 있도록 알림
+        window.DSRDigimon.data = digimonData;
+        document.dispatchEvent(new CustomEvent('digimon:rendered', { detail: { data: digimonData } }));
       } catch (error) {
         console.error('Error in fetchData:', error);
         // 에러 발생 시에도 로딩 표시 숨김
@@ -1071,7 +1076,30 @@
     TableDataManager.fetchData();
     initSearchListener();
     initTooltipCloseBtns();
+    initDigimonAdminLoader();
   };
+
+  // 관리자 도구: 주소 끝에 #admin 을 붙이거나 이미 로그인했으면 불러옵니다 (일반 방문자는 다운로드하지 않음)
+  window.DSRDigimon = {
+    data: null,
+    reload: () => TableDataManager.fetchData(true),
+  };
+
+  function initDigimonAdminLoader() {
+    let hasToken = false;
+    try { hasToken = !!sessionStorage.getItem('dsrCouponAdminToken'); } catch (e) { /* 저장소 차단 */ }
+    const wantsAdmin = () => location.hash === '#admin' || location.hash === '#coupon-admin';
+    const load = () => {
+      if (window.DSRDigimonAdmin) return window.DSRDigimonAdmin.open();
+      if (document.querySelector('script[data-digimon-admin]')) return;
+      const script = document.createElement('script');
+      script.src = 'app/digimon-admin.js?v=20261104';
+      script.dataset.digimonAdmin = '1';
+      document.head.appendChild(script);
+    };
+    window.addEventListener('hashchange', () => { if (wantsAdmin()) load(); });
+    if (wantsAdmin() || hasToken) load();
+  }
 
   window.resetFilters = FilterModule.resetFilters.bind(FilterModule);
   window.toggleEvolution = FilterModule.toggleEvolution.bind(FilterModule);
