@@ -62,6 +62,11 @@ export function r2Env() {
   return { endpoint, bucket, accessKeyId, secretAccessKey };
 }
 
+/** W/"abc" → "abc" */
+export function strongEtag(etag) {
+  return etag ? etag.replace(/^W\//i, '') : etag;
+}
+
 export function createR2(cfg) {
   const objectUrl = (key) => `${cfg.endpoint}/${encodeURIComponent(cfg.bucket)}/${encodeKey(key)}`;
 
@@ -74,8 +79,10 @@ export function createR2(cfg) {
   return {
     /** { status, etag, text } — 없으면 status 404 */
     async getText(key) {
-      const res = await send('GET', key);
-      return { status: res.status, etag: res.headers.get('etag'), text: res.status === 200 ? await res.text() : null };
+      // 압축 전송되면 Cloudflare가 ETag를 약한 형식(W/"...")으로 바꿔서 If-Match에 쓸 수 없으므로
+      // 압축 없이 받고, 혹시 W/ 가 붙어 있으면 떼어냅니다.
+      const res = await send('GET', key, { headers: { 'accept-encoding': 'identity' } });
+      return { status: res.status, etag: strongEtag(res.headers.get('etag')), text: res.status === 200 ? await res.text() : null };
     },
     /** 존재 여부 */
     async exists(key) {

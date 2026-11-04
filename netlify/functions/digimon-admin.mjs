@@ -153,12 +153,24 @@ function stamp() {
   return new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace(/[-:]/g, '').replace('T', '-').replace('.', '-').slice(0, 19);
 }
 
-const CONFLICT = '다른 관리자가 먼저 수정했습니다. 새로고침 후 다시 시도해주세요.';
+const CONFLICT = '다른 관리자가 이 디지몬을 먼저 수정했습니다. 새로고침 후 다시 시도해주세요.';
+const WRITE_RACE = '저장하는 순간 digimon.json이 다른 저장으로 바뀌었습니다. 한 번 더 저장해주세요.';
 
 export default async (request) => {
   const auth = authEnv();
   const r2cfg = r2Env();
-  if (!auth || !r2cfg) return json({ error: '서버 설정이 완료되지 않았습니다. (R2 / 관리자 환경 변수 확인)' }, 500);
+  if (!auth || !r2cfg) {
+    // 값은 보여주지 않고, 비어 있는 환경 변수 이름만 알려줍니다
+    const missing = [
+      ['COUPON_ADMIN_PASSWORD', process.env.COUPON_ADMIN_PASSWORD],
+      ['SUPABASE_SECRET_KEY', process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY],
+      ['R2_ACCOUNT_ID', process.env.R2_ACCOUNT_ID || process.env.R2_ENDPOINT],
+      ['R2_ACCESS_KEY_ID', process.env.R2_ACCESS_KEY_ID],
+      ['R2_SECRET_ACCESS_KEY', process.env.R2_SECRET_ACCESS_KEY],
+      ['R2_BUCKET', process.env.R2_BUCKET],
+    ].filter(([, v]) => !v).map(([k]) => k);
+    return json({ error: `서버 설정이 완료되지 않았습니다.\n비어 있는 Netlify 환경 변수: ${missing.join(', ')}` }, 500);
+  }
   if (!sameSiteJson(request)) return json({ error: '허용되지 않은 요청입니다.' }, 403);
   if (!verifyToken(auth, request.headers.get('authorization'))) {
     return json({ error: '관리자 로그인이 만료되었습니다. 다시 로그인해주세요.' }, 401);
@@ -243,7 +255,10 @@ export default async (request) => {
       const { etag } = await r2.put(DATA_KEY, `${JSON.stringify(next, null, 2)}\n`, 'application/json', { ifMatch: cur.etag });
       return json({ ok: true, name: savedName, etag });
     } catch (err) {
-      if (err.status === 412) return json({ error: CONFLICT }, 409);
+      if (err.status === 412) {
+        console.warn('digimon.json If-Match 실패', { etag: cur.etag });
+        return json({ error: WRITE_RACE }, 409);
+      }
       throw err;
     }
   } catch (error) {
