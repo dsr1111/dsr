@@ -56,6 +56,9 @@
     .cpa-days { display: flex; flex-wrap: wrap; gap: 6px 10px; }
     .cpa-items { display: flex; flex-direction: column; gap: 6px; }
     .cpa-item { display: grid; grid-template-columns: 36px 1fr 70px 64px 28px; gap: 6px; align-items: center; }
+    .cpa-item-note { display: flex; align-items: center; gap: 6px; margin: 2px 0 4px 42px; font-size: 11px; color: #d35400; flex-wrap: wrap; }
+    .cpa-item-note.cpa-ok { color: #27ae60; }
+    .cpa-item-note .cpa-btn { padding: 2px 7px; font-size: 11px; }
     .cpa-modal .cpa-item select, .cpa-modal .cpa-item input { padding: 6px; }
     .cpa-slot { display: grid; grid-template-columns: 90px 1fr 28px; gap: 6px; align-items: center; }
     .cpa-thumb { width: 36px; height: 36px; border-radius: 4px; background-color: #0a0e1a; background-repeat: no-repeat;
@@ -217,6 +220,44 @@
     });
     if (focus) setTimeout(() => focus.focus(), 0);
     return modal;
+  }
+
+  // ---------- 아이템 이미지 ----------
+  const ITEM_IMAGE_API = "/.netlify/functions/item-image";
+  /** 파일 → 최대 크기에 맞춰 줄인 webp data URL (브라우저가 webp를 못 만들면 png) */
+  async function fileToDataUrl(file, max) {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
+    const w = Math.max(1, Math.round(bitmap.width * scale));
+    const h = Math.max(1, Math.round(bitmap.height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
+    bitmap.close?.();
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.9));
+    const out = blob && blob.type === "image/webp" ? blob : await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+    return { dataUrl: await new Promise((resolve) => { const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(out); }), w, h, bytes: out.size };
+  }
+  async function uploadItemImage(name, image) {
+    const token = getToken();
+    let res;
+    try {
+      res = await fetch(ITEM_IMAGE_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify({ name, image }),
+      });
+    } catch (e) {
+      throw Object.assign(new Error("이미지 서버에 연결하지 못했습니다."), { status: 0 });
+    }
+    let json = {};
+    try { json = await res.json(); } catch (e) { /* 무시 */ }
+    if (res.status === 409 && json.exists) return; // 그 사이 누가 올렸으면 그대로 사용
+    if (!res.ok) {
+      if (res.status === 401) clearToken();
+      throw Object.assign(new Error(`"${name}" 이미지 업로드 실패: ${json.error || res.status}`), { status: res.status });
+    }
   }
 
   // ---------- 시간 ----------
@@ -413,16 +454,73 @@
       const qty = el("input", { type: "number", min: "1", max: "999999", step: "1", value: String(item.qty || 1), "aria-label": "수량" });
       const grade = el("select", { "aria-label": "등급" }, GRADES.map((g) => el("option", { value: String(g), text: `${g}등급` })));
       grade.value = String(GRADES.includes(Number(item.grade)) ? item.grade : 1);
+
+      // CDN에 아이템 이미지가 없으면 여기서 올릴 수 있음 (쿠폰 저장 때 같이 업로드)
+      const note = el("div", { class: "cpa-item-note", hidden: true });
+      const fileInput = el("input", { type: "file", accept: "image/webp,image/png,image/jpeg,image/gif", style: { display: "none" } });
+      let pending = null; // { name, dataUrl }
+      let probeSeq = 0;
+      const imageOf = () => (pending && pending.name === iname.value.trim() ? pending.dataUrl : C.itemImageUrl(iname.value));
       const updateThumb = () => {
-        thumb.style.backgroundImage = `url("${C.itemFrameUrl(grade.value)}"), url("${C.itemImageUrl(iname.value)}")`;
+        thumb.style.backgroundImage = `url("${C.itemFrameUrl(grade.value)}"), url("${imageOf()}")`;
       };
-      iname.addEventListener("input", updateThumb);
+      const showNote = (state, info) => {
+        note.replaceChildren();
+        note.className = "cpa-item-note";
+        if (state === "none") { note.hidden = true; return; }
+        note.hidden = false;
+        if (state === "missing") {
+          note.append("CDN에 이 아이템 이미지가 없습니다.",
+            el("button", { type: "button", class: "cpa-btn", text: "이미지 올리기", onclick: () => fileInput.click() }));
+        } else if (state === "pending") {
+          note.className = "cpa-item-note cpa-ok";
+          note.append(`새 이미지 ${info} · 쿠폰 저장 시 업로드됩니다.`,
+            el("button", { type: "button", class: "cpa-btn", text: "다시 고르기", onclick: () => fileInput.click() }),
+            el("button", { type: "button", class: "cpa-btn", text: "취소", onclick: () => { pending = null; updateThumb(); probe(); } }));
+        }
+      };
+      const probe = () => {
+        const seq = ++probeSeq;
+        const n = iname.value.trim();
+        if (!n) return showNote("none");
+        if (pending && pending.name === n) return;
+        const img = new Image();
+        img.onload = () => { if (seq === probeSeq) showNote("none"); };
+        img.onerror = () => { if (seq === probeSeq) showNote("missing"); };
+        img.src = C.itemImageUrl(n);
+      };
+      let probeTimer = null;
+      iname.addEventListener("input", () => {
+        updateThumb();
+        clearTimeout(probeTimer);
+        probeTimer = setTimeout(probe, 400);
+      });
       grade.addEventListener("change", updateThumb);
+      fileInput.addEventListener("change", async () => {
+        const file = fileInput.files[0];
+        fileInput.value = "";
+        if (!file) return;
+        try {
+          const r = await fileToDataUrl(file, 256); // 기존 아이템 이미지는 256×256
+          pending = { name: iname.value.trim(), dataUrl: r.dataUrl };
+          updateThumb();
+          showNote("pending", `${r.w}×${r.h} · ${Math.round(r.bytes / 1024)}KB`);
+        } catch (e) {
+          alert("이미지를 읽지 못했습니다.");
+        }
+      });
       updateThumb();
-      const row = el("div", { class: "cpa-item" }, [
-        thumb, iname, qty, grade,
-        el("button", { type: "button", class: "cpa-remove", title: "구성품 삭제", "aria-label": "구성품 삭제", text: "×", onclick: () => row.remove() }),
+      probe();
+
+      const row = el("div", { class: "cpa-item-wrap" }, [
+        el("div", { class: "cpa-item" }, [
+          thumb, iname, qty, grade,
+          el("button", { type: "button", class: "cpa-remove", title: "구성품 삭제", "aria-label": "구성품 삭제", text: "×", onclick: () => row.remove() }),
+        ]),
+        note,
+        fileInput,
       ]);
+      row.pendingImage = () => (pending && pending.name === iname.value.trim() && iname.value.trim() ? pending : null);
       list.appendChild(row);
       return iname;
     }
@@ -480,6 +578,11 @@
         return null;
       },
       submit: async (d) => {
+        // CDN에 없던 아이템 이미지를 먼저 올림
+        for (const r of [...list.children]) {
+          const p = r.pendingImage?.();
+          if (p) await uploadItemImage(p.name, p.dataUrl);
+        }
         if (isNew) await api("POST", d, "coupons");
         else await api("PUT", { ...d, id: coupon.id, version: coupon.version }, "coupons");
         await reloadCoupons();

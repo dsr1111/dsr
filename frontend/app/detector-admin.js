@@ -410,7 +410,7 @@
             el("div", { class: "dta-row-title", text: mName }),
             el("div", { class: "dta-row-sub", text: `${m.map} · Lv.${m.level} · HP ${Number.isFinite(Number(m.HP)) ? Number(m.HP).toLocaleString() : m.HP} · 드롭 ${(m.item || []).length}개${m.coordinates && String(m.coordinates.x).trim() !== "" ? ` · 위치 (${m.coordinates.x}, ${m.coordinates.y})` : " · 위치 없음"}` }),
           ]),
-          el("button", { type: "button", class: "dta-btn", text: "수정", onclick: () => openMonsterEditor(mName) }),
+          el("button", { type: "button", class: "dta-btn dta-primary", text: "수정 · 맵 위치", onclick: () => openMonsterEditor(mName) }),
           el("button", { type: "button", class: "dta-btn dta-danger", text: "삭제", onclick: () => removeMonster(mName) }),
         ]));
       });
@@ -426,8 +426,8 @@
       sections.push(
         el("h3", { text: "악역 디지몬" }),
         el("div", { class: "dta-toolbar", style: { justifyContent: "flex-start" } }, [
-          el("button", { type: "button", class: "dta-btn dta-primary", text: "+ 디지몬 추가", onclick: () => openMonsterEditor(null) }),
-          el("span", { class: "dta-hint", text: "디지몬은 각자 수정 창에서 저장하면 바로 반영됩니다.", style: { margin: "0" } }),
+          el("button", { type: "button", class: "dta-btn dta-primary", text: "+ 디지몬 추가 (맵 위치 포함)", onclick: () => openMonsterEditor(null) }),
+          el("span", { class: "dta-hint", text: "맵 위치는 각 디지몬의 \"수정 · 맵 위치\" 창에서 맵을 클릭해 찍습니다. 그 창에서 저장하면 바로 반영됩니다.", style: { margin: "0" } }),
         ]),
         monsterList,
         el("h3", { text: "추가 정보 (선택)" }),
