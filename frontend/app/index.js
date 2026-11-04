@@ -4,75 +4,184 @@ document.addEventListener("DOMContentLoaded", function () {
   initCalculator();
 });
 
-function initCouponSystem() {
-  const today = new Date();
+// ===== 쿠폰 =====
+// 쿠폰은 위키 전용 Supabase(site_coupons)에서 읽습니다.
+// 아래 두 값은 Supabase Dashboard → Project Settings → API 에서 복사합니다.
+// (Project URL, 그리고 publishable 키 또는 anon 키 — 공개용 읽기 키라 노출되어도 괜찮습니다)
+// 비워두면 DB 대신 coupon.json을 보여줍니다. 쓰기는 /.netlify/functions/coupons (관리자 로그인 필요)만 가능합니다.
+const COUPON_SUPABASE_URL = "https://mkytwqzrznusjwmcgpgw.supabase.co";
+const COUPON_SUPABASE_ANON_KEY = "sb_publishable_DTiYb2mYuQCeJalBTlT_aA_9aukhrHV";
+const COUPON_FALLBACK_URL = "https://media.dsrwiki.com/data/csv/coupon.json";
+const COUPON_ADMIN_HASH = "#coupon-admin";
+const COUPON_ADMIN_TOKEN_KEY = "dsrCouponAdminToken";
 
-  fetch("https://media.dsrwiki.com/data/csv/coupon.json")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      const couponContainer = document.querySelector(".coupon-container");
-      if (!couponContainer) return;
-
-      let availableCoupons = 0;
-
-      for (let couponName in data) {
-        const couponData = data[couponName];
-
-        const endDateStr = couponData.period.split("~")[1].trim().replace(/\./g, "/");
-        const parts = endDateStr.split(" ");
-        const datePart = parts[0];
-        const timePart = parts.length > 1 ? parts[1] : "23:59";
-
-        const endDateWithTime = `${datePart} ${timePart}`;
-        const endDate = new Date(endDateWithTime);
-        const isUnknownEnd = /\?\?/.test(endDateStr);
-        const isValidEnd = !isNaN(endDate.getTime());
-
-        // 오늘 날짜의 시간 부분을 제거하고 비교
-        // const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-        if (isUnknownEnd || (isValidEnd && today <= endDate)) {
-          availableCoupons++;
-          createCouponElement(couponName, couponData, couponContainer);
-        }
-      }
-
-      if (availableCoupons === 0) {
-        const noCouponsEl = document.createElement("p");
-        noCouponsEl.textContent = "현재 사용 가능한 쿠폰이 없습니다.";
-        noCouponsEl.style.fontSize = "13px";
-        couponContainer.appendChild(noCouponsEl);
-      }
-    })
-    .catch((error) => {
-      console.error("Error loading coupon data:", error);
-      const couponContainer = document.querySelector(".coupon-container");
-      if (couponContainer) {
-        couponContainer.innerHTML = '';
-        const errorEl = document.createElement("p");
-        errorEl.textContent = "쿠폰 정보를 불러올 수 없습니다.";
-        errorEl.style.fontSize = "13px";
-        couponContainer.appendChild(errorEl);
-      }
-    });
+/** DB 행 → 화면용 쿠폰 { id, version, name, code, endsAt: Date|null, items: [{name, qty, grade}] } */
+function normalizeDbCoupon(row) {
+  return {
+    id: row.id,
+    version: row.version,
+    name: row.name,
+    code: row.code,
+    endsAt: row.ends_at ? new Date(row.ends_at) : null,
+    items: Array.isArray(row.items) ? row.items : [],
+  };
 }
 
-function createCouponElement(name, data, container) {
+/** 예전 coupon.json 형식 → 화면용 쿠폰 (DB를 못 불러왔을 때만 사용) */
+function normalizeJsonCoupons(data) {
+  return Object.entries(data).map(([name, c]) => {
+    const endStr = String(c.period || "").split("~")[1]?.trim() || "";
+    const [datePart, timePart = "23:59"] = endStr.replace(/\./g, "/").split(" ");
+    const end = new Date(`${datePart} ${timePart}`);
+    const unknown = /\?/.test(endStr) || isNaN(end.getTime());
+    return {
+      name,
+      code: c.number,
+      endsAt: unknown ? null : end,
+      items: (c.items || []).map((s) => {
+        const parts = String(s).split("x");
+        const grade = Number(parts.pop());
+        const qty = Number(parts.pop());
+        return { name: parts.join("x").trim(), qty, grade };
+      }),
+    };
+  });
+}
+
+function isCouponActive(coupon, now = new Date()) {
+  return !coupon.endsAt || now <= coupon.endsAt;
+}
+
+/** 한국 시간 기준 "~2026.11.05 10:00" */
+function formatCouponPeriod(endsAt) {
+  if (!endsAt) return "~기한 미정";
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(endsAt).map((x) => [x.type, x.value])
+  );
+  return `~${p.year}.${p.month}.${p.day} ${p.hour}:${p.minute}`;
+}
+
+/** 예전 JWT 형식 anon 키는 Authorization도 필요하고, 새 sb_publishable_ 키는 apikey만 보냅니다. */
+function supabaseHeaders(key) {
+  return key.startsWith("eyJ") ? { apikey: key, Authorization: `Bearer ${key}` } : { apikey: key };
+}
+
+async function fetchPublicCoupons() {
+  try {
+    if (!COUPON_SUPABASE_URL || !COUPON_SUPABASE_ANON_KEY) throw new Error("Supabase 설정 없음");
+    const nowIso = new Date().toISOString();
+    const url = `${COUPON_SUPABASE_URL}/rest/v1/site_coupons?select=id,name,code,ends_at,items,version`
+      + `&or=(ends_at.is.null,ends_at.gte.${encodeURIComponent(nowIso)})`
+      + `&order=ends_at.asc.nullsfirst,created_at.asc`;
+    const res = await fetch(url, {
+      headers: supabaseHeaders(COUPON_SUPABASE_ANON_KEY),
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()).map(normalizeDbCoupon);
+  } catch (error) {
+    console.warn("쿠폰 DB를 불러오지 못해 coupon.json을 사용합니다:", error);
+    const res = await fetch(COUPON_FALLBACK_URL);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    return normalizeJsonCoupons(await res.json()).filter((c) => isCouponActive(c));
+  }
+}
+
+let couponTooltips = [];
+
+/**
+ * 쿠폰 목록을 그립니다.
+ * options.decorate(el, coupon): 관리자 모드에서 버튼 등을 붙일 때 사용
+ * options.emptyText: 목록이 비었을 때 문구
+ */
+function renderCoupons(coupons, options = {}) {
+  const container = document.querySelector(".coupon-container");
+  if (!container) return;
+  couponTooltips.forEach((t) => t.remove());
+  couponTooltips = [];
+  container.replaceChildren();
+
+  if (!coupons.length) {
+    const empty = document.createElement("p");
+    empty.textContent = options.emptyText || "현재 사용 가능한 쿠폰이 없습니다.";
+    empty.style.fontSize = "13px";
+    container.appendChild(empty);
+    return;
+  }
+  coupons.forEach((coupon) => {
+    const el = createCouponElement(coupon, container);
+    if (options.decorate) options.decorate(el, coupon);
+  });
+}
+
+function showCouponMessage(text) {
+  const container = document.querySelector(".coupon-container");
+  if (!container) return;
+  container.replaceChildren();
+  const el = document.createElement("p");
+  el.textContent = text;
+  el.style.fontSize = "13px";
+  container.appendChild(el);
+}
+
+async function initCouponSystem() {
+  // 관리자 도구는 필요할 때만 불러옵니다 (일반 방문자는 다운로드하지 않음)
+  let hasToken = false;
+  try { hasToken = !!sessionStorage.getItem(COUPON_ADMIN_TOKEN_KEY); } catch (e) { /* 저장소 차단 */ }
+  const wantsAdmin = () => location.hash === COUPON_ADMIN_HASH;
+  const loadAdmin = () => {
+    if (window.DSRCouponAdmin) return window.DSRCouponAdmin.open();
+    const script = document.createElement("script");
+    script.src = "app/coupon-admin.js";
+    script.defer = true;
+    document.head.appendChild(script);
+  };
+  window.addEventListener("hashchange", () => { if (wantsAdmin()) loadAdmin(); });
+  if (wantsAdmin() || hasToken) loadAdmin();
+
+  try {
+    const coupons = await fetchPublicCoupons();
+    if (window.DSRCoupons.adminActive) return; // 관리자 모드가 이미 목록을 그림
+    renderCoupons(coupons);
+  } catch (error) {
+    if (window.DSRCoupons.adminActive) return;
+    console.error("Error loading coupon data:", error);
+    showCouponMessage("쿠폰 정보를 불러올 수 없습니다.");
+  }
+}
+
+window.DSRCoupons = {
+  supabaseUrl: COUPON_SUPABASE_URL,
+  tokenKey: COUPON_ADMIN_TOKEN_KEY,
+  adminHash: COUPON_ADMIN_HASH,
+  normalizeDbCoupon,
+  isCouponActive,
+  formatCouponPeriod,
+  fetchPublicCoupons,
+  renderCoupons,
+  showCouponMessage,
+  itemImageUrl: couponItemImageUrl,
+  itemFrameUrl: couponItemFrameUrl,
+};
+
+function createCouponElement(coupon, container) {
   const couponEl = document.createElement("div");
   couponEl.classList.add("coupon-list");
 
   const nameEl = document.createElement("div");
   nameEl.classList.add("coupon-name");
-  nameEl.innerHTML = `<p>${name}</p>`;
+  const nameP = document.createElement("p");
+  nameP.textContent = coupon.name;
+  nameEl.appendChild(nameP);
 
   const periodEl = document.createElement("div");
   periodEl.classList.add("coupon-period");
-  periodEl.innerHTML = `<p>${data.period}</p>`;
+  const periodP = document.createElement("p");
+  periodP.textContent = formatCouponPeriod(coupon.endsAt);
+  periodEl.appendChild(periodP);
 
   const showItemsText = document.createElement("span");
   showItemsText.classList.add("show-items");
@@ -80,27 +189,38 @@ function createCouponElement(name, data, container) {
 
   const numberEl = document.createElement("div");
   numberEl.classList.add("coupon-number");
-  numberEl.innerHTML = `<p>${data.number}</p>`;
+  const numberP = document.createElement("p");
+  numberP.textContent = coupon.code;
+  numberEl.appendChild(numberP);
 
-  // Tooltip logic
-  const tooltip = createTooltip(data.items);
+  const tooltip = createTooltip(coupon.items);
   document.body.appendChild(tooltip);
-
+  couponTooltips.push(tooltip);
   setupTooltipEvents(showItemsText, tooltip);
 
   couponEl.appendChild(nameEl);
   couponEl.appendChild(periodEl);
-  couponEl.appendChild(showItemsText);
+  if (coupon.items.length) couponEl.appendChild(showItemsText);
   couponEl.appendChild(numberEl);
 
   container.appendChild(couponEl);
 
   numberEl.addEventListener("click", function () {
     navigator.clipboard
-      .writeText(data.number)
+      .writeText(coupon.code)
       .then(() => alert(`쿠폰 번호가 복사되었습니다.`))
       .catch((err) => console.error("복사 실패:", err));
   });
+  return couponEl;
+}
+
+function couponItemImageUrl(name) {
+  const clean = String(name).trim().replace(/\s*\(\d+(일|시간)\)$/, "").replace(/^\[기간제\]\s*/, "");
+  return `https://media.dsrwiki.com/dsrwiki/item/${clean.replace(/%/g, "^").replace(/["\\]/g, "")}.webp`;
+}
+
+function couponItemFrameUrl(grade) {
+  return `https://media.dsrwiki.com/dsrwiki/item/item${Number(grade) || 1}.webp`;
 }
 
 function createTooltip(items) {
@@ -108,34 +228,28 @@ function createTooltip(items) {
   tooltip.classList.add("tooltip-coupon");
 
   items.forEach((item) => {
-    const [itemName, itemQty, itemGrade] = item.split("x");
-    let cleanItemName = itemName.trim().replace(/\s*\(\d+(일|시간)\)$/, "").replace(/^\[기간제\]\s*/, "");
-    const sanitizedName = cleanItemName.replace(/%/g, "^");
-    const imgPath = `https://media.dsrwiki.com/dsrwiki/item/${sanitizedName}.webp`;
-    const backgroundPath = `https://media.dsrwiki.com/dsrwiki/item/item${itemGrade.trim()}.webp`;
-
     const itemElement = document.createElement("div");
     itemElement.className = "tooltip-item";
     itemElement.style.cssText = "display: flex; align-items: center; gap: 10px; margin-bottom: 10px;";
 
-    itemElement.innerHTML = `
-        <div style="
-            position: relative; 
-            display: inline-block; 
-            width: 45px; 
-            height: 45px; 
-            background-color: #0a0e1a;
-            background-image: url('${backgroundPath}'), url('${imgPath}'); 
-            background-position: top left, center;
-            background-repeat: no-repeat;
-            background-size: auto, contain;
-            border-radius: 5px;">
-            <span style="position: absolute; bottom: 0px; right: 0px; color: white; font-size: 11px; padding: 1px 3px; text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;">
-            ${itemQty ? itemQty.trim() : ""}
-            </span>
-        </div>
-        <span>${itemName.trim()}</span>
-        `;
+    const icon = document.createElement("div");
+    icon.style.cssText = `
+      position: relative; display: inline-block; width: 45px; height: 45px;
+      background-color: #0a0e1a;
+      background-image: url("${couponItemFrameUrl(item.grade)}"), url("${couponItemImageUrl(item.name)}");
+      background-position: top left, center; background-repeat: no-repeat;
+      background-size: auto, contain; border-radius: 5px;`;
+
+    const qty = document.createElement("span");
+    qty.style.cssText = "position: absolute; bottom: 0px; right: 0px; color: white; font-size: 11px; padding: 1px 3px; text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;";
+    qty.textContent = item.qty ?? "";
+    icon.appendChild(qty);
+
+    const label = document.createElement("span");
+    label.textContent = item.name;
+
+    itemElement.appendChild(icon);
+    itemElement.appendChild(label);
     tooltip.appendChild(itemElement);
   });
   return tooltip;
