@@ -26,20 +26,28 @@
   /**
    * 스킬 레벨별 1타당 계수 자동 계산.
    * 총 계수(1타당 × 타수)를 1/10000 단위 정수로 계산한 뒤 타수로 나누고 소수점 넷째 자리에서 버립니다.
-   * 반환: { values: [Lv1..Lv10], rule } 또는 { error }
+   * 반환: { values: [Lv1..Lv10], rule, warning? } 또는 { error }
+   *
+   * 전체 공격(대상 "전체")은 효과가 없으면 총 계수 × 0.96 (게임 전체 공격 61개 중 58개)
+   * HP 소모 스킬은 게임에 6개뿐이고 값이 제각각이라 경고를 함께 보여줍니다.
    */
-  function autoCoefficients({ slot, hits, effect, additionalTurn, hpCost }) {
+  function autoCoefficients({ slot, hits, effect, additionalTurn, hpCost, targetCount }) {
     if (hits === "보조") return { error: "보조 스킬은 계수를 자동으로 정하지 않습니다." };
     const n = Number(hits);
     if (!Number.isInteger(n) || n < 1) return { error: "타수를 먼저 입력해주세요." };
     const effects = String(effect || "").split(",").map((e) => e.trim()).filter(Boolean);
     const lowering = effects.filter((e) => DAMAGE_EFFECTS.has(e));
     const turn = Number(additionalTurn) || 0;
-    let lv1, step, rule;
+    const allTarget = String(targetCount || "").trim() === "전체";
+    if (slot !== 1 && hpCost && turn > 0) {
+      return { error: "HP 소모 + 추가 턴 스킬은 게임에 2개뿐이고 정해진 규칙이 없어 자동 계산하지 않습니다. 게임 값을 직접 입력해주세요." };
+    }
+    let lv1, step, rule, warning;
     if (slot === 1) {
       [lv1, step, rule] = [5000, 500, "1스킬"];
     } else if (hpCost) {
       [lv1, step, rule] = [13900, 500, `${slot}스킬 · HP 소모`];
+      warning = "HP 소모 스킬은 게임에서 6개 중 4개만 이 값이라 실제 값과 다를 수 있습니다.";
     } else if (turn > 0) {
       const cast = Math.round(turn * 30) * 100; // 위키 추가 턴 = 게임 CastingTime / 3000
       [lv1, step, rule] = [10000 + cast * 2, 500, `${slot}스킬 · 추가 턴 ${turn}`];
@@ -48,9 +56,15 @@
     } else {
       [lv1, step, rule] = [10000, 500, `${slot}스킬${effects.length ? ` · 계수에 영향 없는 효과(${effects.join(", ")})` : ""}`];
     }
+    // 전체 공격 × 0.96 (상태이상·CC·디버프 효과가 있으면 0.90 그대로, 1스킬은 해당 없음)
+    if (allTarget && slot !== 1 && !hpCost && !(lowering.length && turn <= 0)) {
+      lv1 = (lv1 * 24) / 25;
+      step = (step * 24) / 25;
+      rule += " · 전체 공격 ×0.96";
+    }
     const values = Array.from({ length: 10 }, (_, i) => Math.floor((lv1 + step * i) / n) / 10000);
     const fmt = (bp) => String(bp / 10000);
-    return { values, rule: `${rule} → 총 ${fmt(lv1)} ~ ${fmt(lv1 + step * 9)} ÷ ${n}타 (넷째 자리 버림)` };
+    return { values, warning, rule: `${rule} → 총 ${fmt(lv1)} ~ ${fmt(lv1 + step * 9)} ÷ ${n}타 (넷째 자리 버림)` };
   }
   // ---- coeff end ----
 
@@ -371,26 +385,27 @@
       effect: effect.input.value,
       additionalTurn: addTurn.value,
       hpCost: hpCost.checked,
+      targetCount: target.input.value,
     });
     const applyAuto = () => {
       const r = computeAuto();
-      if (r.error) { autoInfo.textContent = r.error; return; }
+      if (r.error) { autoInfo.textContent = r.error; autoInfo.style.color = "#d35400"; return; }
       mults.forEach((m, i) => { m.value = String(r.values[i]); });
       lastAuto = currentValues().join(",");
-      autoInfo.textContent = `자동 계산: ${r.rule}`;
-      autoInfo.style.color = "#27ae60";
+      autoInfo.textContent = `자동 계산: ${r.rule}${r.warning ? ` ⚠ ${r.warning}` : ""}`;
+      autoInfo.style.color = r.warning ? "#d35400" : "#27ae60";
     };
     const refreshAuto = () => {
       const r = computeAuto();
       const cur = currentValues();
       const untouched = cur.every((v) => v === "") || cur.join(",") === lastAuto;
       if (untouched && !r.error) return applyAuto();
-      if (r.error) { autoInfo.textContent = r.error; autoInfo.style.color = ""; return; }
+      if (r.error) { autoInfo.textContent = r.error; autoInfo.style.color = "#d35400"; return; }
       const same = r.values.every((v, i) => cur[i] !== "" && Math.abs(Number(cur[i]) - v) < 1e-9);
       autoInfo.textContent = same ? `자동 계산 값과 같음 · ${r.rule}` : `자동 계산 값과 다름 (특수 계수이거나 입력 오류일 수 있음) · 규칙: ${r.rule}`;
       autoInfo.style.color = same ? "#27ae60" : "#d35400";
     };
-    [hits.input, effect.input, addTurn].forEach((n) => n.addEventListener("input", refreshAuto));
+    [hits.input, effect.input, addTurn, target.input].forEach((n) => n.addEventListener("input", refreshAuto));
     hpCost.addEventListener("change", refreshAuto);
     mults.forEach((m) => m.addEventListener("input", refreshAuto));
 
