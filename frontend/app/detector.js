@@ -641,6 +641,17 @@ function appendDetectorEvolutionButton(detector, digimon) {
     grid.appendChild(button);
 }
 
+// 마커 좌표는 400×400 기준. 맵 칸은 CSS에서 항상 정사각형이라(화면이 좁으면 같이 줄어듦)
+// 칸 크기에 대한 % 로 두면 화면 폭과 상관없이 맵 위 같은 자리에 표시됩니다.
+const MARKER_COORD_BASE = 400;
+let currentMarkerCoords = null;
+function positionMarker() {
+    const marker = document.getElementById('digimonMarker');
+    if (!currentMarkerCoords || !marker) return;
+    marker.style.left = `${(currentMarkerCoords.x / MARKER_COORD_BASE) * 100}%`;
+    marker.style.top = `${(currentMarkerCoords.y / MARKER_COORD_BASE) * 100}%`;
+}
+
 // 맵과 디지몬 마커 표시
 function showMapAndMarker(detector, digimon) {
     const digimonData = detectorData[detector]['악역 디지몬'][digimon];
@@ -659,6 +670,7 @@ function showMapAndMarker(detector, digimon) {
     );
     document.getElementById('mapContainer').classList.remove('hidden');
     if (!hasCoordinates) {
+        currentMarkerCoords = null;
         marker.classList.add('hidden');
         marker.style.left = '';
         marker.style.top = '';
@@ -668,14 +680,9 @@ function showMapAndMarker(detector, digimon) {
     const digimonImageName = digimon.replace(':', '_');
     markerImg.src = `https://media.dsrwiki.com/dsrwiki/digimon/${digimonImageName}/${digimonImageName}.webp`;
 
-    // 환경별 좌표 재계산
-    const isMobile = window.innerWidth <= 768;
-    const desktopSize = 500;
-    const mobileSize = 350;
-    const originalSize = 400; // 기존 좌표 기준
-    const scale = isMobile ? mobileSize / originalSize : desktopSize / originalSize;
-    marker.style.left = `${digimonData.coordinates.x * scale}px`;
-    marker.style.top = `${digimonData.coordinates.y * scale}px`;
+    // 좌표(400 기준)를 실제로 그려진 맵 위치에 맞춰 배치
+    currentMarkerCoords = { x: Number(coordinates.x), y: Number(coordinates.y) };
+    positionMarker();
     // 기존 transform 클래스 제거
     marker.classList.remove('-translate-x-1/2', '-translate-y-1/2');
     // 환경에 상관없이 transform을 항상 동일하게 적용
