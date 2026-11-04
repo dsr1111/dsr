@@ -144,7 +144,7 @@ async function initCouponSystem() {
     if (window.DSRSiteAdmin) return window.DSRSiteAdmin.open();
     if (document.querySelector("script[data-site-admin]")) return;
     const script = document.createElement("script");
-    script.src = "app/site-admin.js?v=20261104";
+    script.src = "app/site-admin.js";
     script.dataset.siteAdmin = "1";
     script.defer = true;
     document.head.appendChild(script);

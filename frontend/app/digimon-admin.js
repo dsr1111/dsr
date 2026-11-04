@@ -19,6 +19,41 @@
   const STATS = [["level", "레벨"], ["hp", "HP"], ["sp", "SP"], ["STR", "힘"], ["INT", "지능"], ["DEF", "수비"], ["RES", "저항"], ["SPD", "속도"]];
   const IMAGE_MAX = { portrait: 512, skill1: 256, skill2: 256, skill3: 256, stack: 256 };
 
+  // ---- coeff start (게임 테이블 2026-10-22 패치 기준으로 확인한 규칙) ----
+  // 계수를 낮추는 효과 (게임 Effect_Basic 의 상태이상·CC·디버프). 버프, 회복, 스택 계열은 해당 없음.
+  const DAMAGE_EFFECTS = new Set(["ADVENTURE (절대 영도)", "UNKNOWN ERROR", "감염", "감염(잠식)", "감전", "격리", "공격력 감소", "공황", "과부하", "교대불가", "금속화", "꼭두각시", "낙인", "데이터 변조", "마비", "망자의 저주", "매료", "맹독 분출", "무방비", "미지의 힘", "반동", "방어력 감소", "방어력 감소(소)", "봉인", "부식", "빙결", "빛과 어둠 (빛의 심판)", "빛과 어둠 (어둠의 유혹)", "빛의 잔영", "삼위일체", "생명의 키스", "석화", "성흔", "세뇌", "속도 감소", "속박", "수면", "수압", "스나이퍼 미사일", "스턴", "시끄럽다 얘!!", "어둠의 사자 (검은 톱니바퀴)", "어둠의 왕 (쇠약)", "어드벤처 에너미", "업화", "연소", "연소 (어둠)", "열상", "영원한 잠", "영혼 붕괴", "용의 포효", "위험한 장난", "이상 현상(STAGE 5)", "이상 현상(STAGE 6)", "이상 현상(STAGE 7)", "이상 현상(분노)", "이상 현상(빙결)", "이상 현상(어둠의 힘)", "이상 현상(업화)", "이상 현상(전의 상실)", "이상 현상(침식)", "이상 현상(혼란)", "잔류 에너지", "저주", "중독", "중압", "진공", "질식", "참격의 여파", "최후의 암흑 (쇠약)", "최후의 암흑 (지배)", "출혈", "침잠", "타락", "파멸의 불꽃", "파열", "폭파 지령 (조준)", "한기", "혼란", "화상", "회피율 감소"]);
+
+  /**
+   * 스킬 레벨별 1타당 계수 자동 계산.
+   * 총 계수(1타당 × 타수)를 1/10000 단위 정수로 계산한 뒤 타수로 나누고 소수점 넷째 자리에서 버립니다.
+   * 반환: { values: [Lv1..Lv10], rule } 또는 { error }
+   */
+  function autoCoefficients({ slot, hits, effect, additionalTurn, hpCost }) {
+    if (hits === "보조") return { error: "보조 스킬은 계수를 자동으로 정하지 않습니다." };
+    const n = Number(hits);
+    if (!Number.isInteger(n) || n < 1) return { error: "타수를 먼저 입력해주세요." };
+    const effects = String(effect || "").split(",").map((e) => e.trim()).filter(Boolean);
+    const lowering = effects.filter((e) => DAMAGE_EFFECTS.has(e));
+    const turn = Number(additionalTurn) || 0;
+    let lv1, step, rule;
+    if (slot === 1) {
+      [lv1, step, rule] = [5000, 500, "1스킬"];
+    } else if (hpCost) {
+      [lv1, step, rule] = [13900, 500, `${slot}스킬 · HP 소모`];
+    } else if (turn > 0) {
+      const cast = Math.round(turn * 30) * 100; // 위키 추가 턴 = 게임 CastingTime / 3000
+      [lv1, step, rule] = [10000 + cast * 2, 500, `${slot}스킬 · 추가 턴 ${turn}`];
+    } else if (lowering.length) {
+      [lv1, step, rule] = [9000, 425, `${slot}스킬 · 효과(${lowering.join(", ")})`];
+    } else {
+      [lv1, step, rule] = [10000, 500, `${slot}스킬${effects.length ? ` · 계수에 영향 없는 효과(${effects.join(", ")})` : ""}`];
+    }
+    const values = Array.from({ length: 10 }, (_, i) => Math.floor((lv1 + step * i) / n) / 10000);
+    const fmt = (bp) => String(bp / 10000);
+    return { values, rule: `${rule} → 총 ${fmt(lv1)} ~ ${fmt(lv1 + step * 9)} ÷ ${n}타 (넷째 자리 버림)` };
+  }
+  // ---- coeff end ----
+
   // ---------- 스타일 ----------
   const style = document.createElement("style");
   style.textContent = `
@@ -326,6 +361,39 @@
       mults.forEach((m, i) => { m.value = String(Math.round((a + d * i) * 10000) / 10000); });
     };
 
+    // 계수 자동 계산: 타수/효과/추가 턴/HP 소모가 바뀌면, 계수를 직접 고치지 않은 경우에만 다시 채움
+    const autoInfo = el("div", { class: "dga-hint", style: { marginTop: "6px" } });
+    const currentValues = () => mults.map((m) => m.value.trim());
+    let lastAuto = null;
+    const computeAuto = () => autoCoefficients({
+      slot: index + 1,
+      hits: hits.input.value.trim() === "보조" ? "보조" : hits.input.value.trim(),
+      effect: effect.input.value,
+      additionalTurn: addTurn.value,
+      hpCost: hpCost.checked,
+    });
+    const applyAuto = () => {
+      const r = computeAuto();
+      if (r.error) { autoInfo.textContent = r.error; return; }
+      mults.forEach((m, i) => { m.value = String(r.values[i]); });
+      lastAuto = currentValues().join(",");
+      autoInfo.textContent = `자동 계산: ${r.rule}`;
+      autoInfo.style.color = "#27ae60";
+    };
+    const refreshAuto = () => {
+      const r = computeAuto();
+      const cur = currentValues();
+      const untouched = cur.every((v) => v === "") || cur.join(",") === lastAuto;
+      if (untouched && !r.error) return applyAuto();
+      if (r.error) { autoInfo.textContent = r.error; autoInfo.style.color = ""; return; }
+      const same = r.values.every((v, i) => cur[i] !== "" && Math.abs(Number(cur[i]) - v) < 1e-9);
+      autoInfo.textContent = same ? `자동 계산 값과 같음 · ${r.rule}` : `자동 계산 값과 다름 (특수 계수이거나 입력 오류일 수 있음) · 규칙: ${r.rule}`;
+      autoInfo.style.color = same ? "#27ae60" : "#d35400";
+    };
+    [hits.input, effect.input, addTurn].forEach((n) => n.addEventListener("input", refreshAuto));
+    hpCost.addEventListener("change", refreshAuto);
+    mults.forEach((m) => m.addEventListener("input", refreshAuto));
+
     const icon = imagePicker("스킬 아이콘", `skill${index + 1}`, digimonName ? imageUrl(digimonName, `skill${index + 1}`) : null, true);
 
     const node = el("div", { class: "dga-skill" }, [
@@ -341,7 +409,12 @@
       ]),
       field("레벨별 계수 (Lv1 ~ Lv10)", el("div", {}, [
         el("div", { class: "dga-mults" }, mults),
-        el("div", { class: "dga-mult-tools" }, ["자동 채우기:", startIn, "부터", stepIn, "씩", el("button", { type: "button", class: "dga-btn", text: "채우기", onclick: fill })]),
+        el("div", { class: "dga-mult-tools" }, [
+          el("button", { type: "button", class: "dga-btn dga-primary", text: "계수 자동 계산", onclick: applyAuto }),
+          el("span", { text: "또는 직접:", style: { marginLeft: "6px" } }), startIn, "부터", stepIn, "씩",
+          el("button", { type: "button", class: "dga-btn", text: "채우기", onclick: fill }),
+        ]),
+        autoInfo,
       ])),
       field("변환 가능 속성", change.node),
       el("div", { class: "dga-grid dga-g2" }, [
@@ -370,6 +443,7 @@
       };
       return out;
     }
+    refreshAuto(); // 새 스킬은 바로 채우고, 기존 스킬은 규칙과 같은지 표시
     return { node, read, icon };
   }
 

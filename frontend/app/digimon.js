@@ -1093,7 +1093,7 @@
       if (window.DSRDigimonAdmin) return window.DSRDigimonAdmin.open();
       if (document.querySelector('script[data-digimon-admin]')) return;
       const script = document.createElement('script');
-      script.src = 'app/digimon-admin.js?v=20261104';
+      script.src = 'app/digimon-admin.js';
       script.dataset.digimonAdmin = '1';
       document.head.appendChild(script);
     };
