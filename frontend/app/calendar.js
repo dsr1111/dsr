@@ -1,3 +1,45 @@
+// 이벤트 캘린더 — 위키 Supabase(site_events)에서 읽고, 실패하면 calendar.json을 사용합니다.
+const CALENDAR_FALLBACK_URL = "https://media.dsrwiki.com/data/csv/calendar.json";
+window.DSRCalendar = { reload: async () => {} };
+
+function escapeCalendarHtml(text) {
+  return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
+}
+
+function toCalendarEvent(event) {
+  if (!event || !event.title || !event.start) return null;
+  const mapped = { title: event.title, start: event.start };
+  if (event.id) mapped.id = event.id;
+  if (event.end) mapped.end = event.end;
+  if (event.backgroundColor) {
+    mapped.backgroundColor = event.backgroundColor;
+    mapped.borderColor = event.backgroundColor;
+  }
+  if (event.textColor) mapped.textColor = event.textColor;
+  return mapped;
+}
+
+async function loadCalendarEvents() {
+  try {
+    if (!window.DSRSupabase) throw new Error("Supabase 설정 없음");
+    // 너무 오래된 이벤트는 빼고 불러옵니다 (종료 후 120일까지)
+    const since = new Date(Date.now() - 120 * 864e5).toISOString();
+    const rows = await window.DSRSupabase.select("site_events",
+      "select=id,title,starts_at,ends_at,background_color,text_color"
+      + `&or=(ends_at.is.null,ends_at.gte.${encodeURIComponent(since)})`
+      + "&order=starts_at.asc");
+    return rows.map((r) => toCalendarEvent({
+      id: r.id, title: r.title, start: r.starts_at, end: r.ends_at,
+      backgroundColor: r.background_color, textColor: r.text_color,
+    })).filter(Boolean);
+  } catch (error) {
+    console.warn("이벤트 DB를 불러오지 못해 calendar.json을 사용합니다:", error);
+    const response = await fetch(CALENDAR_FALLBACK_URL, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return (await response.json()).map(toCalendarEvent).filter(Boolean);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const calendarHost = document.getElementById("event-calendar");
   const emptyMessageEl = document.getElementById("calendar-empty-message");
@@ -122,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const endDate = info.event.end;
 
     tooltipContent.innerHTML = `
-      <strong>${info.event.title}</strong><br>
+      <strong>${escapeCalendarHtml(info.event.title)}</strong><br>
       <span>${buildEventPeriod(startDate, endDate)}</span>
     `;
     tooltip.style.display = "block";
@@ -138,47 +180,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   try {
-    const response = await fetch("https://media.dsrwiki.com/data/csv/calendar.json", {
-      cache: "no-cache",
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const rawData = await response.json();
-    const sanitizedEvents = rawData
-      .map((event) => {
-        if (!event || !event.title || !event.start) {
-          return null;
-        }
-        const mapped = {
-          title: event.title,
-          start: event.start,
-        };
-
-        if (event.end) {
-          mapped.end = event.end;
-        }
-        if (event.backgroundColor) {
-          mapped.backgroundColor = event.backgroundColor;
-          mapped.borderColor = event.backgroundColor;
-        }
-        if (event.textColor) {
-          mapped.textColor = event.textColor;
-        }
-
-        return mapped;
-      })
-      .filter(Boolean);
-
-    if (sanitizedEvents.length === 0) {
-      if (emptyMessageEl) {
-        emptyMessageEl.textContent = "표시할 이벤트가 없습니다.";
-        emptyMessageEl.hidden = false;
-      }
-      return;
-    }
+    const sanitizedEvents = await loadCalendarEvents();
+    const setEmptyMessage = (events) => {
+      if (!emptyMessageEl) return;
+      emptyMessageEl.textContent = "표시할 이벤트가 없습니다.";
+      emptyMessageEl.hidden = events.length > 0;
+    };
 
     const getIsMobile = () => window.matchMedia("(max-width: 768px)").matches;
 
@@ -288,9 +295,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    if (emptyMessageEl) {
-      emptyMessageEl.hidden = true;
-    }
+    setEmptyMessage(sanitizedEvents);
+
+    // 관리자 도구가 이벤트를 수정한 뒤 다시 불러올 때 사용
+    window.DSRCalendar.reload = async () => {
+      const events = await loadCalendarEvents();
+      hideTooltip(true);
+      calendar.removeAllEvents();
+      calendar.addEventSource(events);
+      setEmptyMessage(events);
+    };
   } catch (error) {
     console.error("이벤트 캘린더 데이터를 불러오는 중 오류가 발생했습니다.", error);
     if (emptyMessageEl) {

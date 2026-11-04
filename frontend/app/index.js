@@ -4,15 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
   initCalculator();
 });
 
-// ===== 쿠폰 =====
-// 쿠폰은 위키 전용 Supabase(site_coupons)에서 읽습니다.
+// ===== 위키 Supabase (쿠폰 / 이벤트 캘린더 / 레이드 타이머 공용) =====
+// 데이터는 위키 전용 Supabase에서 읽습니다.
 // 아래 두 값은 Supabase Dashboard → Project Settings → API 에서 복사합니다.
 // (Project URL, 그리고 publishable 키 또는 anon 키 — 공개용 읽기 키라 노출되어도 괜찮습니다)
-// 비워두면 DB 대신 coupon.json을 보여줍니다. 쓰기는 /.netlify/functions/coupons (관리자 로그인 필요)만 가능합니다.
+// 비워두면 DB 대신 예전 JSON 파일을 보여줍니다. 쓰기는 /.netlify/functions/site-admin (관리자 로그인 필요)만 가능합니다.
 const COUPON_SUPABASE_URL = "https://mkytwqzrznusjwmcgpgw.supabase.co";
 const COUPON_SUPABASE_ANON_KEY = "sb_publishable_DTiYb2mYuQCeJalBTlT_aA_9aukhrHV";
 const COUPON_FALLBACK_URL = "https://media.dsrwiki.com/data/csv/coupon.json";
-const COUPON_ADMIN_HASH = "#coupon-admin";
+const COUPON_ADMIN_HASH = "#coupon-admin"; // "#admin" 도 가능
 const COUPON_ADMIN_TOKEN_KEY = "dsrCouponAdminToken";
 
 /** DB 행 → 화면용 쿠폰 { id, version, name, code, endsAt: Date|null, items: [{name, qty, grade}] } */
@@ -69,19 +69,27 @@ function supabaseHeaders(key) {
   return key.startsWith("eyJ") ? { apikey: key, Authorization: `Bearer ${key}` } : { apikey: key };
 }
 
-async function fetchPublicCoupons() {
-  try {
+/** 공개 읽기 — calendar.js, raid-timer.js 에서도 사용합니다. query 예) "select=*&order=name.asc" */
+window.DSRSupabase = {
+  async select(table, query) {
     if (!COUPON_SUPABASE_URL || !COUPON_SUPABASE_ANON_KEY) throw new Error("Supabase 설정 없음");
-    const nowIso = new Date().toISOString();
-    const url = `${COUPON_SUPABASE_URL}/rest/v1/site_coupons?select=id,name,code,ends_at,items,version`
-      + `&or=(ends_at.is.null,ends_at.gte.${encodeURIComponent(nowIso)})`
-      + `&order=ends_at.asc.nullsfirst,created_at.asc`;
-    const res = await fetch(url, {
+    const res = await fetch(`${COUPON_SUPABASE_URL}/rest/v1/${table}?${query}`, {
       headers: supabaseHeaders(COUPON_SUPABASE_ANON_KEY),
       cache: "no-store",
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()).map(normalizeDbCoupon);
+    return res.json();
+  },
+};
+
+async function fetchPublicCoupons() {
+  try {
+    const nowIso = new Date().toISOString();
+    const rows = await window.DSRSupabase.select("site_coupons",
+      "select=id,name,code,ends_at,items,version"
+      + `&or=(ends_at.is.null,ends_at.gte.${encodeURIComponent(nowIso)})`
+      + "&order=ends_at.asc.nullsfirst,created_at.asc");
+    return rows.map(normalizeDbCoupon);
   } catch (error) {
     console.warn("쿠폰 DB를 불러오지 못해 coupon.json을 사용합니다:", error);
     const res = await fetch(COUPON_FALLBACK_URL);
@@ -131,11 +139,13 @@ async function initCouponSystem() {
   // 관리자 도구는 필요할 때만 불러옵니다 (일반 방문자는 다운로드하지 않음)
   let hasToken = false;
   try { hasToken = !!sessionStorage.getItem(COUPON_ADMIN_TOKEN_KEY); } catch (e) { /* 저장소 차단 */ }
-  const wantsAdmin = () => location.hash === COUPON_ADMIN_HASH;
+  const wantsAdmin = () => location.hash === COUPON_ADMIN_HASH || location.hash === "#admin";
   const loadAdmin = () => {
-    if (window.DSRCouponAdmin) return window.DSRCouponAdmin.open();
+    if (window.DSRSiteAdmin) return window.DSRSiteAdmin.open();
+    if (document.querySelector("script[data-site-admin]")) return;
     const script = document.createElement("script");
-    script.src = "app/coupon-admin.js";
+    script.src = "app/site-admin.js?v=20261104";
+    script.dataset.siteAdmin = "1";
     script.defer = true;
     document.head.appendChild(script);
   };
