@@ -13,14 +13,54 @@ const detectorEvolutions = {
 };
 
 // JSON 데이터 로드
+const DETECTOR_JSON_URL = 'https://media.dsrwiki.com/data/csv/detector.json';
 Promise.all([
-    fetch('https://media.dsrwiki.com/data/csv/detector.json').then(res => res.json()),
+    fetch(DETECTOR_JSON_URL).then(res => res.json()),
     fetch('https://media.dsrwiki.com/data/csv/digimon.json').then(res => res.json())
 ]).then(([detector, digimon]) => {
     detectorData = detector;
     digimonGlobalData = digimon;
     populateDetectorGrid();
+    document.dispatchEvent(new CustomEvent('detector:loaded'));
 });
+
+// 관리자 도구가 저장한 뒤 다시 불러올 때 사용 (선택했던 탐지기/디지몬 유지)
+window.DSRDetector = {
+    get data() { return detectorData; },
+    get digimon() { return digimonGlobalData; },
+    async reload() {
+        const keepDetector = selectedDetector;
+        const keepDigimon = selectedDigimon;
+        detectorData = await fetch(`${DETECTOR_JSON_URL}?t=${Date.now()}`, { cache: 'no-store' }).then(res => res.json());
+        populateDetectorGrid();
+        document.getElementById('digimonGrid').classList.add('hidden');
+        document.getElementById('mapContainer').classList.add('hidden');
+        const detectorButton = keepDetector && [...document.querySelectorAll('.detector-button')].find(b => b.dataset.detector === keepDetector);
+        if (!detectorButton) return;
+        detectorButton.click();
+        const digimonButton = keepDigimon && [...document.querySelectorAll('.digimon-button')].find(b => b.dataset.digimon === keepDigimon);
+        digimonButton?.click();
+    },
+};
+
+// 관리자 도구: 주소 끝에 #admin 을 붙이거나 이미 로그인했으면 불러옵니다 (일반 방문자는 다운로드하지 않음)
+(function initDetectorAdminLoader() {
+    let hasToken = false;
+    try { hasToken = !!sessionStorage.getItem('dsrCouponAdminToken'); } catch (e) { /* 저장소 차단 */ }
+    const wantsAdmin = () => location.hash === '#admin' || location.hash === '#coupon-admin';
+    const load = () => {
+        if (window.DSRDetectorAdmin) return window.DSRDetectorAdmin.open();
+        if (document.querySelector('script[data-detector-admin]')) return;
+        const script = document.createElement('script');
+        script.src = 'app/detector-admin.js';
+        script.dataset.detectorAdmin = '1';
+        document.head.appendChild(script);
+    };
+    window.addEventListener('hashchange', () => { if (wantsAdmin()) load(); });
+    const start = () => { if (wantsAdmin() || hasToken) load(); };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+    else start();
+})();
 
 // 탐지기 버튼 그리드 생성
 function populateDetectorGrid() {
