@@ -141,6 +141,20 @@ function decodeImage(dataUrl) {
   return contentType ? { bytes, contentType } : null;
 }
 
+// digimon.json 순서: 진화 단계(성장기 → 성숙기 → 완전체 → 궁극체 → 그 외) 묶음 안에서 이름 가나다순
+const STAGE_ORDER = ['성장기', '성숙기', '완전체', '궁극체'];
+const stageRank = (stage) => {
+  const i = STAGE_ORDER.indexOf(stage);
+  return i < 0 ? STAGE_ORDER.length : i;
+};
+/** [이름, 데이터] 목록을 진화 단계 → 가나다 순으로 정렬 (이미 이 순서인 항목은 자리 그대로) */
+function sortDigimon(entries) {
+  return entries
+    .map((e, i) => ({ e, i, r: stageRank(e[1]?.evolution_stage) }))
+    .sort((a, b) => a.r - b.r || a.e[0].localeCompare(b.e[0], 'ko') || a.i - b.i)
+    .map((x) => x.e);
+}
+
 /** 키 순서와 상관없이 같은 데이터인지 */
 function stable(value) {
   if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`;
@@ -236,13 +250,10 @@ export default async (request) => {
         }
       }
 
-      // 기존 순서 유지 (이름 변경 시 같은 자리, 새 디지몬은 맨 뒤)
-      next = {};
-      for (const [k, v] of Object.entries(data)) {
-        if (k === originalName) next[name] = parsed.value;
-        else next[k] = v;
-      }
-      if (!originalName) next[name] = parsed.value;
+      // 디지몬 페이지 기본 순서(진화 단계 → 가나다)에 맞는 자리에 넣음.
+      // 이름·단계가 그대로면 원래 자리와 같고, 새 디지몬이나 이름/단계를 바꾼 디지몬은 알맞은 자리로 옮겨짐.
+      const rest = Object.entries(data).filter(([k]) => k !== originalName && k !== name);
+      next = Object.fromEntries(sortDigimon([...rest, [name, parsed.value]]));
       savedName = name;
     } else {
       return json({ error: '지원하지 않는 요청입니다.' }, 400);
