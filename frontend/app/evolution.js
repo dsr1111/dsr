@@ -1334,9 +1334,34 @@
   // ===============================
   // DOMContentLoaded 이후 초기화
   // ===============================
+  // 관리자 도구가 저장한 뒤 다시 불러올 때 사용
+  window.DSREvolution = {
+    get data() { return { evolution: DataModule.allData, condition: DataModule.conditionData, jogress: DataModule.jogressData }; },
+    reload: () => DataModule.loadCSVFiles(),
+    stageName: (s) => UIManager.getStageName(String(s)),
+  };
+
+  // 관리자 도구: 주소 끝에 #admin 을 붙이거나 이미 로그인했으면 불러옵니다 (일반 방문자는 다운로드하지 않음)
+  function initEvolutionAdminLoader() {
+    let hasToken = false;
+    try { hasToken = !!sessionStorage.getItem("dsrCouponAdminToken"); } catch (e) { /* 저장소 차단 */ }
+    const wantsAdmin = () => location.hash === "#admin" || location.hash === "#coupon-admin";
+    const load = () => {
+      if (window.DSREvolutionAdmin) return window.DSREvolutionAdmin.open();
+      if (document.querySelector("script[data-evolution-admin]")) return;
+      const script = document.createElement("script");
+      script.src = "app/evolution-admin.js";
+      script.dataset.evolutionAdmin = "1";
+      document.head.appendChild(script);
+    };
+    window.addEventListener("hashchange", () => { if (wantsAdmin()) load(); });
+    if (wantsAdmin() || hasToken) load();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     UIManager.init();
     DataModule.loadCSVFiles();
+    initEvolutionAdminLoader();
     const tree = document.getElementById('evolution-tree');
     const pathResizeObserver = new ResizeObserver(() => EvolutionPathRenderer.schedule());
     pathResizeObserver.observe(tree);
