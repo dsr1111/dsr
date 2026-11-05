@@ -6,11 +6,28 @@ function escapeCalendarHtml(text) {
   return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
 }
 
+// 캘린더는 한국 시간으로 표시합니다. FullCalendar 를 UTC 모드로 두고 모든 시각을
+// "한국 시간 벽시계 문자열"(시간대 표시 없음)로 넘기면, 보는 사람 PC의 시간대와 상관없이 그대로 보입니다.
+const serverNow = () => (window.DSRTime ? window.DSRTime.now() : new Date());
+const kstWallOf = (date) => new Date(date.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 19);
+/** "…+00:00" / "…Z" 처럼 시간대가 붙은 값은 한국 시간으로 바꾸고, 시간대 없는 값(calendar.json)은 이미 한국 시간으로 봄 */
+function toKstWall(value) {
+  if (!value) return value;
+  const s = String(value);
+  if (/([zZ]|[+-]\d{2}:?\d{2})$/.test(s)) {
+    const d = new Date(s);
+    return Number.isNaN(d.getTime()) ? s : kstWallOf(d);
+  }
+  return s;
+}
+/** 한국 시간 벽시계 문자열 → 비교용 Date (UTC 로 해석) */
+const wallToDate = (wall) => new Date(`${String(wall).slice(0, 19)}Z`);
+
 function toCalendarEvent(event) {
   if (!event || !event.title || !event.start) return null;
-  const mapped = { title: event.title, start: event.start };
+  const mapped = { title: event.title, start: toKstWall(event.start) };
   if (event.id) mapped.id = event.id;
-  if (event.end) mapped.end = event.end;
+  if (event.end) mapped.end = toKstWall(event.end);
   if (event.backgroundColor) {
     mapped.backgroundColor = event.backgroundColor;
     mapped.borderColor = event.backgroundColor;
@@ -23,7 +40,7 @@ async function loadCalendarEvents() {
   try {
     if (!window.DSRSupabase) throw new Error("Supabase 설정 없음");
     // 너무 오래된 이벤트는 빼고 불러옵니다 (종료 후 120일까지)
-    const since = new Date(Date.now() - 120 * 864e5).toISOString();
+    const since = new Date(serverNow().getTime() - 120 * 864e5).toISOString();
     const rows = await window.DSRSupabase.select("site_events",
       "select=id,title,starts_at,ends_at,background_color,text_color"
       + `&or=(ends_at.is.null,ends_at.gte.${encodeURIComponent(since)})`
@@ -75,6 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let pinnedEventEl = null;
 
   const dateTimeFormatter = new Intl.DateTimeFormat("ko-KR", {
+    timeZone: "UTC",
     month: "long",
     day: "numeric",
     weekday: "short",
@@ -83,12 +101,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
+    timeZone: "UTC",
     month: "long",
     day: "numeric",
     weekday: "short",
   });
 
   const timeFormatter = new Intl.DateTimeFormat("ko-KR", {
+    timeZone: "UTC",
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -141,9 +161,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const sameDay =
-      startDate.getFullYear() === endDate.getFullYear() &&
-      startDate.getMonth() === endDate.getMonth() &&
-      startDate.getDate() === endDate.getDate();
+      startDate.getUTCFullYear() === endDate.getUTCFullYear() &&
+      startDate.getUTCMonth() === endDate.getUTCMonth() &&
+      startDate.getUTCDate() === endDate.getUTCDate();
 
     if (sameDay) {
       return `${dateFormatter.format(startDate)}\n${timeFormatter.format(
@@ -195,8 +215,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       right: "currentMonth",
     });
 
+    if (window.DSRTime) await window.DSRTime.readyWithin();
     const calendar = new FullCalendar.Calendar(calendarHost, {
       locale: "ko",
+      timeZone: "UTC", // 이벤트 시각을 한국 시간 벽시계로 넘기므로 그대로 표시
+      now: () => kstWallOf(serverNow()), // "오늘"과 현재 시각 선은 서버 시각(한국 시간)
       initialView: getIsMobile() ? "listWeek" : "dayGridMonth",
       headerToolbar: buildToolbarConfig(),
       buttonText: {
@@ -252,11 +275,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     calendar.render();
     updateCurrentMonthLabel();
 
-    const now = new Date();
+    const now = wallToDate(kstWallOf(serverNow()));
     const upcoming = sanitizedEvents
       .map((event) => {
-        const start = new Date(event.start);
-        const end = event.end ? new Date(event.end) : null;
+        const start = wallToDate(event.start);
+        const end = event.end ? wallToDate(event.end) : null;
         return { event, start, end };
       })
       .filter(({ start }) => {

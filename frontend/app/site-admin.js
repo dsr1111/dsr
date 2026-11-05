@@ -99,7 +99,10 @@
     return null;
   }
   function setToken(data) {
-    try { sessionStorage.setItem(C.tokenKey, JSON.stringify(data)); } catch (e) { /* 무시 */ }
+    // 만료 시각을 이 PC 시계 기준으로 다시 계산 (PC 시계가 틀려도 로그인 직후 만료되지 않게)
+    const ttl = Number(data.ttl) || 12 * 60 * 60 * 1000;
+    const saved = { token: data.token, expiresAt: Date.now() + ttl - 60 * 1000 };
+    try { sessionStorage.setItem(C.tokenKey, JSON.stringify(saved)); } catch (e) { /* 무시 */ }
   }
   function clearToken() {
     try { sessionStorage.removeItem(C.tokenKey); } catch (e) { /* 무시 */ }
@@ -261,6 +264,8 @@
   }
 
   // ---------- 시간 ----------
+  /** 서버 시각 (PC 시계가 틀려도 맞게) */
+  const serverNow = () => (window.DSRTime ? window.DSRTime.now() : new Date());
   /** Date → datetime-local 값 (한국 시간) */
   function toKstInput(date) {
     if (!date) return "";
@@ -440,7 +445,7 @@
     const name = el("input", { type: "text", maxlength: "60", value: coupon?.name || "", placeholder: "예) 개발 팀 노트 #35" });
     const code = el("input", { type: "text", maxlength: "40", value: coupon?.code || "", placeholder: "예) 0LEUN98G", autocomplete: "off", spellcheck: "false" });
 
-    const defaultEnd = toKstInput(new Date(Date.now() + 7 * 864e5)).slice(0, 11) + "23:59";
+    const defaultEnd = toKstInput(new Date(serverNow().getTime() + 7 * 864e5)).slice(0, 11) + "23:59";
     const ends = el("input", { type: "datetime-local", value: coupon?.endsAt ? toKstInput(coupon.endsAt) : defaultEnd });
     const noEnd = el("input", { type: "checkbox" });
     noEnd.checked = !!coupon && !coupon.endsAt;
@@ -601,7 +606,7 @@
       describe: (row) => ({
         title: row.title,
         sub: `${formatKst(row.starts_at)} ~ ${row.ends_at ? formatKst(row.ends_at) : "종료 미정"}`,
-        inactive: !!row.ends_at && new Date(row.ends_at) < new Date(),
+        inactive: !!row.ends_at && new Date(row.ends_at) < serverNow(),
         lead: el("span", { class: "cpa-chip", text: "■", style: { background: row.background_color || "#3788d8", color: row.background_color || "#3788d8", width: "14px", padding: "3px 0" } }),
       }),
       onNew: (refresh) => showEventEditor(null, refresh),
@@ -613,7 +618,7 @@
   function showEventEditor(row, refresh) {
     const isNew = !row;
     const title = el("input", { type: "text", maxlength: "80", value: row?.title || "", placeholder: "예) 할로윈 이벤트" });
-    const today = toKstInput(new Date()).slice(0, 11);
+    const today = toKstInput(serverNow()).slice(0, 11);
     const starts = el("input", { type: "datetime-local", value: row ? toKstInput(row.starts_at) : `${today}10:00` });
     const ends = el("input", { type: "datetime-local", value: row?.ends_at ? toKstInput(row.ends_at) : "" });
     const bg = el("input", { type: "color", value: row?.background_color || "#3788d8", "aria-label": "배경색" });
@@ -689,7 +694,7 @@
       resource: "raids",
       newLabel: "+ 레이드 등록",
       describe: (row) => {
-        const now = new Date();
+        const now = serverNow();
         const ended = row.active_until && new Date(row.active_until) <= now;
         const notYet = row.active_from && new Date(row.active_from) > now;
         const period = row.active_from || row.active_until
@@ -730,7 +735,7 @@
       box.checked = (s.days || []).includes(i);
       return el("label", { class: "cpa-check" }, [box, d]);
     });
-    const baseDate = el("input", { type: "date", value: s.baseDate || toKstInput(new Date()).slice(0, 10) });
+    const baseDate = el("input", { type: "date", value: s.baseDate || toKstInput(serverNow()).slice(0, 10) });
     const baseTime = el("input", { type: "time", value: s.baseTime || "19:00" });
     const step = el("input", { type: "number", min: "0", max: "720", step: "1", value: String(s.stepMinutes ?? 25) });
 

@@ -36,7 +36,8 @@ export function safeEqual(a, b) {
 export function issueToken(cfg) {
   const exp = Date.now() + TOKEN_TTL_MS;
   const payload = `v1.${exp}`;
-  return { token: `${payload}.${sign(cfg, payload)}`, expiresAt: exp };
+  // ttl: 브라우저는 자기 시계 대신 "지금부터 몇 ms" 로 만료를 계산 (PC 시계가 틀려도 동작)
+  return { token: `${payload}.${sign(cfg, payload)}`, expiresAt: exp, ttl: TOKEN_TTL_MS };
 }
 
 export function verifyToken(cfg, header) {

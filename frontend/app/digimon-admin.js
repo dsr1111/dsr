@@ -198,7 +198,12 @@
     clearToken();
     return null;
   }
-  function setToken(data) { try { sessionStorage.setItem(TOKEN_KEY, JSON.stringify(data)); } catch (e) { /* 무시 */ } }
+  function setToken(data) {
+    // 만료 시각을 이 PC 시계 기준으로 다시 계산 (PC 시계가 틀려도 로그인 직후 만료되지 않게)
+    const ttl = Number(data.ttl) || 12 * 60 * 60 * 1000;
+    const saved = { token: data.token, expiresAt: Date.now() + ttl - 60 * 1000 };
+    try { sessionStorage.setItem(TOKEN_KEY, JSON.stringify(saved)); } catch (e) { /* 무시 */ }
+  }
   function clearToken() { try { sessionStorage.removeItem(TOKEN_KEY); } catch (e) { /* 무시 */ } }
 
   async function request(url, method, body) {
