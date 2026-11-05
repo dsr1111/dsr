@@ -362,9 +362,9 @@
     const s = skill || { name: "", hits: 1, range: "원거리", attribute: "물리", target_count: "단일", multipliers: [], change: [] };
     const name = input(s.name, { maxlength: "40", placeholder: "스킬 이름" });
     const hits = suggestInput(String(s.hits ?? ""), ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "보조"], { placeholder: "숫자 또는 보조" });
-    const range = suggestInput(s.range ?? "", RANGES);
+    const range = select(s.range ?? "", ["", ...RANGES]);
     const attribute = select(s.attribute, ATTRS);
-    const target = suggestInput(s.target_count ?? "", TARGETS);
+    const target = select(s.target_count ?? "", ["", ...TARGETS]);
     const effect = suggestInput(s.effect ?? "", collectEffects(), { placeholder: "없으면 비움" });
     const addTurn = el("input", { type: "number", step: "any", min: "0", max: "10", value: s.additionalTurn ?? "", placeholder: "없으면 비움" });
     const hpCost = el("input", { type: "checkbox" });
@@ -390,7 +390,7 @@
       effect: effect.input.value,
       additionalTurn: addTurn.value,
       hpCost: hpCost.checked,
-      targetCount: target.input.value,
+      targetCount: target.value,
     });
     const applyAuto = () => {
       const r = computeAuto();
@@ -410,7 +410,8 @@
       autoInfo.textContent = same ? `자동 계산 값과 같음 · ${r.rule}` : `자동 계산 값과 다름 (특수 계수이거나 입력 오류일 수 있음) · 규칙: ${r.rule}`;
       autoInfo.style.color = same ? "#27ae60" : "#d35400";
     };
-    [hits.input, effect.input, addTurn, target.input].forEach((n) => n.addEventListener("input", refreshAuto));
+    [hits.input, effect.input, addTurn].forEach((n) => n.addEventListener("input", refreshAuto));
+    target.addEventListener("change", refreshAuto);
     hpCost.addEventListener("change", refreshAuto);
     mults.forEach((m) => m.addEventListener("input", refreshAuto));
 
@@ -422,8 +423,8 @@
         el("div", { style: { gridColumn: "span 2" } }, field("이름", name)),
         field("타수", hits.node),
         field("속성", attribute),
-        field("사거리", range.node),
-        field("대상", target.node),
+        field("사거리", range),
+        field("대상", target),
         field("효과", effect.node),
         field("추가 턴", addTurn),
       ]),
@@ -451,9 +452,9 @@
       const out = {
         name: name.value.trim(),
         hits: hitsVal === "보조" ? "보조" : hitsVal === "" ? "" : Number(hitsVal),
-        range: range.input.value.trim(),
+        range: range.value,
         attribute: attribute.value,
-        target_count: target.input.value.trim(),
+        target_count: target.value,
         effect: effect.input.value.trim() || undefined,
         additionalTurn: addTurn.value === "" ? undefined : Number(addTurn.value),
         multipliers: filled.map(Number),
@@ -489,8 +490,8 @@
     };
 
     const name = input(originalName || "", { maxlength: "40", placeholder: "예) 오메가몬" });
-    const stage = suggestInput(d.evolution_stage, STAGES);
-    const type = suggestInput(d.type, TYPES);
+    const stage = select(d.evolution_stage, STAGES);
+    const type = select(d.type, TYPES);
     const stats = STATS.map(([k, label]) => [k, label, el("input", { type: "number", min: "0", step: "1", value: d.stats?.[k] ?? 0 })]);
     const strongAttr = select(d.strengths?.attribute ?? "", ["", ...ATTRS]);
     const strongEff = select(d.strengths?.effect ?? "", ["", ...STRONG_EFFECTS]);
@@ -510,8 +511,8 @@
     const readForm = () => ({
       name: name.value.trim(),
       entry: {
-        evolution_stage: stage.input.value.trim(),
-        type: type.input.value.trim(),
+        evolution_stage: stage.value,
+        type: type.value,
         stats: Object.fromEntries(stats.map(([k, , inp]) => [k, inp.value === "" ? NaN : Number(inp.value)])),
         strengths: { attribute: strongAttr.value, effect: strongEff.value },
         weaknesses: { attribute: weakAttr.value, effect: weakEff.value },
@@ -548,8 +549,8 @@
       el("h3", { text: "기본 정보" }),
       el("div", { class: "dga-grid" }, [
         el("div", { style: { gridColumn: "span 2" } }, field("이름", name, isNew ? null : "이름을 바꾸면 기존 이미지도 새 이름 폴더로 복사됩니다.")),
-        field("진화 단계", stage.node),
-        field("타입", type.node),
+        field("진화 단계", stage),
+        field("타입", type),
       ]),
       el("h3", { text: "능력치" }),
       el("div", { class: "dga-grid" }, stats.map(([, label, inp]) => field(label, inp))),
