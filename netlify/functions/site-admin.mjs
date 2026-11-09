@@ -135,6 +135,8 @@ function readSchedule(s) {
     if (!Number.isInteger(stepMinutes) || stepMinutes < 0 || stepMinutes > 720) return { error: '하루마다 밀리는 시간(분)은 0~720 사이로 입력해주세요.' };
     return { type, baseTime, baseDate: s.baseDate, stepMinutes };
   }
+  // 처치주기형: 처치 후 일정 시간 뒤 재등장 — 시각을 알 수 없어 인게임 타이머 확인으로 표시
+  if (type === 'respawn') return { type };
   return { error: '일정 종류를 선택해주세요.' };
 }
 

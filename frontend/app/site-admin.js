@@ -13,6 +13,7 @@
     ["biweekly", "2주마다"],
     ["custom_weekly", "요일별 시간 지정"],
     ["rotation", "순환 (매일 시간이 밀림)"],
+    ["respawn", "처치주기형 (인게임 타이머 확인)"],
   ];
 
   // ---------- 스타일 ----------
@@ -684,6 +685,7 @@
       case "biweekly": return `2주마다 ${times} (기준 ${s.baseDate})`;
       case "custom_weekly": return `요일별: ${(s.schedules || []).map((x) => `${DAY_NAMES[x.day]} ${x.time}`).join(", ")}`;
       case "rotation": return `순환: ${s.baseDate} ${s.baseTime}부터 하루 +${s.stepMinutes}분`;
+      case "respawn": return "처치주기형 (인게임 타이머 확인)";
       default: return "일정 없음";
     }
   }
@@ -761,6 +763,7 @@
         el("button", { type: "button", class: "cpa-btn", text: "+ 시간 추가", onclick: () => addSlot() }),
       ]),
     ]);
+    const respawnField = el("p", { class: "cpa-hint", text: "처치 후 다시 나오는 시간을 알 수 없어 위키에는 \"인게임 타이머 확인\"으로 표시되고, 알림은 울리지 않습니다." });
     const rotationField = el("div", { class: "cpa-grid2" }, [
       field("기준 시간", baseTime),
       field("하루마다 밀리는 시간 (분)", step),
@@ -774,6 +777,7 @@
       baseDateHint.textContent = t === "biweekly" ? "이 날짜부터 14일마다 열립니다." : "이 날짜의 기준 시간부터 하루마다 시간이 밀립니다.";
       slotsField.hidden = t !== "custom_weekly";
       rotationField.hidden = t !== "rotation";
+      respawnField.hidden = t !== "respawn";
     }
     type.addEventListener("change", syncType);
     syncType();
@@ -790,6 +794,7 @@
       if (t === "weekly") return { type: t, times: parseTimes(), days: dayBoxes.map((l) => l.querySelector("input")).filter((b) => b.checked).map((b) => Number(b.value)) };
       if (t === "biweekly") return { type: t, times: parseTimes(), baseDate: baseDate.value };
       if (t === "custom_weekly") return { type: t, schedules: [...slots.children].map((r) => ({ day: Number(r.querySelector("select").value), time: r.querySelector("input").value })).filter((x) => x.time) };
+      if (t === "respawn") return { type: t };
       return { type: t, baseTime: baseTime.value, baseDate: baseDate.value, stepMinutes: Number(step.value) };
     }
 
@@ -814,6 +819,7 @@
         baseDateField,
         slotsField,
         rotationField,
+        respawnField,
         el("div", { class: "cpa-grid2" }, [
           field("표시 시작 (선택)", activeFrom),
           field("표시 종료 (선택)", activeUntil, "기간 한정 레이드만 입력합니다. 종료 후에는 목록에서 숨겨집니다."),

@@ -7,6 +7,7 @@ function getImagePath(name) {
 // 레이드 목록은 위키 Supabase(site_raids)에서 불러옵니다.
 // 아래 목록은 DB를 불러오지 못했을 때만 사용하는 기본값입니다.
 // type: daily | weekly(days: 0=일~6=토) | biweekly(baseDate) | custom_weekly(schedules) | rotation(baseTime, baseDate, stepMinutes)
+//       | respawn — 처치주기형: 등장 시각을 알 수 없어 "인게임 타이머 확인"으로 표시 (알림 없음)
 const FALLBACK_RAIDS = [
   { name: '펌프몬', times: ['19:30'], type: 'daily', map: '시부야', mapImage: '1930' },
   { name: '울퉁몬', times: ['21:30'], type: 'daily', map: '시부야', mapImage: '2130' },
@@ -495,7 +496,16 @@ function renderRaids() {
   container.style.maxHeight = '170px';
   container.style.overflowY = 'auto';
   let allRaids = [];
+  const respawnRaids = [];
+  const nowForPeriod = getCurrentKST();
   raids.forEach(raid => {
+    if (raid.type === 'respawn') {
+      // 처치주기형: 표시 기간 안에서만 보여주고, 시간 대신 인게임 타이머 확인 안내
+      const from = raid.activeFrom ? new Date(raid.activeFrom) : null;
+      const until = raid.activeUntil ? new Date(raid.activeUntil) : null;
+      if ((!from || nowForPeriod >= from) && (!until || nowForPeriod < until)) respawnRaids.push(raid);
+      return;
+    }
     const { nextTime, timeStr } = computeNextRaid(raid);
     if (nextTime) {
       allRaids.push({
@@ -532,6 +542,27 @@ function renderRaids() {
       </div>
     `;
     div.dataset.nextTime = raid.nextTime;
+    container.appendChild(div);
+  });
+
+  // 처치주기형은 고정형 아래에 표시 (카운트다운·알림 대상 아님 — 클래스가 달라 updateTimers 가 건드리지 않음)
+  respawnRaids.forEach(raid => {
+    const div = document.createElement('div');
+    div.className = 'raid-respawn-item';
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';
+    div.style.marginBottom = '4px';
+    div.style.fontSize = '0.8rem';
+    div.innerHTML = `
+      <div style="background:#0B0E1A; border-radius:3px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; margin-right:10px;">
+        <img loading="lazy" src="${escapeRaidHtml(raid.image)}" alt="${escapeRaidHtml(raid.name)}" width="46" height="46" style="object-fit:contain; display:block;" onerror="this.onerror=null; this.src='/image/digimon/default.webp';">
+      </div>
+      <div style="display:flex; flex-direction:column; text-align:left;">
+        <span><strong>${escapeRaidHtml(raid.name)}</strong></span>
+        <span style="font-size:0.7rem; color:#666;"><span class="raid-location" data-map-image="${escapeRaidHtml(raid.mapImage || '')}" style="${raid.mapImage ? 'cursor:pointer; text-decoration:underline; color:#007bff;' : 'color:#666;'} font-weight:bold;">${escapeRaidHtml(raid.map)}${raid.mapImage ? ' <i class="ri-map-pin-line"></i>' : ''}</span></span>
+        <span style="color:#8a6d1f;">인게임 타이머 확인</span>
+      </div>
+    `;
     container.appendChild(div);
   });
 }
