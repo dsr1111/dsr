@@ -618,11 +618,3 @@
     border-radius: 4px;
     font-size: 14px;
 }
-
-@media (max-width: 1370px) {
-
-    .adsbygoogle[data-ad-slot="1428393398"],
-    .adsbygoogle[data-ad-slot="1851169108"] {
-        display: none !important;
-    }
-}

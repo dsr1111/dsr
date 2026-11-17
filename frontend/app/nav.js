@@ -53,7 +53,7 @@ class CustomNav extends HTMLElement {
   connectedCallback() {
     this.render();
     this.initMenu();
-    this.initAds();
+    this.initPageClass();
     this.initReferral();
   }
 
@@ -173,10 +173,7 @@ class CustomNav extends HTMLElement {
 
   }
 
-  initAds() {
-    // 로컬 체크
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
+  initPageClass() {
     // 페이지별 클래스 부여
     const path = window.location.pathname;
     if (path.includes('digimon')) document.body.classList.add('page-digimon');
@@ -190,46 +187,6 @@ class CustomNav extends HTMLElement {
     else if (path.includes('gacha')) document.body.classList.add('page-gacha');
     else if (path.includes('costume-slot')) document.body.classList.add('page-costume-slot');
     else document.body.classList.add('page-index'); // index.html 또는 기본값
-
-    // 중복 방지
-    if (document.querySelector('.side-ad-container')) return;
-
-    const adContainer = document.createElement('div');
-    adContainer.className = 'side-ad-container';
-
-    const leftAd = document.createElement('div');
-    leftAd.className = 'side-ad-left';
-    leftAd.innerHTML = `
-      <div class="ad-label" style="font-size:10px; color:#ccc; text-align:center; margin-bottom:2px;">광고</div>
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:160px;height:600px"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1428393398"></ins>
-    `;
-
-    const rightAd = document.createElement('div');
-    rightAd.className = 'side-ad-right';
-    rightAd.innerHTML = `
-      <div class="ad-label" style="font-size:10px; color:#ccc; text-align:center; margin-bottom:2px;">광고</div>
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:160px;height:600px"
-           data-ad-client="ca-pub-6625279423156068"
-           data-ad-slot="1851169108"></ins>
-    `;
-
-    adContainer.appendChild(leftAd);
-    adContainer.appendChild(rightAd);
-    document.body.appendChild(adContainer);
-
-    // 광고 푸시
-    if (!isLocal) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {
-        console.error("AdSense push failed", e);
-      }
-    }
   }
 
   initReferral() {

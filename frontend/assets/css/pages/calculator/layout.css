@@ -126,4 +126,3 @@ html.calculator-fits-viewport{overflow-y:hidden}
 }
 
 /* Keep original side ads only where both slots fit beside the wider calculator. */
-@media(max-width:1659px){body.page-calculator .side-ad-container{display:none}}
