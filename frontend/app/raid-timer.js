@@ -85,133 +85,9 @@ window.DSRRaids = {
   },
 };
 
-// Cloudflare Workers를 사용하여 서울 시간 동기화 (시스템 시간 무관)
-const CUSTOM_TIME_API = 'https://dsr-time-api.s97716.workers.dev';
-
-let serverKST = null; // 서울 시간 기준 Date 객체
-let lastFetchTime = null; // serverKST를 가져온 로컬 시간
-
-async function initializeTime() {
-  // 여러 서버 시간 API를 시도 (시스템 시간과 무관)
-  const timeAPIs = [];
-
-  // 자체 백엔드 API가 설정되어 있으면 우선 사용
-  if (CUSTOM_TIME_API) {
-    timeAPIs.push(CUSTOM_TIME_API);
-  } else {
-    // 자동으로 여러 API 시도
-    timeAPIs.push(
-      '/api/time',
-      '/api/kst-time',
-      'https://timeapi.io/api/Time/current/zone?timeZone=Asia/Seoul'
-    );
-  }
-
-  for (const apiUrl of timeAPIs) {
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        cache: 'no-cache',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        continue; // 다음 API 시도
-      }
-
-      const data = await response.json();
-      let serverTime = null;
-
-      // 다양한 응답 형식 처리
-      if (data.datetime) {
-        // WorldTimeAPI 형식: { datetime: "2025-01-01T12:00:00+09:00" }
-        serverTime = new Date(data.datetime);
-      } else if (data.dateTime) {
-        // timeapi.io 형식: { dateTime: "2025-01-01T12:00:00" }
-        serverTime = new Date(data.dateTime);
-      } else if (data.time) {
-        // 커스텀 API 형식: { time: "2025-01-01T12:00:00+09:00" }
-        serverTime = new Date(data.time);
-      } else if (data.kst_time) {
-        // KST 시간 직접: { kst_time: "2025-01-01T12:00:00+09:00" }
-        serverTime = new Date(data.kst_time);
-      } else if (data.timestamp) {
-        // 타임스탬프 형식: { timestamp: 1704067200000 }
-        serverTime = new Date(data.timestamp);
-      } else if (data.utcTime) {
-        // UTC 시간: { utcTime: "2025-01-01T03:00:00Z" }
-        serverTime = new Date(data.utcTime);
-      } else if (typeof data === 'string') {
-        // 문자열 직접 파싱: "2025-01-01T12:00:00+09:00"
-        serverTime = new Date(data);
-      } else if (data.epochSecond) {
-        // Unix 타임스탬프 (초 단위): { epochSecond: 1704067200 }
-        serverTime = new Date(data.epochSecond * 1000);
-      }
-
-      if (serverTime && !isNaN(serverTime.getTime())) {
-        serverKST = serverTime;
-        lastFetchTime = Date.now();
-        console.log(`서버 시간 설정 성공 (${apiUrl}):`, serverKST);
-        return; // 성공하면 종료
-      }
-    } catch (error) {
-      // 다음 API 시도
-      continue;
-    }
-  }
-
-  // 모든 서버 API 실패 시, Intl API 사용 (시스템 시간 기반이지만 최선의 대안)
-  try {
-    const now = new Date();
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'Asia/Seoul',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    }).formatToParts(now);
-
-    const kstParts = {};
-    parts.forEach(part => {
-      kstParts[part.type] = part.value;
-    });
-
-    const kstString = `${kstParts.year}-${kstParts.month}-${kstParts.day}T${kstParts.hour}:${kstParts.minute}:${kstParts.second}+09:00`;
-    serverKST = new Date(kstString);
-
-    if (!isNaN(serverKST.getTime())) {
-      lastFetchTime = Date.now();
-      console.warn('서버 API 실패, Intl API 사용 (시스템 시간 의존):', serverKST);
-      return;
-    }
-  } catch (error) {
-    console.error('Intl API도 실패:', error);
-  }
-
-  // 최종 폴백: 시스템 시간 사용 (경고)
-  serverKST = new Date();
-  lastFetchTime = Date.now();
-  console.error('모든 시간 동기화 방법 실패, 시스템 시간 사용 (부정확할 수 있음)');
-}
-
+// 서버 시각은 index.js 의 DSRTime 을 같이 씁니다 (쿠폰·캘린더와 같은 시계).
 function getCurrentKST() {
-  if (!serverKST || !lastFetchTime) {
-    // 아직 시간이 초기화되지 않았거나 API 호출에 실패한 경우 로컬 시간 반환
-    return new Date();
-  }
-  // serverKST가 유효한 Date 객체인지 확인
-  if (isNaN(serverKST.getTime())) {
-    console.error('serverKST is invalid, using local time');
-    return new Date();
-  }
-  const elapsed = Date.now() - lastFetchTime;
-  return new Date(serverKST.getTime() + elapsed);
+  return window.DSRTime ? window.DSRTime.now() : new Date();
 }
 
 // KST 유틸리티 함수들: Date 객체의 타임스탬프를 KST 기준으로 변환
@@ -674,7 +550,7 @@ function updateTimers() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 페이지 로드 시 시간 동기화와 레이드 목록 불러오기를 함께 수행
-  const [, loadedRaids] = await Promise.all([initializeTime(), loadRaids()]);
+  const [, loadedRaids] = await Promise.all([window.DSRTime ? window.DSRTime.readyWithin(3000) : null, loadRaids()]);
   raids = loadedRaids;
 
   const alarmToggle = document.getElementById('raid-alarm-toggle');

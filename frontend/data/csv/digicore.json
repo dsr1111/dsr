@@ -468,6 +468,97 @@
           "count": 1
         }
       ]
+    },
+    "고래몬": {
+      "items": [
+        {
+          "name": "고래 석상",
+          "probability": "8.8%",
+          "tradeable": true,
+          "count": 1,
+          "mutant": true
+        }
+      ]
+    },
+    "피노키몬": {
+      "items": [
+        {
+          "name": "브롯사몬 탐지기",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 2
+        }
+      ]
+    },
+    "로제몬:버스트모드": {
+      "items": [
+        {
+          "name": "브롯사몬 탐지기",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 2
+        }
+      ]
+    },
+    "뿌띠몬": {
+      "items": [
+        {
+          "name": "브롯사몬 탐지기",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "릴리몬": {
+      "items": [
+        {
+          "name": "브롯사몬 탐지기",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "라일라몬": {
+      "items": [
+        {
+          "name": "브롯사몬 탐지기",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "쥬레이몬": {
+      "items": [
+        {
+          "name": "브롯사몬 탐지기",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "브롯사몬": {
+      "items": [
+        {
+          "name": "브롯사몬 탐지기",
+          "probability": "100%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
+    },
+    "리리스몬": {
+      "items": [
+        {
+          "name": "리리스몬의 목줄",
+          "probability": "13.38%",
+          "tradeable": true,
+          "count": 1
+        }
+      ]
     }
   }
 }

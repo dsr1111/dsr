@@ -1,3 +1,11 @@
 frontend/image/
 frontend/data/csv/
 .vscode/
+
+# 가챠 이미지/영상 원본 — media.dsrwiki.com/assets/gacha/ 에 업로드해서 사용 (130MB)
+frontend/assets/gacha/
+
+# 스킬 계수 작업용 로컬 파일
+frontend/build_skill_coeff_workbook.mjs
+frontend/skill_coeff_guide_preview.png
+frontend/skill_coeff_prepare.py
