@@ -1063,7 +1063,9 @@
   // ====================================================
   // 8. 초기화 및 전역 함수 노출
   // ====================================================
-  window.onload = () => {
+  // 이미지가 다 불러와질 때까지(window.onload) 기다리지 않고, HTML을 읽자마자 바로 데이터를 요청합니다.
+  // (이 스크립트는 defer 라서 실행 시점에 표와 필터 HTML이 이미 준비되어 있음)
+  const init = () => {
     // 페이지 로드 시 로딩 표시를 보이도록 설정
     const loadingSpinner = document.getElementById('loading-spinner');
     const resultTable = document.querySelector('.result-table');
@@ -1127,4 +1129,8 @@
   window.showEffectTooltip = showEffectTooltip;
   window.showConvertibleTooltip = showConvertibleTooltip;
   window.toggleFilters = toggleFilters;
+
+  // 모든 함수를 연결한 뒤 시작
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();

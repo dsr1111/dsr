@@ -94,7 +94,7 @@ class CustomNav extends HTMLElement {
         <nav class="nav container">
           <div class="nav__data">
             <a href="/">
-              <img loading="lazy" src="https://media.dsrwiki.com/dsrwiki/logo2.webp" class="nav__logo" />
+              <img src="https://media.dsrwiki.com/dsrwiki/logo2.webp" class="nav__logo" alt="DSR WIKI" fetchpriority="high" />
             </a>
 
             <div class="nav__toggle" id="nav-toggle">
@@ -314,3 +314,47 @@ class CustomNav extends HTMLElement {
 }
 
 customElements.define("custom-nav", CustomNav);
+
+// ---------- 다음 페이지 미리 불러오기 ----------
+// 링크에 마우스를 올리거나(잠깐 멈추면) 손가락을 대는 순간 그 페이지를 미리 준비해서, 클릭하면 바로 넘어가게 합니다.
+// 크롬·엣지: 화면까지 미리 그려 둠(prerender) / 그 밖의 브라우저: HTML만 미리 받아 둠(prefetch).
+// 메뉴는 shadow DOM 안에 있어서 composedPath()로 실제 링크를 찾습니다.
+(function initPagePreload() {
+  const canPrerender = typeof HTMLScriptElement !== 'undefined' && HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules');
+  const done = new Set();
+  const MAX = 8; // 한 페이지에서 미리 준비하는 최대 개수 (데이터 낭비 방지)
+
+  function preload(a) {
+    if (done.size >= MAX || a.target === '_blank' || a.hasAttribute('download')) return;
+    let url;
+    try { url = new URL(a.getAttribute('href'), location.href); } catch (e) { return; }
+    if (url.origin !== location.origin || url.hash) return; // 다른 사이트, #admin 같은 주소는 제외
+    if (/\.[a-z0-9]+$/i.test(url.pathname)) return; // 파일(.txt, .html 등) 제외
+    const key = url.pathname + url.search;
+    if (key === location.pathname + location.search || done.has(key)) return;
+    done.add(key);
+    if (canPrerender) {
+      const s = document.createElement('script');
+      s.type = 'speculationrules';
+      s.textContent = JSON.stringify({ prerender: [{ source: 'list', urls: [key] }] });
+      document.head.appendChild(s);
+    } else {
+      const l = document.createElement('link');
+      l.rel = 'prefetch';
+      l.href = key;
+      document.head.appendChild(l);
+    }
+  }
+
+  const linkOf = (e) => e.composedPath().find((n) => n && n.tagName === 'A' && n.hasAttribute('href'));
+  let timer = null;
+  document.addEventListener('pointerover', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    const a = linkOf(e);
+    clearTimeout(timer);
+    if (a) timer = setTimeout(() => preload(a), 80);
+  }, { passive: true });
+  document.addEventListener('pointerout', () => clearTimeout(timer), { passive: true });
+  document.addEventListener('touchstart', (e) => { const a = linkOf(e); if (a) preload(a); }, { passive: true });
+  document.addEventListener('focusin', (e) => { const a = linkOf(e); if (a) preload(a); });
+})();
