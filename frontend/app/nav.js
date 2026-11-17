@@ -90,7 +90,7 @@ class CustomNav extends HTMLElement {
       <link rel="stylesheet" href="assets/css/styles1.css">
       <link rel="stylesheet" href="assets/css/nav-custom.css">
 
-      <header class="header">
+      <header class="header" style="visibility: hidden">
         <nav class="nav container">
           <div class="nav__data">
             <a href="/">
@@ -115,6 +115,13 @@ class CustomNav extends HTMLElement {
         </nav>
       </header>
     `;
+    // 메뉴 CSS가 적용되기 전의 맨 글자가 잠깐 보이지 않게, CSS를 다 받은 뒤에 메뉴를 보여 줌
+    // (그동안은 styles1.css 의 custom-nav 막대가 같은 색으로 자리를 채움. 아이콘 글꼴은 기다리지 않음)
+    const header = this.shadowRoot.querySelector('.header');
+    const show = () => { header.style.visibility = ''; };
+    const sheets = [...this.shadowRoot.querySelectorAll('link[href^="assets/"]')];
+    Promise.all(sheets.map((l) => (l.sheet ? null : new Promise((r) => { l.addEventListener('load', r); l.addEventListener('error', r); })))).then(show);
+    setTimeout(show, 1500); // 혹시 늦어지면 그냥 보여 줌
   }
 
   initMenu() {

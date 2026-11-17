@@ -515,3 +515,39 @@ header {
     width: unset;
   }
 }
+
+/*=============== 페이지 전환 ===============*/
+/* 사이트 안에서 페이지를 옮길 때 하얗게 깜빡이지 않고 짧게 겹쳐 바뀌게 합니다 (크롬·엣지·최신 사파리).
+   위쪽 메뉴는 이름(site-header)을 붙여 두어서, 바뀌는 동안에도 그 자리에 그대로 있는 것처럼 보입니다.
+   지원하지 않는 브라우저는 예전처럼 그냥 넘어갑니다. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.15s;
+}
+
+/*=============== 위쪽 메뉴 자리 ===============*/
+/* 메뉴(nav.js)가 그려지기 전에도 같은 색의 막대를 먼저 보여 줘서, 페이지마다 메뉴가 늦게 "뿅" 나타나지 않게 합니다.
+   실제 메뉴는 이 막대 위에 그대로 그려집니다. */
+custom-nav {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--black-color);
+  z-index: var(--z-fixed);
+  view-transition-name: site-header;
+}
+
+@media screen and (min-width: 1118px) {
+  custom-nav {
+    height: calc(var(--header-height) + 2rem);
+  }
+}
