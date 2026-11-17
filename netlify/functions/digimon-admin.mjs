@@ -5,9 +5,9 @@
 //                    R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET
 import { json, authEnv, verifyToken, sameSiteJson } from '../lib/admin-auth.mjs';
 import { r2Env, createR2 } from '../lib/r2.mjs';
+import { backupKey, stable, unsafeTextError } from '../lib/data-file.mjs';
 
 const DATA_KEY = 'data/csv/digimon.json';
-const BACKUP_PREFIX = 'data/csv/backup/';
 const IMAGE_SLOTS = ['portrait', 'skill1', 'skill2', 'skill3', 'stack'];
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 
@@ -156,17 +156,6 @@ function sortDigimon(entries) {
 }
 
 /** 키 순서와 상관없이 같은 데이터인지 */
-function stable(value) {
-  if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`;
-  if (value && typeof value === 'object') return `{${Object.keys(value).sort().map((k) => `${JSON.stringify(k)}:${stable(value[k])}`).join(',')}}`;
-  return JSON.stringify(value);
-}
-
-function stamp() {
-  // KST yyyymmdd-hhmmss-mmm (같은 초에 여러 번 저장해도 백업이 겹치지 않게)
-  return new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace(/[-:]/g, '').replace('T', '-').replace('.', '-').slice(0, 19);
-}
-
 const CONFLICT = '다른 관리자가 이 디지몬을 먼저 수정했습니다. 새로고침 후 다시 시도해주세요.';
 const WRITE_RACE = '저장하는 순간 digimon.json이 다른 저장으로 바뀌었습니다. 한 번 더 저장해주세요.';
 
@@ -220,6 +209,8 @@ export default async (request) => {
       const originalName = typeof body.originalName === 'string' && body.originalName ? body.originalName : null;
       const parsed = readDigimon(body.name, body.entry, originalName && has(originalName) ? data[originalName] : null);
       if (parsed.error) return json({ error: parsed.error }, 400);
+      const unsafe = unsafeTextError([parsed.name, parsed.value]);
+      if (unsafe) return json({ error: unsafe }, 400);
       const name = parsed.name;
 
       if (originalName) {
@@ -259,8 +250,8 @@ export default async (request) => {
       return json({ error: '지원하지 않는 요청입니다.' }, 400);
     }
 
-    // 덮어쓰기 전에 백업 (data/csv/backup/digimon-YYYYMMDD-HHMMSS.json)
-    await r2.copy(DATA_KEY, `${BACKUP_PREFIX}digimon-${stamp()}.json`);
+    // 덮어쓰기 전에 백업 (data/csv/backup/digimon-YYYYMMDD-HHMMSS-mmm.json)
+    await r2.copy(DATA_KEY, backupKey('digimon', 'json'));
     try {
       // 읽은 뒤 다른 저장이 끼어들었으면 R2가 412로 거부
       const { etag } = await r2.put(DATA_KEY, `${JSON.stringify(next, null, 2)}\n`, 'application/json', { ifMatch: cur.etag });

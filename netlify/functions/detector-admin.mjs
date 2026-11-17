@@ -5,9 +5,9 @@
 // Netlify 환경 변수: digimon-admin 과 같음 (COUPON_ADMIN_PASSWORD, SUPABASE_SECRET_KEY, R2_*)
 import { json, authEnv, verifyToken, sameSiteJson } from '../lib/admin-auth.mjs';
 import { r2Env, createR2 } from '../lib/r2.mjs';
+import { backupKey, stable, unsafeTextError } from '../lib/data-file.mjs';
 
 const DATA_KEY = 'data/csv/detector.json';
-const BACKUP_PREFIX = 'data/csv/backup/';
 const MONSTERS = '악역 디지몬';
 const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
 const TRADE = ['거래가능', '거래불가'];
@@ -28,12 +28,6 @@ function text(value, max, { allowEmpty = false } = {}) {
 const safeName = (s) => s && !/[\/\\\u0000-\u001f]/.test(s);
 
 /** 키 순서와 상관없이 같은 데이터인지 */
-function stable(value) {
-  if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`;
-  if (isObj(value)) return `{${Object.keys(value).sort().map((k) => `${JSON.stringify(k)}:${stable(value[k])}`).join(',')}}`;
-  return JSON.stringify(value);
-}
-
 /** base 의 키 순서를 따르고, base 에만 있던 (편집 화면이 모르는) 키는 그대로 남김 */
 function mergeShape(next, base, removable = []) {
   if (!isObj(base)) return next;
@@ -56,10 +50,6 @@ function decodeImage(dataUrl) {
   const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8;
   const contentType = isWebp ? 'image/webp' : isPng ? 'image/png' : isJpeg ? 'image/jpeg' : null;
   return contentType ? { bytes, contentType } : null;
-}
-
-function stamp() {
-  return new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace(/[-:]/g, '').replace('T', '-').replace('.', '-').slice(0, 19);
 }
 
 // ---------- 검증 ----------
@@ -214,6 +204,8 @@ export default async (request) => {
       }
       const parsed = readEntry(body.entry, originalName ? data[originalName] : null);
       if (parsed.error) return json({ error: parsed.error }, 400);
+      const unsafe = unsafeTextError([name, parsed.value]);
+      if (unsafe) return json({ error: unsafe }, 400);
 
       // 이미지 (아이콘: dsrwiki/item/이름.webp, 맵: dsrwiki/map/맵이름.webp)
       const uploads = [];
@@ -244,7 +236,7 @@ export default async (request) => {
       return json({ error: '지원하지 않는 요청입니다.' }, 400);
     }
 
-    await r2.copy(DATA_KEY, `${BACKUP_PREFIX}detector-${stamp()}.json`);
+    await r2.copy(DATA_KEY, backupKey('detector', 'json'));
     const eol = cur.text.includes('\r\n') ? '\r\n' : '\n'; // 기존 줄바꿈 방식 유지
     try {
       const { etag } = await r2.put(DATA_KEY, `${JSON.stringify(next, null, 2)}\n`.replace(/\n/g, eol), 'application/json', { ifMatch: cur.etag });

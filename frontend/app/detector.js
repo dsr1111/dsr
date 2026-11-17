@@ -51,9 +51,17 @@ window.DSRDetector = {
     const load = () => {
         if (window.DSRDetectorAdmin) return window.DSRDetectorAdmin.open();
         if (document.querySelector('script[data-detector-admin]')) return;
+        if (!window.DSRAdminCore && !document.querySelector('script[data-admin-core]')) {
+          const core = document.createElement('script');
+          core.src = 'app/admin-core.js';
+          core.dataset.adminCore = '1';
+          core.async = false;
+          document.head.appendChild(core);
+        }
         const script = document.createElement('script');
         script.src = 'app/detector-admin.js';
         script.dataset.detectorAdmin = '1';
+        script.async = false;
         document.head.appendChild(script);
     };
     window.addEventListener('hashchange', () => { if (wantsAdmin()) load(); });

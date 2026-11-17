@@ -8,13 +8,13 @@
 // Netlify 환경 변수: digimon-admin 과 같음 (COUPON_ADMIN_PASSWORD, SUPABASE_SECRET_KEY, R2_*)
 import { json, authEnv, verifyToken, sameSiteJson } from '../lib/admin-auth.mjs';
 import { r2Env, createR2 } from '../lib/r2.mjs';
+import { backupKey, stamp, UNSAFE_CHARS, UNSAFE_MESSAGE } from '../lib/data-file.mjs';
 
 const FILES = {
   evolution: 'data/csv/evolution.csv',
   condition: 'data/csv/condition.csv',
   jogress: 'data/csv/jogress.csv',
 };
-const BACKUP_PREFIX = 'data/csv/backup/';
 const COND_TYPES = ['', '암흑진화', '특수진화', '버스트진화'];
 const CONFLICT = '다른 관리자가 이 디지몬의 진화 정보를 먼저 수정했습니다. 새로고침 후 다시 시도해주세요.';
 const WRITE_RACE = '저장하는 순간 진화 파일이 다른 저장으로 바뀌었습니다. 한 번 더 저장해주세요.';
@@ -91,6 +91,7 @@ function cleanRow(header, obj, numCols, label) {
     if (!s) continue;
     if (s.length > 80) return { error: `${label} "${k}" 값이 너무 깁니다.` };
     if (BAD_CHARS.test(s)) return { error: `${label} "${k}"에 쉼표·따옴표·줄바꿈은 쓸 수 없습니다. 재료 여러 개는 "/"로 구분해주세요.` };
+    if (UNSAFE_CHARS.test(s)) return { error: `${label} "${k}"에 ${UNSAFE_MESSAGE}` };
     if (numCols.has(k) && !NUM_RE.test(s)) return { error: `${label} "${k}"은(는) 숫자여야 합니다.` };
     out[k] = s;
   }
@@ -121,10 +122,6 @@ function checkBranchLimits(branches) {
   }
   if (Number(branches?.일반 ?? 0) > 11) return '일반 진화는 최대 11개입니다.';
   return null;
-}
-
-function stamp() {
-  return new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace(/[-:]/g, '').replace('T', '-').replace('.', '-').slice(0, 19);
 }
 
 export default async (request) => {
@@ -312,7 +309,7 @@ export default async (request) => {
     // ----- 백업 후 바뀐 파일만 저장 (읽은 뒤 다른 저장이 끼어들면 R2가 412로 거부) -----
     const toWrite = Object.keys(FILES).filter((k) => changed[k]);
     const time = stamp();
-    for (const k of toWrite) await r2.copy(FILES[k], `${BACKUP_PREFIX}${k}-${time}.csv`);
+    for (const k of toWrite) await r2.copy(FILES[k], backupKey(k, 'csv', time));
     const written = [];
     try {
       for (const k of toWrite) {

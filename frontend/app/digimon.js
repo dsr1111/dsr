@@ -1092,9 +1092,17 @@
     const load = () => {
       if (window.DSRDigimonAdmin) return window.DSRDigimonAdmin.open();
       if (document.querySelector('script[data-digimon-admin]')) return;
+      if (!window.DSRAdminCore && !document.querySelector('script[data-admin-core]')) {
+        const core = document.createElement('script');
+        core.src = 'app/admin-core.js';
+        core.dataset.adminCore = '1';
+        core.async = false;
+        document.head.appendChild(core);
+      }
       const script = document.createElement('script');
       script.src = 'app/digimon-admin.js';
       script.dataset.digimonAdmin = '1';
+      script.async = false;
       document.head.appendChild(script);
     };
     window.addEventListener('hashchange', () => { if (wantsAdmin()) load(); });

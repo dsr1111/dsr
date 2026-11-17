@@ -90,45 +90,15 @@
   `;
   document.head.appendChild(style);
 
-  // ---------- 토큰 ----------
-  function getToken() {
-    try {
-      const saved = JSON.parse(sessionStorage.getItem(C.tokenKey) || "null");
-      if (saved && saved.token && saved.expiresAt > Date.now()) return saved.token;
-    } catch (e) { /* 무시 */ }
-    clearToken();
-    return null;
-  }
-  function setToken(data) {
-    // 만료 시각을 이 PC 시계 기준으로 다시 계산 (PC 시계가 틀려도 로그인 직후 만료되지 않게)
-    const ttl = Number(data.ttl) || 12 * 60 * 60 * 1000;
-    const saved = { token: data.token, expiresAt: Date.now() + ttl - 60 * 1000 };
-    try { sessionStorage.setItem(C.tokenKey, JSON.stringify(saved)); } catch (e) { /* 무시 */ }
-  }
-  function clearToken() {
-    try { sessionStorage.removeItem(C.tokenKey); } catch (e) { /* 무시 */ }
-  }
+  // ---------- 공통 (admin-core.js) ----------
+  const Core = window.DSRAdminCore;
+  const { el, input, getToken, setToken, clearToken, request, clearHash, fileToDataUrl, closeAllModals } = Core;
+  const { field, openModal, showLogin: coreLogin } = Core.ui("cpa");
 
   /** resource: "coupons" | "events" | "raids" */
   async function api(method, body, resource) {
-    const headers = { "Content-Type": "application/json" };
-    const token = getToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
     const url = method === "GET" ? `${API}?resource=${encodeURIComponent(resource)}` : API;
-    const payload = body ? JSON.stringify(resource ? { ...body, resource } : body) : undefined;
-    let res;
-    try {
-      res = await fetch(url, { method, headers, body: payload, cache: "no-store" });
-    } catch (e) {
-      throw Object.assign(new Error("서버에 연결하지 못했습니다."), { status: 0 });
-    }
-    let json = {};
-    try { json = await res.json(); } catch (e) { /* 무시 */ }
-    if (!res.ok) {
-      if (res.status === 401 && body?.action !== "login") clearToken();
-      throw Object.assign(new Error(json.error || "요청을 처리하지 못했습니다."), { status: res.status });
-    }
-    return json;
+    return request(url, method, body ? (resource ? { ...body, resource } : body) : undefined);
   }
 
   /** 로그인 만료면 관리 모드 종료, 아니면 메시지 표시. 처리했으면 true */
@@ -136,55 +106,6 @@
     if (err.status === 401) { closeAllModals(); exitAdmin(true); return true; }
     show(err.message);
     return false;
-  }
-
-  // ---------- DOM / 모달 ----------
-  function el(tag, attrs = {}, children = []) {
-    const node = document.createElement(tag);
-    for (const [k, v] of Object.entries(attrs)) {
-      if (k === "class") node.className = v;
-      else if (k === "text") node.textContent = v;
-      else if (k === "style" && typeof v === "object") Object.assign(node.style, v);
-      else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
-      else if (v === true) node.setAttribute(k, "");
-      else if (v !== false && v != null) node.setAttribute(k, v);
-    }
-    (Array.isArray(children) ? children : [children]).forEach((c) => c && node.appendChild(typeof c === "string" ? document.createTextNode(c) : c));
-    return node;
-  }
-
-  const modalStack = [];
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modalStack.length) modalStack[modalStack.length - 1].tryClose();
-  });
-
-  function openModal(title, body, { onRequestClose, wide } = {}) {
-    const modal = el("div", { class: `cpa-modal${wide ? " cpa-wide" : ""}`, role: "dialog", "aria-modal": "true", "aria-label": title }, [el("h2", { text: title }), body]);
-    const overlay = el("div", { class: "cpa-overlay" }, modal);
-    const entry = {
-      close() {
-        overlay.remove();
-        const i = modalStack.indexOf(entry);
-        if (i >= 0) modalStack.splice(i, 1);
-      },
-      tryClose() { return onRequestClose ? onRequestClose(entry.close) : entry.close(); },
-    };
-    overlay.addEventListener("mousedown", (e) => { if (e.target === overlay) entry.tryClose(); });
-    document.body.appendChild(overlay);
-    modalStack.push(entry);
-    return entry;
-  }
-
-  function closeAllModals() {
-    [...modalStack].reverse().forEach((m) => m.close());
-  }
-
-  function field(label, control, hint) {
-    return el("div", { class: "cpa-field" }, [
-      el("span", { class: "cpa-label", text: label }),
-      control,
-      hint ? el("p", { class: "cpa-hint", text: hint }) : null,
-    ]);
   }
 
   /** 편집 폼 공통: 저장/취소 버튼, 닫을 때 변경 확인, 저장 중 잠금 */
@@ -228,21 +149,6 @@
 
   // ---------- 아이템 이미지 ----------
   const ITEM_IMAGE_API = "/.netlify/functions/item-image";
-  /** 파일 → 최대 크기에 맞춰 줄인 webp data URL (브라우저가 webp를 못 만들면 png) */
-  async function fileToDataUrl(file, max) {
-    const bitmap = await createImageBitmap(file);
-    const scale = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
-    const w = Math.max(1, Math.round(bitmap.width * scale));
-    const h = Math.max(1, Math.round(bitmap.height * scale));
-    const canvas = document.createElement("canvas");
-    canvas.width = w;
-    canvas.height = h;
-    canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
-    bitmap.close?.();
-    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.9));
-    const out = blob && blob.type === "image/webp" ? blob : await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-    return { dataUrl: await new Promise((resolve) => { const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(out); }), w, h, bytes: out.size };
-  }
   async function uploadItemImage(name, image) {
     const token = getToken();
     let res;
@@ -282,37 +188,7 @@
 
   // ---------- 로그인 ----------
   function showLogin() {
-    const input = el("input", { type: "password", autocomplete: "current-password", placeholder: "관리자 비밀번호" });
-    const error = el("p", { class: "cpa-error" });
-    const submit = el("button", { type: "submit", class: "cpa-btn cpa-primary", text: "로그인" });
-    const cancel = el("button", { type: "button", class: "cpa-btn", text: "취소" });
-    const form = el("form", {}, [field("비밀번호", input), error, el("div", { class: "cpa-footer" }, [cancel, submit])]);
-    const modal = openModal("메인 페이지 관리자 로그인", form, { onRequestClose(close) { close(); clearHash(); } });
-    cancel.addEventListener("click", () => modal.tryClose());
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!input.value) return;
-      submit.disabled = true;
-      error.textContent = "";
-      try {
-        setToken(await api("POST", { action: "login", password: input.value }));
-        modal.close();
-        clearHash();
-        await enterAdmin();
-      } catch (err) {
-        error.textContent = err.message;
-        input.select();
-      } finally {
-        submit.disabled = false;
-      }
-    });
-    setTimeout(() => input.focus(), 0);
-  }
-
-  function clearHash() {
-    if (location.hash === C.adminHash || location.hash === "#admin") {
-      history.replaceState(null, "", location.pathname + location.search);
-    }
+    return coreLogin("메인 페이지 관리자 로그인", enterAdmin);
   }
 
   // ---------- 관리 모드 ----------

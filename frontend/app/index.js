@@ -181,10 +181,17 @@ async function initCouponSystem() {
   const loadAdmin = () => {
     if (window.DSRSiteAdmin) return window.DSRSiteAdmin.open();
     if (document.querySelector("script[data-site-admin]")) return;
+    if (!window.DSRAdminCore && !document.querySelector("script[data-admin-core]")) {
+      const core = document.createElement("script");
+      core.src = "app/admin-core.js";
+      core.dataset.adminCore = "1";
+      core.async = false;
+      document.head.appendChild(core);
+    }
     const script = document.createElement("script");
     script.src = "app/site-admin.js";
     script.dataset.siteAdmin = "1";
-    script.defer = true;
+    script.async = false;
     document.head.appendChild(script);
   };
   window.addEventListener("hashchange", () => { if (wantsAdmin()) loadAdmin(); });
