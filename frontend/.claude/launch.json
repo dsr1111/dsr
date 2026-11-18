@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dsr-astro",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["E:/wiki/dsr-astro/node_modules/astro/bin/astro.mjs", "dev", "--root", "E:/wiki/dsr-astro", "--port", "4321"],
+      "port": 4321
+    },
+    {
+      "name": "dsr-old",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8766", "--directory", "E:/wiki/dsr/frontend"],
+      "port": 8766
+    }
+  ]
+}

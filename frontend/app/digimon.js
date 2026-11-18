@@ -12,7 +12,17 @@
     weak: [],
     field: [],
     effect: [],
+    // 스킬 위치와 상관없이 "이 속성 스킬이 하나라도 있으면" — 기존 페이지에서는 늘 비어 있어 영향 없음
+    skillAny: [],
+    // 스킬 종류: aoe 전체 공격 / cast 캐스팅(추가 시전 턴) / hp HP 소모 / stack 스택 / dot 도트 / cc CC / heal 회복
+    skillKind: [],
   };
+  // 효과를 여러 개 고르면 false: 하나라도 있으면 / true: 모두 가진 디지몬만
+  let effectMatchAll = false;
+  // 스킬 종류를 여러 개 고르면 any: 하나라도 / all: 모두 (스킬이 달라도 됨) / same: 한 스킬이 모두
+  let skillKindMode = 'all';
+  // 필드를 여러 개 고르면 false: 하나라도 있으면 / true: 모두 가진 디지몬만
+  let fieldMatchAll = false;
   let currentSortState = {
     column: -1,
     direction: 'none' // 'none', 'asc', 'desc'
@@ -111,6 +121,9 @@
 
   const ccEffects = new Set(Object.values(attributeEffects.cc));
   const dotEffects = new Set(Object.values(attributeEffects.dot));
+  // 스킬 종류 "도트" / "CC" 판단용 — 속성과 상관없는 특수 효과까지 포함 (공백 뺀 이름)
+  const allDotEffects = new Set([...dotEffects, "잔류에너지"]);
+  const allCcEffects = new Set([...ccEffects, "매료", "혼란", "금속화", "꼭두각시", "영원한잠", "스나이퍼미사일", "감염"]);
 
   function getEffectForAttribute(effectName, attribute) {
     if (ccEffects.has(effectName)) {
@@ -539,6 +552,24 @@
             newRow.dataset.skill2Effect = digimon.skills[1]?.effect || "";
             newRow.dataset.skill3Effect = digimon.skills[2]?.effect || "";
 
+            // 스킬 종류 (전체 공격·캐스팅·HP 소모·스택) — 표 칸 배경색과 같은 기준
+            const skillKinds = (skill) => {
+              if (!skill) return "";
+              const kinds = [];
+              if (skill.target_count === "전체") kinds.push("aoe");
+              if (skill.additionalTurn) kinds.push("cast");
+              if (skill.hpCost) kinds.push("hp");
+              const effectNames = (skill.effect || "").split(",").map((e) => e.replace(/\s/g, "")).filter(Boolean);
+              if (effectNames.some((e) => e.startsWith("스택"))) kinds.push("stack");
+              if (effectNames.some((e) => allDotEffects.has(e))) kinds.push("dot");
+              if (effectNames.some((e) => allCcEffects.has(e))) kinds.push("cc");
+              if (effectNames.includes("회복")) kinds.push("heal");
+              return kinds.join(",");
+            };
+            newRow.dataset.skill1Kind = skillKinds(digimon.skills[0]);
+            newRow.dataset.skill2Kind = skillKinds(digimon.skills[1]);
+            newRow.dataset.skill3Kind = skillKinds(digimon.skills[2]);
+
             newRow.innerHTML = `
               <td>
                 <div class="digimon-icon-container">
@@ -769,7 +800,9 @@
           : [];
         const fieldMatches =
           filters.field.length === 0 ||
-          fieldData.some((field) => filters.field.includes(field));
+          (fieldMatchAll
+            ? filters.field.every((field) => fieldData.includes(field))
+            : fieldData.some((field) => filters.field.includes(field)));
         const strength = row.dataset.강점 ? row.dataset.강점.trim() : "";
         const weakness = row.dataset.약점 ? row.dataset.약점.trim() : "";
         const strengthsMatch =
@@ -834,35 +867,70 @@
           return false;
         };
 
-        const match1 = updateSkillUI(row.cells[13], skill1Attr, skill1Change, filters.skill1, row.dataset.skill1Effect);
-        const match2 = updateSkillUI(row.cells[14], skill2Attr, skill2Change, filters.skill2, row.dataset.skill2Effect);
-        const match3 = updateSkillUI(row.cells[15], skill3Attr, skill3Change, filters.skill3, row.dataset.skill3Effect);
+        // 슬롯별 필터가 없으면 "아무 위치" 필터(skillAny)로 아이콘 표시(변환 속성 빛남)를 맞춤
+        const anyAttrs = filters.skillAny;
+        const shownFilter = (slotFilter) => (slotFilter.length ? slotFilter : anyAttrs);
+        const match1 = updateSkillUI(row.cells[13], skill1Attr, skill1Change, shownFilter(filters.skill1), row.dataset.skill1Effect);
+        const match2 = updateSkillUI(row.cells[14], skill2Attr, skill2Change, shownFilter(filters.skill2), row.dataset.skill2Effect);
+        const match3 = updateSkillUI(row.cells[15], skill3Attr, skill3Change, shownFilter(filters.skill3), row.dataset.skill3Effect);
 
-        const skillsMatch = match1 && match2 && match3;
+        // 그 슬롯에서 기본 속성이나 변환 가능한 속성 중 하나가 anyAttrs 에 있으면 true
+        const slotHasAny = (attr, change) => !!attr && anyAttrs.some((a) => a === attr || change.includes(a));
+        const any1 = slotHasAny(skill1Attr, skill1Change);
+        const any2 = slotHasAny(skill2Attr, skill2Change);
+        const any3 = slotHasAny(skill3Attr, skill3Change);
+        const skillsMatch =
+          (filters.skill1.length === 0 || match1) &&
+          (filters.skill2.length === 0 || match2) &&
+          (filters.skill3.length === 0 || match3) &&
+          (anyAttrs.length === 0 || any1 || any2 || any3);
+        // 효과 계산에 쓸 속성 범위: 슬롯 필터 > (그 슬롯이 맞으면) 아무 위치 필터 > 제한 없음
+        const effectAttrs = (slotFilter, slotAny) => (slotFilter.length ? slotFilter : slotAny ? anyAttrs : []);
 
         // Effect 필터링 로직
         const skill1Effects = getPossibleSkillEffects(
           row.dataset.skill1Effect,
           skill1Attr,
           skill1Change,
-          filters.skill1
+          effectAttrs(filters.skill1, any1)
         );
         const skill2Effects = getPossibleSkillEffects(
           row.dataset.skill2Effect,
           skill2Attr,
           skill2Change,
-          filters.skill2
+          effectAttrs(filters.skill2, any2)
         );
         const skill3Effects = getPossibleSkillEffects(
           row.dataset.skill3Effect,
           skill3Attr,
           skill3Change,
-          filters.skill3
+          effectAttrs(filters.skill3, any3)
         );
+        const hasEffect = (effect) => skill1Effects.has(effect) || skill2Effects.has(effect) || skill3Effects.has(effect);
         const effectMatches = filters.effect.length === 0 ||
-          filters.effect.some(effect =>
-            skill1Effects.has(effect) || skill2Effects.has(effect) || skill3Effects.has(effect)
-          );
+          (effectMatchAll ? filters.effect.every(hasEffect) : filters.effect.some(hasEffect));
+
+        // 스킬 종류 — 고른 종류가 여러 개일 때 skillKindMode 에 따라
+        //   all : 1·2·3스킬 어디에든 고른 종류가 다 있으면 (전체 공격 스킬 따로, 캐스팅 스킬 따로여도 됨)
+        //   same: 한 스킬이 고른 종류를 모두 가져야 함 (전체 공격이면서 캐스팅인 스킬)
+        //   any : 하나라도 있으면
+        // 속성 조건이 있으면 그 속성에 맞는 스킬 중에서 찾음 (예: 1스킬 불 + 전체 공격 = 1스킬이 불 속성 전체 공격)
+        let kindMatches = true;
+        if (filters.skillKind.length) {
+          const noAttrFilter = !filters.skill1.length && !filters.skill2.length && !filters.skill3.length && !anyAttrs.length;
+          const slots = [
+            [row.dataset.skill1Kind, filters.skill1.length ? match1 : any1],
+            [row.dataset.skill2Kind, filters.skill2.length ? match2 : any2],
+            [row.dataset.skill3Kind, filters.skill3.length ? match3 : any3],
+          ];
+          const lists = slots
+            .filter(([, attrOk]) => noAttrFilter || attrOk)
+            .map(([kinds]) => (kinds || "").split(","));
+          const inSomeSkill = (k) => lists.some((list) => list.includes(k));
+          if (skillKindMode === 'same') kindMatches = lists.some((list) => filters.skillKind.every((k) => list.includes(k)));
+          else if (skillKindMode === 'any') kindMatches = filters.skillKind.some(inSomeSkill);
+          else kindMatches = filters.skillKind.every(inSomeSkill);
+        }
 
         if (
           evolutionMatches &&
@@ -871,7 +939,8 @@
           fieldMatches &&
           strengthsMatch &&
           weaknessesMatch &&
-          effectMatches
+          effectMatches &&
+          kindMatches
         ) {
           row.style.display = "";
         } else {
@@ -889,6 +958,10 @@
       filters.weak = [];
       filters.field = [];
       filters.effect = [];
+      filters.skillAny = [];
+      filters.skillKind = [];
+      skillKindMode = 'all';
+      fieldMatchAll = false;
       const filterButtons = document.querySelectorAll(
         ".button-group button, .button-group-field button, .effect-btn"
       );
@@ -1085,6 +1158,25 @@
   window.DSRDigimon = {
     data: null,
     reload: () => TableDataManager.fetchData(true),
+    // 새 필터 화면이 같은 판단 코드를 쓰도록 공개
+    filters,
+    filterTable: () => FilterModule.filterTable(),
+    toggleSkillAny(attr) {
+      const i = filters.skillAny.indexOf(attr);
+      if (i > -1) filters.skillAny.splice(i, 1); else filters.skillAny.push(attr);
+      FilterModule.filterTable();
+    },
+    toggleSkillKind(kind) {
+      const i = filters.skillKind.indexOf(kind);
+      if (i > -1) filters.skillKind.splice(i, 1); else filters.skillKind.push(kind);
+      FilterModule.filterTable();
+    },
+    setSkillKindMode(mode) { skillKindMode = mode; FilterModule.filterTable(); },
+    getSkillKindMode: () => skillKindMode,
+    setFieldMatchAll(value) { fieldMatchAll = !!value; FilterModule.filterTable(); },
+    getFieldMatchAll: () => fieldMatchAll,
+    setEffectMatchAll(value) { effectMatchAll = !!value; FilterModule.filterTable(); },
+    getEffectMatchAll: () => effectMatchAll,
   };
 
   function initDigimonAdminLoader() {
